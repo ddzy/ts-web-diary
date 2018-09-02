@@ -1,0 +1,158 @@
+html {
+	font-family: -apple-system, BlinkMacSystemFont,
+    “Segoe UI”, “Roboto”, “Oxygen”,
+    “Ubuntu”, “Cantarell”, “Fira Sans”,
+    “Droid Sans”, “Helvetica Neue”, sans-serif;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+html, body, #app {
+	height: 100%;
+}
+
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+
+
+/* .fade-enter {
+	opacity: 0;
+}
+.fade-enter-active {
+	opacity: 1;
+  transition: all 1000ms ease;
+}
+.fade-exit {
+	opacity: 1;
+}
+.fade-exit-active {
+	opacity: 0;
+  transition: all 1000ms ease;
+} */
+
+
+
+.left-enter {
+	position: absolute;
+	top: 0;
+	background: #fff;
+	z-index: 10000;
+	opacity: 1;
+	transform: translateX(100%);
+}
+
+.left-enter.left-enter-active {
+	opacity: 0;
+	transform: translateX(0);
+	transition: all 0.6s ease-out;
+}
+
+.left-leave {
+	opacity: 0;
+	transform: translateX(0);
+}
+
+.left-leave.left-leave-active {
+	opacity: 1;
+	transform: translateX(-100%);
+	transition: all 0.6s ease-out;
+}
+
+
+.header-active {
+	background-color: #1890ff;
+}
+
+.header-active a {
+	color: #fff;
+}
+
+
+.ql-editor {
+	min-height: 300px;
+}
+
+
+.ant-upload {
+	width: 160px !important;
+	height: 160px !important;
+}
+
+
+
+/* 点赞 */
+.star-active {
+	color: #1890ff !important;
+}
+
+
+/* 隐藏details页 toolbar */
+.details-rich-editor .ql-toolbar {
+	display: none;
+}
+
+.details-rich-editor .ql-container {
+	border: 0 !important;
+	font-size: 16px;
+}
+
+.details-rich-editor .ql-container blockquote {
+	padding: 10px 10px 10px 16px;
+	background-color: #f6f6f6;
+	color: #666;
+}
+
+.details-rich-editor .ql-container p {
+	margin: 10px 0;
+}
+
+.details-rich-editor .ql-container .ql-editor pre.ql-syntax {
+	background-color: #f0f0f0;
+	color: #666;
+}
+
