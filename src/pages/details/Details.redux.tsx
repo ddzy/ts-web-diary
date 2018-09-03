@@ -14,7 +14,7 @@ export interface IInitialState {
     tag: string,
     type: string,
     watchCount: number,
-    comments: any[],
+    comments: any[],        // 文章评论
   },
 };
 

@@ -28,6 +28,7 @@ export interface IDetailsLeftProps {
   mode: string;
   tag: string;
   type: string;
+  comments: any[];
 
   commentInputValue: string | '';
   onSendComment: (
@@ -36,6 +37,8 @@ export interface IDetailsLeftProps {
   onCommentInputChange: (
     changedFields: any,
   ) => void;
+
+  useravatar: string;
 };
 interface IDetailsLeftState {};
 
@@ -115,7 +118,10 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
         <Divider />
 
         {/* 评论 */}
-        <DetailsLeftComment 
+        <DetailsLeftComment
+          useravatar={this.props.useravatar}
+
+          comments={this.props.comments} 
           onSendComment={this.props.onSendComment}
           onCommentInputChange={this.props.onCommentInputChange}
           commentInputValue={this.props.commentInputValue}

@@ -39,6 +39,8 @@ export interface IDetailsProps {
     commentValue: string,
     callback?: () => void,
   ) => void;
+
+  AuthRouteReducer: { useravatar: string, };
 };
 interface IDetailsState {
   visible: boolean;       // loading显示隐藏
@@ -124,6 +126,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
 
   public render(): JSX.Element {
+
     return (
       <React.Fragment>
         <Header />
@@ -134,6 +137,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 {/* 左边内容区域 */}
                 <DetailsLeft 
                   {...this.props.DetailsReducer.detailsInfo}
+                  {...this.props.AuthRouteReducer}
                   onCommentInputChange={this.handleCommentInputChange}
                   onSendComment={this.handleSendComment}
                   commentInputValue={this.state.commentInputValue}
@@ -185,6 +189,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 function mapStateToProps(state: any) {
   return {
     DetailsReducer: state.DetailsReducer,
+    AuthRouteReducer: state.AuthRouteReducer,
   };
 }
 function mapDispatchToProps() {

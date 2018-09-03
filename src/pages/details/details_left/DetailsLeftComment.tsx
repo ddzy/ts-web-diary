@@ -6,6 +6,7 @@ import {
   Row,
   Col,
   Form,
+  Divider,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
@@ -23,10 +24,15 @@ import {
   TipText,
 } from '../style';
 import CommentListItem from './CommentListItem';
+import { isArray } from 'util';
 
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
-  commentInputValue: string | '';
+  useravatar: string;
+
+  comments: any[];      
+
+  commentInputValue: string | '';   
   onSendComment: (
     e: React.MouseEvent,
   ) => void;
@@ -38,7 +44,7 @@ interface IDetailLeftCommentState { };
 
 
 /**
- * 评论
+ * 评论区域
  */
 class DetailsLeftComment extends React.PureComponent<
   IDetailsLeftCommentProps,
@@ -47,6 +53,27 @@ class DetailsLeftComment extends React.PureComponent<
 
 
   public readonly state = {}
+
+
+  public initCommentListItem = (
+
+  ): JSX.Element[] | []=> {
+    const comments = this.props.comments;
+
+    return isArray(comments) 
+      && comments.length !== 0
+      ? comments.map((item) => {
+        return (
+          <React.Fragment key={item._id}>
+            <CommentListItem
+              {...item}
+            />
+            <Divider />
+          </React.Fragment>
+        );
+      })
+    : []; 
+  }
 
 
   public render(): JSX.Element {
@@ -68,6 +95,7 @@ class DetailsLeftComment extends React.PureComponent<
               <Col span={2}>
                 <InputTopAvatar>
                   <Avatar
+                    src={this.props.useravatar}
                     shape="circle"
                     icon="user"
                     size="large"
@@ -115,7 +143,7 @@ class DetailsLeftComment extends React.PureComponent<
         {/* 展示栏 */}
         <CommentShowBox>
           <CommentShowList>
-            <CommentListItem />
+            {this.initCommentListItem()}
           </CommentShowList>
         </CommentShowBox>
       </LeftCommentContainer>

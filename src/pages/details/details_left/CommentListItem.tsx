@@ -5,11 +5,23 @@ import {
   CommentShowListItem,
   ItemTopBox,
   ItemMiddleBox,
+  MiddleCommentText,
   ItemBottomBox,
 } from '../style';
+import { formatTime } from '../../../utils/utils';
 
 
-export interface ICommentListItemProps {};
+export interface ICommentListItemProps {
+  _id: string;            // 评论id
+  whom: {                 // 评论人信息
+    _id: string,            
+    username: string,
+    useravatar: string, 
+  };
+  article: string;        // 当前文章id
+  commentValue: string;   // 评论内容
+  create_time: number;    // 评论时间
+};
 interface ICommentListItemState {};
 
 
@@ -30,19 +42,22 @@ class CommentlistItem extends React.PureComponent<
 
         {/* 评论用户信息框 */}
         <ItemTopBox>
-          <Avatar 
+          <Avatar
+            src={this.props.whom.useravatar} 
             icon="user"
             size="default"
             shape="circle"
             alt="评论者"
           />
           <Divider type="vertical" />
-          <span>用户名</span>
+          <span>{this.props.whom.username}</span>
         </ItemTopBox>
 
         {/* 评论内容框 */}
         <ItemMiddleBox>
-          测试评论内容测试评论内容
+          <MiddleCommentText>
+            {this.props.commentValue}
+          </MiddleCommentText>
         </ItemMiddleBox>
 
         {/* 评论控制栏 */}
@@ -53,7 +68,7 @@ class CommentlistItem extends React.PureComponent<
           <Icon type="message" />
           <Divider type="vertical" />
 
-          <span>10分钟前</span>
+          <span>{formatTime(this.props.create_time)}</span>
         </ItemBottomBox>
 
       </CommentShowListItem>

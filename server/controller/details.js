@@ -55,8 +55,29 @@ details.get('/', async (ctx, next) => {
     });
 
   // 获取评论数据
-  const commentsList = await Comments
-    .find({ article: articleid });
+  let commentsList = await Comments
+    .find({ article: articleid })
+    .sort({ create_time: '-1' }) 
+    .populate({
+      path: 'article',
+      select: ['_id'],
+    })
+    .populate({
+      path: 'whom',
+      select: ['_id', 'useravatar', 'username'],
+    })    
+
+  commentsList = await commentsList.map((item) => {
+    return {
+      ...item._doc,
+      whom: {
+        ...item._doc.whom._doc,
+        useravatar: formatPath(
+          item._doc.whom._doc.useravatar,
+        ),
+      },
+    };
+  });
 
 
   ctx.body = {
@@ -75,8 +96,7 @@ details.get('/', async (ctx, next) => {
       create_time: result.create_time,
       articleContent: result.content,
       comments: commentsList,
-    },
-    
+    },    
   };
 
 });
@@ -108,12 +128,20 @@ details.post('/comment', async (ctx, next) => {
     .populate({
       path: 'whom',
       select: ['_id', 'useravatar', 'username'],
-    });
+    })
 
   ctx.body = {
     code: 0,
     message: 'Success!',
-    comment: commentInfo,
+    comment: {
+      ...commentInfo._doc,
+      whom: {
+        ...commentInfo._doc.whom._doc,
+        useravatar: formatPath(
+          commentInfo._doc.whom._doc.useravatar,
+        ),
+      },
+    },
   };
 
 });
