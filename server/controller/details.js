@@ -1,7 +1,7 @@
 const koa = require('koa');
 const Router = require('koa-router');
 
-const { Posts, changeId } = require('../model/model');
+const { Posts, changeId, Comments } = require('../model/model');
 const { formatPath } = require('../utils/utils');
 
 const details = new Router();
@@ -77,12 +77,38 @@ details.get('/', async (ctx, next) => {
 });
 
 
-//// 所有文章阅读数加一
-details.get('/setallwatch', async (ctx, next) => {
+//// 文章详情 => 发表评论
+details.post('/comment', async (ctx, next) => {
   
+  const {
+    userid,
+    articleid,
+    commentValue,
+  } = ctx.request.body;
+
+  const result = await Comments
+    .create({
+      whom: userid,
+      article: articleid,
+      commentValue,
+      create_time: new Date().getTime(),
+    });
+
+  const commentInfo = await Comments
+    .findById(result._id, { '__v': 0 })
+    .populate({
+      path: 'article',
+      select: ['_id'],
+    })
+    .populate({
+      path: 'whom',
+      select: ['_id', 'useravatar', 'username'],
+    });
+
   ctx.body = {
     code: 0,
     message: 'Success!',
+    comment: commentInfo,
   };
 
 });

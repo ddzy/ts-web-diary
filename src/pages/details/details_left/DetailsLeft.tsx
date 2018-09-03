@@ -29,7 +29,7 @@ export interface IDetailsLeftProps {
   tag: string;
   type: string;
 
-  commentInputValue: string;
+  commentInputValue: string | '';
   onSendComment: (
     e: React.MouseEvent,
   ) => void;

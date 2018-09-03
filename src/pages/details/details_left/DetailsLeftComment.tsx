@@ -24,7 +24,7 @@ import CommentListItem from './CommentListItem';
 
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
-  commentInputValue: string;
+  commentInputValue: string | '';
   onSendComment: (
     e: React.MouseEvent,
   ) => void;
@@ -71,11 +71,11 @@ class DetailsLeftComment extends React.PureComponent<
                   <Form>
                     <Form.Item>
                       {getFieldDecorator('comment_input', {
-                        rules: [{ required: true, message: '请填写评论!' }],
-                        
+                        rules: [{ required: true, message: '请填写评论!' }], 
                       })(
                         <Input.TextArea
                           rows={4}
+                          placeholder="请输入评论内容..."
                         />
                       )}
                     </Form.Item>
@@ -126,7 +126,7 @@ export default Form.create({
     return {
       comment_input: Form.createFormField({
         ...props.commentInputValue,
-        value: props.commentInputValue,
+        value: props.commentInputValue.value || '',
       }),
     };
   },

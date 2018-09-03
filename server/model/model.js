@@ -105,11 +105,14 @@ const CommentsSchema = new Schema({
   },
   article: {                        // 文章
     type: Schema.Types.ObjectId,
-    ref: 'Posts',    
+    ref: 'Post',    
   },
   create_time: {
     type: Number,
     default: new Date().getTime(),
+  },
+  commentValue: {
+    type: String,
   },
 });
 
@@ -123,6 +126,7 @@ const Comments = mongoose.model('Comments', CommentsSchema, 'Comments');
 module.exports = {
   User,
   Posts,
+  Comments,
 
   // 转为objectId
   changeId: (id) => {

@@ -42,7 +42,7 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
   public readonly state = {
     navList: [
       { path: '/home', value: '首页', children: null },
-      { path: '/article', value: '文章', children: null },
+      { path: '/article', value: '日记', children: null },
     ],
   }
 

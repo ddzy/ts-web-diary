@@ -14,6 +14,14 @@ export interface IInitialState {
     tag: string,
     type: string,
     watchCount: number,
+
+    // comments: [{     
+    //   whom: string,       // 评论人
+    //   create_time: number | string,   // 发布时间
+    //   whomAvatar: string,     // 评论人头像
+    //   commentValue: string,   // 评论内容
+    // }],
+    comments: any[],
   },
 };
 
@@ -31,11 +39,14 @@ const initialState: IInitialState = {
     tag: '',
     type: '',
     watchCount: 0,
+
+    comments: [],
   },
 };
 
 
 export const SAVE_DETAILS_INFO = 'SAVE_DETAILS_INFO' as string;
+export const SAVE_COMMENTS_LIST = 'SAVE_COMMENTS_LIST' as string;
 
 
 export function saveDetailsInfo(
@@ -43,6 +54,15 @@ export function saveDetailsInfo(
 ): { type: string, payload: any } {
   return {
     type: SAVE_DETAILS_INFO,
+    payload: data,
+  };
+}
+
+export function saveCommentsList(
+  data: any,
+): { type: string, payload: any } {
+  return {
+    type: SAVE_COMMENTS_LIST,
     payload: data,
   };
 }
@@ -57,6 +77,17 @@ export function DetailsReducer(
       return {
         ...state,
         detailsInfo: action.payload.result,
+      };
+    }
+    case SAVE_COMMENTS_LIST: {
+      return {
+        ...state,
+        detailsInfo: {
+          ...state.detailsInfo,
+          comments: state.detailsInfo.comments.unshift(
+            action.payload.comment,
+          ),
+        },
       };
     }
     default: {
@@ -84,6 +115,30 @@ export function getOneArticleInfo(
       dispatch(saveDetailsInfo(res));
       callback();
     });
+  };
+}
+
+
+//// 发表评论
+export function reduxHandleSendComment(
+  articleid: string,
+  commentValue: string,
+  callback?: () => void,
+) {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
+    query({
+      method: 'POST',
+      url: '/details/comment',
+      jsonp: false,
+      data: {
+        userid: localStorage.getItem('userid') || '',
+        articleid,
+        commentValue,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+      });
   };
 }
 

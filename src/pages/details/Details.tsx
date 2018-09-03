@@ -3,6 +3,7 @@ import {
   Row,
   Col,
   Spin,
+  notification,
 } from 'antd';
 import { History } from 'history';
 import { match } from 'react-router';
@@ -12,7 +13,8 @@ import Header from '../../components/header/Header';
 import DetailsLeft from './details_left/DetailsLeft';
 import DetailsRight from './details_right/DetailsRight';
 import { 
-  getOneArticleInfo,  
+  getOneArticleInfo, 
+  reduxHandleSendComment, 
 } from './Details.redux';
 import { getWindowWH } from '../../utils/utils';
 import {
@@ -32,13 +34,18 @@ export interface IDetailsProps {
     articleid: string,
     callback: () => void,
   ) => void;
+  reduxHandleSendComment: (
+    articleid: string,
+    commentValue: string,
+    callback?: () => void,
+  ) => void;
 };
 interface IDetailsState {
   visible: boolean;       // loading显示隐藏
   loadingWrapperWidth: number;      // loading宽
   loadingWrapperHeight: number;   // loading高
   commentInputValue: {                   // 评论输入框
-    value: string,                 
+    value: string | '',                 
   },
 };
 
@@ -54,7 +61,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     loadingWrapperWidth: 0,
     loadingWrapperHeight: 0,
     commentInputValue: {
-      value: ''
+      value: '',
     },
   }
 
@@ -88,14 +95,31 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
   //// 处理评论输入
   public handleCommentInputChange = (changedFields: any) => {
-
-    console.log(changedFields);
+    this.setState({
+      commentInputValue: {
+        value: changedFields.comment_input.value,
+      },
+    });
   }
 
 
   //// 处理评论提交
   public handleSendComment = (e: React.MouseEvent) => {
-    console.log(this.state);
+    this.state.commentInputValue.value
+      ? this.props.reduxHandleSendComment(
+          this.props.match.params.id,
+          this.state.commentInputValue.value,
+          () => {
+            notification.success({
+              message: '提示:',
+              description: '评论发表成功!'
+            });
+          },
+        )
+      : notification.error({
+          message: '错误:',
+          description: '评论不能为空!'
+        });
   }
 
 
@@ -166,6 +190,7 @@ function mapStateToProps(state: any) {
 function mapDispatchToProps() {
   return {
     getOneArticleInfo,
+    reduxHandleSendComment,
   };
 }
 
