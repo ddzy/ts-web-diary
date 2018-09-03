@@ -92,10 +92,6 @@ const PostsSchema = new Schema({
     type: Number,
     default: 0,
   },
-  // 是否已经赞过
-/*   isStared: {
-    type: Array,
-  }, */
 });
 
 const CommentsSchema = new Schema({

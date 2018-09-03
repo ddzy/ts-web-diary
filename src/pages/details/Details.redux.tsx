@@ -14,13 +14,6 @@ export interface IInitialState {
     tag: string,
     type: string,
     watchCount: number,
-
-    // comments: [{     
-    //   whom: string,       // 评论人
-    //   create_time: number | string,   // 发布时间
-    //   whomAvatar: string,     // 评论人头像
-    //   commentValue: string,   // 评论内容
-    // }],
     comments: any[],
   },
 };
@@ -72,11 +65,15 @@ export function DetailsReducer(
   state: IInitialState = initialState,
   action: { type: string, payload: any },
 ) {
+
   switch(action.type) {
     case SAVE_DETAILS_INFO: {
       return {
         ...state,
-        detailsInfo: action.payload.result,
+        detailsInfo: {
+          ...state.detailsInfo,
+          ...action.payload.result,
+        },
       };
     }
     case SAVE_COMMENTS_LIST: {
@@ -84,9 +81,10 @@ export function DetailsReducer(
         ...state,
         detailsInfo: {
           ...state.detailsInfo,
-          comments: state.detailsInfo.comments.unshift(
+          comments: [
             action.payload.comment,
-          ),
+            ...state.detailsInfo.comments,
+          ]
         },
       };
     }
@@ -137,7 +135,8 @@ export function reduxHandleSendComment(
       },
     })
       .then((res) => {
-        console.log(res);
+        dispatch(saveCommentsList(res));
+        callback && callback();
       });
   };
 }

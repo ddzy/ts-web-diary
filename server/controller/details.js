@@ -54,6 +54,10 @@ details.get('/', async (ctx, next) => {
       };
     });
 
+  // 获取评论数据
+  const commentsList = await Comments
+    .find({ article: articleid });
+
 
   ctx.body = {
     code: 0,
@@ -70,6 +74,7 @@ details.get('/', async (ctx, next) => {
       tag: result.tag,
       create_time: result.create_time,
       articleContent: result.content,
+      comments: commentsList,
     },
     
   };

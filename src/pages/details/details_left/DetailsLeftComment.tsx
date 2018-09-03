@@ -19,6 +19,8 @@ import {
   InputBottom,
   CommentShowBox,
   CommentShowList,
+  CommentTipBox,
+  TipText,
 } from '../style';
 import CommentListItem from './CommentListItem';
 
@@ -52,6 +54,13 @@ class DetailsLeftComment extends React.PureComponent<
 
     return (
       <LeftCommentContainer>
+        {/* 提示文字 */}
+        <CommentTipBox>
+          <TipText>
+            评论
+          </TipText>
+        </CommentTipBox>
+
         {/* 输入框 */}
         <CommentInputBox>
           <InputTop>
