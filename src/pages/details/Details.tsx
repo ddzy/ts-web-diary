@@ -37,6 +37,9 @@ interface IDetailsState {
   visible: boolean;       // loading显示隐藏
   loadingWrapperWidth: number;      // loading宽
   loadingWrapperHeight: number;   // loading高
+  commentInputValue: {                   // 评论输入框
+    value: string,                 
+  },
 };
 
 
@@ -50,6 +53,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     visible: false,
     loadingWrapperWidth: 0,
     loadingWrapperHeight: 0,
+    commentInputValue: {
+      value: ''
+    },
   }
 
 
@@ -80,6 +86,19 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
+  //// 处理评论输入
+  public handleCommentInputChange = (changedFields: any) => {
+
+    console.log(changedFields);
+  }
+
+
+  //// 处理评论提交
+  public handleSendComment = (e: React.MouseEvent) => {
+    console.log(this.state);
+  }
+
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
@@ -91,6 +110,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 {/* 左边内容区域 */}
                 <DetailsLeft 
                   {...this.props.DetailsReducer.detailsInfo}
+                  onCommentInputChange={this.handleCommentInputChange}
+                  onSendComment={this.handleSendComment}
+                  commentInputValue={this.state.commentInputValue}
                 />
               </Col>
               <Col span={6}>

@@ -39,23 +39,7 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
   //// 初始化列表数据
   public initListData = () => {
     const articleList = this.props.articleList || [];
-
-    console.log(articleList);
-
-    // return articleList.length 
-    //   ? articleList.map((item) => {
-    //       return {
-    //         id: item._id || item.uniquekey,
-    //         url: item.url,
-    //         title: item.title,
-    //         author_name: item.author_name || item.author.username,
-    //         pic_url: item.thumbnail_pic_s || item.img || '',
-    //         create_time: item.date || formatTime(item.create_time),
-    //         star: item.star || 0,
-    //         watch: item.watch || 0,
-    //       };
-    //     })
-    //   : [];
+    
     return articleList.length
       ? articleList
           .filter((item) => {

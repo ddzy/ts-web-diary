@@ -101,15 +101,30 @@ export const InputBottom = styled<IStyleProps, 'div'>('div')`
 
 
 export const CommentShowBox = styled<IStyleProps, 'div'>('div')`
-
+  margin-top: 20px;
+  padding: 0 20px;
+  border-left: 1px solid #ccc;
 `;
 
 export const CommentShowList = styled<IStyleProps, 'ul'>('ul')`
 
 `;
 
+// 每条评论
 export const CommentShowListItem = styled<IStyleProps, 'li'>('li')`
 
+`;
+
+export const ItemTopBox = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+export const ItemMiddleBox = styled<IStyleProps, 'div'>('div')`
+  padding: 0 48px;
+`;
+
+export const ItemBottomBox = styled<IStyleProps, 'div'>('div')`
+  padding: 8px 48px 0;
 `;
 
 

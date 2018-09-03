@@ -5,7 +5,10 @@ import {
   Input,
   Row,
   Col,
+  Form,
 } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
+
 
 import {
   LeftCommentContainer,
@@ -17,9 +20,18 @@ import {
   CommentShowBox,
   CommentShowList,
 } from '../style';
+import CommentListItem from './CommentListItem';
 
 
-export interface IDetailsLeftCommentProps { };
+export interface IDetailsLeftCommentProps extends FormComponentProps {
+  commentInputValue: string;
+  onSendComment: (
+    e: React.MouseEvent,
+  ) => void;
+  onCommentInputChange: (
+    changedFields: any,
+  ) => void;
+};
 interface IDetailLeftCommentState { };
 
 
@@ -36,6 +48,8 @@ class DetailsLeftComment extends React.PureComponent<
 
 
   public render(): JSX.Element {
+    const { getFieldDecorator } = this.props.form;
+
     return (
       <LeftCommentContainer>
         {/* 输入框 */}
@@ -54,10 +68,19 @@ class DetailsLeftComment extends React.PureComponent<
               </Col>
               <Col span={22}>
                 <InputTopText>
-                  <Input.TextArea
-                    rows={4}
-                    placeholder="发表评论"
-                  />
+                  <Form>
+                    <Form.Item>
+                      {getFieldDecorator('comment_input', {
+                        rules: [{ required: true, message: '请填写评论!' }],
+                        
+                      })(
+                        <Input.TextArea
+                          rows={4}
+                        />
+                      )}
+                    </Form.Item>
+                  </Form>
+
                 </InputTopText>
               </Col>
             </Row>
@@ -73,6 +96,7 @@ class DetailsLeftComment extends React.PureComponent<
                     width: '15%',
                     marginTop: '10px',
                   }}
+                  onClick={this.props.onSendComment}
                 >发表</Button>
               </Col>
             </Row>
@@ -82,7 +106,7 @@ class DetailsLeftComment extends React.PureComponent<
         {/* 展示栏 */}
         <CommentShowBox>
           <CommentShowList>
-            
+            <CommentListItem />
           </CommentShowList>
         </CommentShowBox>
       </LeftCommentContainer>
@@ -93,4 +117,17 @@ class DetailsLeftComment extends React.PureComponent<
 
 
 
-export default DetailsLeftComment;
+export default Form.create({
+  onFieldsChange(props: any, changedFields) {
+    props.onCommentInputChange(changedFields);
+  },
+
+  mapPropsToFields(props) {
+    return {
+      comment_input: Form.createFormField({
+        ...props.commentInputValue,
+        value: props.commentInputValue,
+      }),
+    };
+  },
+})(DetailsLeftComment);

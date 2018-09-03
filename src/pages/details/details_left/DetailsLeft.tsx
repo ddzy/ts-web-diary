@@ -28,6 +28,14 @@ export interface IDetailsLeftProps {
   mode: string;
   tag: string;
   type: string;
+
+  commentInputValue: string;
+  onSendComment: (
+    e: React.MouseEvent,
+  ) => void;
+  onCommentInputChange: (
+    changedFields: any,
+  ) => void;
 };
 interface IDetailsLeftState {};
 
@@ -107,7 +115,11 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
         <Divider />
 
         {/* 评论 */}
-        <DetailsLeftComment />
+        <DetailsLeftComment 
+          onSendComment={this.props.onSendComment}
+          onCommentInputChange={this.props.onCommentInputChange}
+          commentInputValue={this.props.commentInputValue}
+        />
       </DetailsLeftWrapper>
     );
   }
