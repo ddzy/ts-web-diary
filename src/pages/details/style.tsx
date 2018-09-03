@@ -74,6 +74,12 @@ export const LeftContent = styled<IStyleProps, 'div'>('div')`
 `;
 
 
+// 左边评论
+export const LeftCommentContainer = styled<IStyleProps, 'div'>('div')`
+  
+`;
+
+
 
 
 //// 右边文章侧边栏区域

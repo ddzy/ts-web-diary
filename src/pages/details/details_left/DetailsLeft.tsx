@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import { formatTime } from '../../../utils/utils';
 import { TAG_COLOR_PICKER } from '../../../constants/constants';
+import DetailsLeftComment from './DetailsLeftComment';
 import {
   DetailsLeftWrapper,
   LeftTitleContainer,
@@ -67,6 +68,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
               {this.props.articleTitle}
             </LeftTitle>
           </LeftTitleBox>
+          
           {/* 信息栏 */}
           <LeftInfoBox>
             <LeftInfoList>
@@ -93,6 +95,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
           </LeftInfoBox>
         </LeftTitleContainer>
         <Divider />
+
         {/* 富文本 */}
         <LeftContentContainer>
           <ReactQuill
@@ -101,6 +104,9 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
             readOnly={true}
           />
         </LeftContentContainer>
+
+        {/* 评论 */}
+        <DetailsLeftComment />
       </DetailsLeftWrapper>
     );
   }
