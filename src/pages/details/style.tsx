@@ -79,6 +79,39 @@ export const LeftCommentContainer = styled<IStyleProps, 'div'>('div')`
   
 `;
 
+export const CommentInputBox = styled<IStyleProps, 'div'>('div')`
+  padding: 0 30px;
+`;
+
+export const InputTop = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+export const InputTopAvatar = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+export const InputTopText = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+export const InputBottom = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+
+export const CommentShowBox = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+export const CommentShowList = styled<IStyleProps, 'ul'>('ul')`
+
+`;
+
+export const CommentShowListItem = styled<IStyleProps, 'li'>('li')`
+
+`;
+
 
 
 

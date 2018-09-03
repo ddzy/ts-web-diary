@@ -13,6 +13,7 @@ const Schema = mongoose.Schema;
 /**
  * User: 用户
  * Posts: 文章
+ * Comments: 评论
  */
 
 const UserSchema = new Schema({
@@ -97,14 +98,26 @@ const PostsSchema = new Schema({
   }, */
 });
 
+const CommentsSchema = new Schema({
+  whom: {                         // 评论人
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  article: {                        // 文章
+    type: Schema.Types.ObjectId,
+    ref: 'Posts',    
+  },
+  create_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+});
+
 
 const User = mongoose.model('User', UserSchema, 'User');
 const Posts = mongoose.model('Post', PostsSchema, 'Post');
+const Comments = mongoose.model('Comments', CommentsSchema, 'Comments');
 
-
-// User.find({}, (err, doc) => {
-//   console.log(doc);
-// })
 
 
 module.exports = {

@@ -68,7 +68,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
               {this.props.articleTitle}
             </LeftTitle>
           </LeftTitleBox>
-          
+
           {/* 信息栏 */}
           <LeftInfoBox>
             <LeftInfoList>
@@ -104,6 +104,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
             readOnly={true}
           />
         </LeftContentContainer>
+        <Divider />
 
         {/* 评论 */}
         <DetailsLeftComment />
