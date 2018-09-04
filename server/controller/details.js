@@ -1,7 +1,12 @@
 const koa = require('koa');
 const Router = require('koa-router');
 
-const { Posts, changeId, Comments } = require('../model/model');
+const { 
+  Posts, 
+  changeId, 
+  Comments, 
+  Replys,
+} = require('../model/model');
 const { formatPath } = require('../utils/utils');
 
 const details = new Router();
@@ -142,6 +147,33 @@ details.post('/comment', async (ctx, next) => {
         ),
       },
     },
+  };
+
+});
+
+
+//// 文章详情 => 发表回复
+details.post('/reply', async (ctx, next) => {
+  
+  const { commentid, replyValue } = ctx.request.body;
+
+  // 存储回复
+  const result = await Replys
+    .create({
+      comment: changeId(commentid),
+      replyValue,
+      create_time: new Date().getTime(),
+    });
+
+  const final = await result
+    .populate({
+      path: 'comment',
+    });
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    final,
   };
 
 });

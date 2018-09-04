@@ -120,13 +120,21 @@ const ReplySchema = new Schema({
   replyValue: {
     type: String,       // 评论回复
   },
+  create_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+  star: {
+    type: Number,
+    default: 0,
+  },
 });
 
 
 const User = mongoose.model('User', UserSchema, 'User');
 const Posts = mongoose.model('Post', PostsSchema, 'Post');
 const Comments = mongoose.model('Comments', CommentsSchema, 'Comments');
-const Reply = mongoose.model('Reply', ReplySchema, 'Reply');
+const Replys = mongoose.model('Replys', ReplySchema, 'Replys');
 
 
 
@@ -134,6 +142,7 @@ module.exports = {
   User,
   Posts,
   Comments,
+  Replys,
 
   // 转为objectId
   changeId: (id) => {

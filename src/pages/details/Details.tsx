@@ -158,9 +158,24 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     inputRef: any,
     commentid: string,
   ): void => {
-    inputRef.input.value = '';
 
-    console.log(commentid);
+    this.state.replyInputValue.value === ''
+      ? notification.error({
+          message: '提示',
+          description: '回复不能为空!',
+        })
+      : this.props.reduxHandleSendReply(
+          commentid,
+          this.state.replyInputValue.value,
+          () => {
+            // 清空输入框
+            inputRef.input.value = '';
+            notification.success({
+              message: '提示',
+              description: '回复成功!'
+            });
+          },
+        );
   }
 
 

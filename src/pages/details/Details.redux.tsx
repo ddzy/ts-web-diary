@@ -175,7 +175,18 @@ export function reduxHandleSendReply(
   callback: () => void,
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
-    console.log(commentid);
-    console.log(replyValue);
+    query({
+      method: 'POST',
+      url: '/details/reply',
+      jsonp: false,
+      data: {
+        commentid,
+        replyValue,
+      },
+    }).then((res) => {
+      console.log(res);
+
+      callback();
+    });
   };
 }
