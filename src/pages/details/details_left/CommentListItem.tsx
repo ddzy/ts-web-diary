@@ -50,7 +50,11 @@ class CommentlistItem extends React.PureComponent<
             alt="评论者"
           />
           <Divider type="vertical" />
-          <span>{this.props.whom.username}</span>
+          <span
+            style={{
+              color: '#999',
+            }}
+          >{this.props.whom.username}</span>
         </ItemTopBox>
 
         {/* 评论内容框 */}

@@ -35,6 +35,7 @@ export interface IDetailsLeftCommentProps extends FormComponentProps {
   commentInputValue: string | '';   
   onSendComment: (
     e: React.MouseEvent,
+    inputRef: any,
   ) => void;
   onCommentInputChange: (
     changedFields: any,
@@ -50,11 +51,13 @@ class DetailsLeftComment extends React.PureComponent<
   IDetailsLeftCommentProps,
   IDetailLeftCommentState
   > {
+  public inputRef = null
 
 
   public readonly state = {}
 
 
+  //// 初始化评论列表
   public initCommentListItem = (
 
   ): JSX.Element[] | []=> {
@@ -73,6 +76,12 @@ class DetailsLeftComment extends React.PureComponent<
         );
       })
     : []; 
+  }
+
+
+  //// 获取输入框ref
+  public getInputRef = (el: any): void => {
+    this.inputRef = el;  
   }
 
 
@@ -111,6 +120,7 @@ class DetailsLeftComment extends React.PureComponent<
                         rules: [{ required: true, message: '请填写评论!' }], 
                       })(
                         <Input.TextArea
+                          ref={(el) => this.getInputRef(el)}
                           rows={4}
                           placeholder="请输入评论内容..."
                         />
@@ -133,7 +143,10 @@ class DetailsLeftComment extends React.PureComponent<
                     width: '15%',
                     marginTop: '10px',
                   }}
-                  onClick={this.props.onSendComment}
+                  onClick={(e: React.MouseEvent) => this.props.onSendComment(
+                    e,
+                    this.inputRef,
+                  )}
                 >发表</Button>
               </Col>
             </Row>

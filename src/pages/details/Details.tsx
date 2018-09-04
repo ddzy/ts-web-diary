@@ -106,12 +106,17 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
 
   //// 处理评论提交
-  public handleSendComment = (e: React.MouseEvent) => {
+  public handleSendComment = (
+    e: React.MouseEvent,
+    inputRef: any,
+  ) => {
     this.state.commentInputValue.value
       ? this.props.reduxHandleSendComment(
           this.props.match.params.id,
           this.state.commentInputValue.value,
           () => {
+            // 清空输入框
+            inputRef.textAreaRef.value = '';
             notification.success({
               message: '提示:',
               description: '评论发表成功!'

@@ -10,20 +10,20 @@ export interface IStyleProps {
 //// 单个文章详情页
 export const DetailsWrapper = styled<IStyleProps, 'div'>('div')`
   margin-top: 50px;
-  // background-color: #f4f5f5;
+  background-color: #f4f5f5;
 `;
 
 export const DetailsContent = styled<IStyleProps, 'div'>('div')`
   width: 1100px;
   margin: 0 auto;
   padding-top: 20px;
-  // background-color: #fff;
 `;
 
 
 //// 左边文章区域
 export const DetailsLeftWrapper = styled<IStyleProps, 'div'>('div')`
   padding-right: 10px;
+  background-color: #fff;
 `;
 
 // 左边标题
@@ -135,7 +135,7 @@ export const ItemMiddleBox = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const MiddleCommentText = styled<IStyleProps, 'blockquote'>('blockquote')`
-  
+  font-weight: bold;
 `;
 
 

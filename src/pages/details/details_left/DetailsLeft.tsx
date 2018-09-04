@@ -33,6 +33,7 @@ export interface IDetailsLeftProps {
   commentInputValue: string | '';
   onSendComment: (
     e: React.MouseEvent,
+    inputRef: any,
   ) => void;
   onCommentInputChange: (
     changedFields: any,
