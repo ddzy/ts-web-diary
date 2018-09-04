@@ -112,10 +112,21 @@ const CommentsSchema = new Schema({
   },
 });
 
+const ReplySchema = new Schema({
+  comment: {
+    type: Schema.Types.ObjectId,
+    ref: 'Comments',
+  },
+  replyValue: {
+    type: String,       // 评论回复
+  },
+});
+
 
 const User = mongoose.model('User', UserSchema, 'User');
 const Posts = mongoose.model('Post', PostsSchema, 'Post');
 const Comments = mongoose.model('Comments', CommentsSchema, 'Comments');
+const Reply = mongoose.model('Reply', ReplySchema, 'Reply');
 
 
 

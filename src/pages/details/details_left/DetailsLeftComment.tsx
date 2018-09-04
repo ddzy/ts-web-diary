@@ -57,6 +57,28 @@ class DetailsLeftComment extends React.PureComponent<
   public readonly state = {}
 
 
+  //// 处理切换ReplyBox
+  public handleToggleReply = (
+    e: React.MouseEvent,
+  ) => {
+    const oReplys = document
+      .querySelectorAll('.comment-reply-box') as NodeListOf<any>;
+
+    const oReplyNode = Array
+      .from(oReplys)
+      .find((item) => {
+        return item.getAttribute('data-id') === e.currentTarget.getAttribute('data-id'); 
+      });
+
+    // 切换    BUG: 加类名×
+    e.currentTarget.classList.toggle('comment-reply-icon-active');
+    oReplyNode.style.display = oReplyNode.style.display 
+      === 'none'
+      ? 'block'
+      : 'none';
+  }
+
+
   //// 初始化评论列表
   public initCommentListItem = (
 
@@ -70,6 +92,7 @@ class DetailsLeftComment extends React.PureComponent<
           <React.Fragment key={item._id}>
             <CommentListItem
               {...item}
+              onToggleReply={this.handleToggleReply}
             />
             <Divider />
           </React.Fragment>

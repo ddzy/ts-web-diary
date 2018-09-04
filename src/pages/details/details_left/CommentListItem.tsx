@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Avatar, Divider, Icon } from 'antd';
+import { Avatar, Divider, Icon, Form ,Input, Button } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 
 import {
   CommentShowListItem,
@@ -11,11 +12,13 @@ import {
   ItemReplyContent,
   ReplyList,
   ReplyListItem,
+  ReplyInput,
 } from '../style';
 import { formatTime } from '../../../utils/utils';
 
 
-export interface ICommentListItemProps {
+
+export interface ICommentListItemProps extends FormComponentProps {
   _id: string;            // 评论id
   whom: {                 // 评论人信息
     _id: string,            
@@ -25,6 +28,10 @@ export interface ICommentListItemProps {
   article: string;        // 当前文章id
   commentValue: string;   // 评论内容
   create_time: number;    // 评论时间
+
+  onToggleReply: (        // 切换reply显示隐藏
+    e: React.MouseEvent,
+  ) => void;      
 };
 interface ICommentListItemState {
   
@@ -43,6 +50,8 @@ class CommentlistItem extends React.PureComponent<
 
 
   public render(): JSX.Element {
+    const { getFieldDecorator } = this.props.form;
+
     return (
       <CommentShowListItem>
 
@@ -75,14 +84,24 @@ class CommentlistItem extends React.PureComponent<
           <Icon type="like-o" />
           <Divider type="vertical" />
 
-          <Icon type="message" />
+          <Icon
+            data-id={this.props._id} 
+            type="message" 
+            onClick={this.props.onToggleReply}  
+          />
           <Divider type="vertical" />
 
           <span>{formatTime(this.props.create_time)}</span>
         </ItemBottomBox>
 
         {/* 回复框 */}
-        <ItemReplyBox>
+        <ItemReplyBox 
+          className="comment-reply-box"
+          data-id={this.props._id}
+          style={{
+            display: 'none',
+          }}
+        >
           <ItemReplyContent>
             <ReplyList>
               <ReplyListItem>
@@ -122,6 +141,26 @@ class CommentlistItem extends React.PureComponent<
                 }}
               />
             </ReplyList>
+
+            {/* 回复输入框 */}
+            <ReplyInput>
+              <Form>
+                <Form.Item>
+                  {getFieldDecorator('reply_input', {
+                    rules: [{ required: true, message: '评论不能为空!' }],
+                  })(
+                    <Input 
+                      addonAfter={
+                        <Button
+                          htmlType="button"
+
+                        >回复</Button>
+                      }
+                    />
+                  )}
+                </Form.Item>
+              </Form>
+            </ReplyInput>
           </ItemReplyContent>
         </ItemReplyBox>
 
@@ -132,4 +171,6 @@ class CommentlistItem extends React.PureComponent<
 }
 
 
-export default CommentlistItem;
+export default Form.create({
+  
+})(CommentlistItem) as React.ComponentClass<any>;

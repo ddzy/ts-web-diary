@@ -156,3 +156,11 @@ table {
 	color: #666;
 }
 
+
+/* 展示隐藏回复框 & 切换message icon */
+.comment-reply-icon-active {
+	color: #1890ff;
+}
+
+
+
