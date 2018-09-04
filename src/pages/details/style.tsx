@@ -28,7 +28,7 @@ export const DetailsLeftWrapper = styled<IStyleProps, 'div'>('div')`
 
 // 左边标题
 export const LeftTitleContainer = styled<IStyleProps, 'div'>('div')`
-
+  padding: 10px 0 0 50px;
 `;
 
 export const LeftTitleBox = styled<IStyleProps, 'div'>('div')`
@@ -66,7 +66,7 @@ export const LeftInfoListItem = styled<IStyleProps, 'li'>('li')`
 
 // 左边内容
 export const LeftContentContainer = styled<IStyleProps, 'div'>('div')`
-
+  
 `;
 
 export const LeftContent = styled<IStyleProps, 'div'>('div')`
@@ -77,7 +77,9 @@ export const LeftContent = styled<IStyleProps, 'div'>('div')`
 
 // 左边评论
 export const LeftCommentContainer = styled<IStyleProps, 'div'>('div')`
+  margin-top: 10px;
   padding: 0 120px 20px 50px;
+  background-color: #fff;
 `;
 
 
@@ -149,8 +151,10 @@ export const ItemBottomBox = styled<IStyleProps, 'div'>('div')`
 
 //// 右边文章侧边栏区域
 export const DetailsRightWrapper = styled<IStyleProps, 'div'>('div')`
+  margin-left: 20px;
   padding: 20px 10px;
-  background-color: #f2f2f2;
+  // background-color: #f2f2f2;
+  background-color: #fff;
 `;
 
 export const RightMain = styled<IStyleProps, 'div'>('div')`
