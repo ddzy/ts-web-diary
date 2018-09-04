@@ -43,6 +43,7 @@ export interface IDetailsProps {
   reduxHandleSendReply: (
     commentid: string,
     commentValue: string,
+    articleid: string,
     callback?: () => void,
   ) => void;
 
@@ -167,6 +168,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       : this.props.reduxHandleSendReply(
           commentid,
           this.state.replyInputValue.value,
+          this.props.match.params.id,
           () => {
             // 清空输入框
             inputRef.input.value = '';

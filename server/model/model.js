@@ -113,6 +113,14 @@ const CommentsSchema = new Schema({
 });
 
 const ReplySchema = new Schema({
+  whom: {           // 回复人
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  article: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
+  },
   comment: {
     type: Schema.Types.ObjectId,
     ref: 'Comments',

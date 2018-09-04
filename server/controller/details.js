@@ -155,25 +155,61 @@ details.post('/comment', async (ctx, next) => {
 //// 文章详情 => 发表回复
 details.post('/reply', async (ctx, next) => {
   
-  const { commentid, replyValue } = ctx.request.body;
+  const { 
+    commentid, 
+    replyValue, 
+    articleid,
+    userid,
+  } = ctx.request.body;
 
   // 存储回复
   const result = await Replys
     .create({
       comment: changeId(commentid),
+      article: changeId(articleid),
+      whom: changeId(userid),
       replyValue,
       create_time: new Date().getTime(),
     });
 
-  const final = await result
+  const replyInfo = await Replys
+    .findById(
+      changeId(result._id),
+      { '__v': 0 },
+    )
     .populate({
       path: 'comment',
+      select: ['_id', 'commentValue'],
+    })
+    .populate({
+      path: 'whom',
+      select: ['_id', 'username', 'useravatar'],
     });
+
+
+    // comment: {
+    //   ...commentInfo._doc,
+    //   whom: {
+    //     ...commentInfo._doc.whom._doc,
+    //     useravatar: formatPath(
+    //       commentInfo._doc.whom._doc.useravatar,
+    //     ),
+    //   },
+    // },
+
 
   ctx.body = {
     code: 0,
     message: 'Success!',
-    final,
+    reply: {
+      ...replyInfo._doc,
+      whom: {
+        ...replyInfo._doc.whom._doc,
+        useravatar: formatPath(
+          replyInfo._doc.whom._doc.useravatar,
+        ),
+      },
+    },
   };
 
 });

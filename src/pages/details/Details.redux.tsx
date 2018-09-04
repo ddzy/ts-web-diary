@@ -172,6 +172,7 @@ export function reduxHandleSendComment(
 export function reduxHandleSendReply(
   commentid: string,
   replyValue: string,
+  articleid: string,
   callback: () => void,
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
@@ -182,10 +183,11 @@ export function reduxHandleSendReply(
       data: {
         commentid,
         replyValue,
+        articleid,
+        userid: localStorage.getItem('userid'),
       },
     }).then((res) => {
-      console.log(res);
-
+      dispatch(saveReplysList(res));
       callback();
     });
   };
