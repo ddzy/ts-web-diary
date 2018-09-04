@@ -78,16 +78,20 @@ export const LeftContent = styled<IStyleProps, 'div'>('div')`
 // 左边评论
 export const LeftCommentContainer = styled<IStyleProps, 'div'>('div')`
   margin-top: 10px;
-  padding: 0 120px 20px 50px;
+  // padding: 0 120px 20px 50px;
+  padding: 0 100px 20px;
   background-color: #fff;
 `;
 
 
 export const CommentTipBox = styled<IStyleProps, 'div'>('div')`
+  padding-top: 40px;
+  background-color: #f7f8f9;
   text-align: center;
 `;
 
 export const TipText = styled<IStyleProps, 'h3'>('h3')`
+  margin-bottom: auto;
   font-size: 20px;
   color: #999;
 `;
@@ -96,6 +100,7 @@ export const TipText = styled<IStyleProps, 'h3'>('h3')`
 
 export const CommentInputBox = styled<IStyleProps, 'div'>('div')`
   padding: 0 30px;
+  background-color: #f7f8f9;
 `;
 
 export const InputTop = styled<IStyleProps, 'div'>('div')`
@@ -133,17 +138,46 @@ export const ItemTopBox = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const ItemMiddleBox = styled<IStyleProps, 'div'>('div')`
-  padding: 5px 48px 0;
+  padding: 0 48px;
 `;
 
 export const MiddleCommentText = styled<IStyleProps, 'blockquote'>('blockquote')`
   font-weight: bold;
 `;
 
-
 export const ItemBottomBox = styled<IStyleProps, 'div'>('div')`
   padding: 0 48px;
   color: #999;
+`;
+
+// 回复
+export const ItemReplyBox = styled<IStyleProps, 'div'>('div')`
+  position: relative;
+  height: 200px;
+  margin-top: 10px;
+  padding: 0 48px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 77px;
+    top: -16px;
+    border 8px solid transparent;
+    border-bottom: 8px solid #eaeaea;
+  }
+`;
+
+export const ItemReplyContent = styled<IStyleProps, 'div'>('div')`
+  height: 100%;
+  border: 1px solid #eaeaea;
+`;
+
+export const ReplyList = styled<IStyleProps, 'ul'>('ul')`
+  padding: 20px 40px 20px 10px;
+`;
+
+export const ReplyListItem = styled<IStyleProps, 'li'>('li')`
+
 `;
 
 

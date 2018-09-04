@@ -7,6 +7,10 @@ import {
   ItemMiddleBox,
   MiddleCommentText,
   ItemBottomBox,
+  ItemReplyBox,
+  ItemReplyContent,
+  ReplyList,
+  ReplyListItem,
 } from '../style';
 import { formatTime } from '../../../utils/utils';
 
@@ -22,7 +26,9 @@ export interface ICommentListItemProps {
   commentValue: string;   // 评论内容
   create_time: number;    // 评论时间
 };
-interface ICommentListItemState {};
+interface ICommentListItemState {
+  
+};
 
 
 /**
@@ -74,6 +80,50 @@ class CommentlistItem extends React.PureComponent<
 
           <span>{formatTime(this.props.create_time)}</span>
         </ItemBottomBox>
+
+        {/* 回复框 */}
+        <ItemReplyBox>
+          <ItemReplyContent>
+            <ReplyList>
+              <ReplyListItem>
+                {/* 回复用户信息框 */}
+                <ItemTopBox>
+                  <Avatar
+                    icon="user"
+                    size="default"
+                    shape="circle"
+                    alt="回复者"
+                  />
+                  <Divider type="vertical" />
+                  <span
+                    style={{
+                      color: '#999',
+                    }}
+                  >回复者</span>
+                  <Divider type="vertical" />
+                  <span
+                    style={{
+                      color: '#999',
+                    }}
+                  >10 分钟前</span>
+                </ItemTopBox>
+                
+                {/* 回复内容框 */}
+                <ItemMiddleBox>
+                  <MiddleCommentText>
+                    这是评论的回复测试内容
+                  </MiddleCommentText>
+                </ItemMiddleBox>
+  
+              </ReplyListItem>
+              <Divider
+                style={{
+                  margin: '0',
+                }}
+              />
+            </ReplyList>
+          </ItemReplyContent>
+        </ItemReplyBox>
 
       </CommentShowListItem>
     );

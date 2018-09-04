@@ -1,15 +1,8 @@
+
+
 /**
- * 颜色数组
+ * 标签 
  */
-// export const COLOR_PICKER: object = [
-//   // 'magenta', 'red', 'volcano',
-//   // 'orange', 'gold', 'lime',
-//   // 'green', 'cyan', 'blue', 
-//   // 'geekblue', 'purple',
-//   JavaScript: 'magenta',
-
-// ];
-
 export const TAG_COLOR_PICKER: object = {
   JavaScript: 'magenta',
   CSS: 'red',
