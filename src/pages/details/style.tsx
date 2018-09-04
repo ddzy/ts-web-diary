@@ -181,7 +181,8 @@ export const ReplyListItem = styled<IStyleProps, 'li'>('li')`
 `;
 
 export const ReplyInput = styled<IStyleProps, 'div'>('div')`
-
+  padding: 0 40px;
+  padding-top: 23px;
 `;
 
 

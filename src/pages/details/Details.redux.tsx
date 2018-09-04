@@ -15,6 +15,7 @@ export interface IInitialState {
     type: string,
     watchCount: number,
     comments: any[],        // 文章评论
+    replys: any[],          // 评论回复
   },
 };
 
@@ -34,12 +35,15 @@ const initialState: IInitialState = {
     watchCount: 0,
 
     comments: [],
+    replys: [],
   },
 };
 
 
 export const SAVE_DETAILS_INFO = 'SAVE_DETAILS_INFO' as string;
 export const SAVE_COMMENTS_LIST = 'SAVE_COMMENTS_LIST' as string;
+export const SAVE_REPLYS_LIST = 'SAVE_REPLYS_LIST' as string;
+
 
 
 export function saveDetailsInfo(
@@ -59,6 +63,16 @@ export function saveCommentsList(
     payload: data,
   };
 }
+
+export function saveReplysList(
+  data: any
+): { type: string, payload: any } {
+  return {
+    type: SAVE_REPLYS_LIST,
+    payload: data,
+  };
+}
+
 
 
 export function DetailsReducer(
@@ -85,6 +99,18 @@ export function DetailsReducer(
             action.payload.comment,
             ...state.detailsInfo.comments,
           ]
+        },
+      };
+    }
+    case SAVE_REPLYS_LIST: {
+      return {
+        ...state,
+        detailsInfo: {
+          ...state.detailsInfo,
+          replys: [
+            action.payload.reply,
+            ...state.detailsInfo.replys,
+          ],
         },
       };
     }
@@ -141,3 +167,15 @@ export function reduxHandleSendComment(
   };
 }
 
+
+//// 发表回复
+export function reduxHandleSendReply(
+  commentid: string,
+  replyValue: string,
+  callback: () => void,
+) {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
+    console.log(commentid);
+    console.log(replyValue);
+  };
+}

@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { Avatar, Divider, Icon, Form ,Input, Button } from 'antd';
+import { 
+  Avatar, 
+  Divider, 
+  Icon, 
+  Form ,
+  Input, 
+  Button,
+  Row,
+  Col, 
+} from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
 import {
@@ -29,9 +38,19 @@ export interface ICommentListItemProps extends FormComponentProps {
   commentValue: string;   // 评论内容
   create_time: number;    // 评论时间
 
-  onToggleReply: (        // 切换reply显示隐藏
+  onToggleReply: (        // 切换reply框显示隐藏
     e: React.MouseEvent,
-  ) => void;      
+  ) => void;
+
+  replyInputValue: string | '';     // 回复值
+  onReplyInputChange: (   // 处理回复输入框
+    changedFields: any,
+  ) => void;
+  onSendReply: (          // 处理回复提交      
+    e: React.MouseEvent,
+    inputRef: any,
+    commentid: string,
+  ) => void;  
 };
 interface ICommentListItemState {
   
@@ -46,7 +65,15 @@ class CommentlistItem extends React.PureComponent<
   ICommentListItemState
 > {
 
+  public inputRef = null
+
   public readonly state = {}
+
+
+  //// 获取ref
+  public handleSetInputRef = (el: any): void => {
+    this.inputRef = el;
+  }
 
 
   public render(): JSX.Element {
@@ -145,20 +172,35 @@ class CommentlistItem extends React.PureComponent<
             {/* 回复输入框 */}
             <ReplyInput>
               <Form>
-                <Form.Item>
-                  {getFieldDecorator('reply_input', {
-                    rules: [{ required: true, message: '评论不能为空!' }],
-                  })(
-                    <Input 
-                      addonAfter={
+                <Row>
+                  <Col span={20}>
+                    <Form.Item>
+                      {getFieldDecorator('reply_input', {
+                        rules: [{ required: true, message: '评论不能为空!' }],
+                      })(
+                        <Input
+                          placeholder="在这里回复..."
+                          ref={(el: any) => this.handleSetInputRef(el)}
+                        />
+                      )}
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                      <Form.Item>
                         <Button
                           htmlType="button"
-
+                          type="primary"
+                          onClick={(
+                            e: React.MouseEvent
+                          ) => this.props.onSendReply(
+                            e,
+                            this.inputRef,
+                            this.props._id,
+                          )}
                         >回复</Button>
-                      }
-                    />
-                  )}
-                </Form.Item>
+                      </Form.Item>
+                  </Col>
+                </Row>
               </Form>
             </ReplyInput>
           </ItemReplyContent>
@@ -172,5 +214,16 @@ class CommentlistItem extends React.PureComponent<
 
 
 export default Form.create({
-  
+  onFieldsChange(props: any, changedFields) {
+    props.onReplyInputChange(changedFields);
+  },
+
+  mapPropsToFields(props) {
+    return {
+      reply_input: Form.createFormField({
+        ...props.replyInputValue,
+        value: props.replyInputValue.value || '',
+      }),
+    };
+  },
 })(CommentlistItem) as React.ComponentClass<any>;

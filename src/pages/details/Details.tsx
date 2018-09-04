@@ -15,6 +15,7 @@ import DetailsRight from './details_right/DetailsRight';
 import { 
   getOneArticleInfo, 
   reduxHandleSendComment, 
+  reduxHandleSendReply,
 } from './Details.redux';
 import { getWindowWH } from '../../utils/utils';
 import {
@@ -39,6 +40,11 @@ export interface IDetailsProps {
     commentValue: string,
     callback?: () => void,
   ) => void;
+  reduxHandleSendReply: (
+    commentid: string,
+    commentValue: string,
+    callback?: () => void,
+  ) => void;
 
   AuthRouteReducer: { useravatar: string, };
 };
@@ -48,6 +54,9 @@ interface IDetailsState {
   loadingWrapperHeight: number;   // loading高
   commentInputValue: {                   // 评论输入框
     value: string | '',                 
+  },
+  replyInputValue: {
+    value: string | '',           // 回复输入框
   },
 };
 
@@ -63,6 +72,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     loadingWrapperWidth: 0,
     loadingWrapperHeight: 0,
     commentInputValue: {
+      value: '',
+    },
+    replyInputValue: {
       value: '',
     },
   }
@@ -109,7 +121,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   public handleSendComment = (
     e: React.MouseEvent,
     inputRef: any,
-  ) => {
+  ): void => {
     this.state.commentInputValue.value
       ? this.props.reduxHandleSendComment(
           this.props.match.params.id,
@@ -130,6 +142,28 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
+  //// 处理回复输入
+  public handleReplyInputChange = (changedFields: any): void => {
+    this.setState({
+      replyInputValue: {
+        value: changedFields.reply_input.value,
+      },
+    });
+  }
+
+
+  //// 处理回复提交
+  public handleSendReply = (
+    e: React.MouseEvent,
+    inputRef: any,
+    commentid: string,
+  ): void => {
+    inputRef.input.value = '';
+
+    console.log(commentid);
+  }
+
+
   public render(): JSX.Element {
 
     return (
@@ -146,6 +180,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                   onCommentInputChange={this.handleCommentInputChange}
                   onSendComment={this.handleSendComment}
                   commentInputValue={this.state.commentInputValue}
+                  onReplyInputChange={this.handleReplyInputChange}
+                  onSendReply={this.handleSendReply}
+                  replyInputValue={this.state.replyInputValue}
                 />
               </Col>
               <Col span={6}>
@@ -201,6 +238,7 @@ function mapDispatchToProps() {
   return {
     getOneArticleInfo,
     reduxHandleSendComment,
+    reduxHandleSendReply,
   };
 }
 

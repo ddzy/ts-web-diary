@@ -30,6 +30,8 @@ export interface IDetailsLeftProps {
   type: string;
   comments: any[];
 
+  useravatar: string;
+
   commentInputValue: string | '';
   onSendComment: (
     e: React.MouseEvent,
@@ -39,7 +41,15 @@ export interface IDetailsLeftProps {
     changedFields: any,
   ) => void;
 
-  useravatar: string;
+  replyInputValue: string | '';
+  onReplyInputChange: (
+    changedFields: any,
+  ) => void;
+  onSendReply: (
+    e: React.MouseEvent,
+    inputRef: any,
+    commentid: string,
+  ) => void;
 };
 interface IDetailsLeftState {};
 
@@ -126,6 +136,10 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
           onSendComment={this.props.onSendComment}
           onCommentInputChange={this.props.onCommentInputChange}
           commentInputValue={this.props.commentInputValue}
+
+          onReplyInputChange={this.props.onReplyInputChange}
+          onSendReply={this.props.onSendReply}
+          replyInputValue={this.props.replyInputValue}
         />
       </DetailsLeftWrapper>
     );

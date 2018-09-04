@@ -40,6 +40,16 @@ export interface IDetailsLeftCommentProps extends FormComponentProps {
   onCommentInputChange: (
     changedFields: any,
   ) => void;
+
+  replyInputValue: string | '';
+  onReplyInputChange: (
+    changedFields: any,
+  ) => void;
+  onSendReply: (
+    e: React.MouseEvent,
+    inputRef: any,
+    commentid: string,
+  ) => void;
 };
 interface IDetailLeftCommentState { };
 
@@ -93,6 +103,9 @@ class DetailsLeftComment extends React.PureComponent<
             <CommentListItem
               {...item}
               onToggleReply={this.handleToggleReply}
+              onReplyInputChange={this.props.onReplyInputChange}
+              onSendReply={this.props.onSendReply}
+              replyInputValue={this.props.replyInputValue}
             />
             <Divider />
           </React.Fragment>
