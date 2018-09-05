@@ -14,8 +14,7 @@ export interface IInitialState {
     tag: string,
     type: string,
     watchCount: number,
-    comments: any[],        // 文章评论
-    replys: any[],          // 评论回复
+    comments: any[],      // 评论信息
   },
 };
 
@@ -35,7 +34,6 @@ const initialState: IInitialState = {
     watchCount: 0,
 
     comments: [],
-    replys: [],
   },
 };
 
@@ -107,10 +105,13 @@ export function DetailsReducer(
         ...state,
         detailsInfo: {
           ...state.detailsInfo,
-          replys: [
-            action.payload.reply,
-            ...state.detailsInfo.replys,
-          ],
+          // comments: [
+          //   action.payload.reply,
+          //   ...state.detailsInfo.comments,
+          // ],
+          // comments: state.detailsInfo.comments.map((item) => {
+
+          // }),
         },
       };
     }
@@ -133,6 +134,7 @@ export function getOneArticleInfo(
       url: '/details',  
       data: {
         articleid,
+        userid: localStorage.getItem('userid'),
       },
       jsonp: false,
     }).then((res) => {
@@ -161,7 +163,8 @@ export function reduxHandleSendComment(
       },
     })
       .then((res) => {
-        dispatch(saveCommentsList(res));
+        console.log(res);
+        // dispatch(saveCommentsList(res));
         callback && callback();
       });
   };
@@ -187,7 +190,8 @@ export function reduxHandleSendReply(
         userid: localStorage.getItem('userid'),
       },
     }).then((res) => {
-      dispatch(saveReplysList(res));
+      console.log(res);
+      // dispatch(saveReplysList(res));
       callback();
     });
   };

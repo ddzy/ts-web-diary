@@ -42,6 +42,7 @@ write.post('/insert', async (ctx, next) => {
 
   const getUser = await User.findById(changeId(body.userid));
 
+  // 存储文章
   const saveArticle = await Posts.create({
     author: getUser._id,
     title: body.editTitle,
@@ -53,6 +54,14 @@ write.post('/insert', async (ctx, next) => {
     img: body.article_title_image,
     create_time: new Date().getTime(),
   });
+
+  // 同步到User
+  const saveToUser = await User
+    .findByIdAndUpdate(
+      changeId(body.userid),
+      { '$push': { articles: saveArticle } },
+      { new: true },
+    )
   
   ctx.body = {
     code: 0,

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { 
-  Avatar, 
-  Divider, 
-  Icon, 
-  Form ,
-  Input, 
+import {
+  Avatar,
+  Divider,
+  Icon,
+  Form,
+  Input,
   Button,
   Row,
-  Col, 
+  Col,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
@@ -23,24 +23,28 @@ import {
   ReplyListItem,
   ReplyInput,
 } from '../style';
-import { formatTime } from '../../../utils/utils';
+import { formatTime, isArray } from '../../../utils/utils';
 
 
 
 export interface ICommentListItemProps extends FormComponentProps {
   _id: string;            // 评论id
   whom: {                 // 评论人信息
-    _id: string,            
+    _id: string,
     username: string,
-    useravatar: string, 
+    useravatar: string,
   };
   article: string;        // 当前文章id
   commentValue: string;   // 评论内容
   create_time: number;    // 评论时间
 
+  replys: any[];          // 回复信息列表
+
+
   onToggleReply: (        // 切换reply框显示隐藏
     e: React.MouseEvent,
   ) => void;
+
 
   replyInputValue: string | '';     // 回复值
   onReplyInputChange: (   // 处理回复输入框
@@ -50,22 +54,21 @@ export interface ICommentListItemProps extends FormComponentProps {
     e: React.MouseEvent,
     inputRef: any,
     commentid: string,
-  ) => void;  
+  ) => void;
 };
-interface ICommentListItemState {
-  
-};
+interface ICommentListItemState { };
 
 
 /**
  * 评论列表 单个评论
  */
 class CommentlistItem extends React.PureComponent<
-  ICommentListItemProps, 
+  ICommentListItemProps,
   ICommentListItemState
-> {
+  > {
 
   public inputRef = null
+
 
   public readonly state = {}
 
@@ -76,8 +79,63 @@ class CommentlistItem extends React.PureComponent<
   }
 
 
+  //// 初始化回复列表
+  public handleInitReplysList = (): JSX.Element[] => {
+    const { replys } = this.props;
+
+    return isArray(replys) 
+      && replys.length !== 0
+      ? replys.map((item) => (
+          <React.Fragment
+            key={item._id}
+          >
+            <ReplyListItem>
+              {/* 回复用户信息框 */}
+              <ItemTopBox>
+                <Avatar
+                  icon="user"
+                  size="small"
+                  shape="circle"
+                  alt="回复者"
+                  src={item.whom.useravatar}
+                />
+                <Divider type="vertical" />
+                <span
+                  style={{
+                    color: '#999',
+                  }}
+                >{item.whom.username}</span>
+                <Divider type="vertical" />
+                <span
+                  style={{
+                    color: '#999',
+                  }}
+                >{formatTime(item.create_time)}</span>
+              </ItemTopBox>
+
+              {/* 回复内容框 */}
+              <ItemMiddleBox>
+                <MiddleCommentText>
+                  {item.replyValue}
+                      </MiddleCommentText>
+              </ItemMiddleBox>
+
+            </ReplyListItem>
+            <Divider
+              style={{
+                margin: '0',
+              }}
+            />
+          </React.Fragment>
+        ))
+      : []
+  }
+
+
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
+
+    console.log(this.props.replys);
 
     return (
       <CommentShowListItem>
@@ -85,7 +143,7 @@ class CommentlistItem extends React.PureComponent<
         {/* 评论用户信息框 */}
         <ItemTopBox>
           <Avatar
-            src={this.props.whom.useravatar} 
+            src={this.props.whom.useravatar}
             icon="user"
             size="default"
             shape="circle"
@@ -112,9 +170,9 @@ class CommentlistItem extends React.PureComponent<
           <Divider type="vertical" />
 
           <Icon
-            data-id={this.props._id} 
-            type="message" 
-            onClick={this.props.onToggleReply}  
+            data-id={this.props._id}
+            type="message"
+            onClick={this.props.onToggleReply}
           />
           <Divider type="vertical" />
 
@@ -122,7 +180,7 @@ class CommentlistItem extends React.PureComponent<
         </ItemBottomBox>
 
         {/* 回复框 */}
-        <ItemReplyBox 
+        <ItemReplyBox
           className="comment-reply-box"
           data-id={this.props._id}
           style={{
@@ -130,43 +188,9 @@ class CommentlistItem extends React.PureComponent<
           }}
         >
           <ItemReplyContent>
+            {/* 回复展示框 */}
             <ReplyList>
-              <ReplyListItem>
-                {/* 回复用户信息框 */}
-                <ItemTopBox>
-                  <Avatar
-                    icon="user"
-                    size="default"
-                    shape="circle"
-                    alt="回复者"
-                  />
-                  <Divider type="vertical" />
-                  <span
-                    style={{
-                      color: '#999',
-                    }}
-                  >回复者</span>
-                  <Divider type="vertical" />
-                  <span
-                    style={{
-                      color: '#999',
-                    }}
-                  >10 分钟前</span>
-                </ItemTopBox>
-                
-                {/* 回复内容框 */}
-                <ItemMiddleBox>
-                  <MiddleCommentText>
-                    这是评论的回复测试内容
-                  </MiddleCommentText>
-                </ItemMiddleBox>
-  
-              </ReplyListItem>
-              <Divider
-                style={{
-                  margin: '0',
-                }}
-              />
+              {this.handleInitReplysList()}
             </ReplyList>
 
             {/* 回复输入框 */}
@@ -186,19 +210,19 @@ class CommentlistItem extends React.PureComponent<
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                      <Form.Item>
-                        <Button
-                          htmlType="button"
-                          type="primary"
-                          onClick={(
-                            e: React.MouseEvent
-                          ) => this.props.onSendReply(
-                            e,
-                            this.inputRef,
-                            this.props._id,
-                          )}
-                        >回复</Button>
-                      </Form.Item>
+                    <Form.Item>
+                      <Button
+                        htmlType="button"
+                        type="primary"
+                        onClick={(
+                          e: React.MouseEvent
+                        ) => this.props.onSendReply(
+                          e,
+                          this.inputRef,
+                          this.props._id,
+                        )}
+                      >回复</Button>
+                    </Form.Item>
                   </Col>
                 </Row>
               </Form>

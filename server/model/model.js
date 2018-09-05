@@ -14,9 +14,14 @@ const Schema = mongoose.Schema;
  * User: 用户
  * Posts: 文章
  * Comments: 评论
+ * Reply: 回复
  */
 
 const UserSchema = new Schema({
+  articles: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
+  }],
   username: {
     type: String,
     require: true,
@@ -46,6 +51,10 @@ const PostsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comments',
+  }],
   create_time: {
     type: Number,
     default: new Date().getTime(),
@@ -110,6 +119,10 @@ const CommentsSchema = new Schema({
   commentValue: {
     type: String,
   },
+  replys: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Replys',
+  }],
 });
 
 const ReplySchema = new Schema({

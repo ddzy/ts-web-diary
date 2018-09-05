@@ -138,7 +138,7 @@ export const ItemTopBox = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const ItemMiddleBox = styled<IStyleProps, 'div'>('div')`
-  padding: 0 48px;
+  padding: 0 44px;
 `;
 
 export const MiddleCommentText = styled<IStyleProps, 'blockquote'>('blockquote')`

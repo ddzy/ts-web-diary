@@ -1,7 +1,8 @@
 const koa = require('koa');
 const Router = require('koa-router');
 
-const { 
+const {
+  User, 
   Posts, 
   changeId, 
   Comments, 
@@ -15,7 +16,7 @@ const details = new Router();
 //// 文章详情页 => 获取信息
 details.get('/', async (ctx, next) => {
   
-  const { articleid } = ctx.request.query;
+  const { articleid, userid } = ctx.request.query;
 
   const setWatch = await Posts
     .findById(changeId(articleid));
@@ -29,21 +30,27 @@ details.get('/', async (ctx, next) => {
     )
     .populate('author', '_id username useravatar');
 
+
   // 统计作者文章总数
-  const articleCount = await Posts
-    .find({ author: result.author._id })
-    .populate('author')
-    .countDocuments();
+  const articleCount = (await User
+    .findById(changeId(userid))
+    .populate('articles'))
+    .articles
+    .length;
+
+
 
   const watchArr = await Posts
     .find({ author: result.author._id })
     .populate('author', 'username');
   
-  // 统计作者文章阅读数量
+
+  // 统计作者文章总阅读数量
   const watchCount = await watchArr
     .reduce((total, current) => {
       return total + current.watch;
     }, 0);
+
 
   // 统计最新文章
   const getArticles = await Posts
@@ -59,49 +66,87 @@ details.get('/', async (ctx, next) => {
       };
     });
 
-  // 获取评论数据
-  let commentsList = await Comments
-    .find({ article: articleid })
-    .sort({ create_time: '-1' }) 
+
+  // 获取评论信息
+  const updateCommentsList = await Posts
+    .findById(
+      changeId(articleid),
+      { '__v': 0 },
+      { lean: true },
+    )
     .populate({
-      path: 'article',
-      select: ['_id'],
+      path: 'comments',
+      populate: {
+        path: 'replys',
+        populate: {
+          path: 'whom',
+          select: ['username', 'useravatar', '_id'],
+        },
+      },
+      options: {
+        sort: { create_time: -1 },
+      },
     })
     .populate({
-      path: 'whom',
-      select: ['_id', 'useravatar', 'username'],
-    })    
-
-  commentsList = await commentsList.map((item) => {
-    return {
-      ...item._doc,
-      whom: {
-        ...item._doc.whom._doc,
-        useravatar: formatPath(
-          item._doc.whom._doc.useravatar,
-        ),
+      path: 'comments',
+      populate: {
+        path: 'whom',
+        select: ['_id', 'username', 'useravatar'],
       },
-    };
-  });
+      options: {
+        sort: { create_time: -1 }
+      },
+    })
+    .populate({
+      path: 'author',
+      select: ['_id', 'username', 'useravatar']
+    });
+
+  // 格式化图片路径
+  const setComments = updateCommentsList.comments
+    .map((item) => {
+      return {
+        ...item,
+        whom: {
+          ...item.whom,
+          useravatar: formatPath(
+            item.whom.useravatar,
+          )
+        },
+        replys: item.replys.map((reply) => {
+          return {
+            ...reply,
+            whom: {
+              ...reply.whom,
+              useravatar: formatPath(
+                reply.whom.useravatar,
+              ),
+            },
+          };
+        }),
+      };
+    });
 
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     result: {
-      author: result.author.username,
-      authorAvatar: formatPath(result.author.useravatar),
+      author: updateCommentsList.author.username,
+      authorAvatar: formatPath(
+        updateCommentsList.author.useravatar
+      ),
       watchCount,
       articleCount,
       newArticle,
-      articleTitle: result.title,
-      mode: result.mode,
-      type: result.type,
-      tag: result.tag,
-      create_time: result.create_time,
-      articleContent: result.content,
-      comments: commentsList,
-    },    
+      articleTitle: updateCommentsList.title,
+      mode: updateCommentsList.mode,
+      type: updateCommentsList.type,
+      tag: updateCommentsList.tag,
+      create_time: updateCommentsList.create_time,
+      articleContent: updateCommentsList.content,
+      comments: setComments,
+    },
   };
 
 });
@@ -116,6 +161,7 @@ details.post('/comment', async (ctx, next) => {
     commentValue,
   } = ctx.request.body;
 
+  // 存储评论
   const result = await Comments
     .create({
       whom: userid,
@@ -123,6 +169,21 @@ details.post('/comment', async (ctx, next) => {
       commentValue,
       create_time: new Date().getTime(),
     });
+
+  // 同步到Posts
+  const saveToPosts = await Posts
+    .findByIdAndUpdate(
+      changeId(articleid),
+      { '$push': { comments: result } },
+      { new: true },
+    )
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'replys',
+      },
+    })
+
 
   const commentInfo = await Comments
     .findById(result._id, { '__v': 0 })
@@ -147,9 +208,11 @@ details.post('/comment', async (ctx, next) => {
         ),
       },
     },
+    saveToPosts,
   };
 
 });
+
 
 
 //// 文章详情 => 发表回复
@@ -162,7 +225,7 @@ details.post('/reply', async (ctx, next) => {
     userid,
   } = ctx.request.body;
 
-  // 存储回复
+  // 存储回复信息
   const result = await Replys
     .create({
       comment: changeId(commentid),
@@ -172,41 +235,43 @@ details.post('/reply', async (ctx, next) => {
       create_time: new Date().getTime(),
     });
 
+  // 同步到Comments
+  const saveToComments = await Comments
+    .findByIdAndUpdate(
+      changeId(commentid),
+      { '$push': { replys: result, } },
+      { new: true },
+    )
+    .populate({
+      path: 'replys',
+    });
+
+  // 获取回复信息
   const replyInfo = await Replys
     .findById(
       changeId(result._id),
       { '__v': 0 },
+      { lean: true },
     )
-    .populate({
-      path: 'comment',
-      select: ['_id', 'commentValue'],
-    })
+    // .populate({
+    //   path: 'comment',
+    //   select: ['_id', 'commentValue'],
+    // })
     .populate({
       path: 'whom',
       select: ['_id', 'username', 'useravatar'],
     });
 
-
-    // comment: {
-    //   ...commentInfo._doc,
-    //   whom: {
-    //     ...commentInfo._doc.whom._doc,
-    //     useravatar: formatPath(
-    //       commentInfo._doc.whom._doc.useravatar,
-    //     ),
-    //   },
-    // },
-
-
+    
   ctx.body = {
     code: 0,
     message: 'Success!',
     reply: {
-      ...replyInfo._doc,
+      ...replyInfo,
       whom: {
-        ...replyInfo._doc.whom._doc,
+        ...replyInfo.whom,
         useravatar: formatPath(
-          replyInfo._doc.whom._doc.useravatar,
+          replyInfo.whom.useravatar,
         ),
       },
     },
