@@ -153,10 +153,9 @@ export const ItemBottomBox = styled<IStyleProps, 'div'>('div')`
 // 回复
 export const ItemReplyBox = styled<IStyleProps, 'div'>('div')`
   position: relative;
-  height: 200px;
   margin-top: 10px;
   padding: 0 48px;
-
+  min-height: 200px;
   &::after {
     content: '';
     position: absolute;

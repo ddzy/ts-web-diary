@@ -135,8 +135,6 @@ class CommentlistItem extends React.PureComponent<
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
 
-    console.log(this.props.replys);
-
     return (
       <CommentShowListItem>
 
@@ -203,7 +201,9 @@ class CommentlistItem extends React.PureComponent<
                         rules: [{ required: true, message: '评论不能为空!' }],
                       })(
                         <Input
-                          placeholder="在这里回复..."
+                          placeholder={
+                            `回复 ${this.props.whom.username} 的评论...`
+                          }
                           ref={(el: any) => this.handleSetInputRef(el)}
                         />
                       )}

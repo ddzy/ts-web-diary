@@ -82,6 +82,9 @@ details.get('/', async (ctx, next) => {
           path: 'whom',
           select: ['username', 'useravatar', '_id'],
         },
+        options: {
+          sort: { create_time: -1 },
+        },
       },
       options: {
         sort: { create_time: -1 },
@@ -208,7 +211,6 @@ details.post('/comment', async (ctx, next) => {
         ),
       },
     },
-    saveToPosts,
   };
 
 });
@@ -262,7 +264,7 @@ details.post('/reply', async (ctx, next) => {
       select: ['_id', 'username', 'useravatar'],
     });
 
-    
+
   ctx.body = {
     code: 0,
     message: 'Success!',

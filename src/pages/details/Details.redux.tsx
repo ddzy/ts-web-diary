@@ -105,13 +105,20 @@ export function DetailsReducer(
         ...state,
         detailsInfo: {
           ...state.detailsInfo,
-          // comments: [
-          //   action.payload.reply,
-          //   ...state.detailsInfo.comments,
-          // ],
-          // comments: state.detailsInfo.comments.map((item) => {
-
-          // }),
+          comments: state.detailsInfo.comments.map((item) => {
+            if(
+              item._id === action.payload.reply.comment
+            ) {
+              return {
+                ...item,
+                replys: [
+                  action.payload.reply,
+                  ...item.replys,
+                ],
+              };
+            }
+            return item;
+          }),
         },
       };
     }
@@ -163,8 +170,7 @@ export function reduxHandleSendComment(
       },
     })
       .then((res) => {
-        console.log(res);
-        // dispatch(saveCommentsList(res));
+        dispatch(saveCommentsList(res));
         callback && callback();
       });
   };
@@ -190,8 +196,7 @@ export function reduxHandleSendReply(
         userid: localStorage.getItem('userid'),
       },
     }).then((res) => {
-      console.log(res);
-      // dispatch(saveReplysList(res));
+      dispatch(saveReplysList(res));
       callback();
     });
   };
