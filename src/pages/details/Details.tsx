@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import Header from '../../components/header/Header';
 import DetailsLeft from './details_left/DetailsLeft';
 import DetailsRight from './details_right/DetailsRight';
+import DetailsControl from './details_control/DetailsControl';
 import { 
   getOneArticleInfo, 
   reduxHandleSendComment, 
@@ -211,6 +212,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
             </Row>
           </DetailsContent>
         </DetailsWrapper>
+
+        {/* 左侧固钉控制栏 */}
+        <DetailsControl />
 
         {/* Loading */}
         <div

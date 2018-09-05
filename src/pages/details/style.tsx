@@ -14,7 +14,7 @@ export const DetailsWrapper = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const DetailsContent = styled<IStyleProps, 'div'>('div')`
-  width: 1100px;
+  width: 1000px;
   margin: 0 auto;
   padding-top: 20px;
 `;
@@ -278,4 +278,30 @@ export const NewArticleListItem = styled<IStyleProps, 'li'>('li')`
       color: #1890ff;
     }
   }
+`;
+
+
+
+//// 文章详情页 => 左侧固钉控制栏
+export const FixedControlContainer = styled<IStyleProps, 'div'>('div')`
+  position: fixed;
+  top: 100px;
+  left: 40px;
+  width: 40px;
+  background-color: #fff;
+`;
+
+export const FixedControlContent = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+export const FixedControlList = styled<IStyleProps, 'ul'>('ul')`
+
+`;
+
+export const FixedControlListItem = styled<IStyleProps, 'li'>('li')`
+  height: 40px;
+  margin-top: 10px;
+  background-color: #09c;
+  border-radius: 50%;
 `;

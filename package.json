@@ -24,7 +24,7 @@
     "@types/redux-persist": "^4.3.1",
     "@types/redux-thunk": "^2.1.0",
     "@types/slick-carousel": "^1.6.32",
-    "antd": "^3.8.2",
+    "antd": "^3.9.1",
     "axios": "^0.18.0",
     "jsonp": "^0.2.1",
     "jsonwebtoken": "^8.3.0",
