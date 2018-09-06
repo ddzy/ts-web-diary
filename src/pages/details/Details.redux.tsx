@@ -129,8 +129,11 @@ export function DetailsReducer(
 }
 
 
-
-//// 获取文章数据
+/**
+ * 获取文章数据
+ * @param articleid 文章id
+ * @param callback 回调函数
+ */
 export function getOneArticleInfo(
   articleid: string,
   callback: () => void,
@@ -152,7 +155,12 @@ export function getOneArticleInfo(
 }
 
 
-//// 发表评论
+/**
+ * 发表评论 
+ * @param articleid 文章id
+ * @param commentValue 评论内容
+ * @param callback 回调函数
+ */
 export function reduxHandleSendComment(
   articleid: string,
   commentValue: string,
@@ -177,7 +185,13 @@ export function reduxHandleSendComment(
 }
 
 
-//// 发表回复
+/**
+ * 发表回复
+ * @param commentid 回复id
+ * @param replyValue 回复内容
+ * @param articleid 文章id
+ * @param callback 回调函数
+ */
 export function reduxHandleSendReply(
   commentid: string,
   replyValue: string,
@@ -200,4 +214,25 @@ export function reduxHandleSendReply(
       callback();
     });
   };
+}
+
+
+
+/**
+ * 文章详情 => 点赞文章
+ * @param articleid 文章id
+ */
+export function reduxHandleFixedControlBarStar(
+  articleid: string,
+) {
+  query({
+    method: 'GET',
+    url: '/details/star',
+    data: {
+      articleid,
+    },
+    jsonp: false,
+  }).then((res) => {
+    console.log(res);
+  });
 }

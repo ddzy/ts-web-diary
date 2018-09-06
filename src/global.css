@@ -58,6 +58,17 @@ table {
 
 
 
+/* 
+	重置 antd 样式
+*/
+.ant-anchor-wrapper .ant-anchor {
+	font-size: 18px;
+}
+.ant-anchor .ant-anchor-link {
+	padding: 0;
+}
+
+
 
 
 /* .fade-enter {
@@ -163,4 +174,21 @@ table {
 }
 
 
-
+/* 
+	details页 固定栏 点赞 
+	details页 固定栏 消息
+	details页 固定栏 收藏
+*/
+.fixed-control-bar-star,
+.fixed-control-bar-collection {
+	cursor: pointer;
+	transition: color .3s ease;
+}
+.fixed-control-bar-star:hover,
+.fixed-control-bar-collection:hover {
+	color: #40a9ff;
+}
+.fixed-control-bar-star-active,
+.fixed-control-bar-collection-active {
+	color: #1890ff;
+}

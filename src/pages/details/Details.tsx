@@ -182,6 +182,15 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
+  //// 处理固钉栏点赞
+  public handleControlBarStar: React.MouseEventHandler = (
+    e: React.MouseEvent,
+  ): void => {
+    e.currentTarget.classList
+      .toggle('fixed-control-bar-star-active');
+  }
+
+
   public render(): JSX.Element {
 
     return (
@@ -214,7 +223,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         </DetailsWrapper>
 
         {/* 左侧固钉控制栏 */}
-        <DetailsControl />
+        <DetailsControl 
+          onControlBarStar={this.handleControlBarStar}
+        />
 
         {/* Loading */}
         <div

@@ -13,7 +13,9 @@ const { formatPath } = require('../utils/utils');
 const details = new Router();
 
 
-//// 文章详情页 => 获取信息
+/**
+ * 文章详情 => 获取信息
+ */
 details.get('/', async (ctx, next) => {
   
   const { articleid, userid } = ctx.request.query;
@@ -105,30 +107,34 @@ details.get('/', async (ctx, next) => {
       select: ['_id', 'username', 'useravatar']
     });
 
+
   // 格式化图片路径
   const setComments = updateCommentsList.comments
-    .map((item) => {
-      return {
-        ...item,
-        whom: {
-          ...item.whom,
-          useravatar: formatPath(
-            item.whom.useravatar,
-          )
-        },
-        replys: item.replys.map((reply) => {
-          return {
-            ...reply,
-            whom: {
-              ...reply.whom,
-              useravatar: formatPath(
-                reply.whom.useravatar,
-              ),
-            },
-          };
-        }),
-      };
-    });
+    && updateCommentsList.comments.length 
+    && updateCommentsList.comments.length !== 0
+    ? updateCommentsList.comments.map((item) => {
+        return {
+          ...item,
+          whom: {
+            ...item.whom,
+            useravatar: formatPath(
+              item.whom.useravatar,
+            )
+          },
+          replys: item.replys.map((reply) => {
+            return {
+              ...reply,
+              whom: {
+                ...reply.whom,
+                useravatar: formatPath(
+                  reply.whom.useravatar,
+                ),
+              },
+            };
+          }),
+        };
+      })
+    : [];
 
 
   ctx.body = {
@@ -155,7 +161,9 @@ details.get('/', async (ctx, next) => {
 });
 
 
-//// 文章详情 => 发表评论
+/**
+ * 文章详情 => 发表评论
+ */
 details.post('/comment', async (ctx, next) => {
   
   const {
@@ -217,7 +225,9 @@ details.post('/comment', async (ctx, next) => {
 
 
 
-//// 文章详情 => 发表回复
+/**
+ * 文章详情 => 发表回复
+ */
 details.post('/reply', async (ctx, next) => {
   
   const { 

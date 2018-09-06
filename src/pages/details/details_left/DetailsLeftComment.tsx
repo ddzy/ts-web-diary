@@ -125,7 +125,9 @@ class DetailsLeftComment extends React.PureComponent<
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <LeftCommentContainer>
+      <LeftCommentContainer
+        id="left-comment-container"
+      >
         {/* 提示文字 */}
         <CommentTipBox>
           <TipText>

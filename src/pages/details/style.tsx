@@ -285,10 +285,12 @@ export const NewArticleListItem = styled<IStyleProps, 'li'>('li')`
 //// 文章详情页 => 左侧固钉控制栏
 export const FixedControlContainer = styled<IStyleProps, 'div'>('div')`
   position: fixed;
-  top: 100px;
-  left: 40px;
+  top: 115px;
+  left: 100px;
   width: 40px;
   background-color: #fff;
+  font-size: 20px;
+  text-align: center;
 `;
 
 export const FixedControlContent = styled<IStyleProps, 'div'>('div')`
@@ -296,12 +298,19 @@ export const FixedControlContent = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const FixedControlList = styled<IStyleProps, 'ul'>('ul')`
-
+  margin: 0;
 `;
 
 export const FixedControlListItem = styled<IStyleProps, 'li'>('li')`
   height: 40px;
   margin-top: 10px;
-  background-color: #09c;
+  border-bottom: 1px solid #ccc;
   border-radius: 50%;
+  &:nth-of-type(4) {
+    font-size: 14px;
+    color: #999;
+  }
+  &:nth-of-type(7) {
+    border-bottom: none;
+  }
 `;
