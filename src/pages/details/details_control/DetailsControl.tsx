@@ -17,7 +17,10 @@ export interface IDetailsControlProps {
 
   onControlBarStar: (           // 固定栏点赞
     e: React.MouseEvent,
-  ) => void;       
+  ) => void;      
+  onControlBarCollection: (     // 固钉栏收藏文章 
+    e: React.MouseEvent,
+  ) => void;     
 };
 interface IDetailsControlState { };
 
@@ -73,6 +76,7 @@ class DetailsControl extends React.PureComponent<
                 className="fixed-control-bar-collection"
                 type="heart"
                 theme="filled"
+                onClick={this.props.onControlBarCollection}
               />
             </FixedControlListItem>
             <FixedControlListItem>

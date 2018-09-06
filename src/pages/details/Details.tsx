@@ -225,8 +225,17 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
     e.currentTarget.classList
       .toggle('fixed-control-bar-star-active');
-    
-    
+  }
+
+
+  /**
+   * 处理固钉栏 添加收藏
+   * @param e mouseevent
+   */
+  public handleControlBarCollection = (
+    e: React.MouseEvent
+  ) => {
+    console.log(e); 
   }
 
 
@@ -265,6 +274,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         <DetailsControl
           isLiked={this.props.DetailsReducer.detailsInfo.isLiked} 
           onControlBarStar={this.handleControlBarStar}
+          onControlBarCollection={this.handleControlBarCollection}
         />
 
         {/* Loading */}

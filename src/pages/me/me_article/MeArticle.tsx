@@ -61,7 +61,7 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
                   key="文章"
                   className="card-parent"
                 >
-                  {this.initArticleList()}
+                  {/* {this.initArticleList()} */}
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="收藏" key="收藏">
                   收藏

@@ -96,7 +96,7 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
                         <Radio.Button value="随笔">随笔</Radio.Button>
                         <Radio.Button value="译文">译文</Radio.Button>
                         <Radio.Button value="教程">教程</Radio.Button>
-                        <Radio.Button value="趣事">趣事</Radio.Button>
+                        <Radio.Button value="感悟">感悟</Radio.Button>
                       </Radio.Group>
                     )}
                 </Form.Item>
