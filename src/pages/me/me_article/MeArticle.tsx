@@ -21,6 +21,14 @@ export interface IMeArticleProps {
     e: React.MouseEvent,
     id: string,
   ) => void;
+
+  onMyArticleTabChange: (
+    type: string,
+  ) => void;
+
+  onMyCollectionsTabChange: (
+    type: string,
+  ) => void;
 };
 interface IMeArticleState {};
 
@@ -32,18 +40,26 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
 
   public readonly state = {}
 
-  public initArticleList = (): JSX.Element[] | [] => {
+
+  /**
+   * 初始化文章列表
+   */
+  public initArticleList = (
+    type: string,
+  ): any => {
     return this.props.my_article_list
       ? this.props.my_article_list.map((item) => {
-          return (
-            <MeArticleList
-              key={item._id}
-              id={item._id} 
-              {...item}
-              onArticleDelete={this.props.onArticleDelete}
-              onArticleEdit={this.props.onArticleEdit}
-            />
-          );
+          return item.type === type
+            ? (
+                <MeArticleList
+                  key={item._id}
+                  id={item._id} 
+                  {...item}
+                  onArticleDelete={this.props.onArticleDelete}
+                  onArticleEdit={this.props.onArticleEdit}
+                />
+              )
+          : null;
         })
       : [];
   }
@@ -60,8 +76,45 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
                   tab="文章" 
                   key="文章"
                   className="card-parent"
-                >
-                  {/* {this.initArticleList()} */}
+                >                  
+                  {/* 个人文章分类 */}
+                  <Tabs 
+                    type="line" 
+                    tabBarGutter={5} 
+                    size="small"
+                    tabPosition='left'
+                    onChange={this.props.onMyArticleTabChange}
+                  >
+                    <Tabs.TabPane
+                      tab="随笔"
+                      key="随笔"
+                      className="card-child-one"
+                    >
+                      {this.initArticleList('随笔')}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane
+                      tab="译文"
+                      key="译文"
+                      className="card-child-two"
+                    >
+                      {this.initArticleList('译文')}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane
+                      tab="教程"
+                      key="教程"
+                      className="card-child-three"
+                    >
+                      {this.initArticleList('教程')}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane
+                      tab="感悟"
+                      key="感悟"
+                      className="card-child-four"
+                    >
+                      {this.initArticleList('感悟')}
+                    </Tabs.TabPane>
+                  </Tabs>
+
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="收藏" key="收藏">
                   收藏

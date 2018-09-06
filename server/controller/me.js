@@ -49,20 +49,42 @@ me.post(
 );
 
 
-//// 个人中心 => 获取文章列表
-me.get('/list', async (ctx, next) => {
+//// 个人中心 => 获取我的文章分类列表
+me.get('/myarticle', async (ctx, next) => {
 
-  const { userid } = ctx.request.query;
+  const { 
+    userid, 
+    type,
+  } = ctx.request.query;
 
-  const myArticleList = await Posts
+
+  const newList = await Posts
     .find({ author: userid })
     .populate('author')
     .sort({ create_time: -1 });
-    
+
+  const myArticleList = await User
+    .findById(
+      changeId(userid),
+      null,
+      { lean: true },
+    )
+    .populate({
+      path: 'articles',
+      options: { 
+        lean: true,
+        sort: {
+          create_time: -1,
+        },
+      },
+    })
+
   ctx.body = {
     code: 0,
     message: 'Success!',
-    myArticleList,
+    myArticleList: myArticleList.articles.filter((item) => {
+      return item.type === type;
+    }),
   };
 });
 
@@ -92,16 +114,3 @@ me.get('/delete', async (ctx, next) => {
 
 
 module.exports = me;
-
-
-
-
-
-
-  /**
-   * ctx.req.file
-   * fieldname: 'user_avatar'
-   * originalname: xxx.jpg,
-   * filename: xxxxxxx
-   * path: static\\xxxx
-   */

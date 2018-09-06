@@ -12,6 +12,7 @@ import MeArticle from './me_article/MeArticle';
 import { 
   getMyArticleList, 
   deleteMyArticle,
+  reduxHandleGetMyArticle,
 } from './Me.redux';
 import { History } from 'history';
 
@@ -33,7 +34,10 @@ export interface IMeProps {
   deleteMyArticle: (              // 删除我的文章
     id: string,
     callback: (title: string) => void,
-  ) => void;          
+  ) => void;
+  reduxHandleGetMyArticle: (      // 我的文章 分类管理
+    type: string,
+  ) => void;              
 };
 interface IMeState {};
 
@@ -52,7 +56,9 @@ class Me extends React.Component<IMeProps, IMeState> {
   }
 
 
-  //// 删除成功提示
+  /**
+   * 处理 删除成功提示
+   */
   public handleDeleteSuccess = () => {
     this.props.MeReducer.delete_article_title
       && notification.success({
@@ -62,7 +68,9 @@ class Me extends React.Component<IMeProps, IMeState> {
   }
 
 
-  //// 处理删除文章
+  /**
+   * 处理 删除我的文章
+   */
   public handleArticleDelete = (
     e: React.MouseEvent,
     id: string,
@@ -73,12 +81,26 @@ class Me extends React.Component<IMeProps, IMeState> {
   }
 
 
-  //// 处理编辑文章
+  /**
+   * 处理 编辑我的文章
+   */
   public handleArticleEdit = (
     e: React.MouseEvent,
     id: string,
   ) => {
     this.props.history.push(`/edit/${id}`);
+  }
+
+
+  /**
+   * 处理 我的文章分类管理
+   */
+  public handleMyArticleTabChange = (
+    type: string,
+  ) => {
+    this.props.reduxHandleGetMyArticle(
+      type,
+    );
   }
 
 
@@ -99,6 +121,7 @@ class Me extends React.Component<IMeProps, IMeState> {
               {...this.props.MeReducer}
               onArticleDelete={this.handleArticleDelete}
               onArticleEdit={this.handleArticleEdit}
+              onMyArticleTabChange={this.handleMyArticleTabChange}
             />
           </MeContent>
         </MeWrapper>
@@ -120,6 +143,7 @@ function mapDispatchToProps() {
   return {
     getMyArticleList,
     deleteMyArticle,
+    reduxHandleGetMyArticle,
   };
 }
 

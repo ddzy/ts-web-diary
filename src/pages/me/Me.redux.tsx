@@ -63,11 +63,22 @@ export function MeReducer(
 }
 
 
-//// 获取个人中心 => 我的文章列表
+
+/**
+ * 个人中心 获取我的文章 首屏数据
+ */
 export function getMyArticleList() {
   return (dispatch: ThunkDispatch<any, any, any>) => {
   
-    query({ url: '/me/list', method: 'GET', data: { userid: localStorage.getItem('userid') }, jsonp: false })
+    query({ 
+      url: '/me/myarticle', 
+      method: 'GET', 
+      data: { 
+        type: '随笔',
+        userid: localStorage.getItem('userid'), 
+      }, 
+      jsonp: false 
+    })
       .then((res) => {
         dispatch(saveMyArticleList(res));
       });
@@ -75,7 +86,11 @@ export function getMyArticleList() {
 }
 
 
-//// 个人中心 => 删除我的文章
+/**
+ * 个人中心 删除我的文章
+ * @param articleid 文章id
+ * @param callback 回调函数
+ */
 export function deleteMyArticle(
   articleid: string,
   callback: (title: string) => void,
@@ -97,3 +112,26 @@ export function deleteMyArticle(
   };
 }
 
+
+/**
+ * 个人中心 获取我的文章 分类
+ * @param type 我的文章 分类类型
+ */
+export function reduxHandleGetMyArticle(
+  type: string,
+) {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
+    query({ 
+      url: '/me/myarticle', 
+      method: 'GET', 
+      data: { 
+        type,
+        userid: localStorage.getItem('userid'), 
+      }, 
+      jsonp: false 
+    })
+      .then((res) => {
+        dispatch(saveMyArticleList(res));
+      });  
+  };
+}

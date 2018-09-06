@@ -38,12 +38,6 @@ const UserSchema = new Schema({
     type: String,
     require: false,
   },
-  posts: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Post',
-    }
-  ]
 });
 
 const PostsSchema = new Schema({
