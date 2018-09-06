@@ -4,6 +4,7 @@ import {
   Col,
   Spin,
   notification,
+  message,
 } from 'antd';
 import { History } from 'history';
 import { match } from 'react-router';
@@ -17,6 +18,7 @@ import {
   getOneArticleInfo, 
   reduxHandleSendComment, 
   reduxHandleSendReply,
+  reduxHandleFixedControlBarStar,
 } from './Details.redux';
 import { getWindowWH } from '../../utils/utils';
 import {
@@ -32,6 +34,8 @@ export interface IDetailsProps {
   match: match<any>;
 
   DetailsReducer: { detailsInfo: any };
+  AuthRouteReducer: { useravatar: string, };
+
   getOneArticleInfo: (
     articleid: string,
     callback: () => void,
@@ -47,8 +51,11 @@ export interface IDetailsProps {
     articleid: string,
     callback?: () => void,
   ) => void;
-
-  AuthRouteReducer: { useravatar: string, };
+  reduxHandleFixedControlBarStar: (
+    articleid: string,
+    liked: boolean,
+    callback?: () => void,
+  ) => void;
 };
 interface IDetailsState {
   visible: boolean;       // loading显示隐藏
@@ -97,7 +104,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
-  //// 处理loading框
+  /**
+   * 处理loading状态
+   */
   public initLoadingWrapper = (): void => {
     const { winWidth, winHeight } = getWindowWH();
 
@@ -109,7 +118,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
-  //// 处理评论输入
+  /**
+   * 处理评论输入
+   */
   public handleCommentInputChange = (changedFields: any) => {
     this.setState({
       commentInputValue: {
@@ -119,7 +130,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
-  //// 处理评论提交
+  /**
+   * 处理评论提交
+   */
   public handleSendComment = (
     e: React.MouseEvent,
     inputRef: any,
@@ -144,7 +157,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
-  //// 处理回复输入
+  /**
+   * 处理回复 输入
+   */
   public handleReplyInputChange = (changedFields: any): void => {
     this.setState({
       replyInputValue: {
@@ -154,7 +169,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
-  //// 处理回复提交
+  /**
+   * 处理回复 提交
+   */
   public handleSendReply = (
     e: React.MouseEvent,
     inputRef: any,
@@ -181,13 +198,35 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         );
   }
 
-
-  //// 处理固钉栏点赞
+  /**
+   * 处理固钉栏 点赞
+   */
   public handleControlBarStar: React.MouseEventHandler = (
     e: React.MouseEvent,
   ): void => {
     e.currentTarget.classList
+      .contains('fixed-control-bar-star-active')
+        ? this.props.reduxHandleFixedControlBarStar(
+            this.props.match.params.id,
+            false,
+            () => {
+              message.info('取消了赞!');
+            },
+          )
+        : this.props.reduxHandleFixedControlBarStar(
+            this.props.match.params.id,
+            true,
+            () => {
+              message.success(`
+                你赞了 ${this.props.DetailsReducer.detailsInfo.author} 的文章
+              `);
+            },
+          );
+
+    e.currentTarget.classList
       .toggle('fixed-control-bar-star-active');
+    
+    
   }
 
 
@@ -223,7 +262,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         </DetailsWrapper>
 
         {/* 左侧固钉控制栏 */}
-        <DetailsControl 
+        <DetailsControl
+          isLiked={this.props.DetailsReducer.detailsInfo.isLiked} 
           onControlBarStar={this.handleControlBarStar}
         />
 
@@ -271,6 +311,7 @@ function mapDispatchToProps() {
     getOneArticleInfo,
     reduxHandleSendComment,
     reduxHandleSendReply,
+    reduxHandleFixedControlBarStar,
   };
 }
 

@@ -14,6 +14,7 @@ export interface IInitialState {
     tag: string,
     type: string,
     watchCount: number,
+    isLiked: boolean,     // 是否点过赞
     comments: any[],      // 评论信息
   },
 };
@@ -32,6 +33,7 @@ const initialState: IInitialState = {
     tag: '',
     type: '',
     watchCount: 0,
+    isLiked: false,
 
     comments: [],
   },
@@ -221,18 +223,28 @@ export function reduxHandleSendReply(
 /**
  * 文章详情 => 点赞文章
  * @param articleid 文章id
+ * @param liked 点赞or取消
+ * @param callback 回调函数
  */
 export function reduxHandleFixedControlBarStar(
   articleid: string,
+  liked: boolean,
+  callback?: () => void,
 ) {
-  query({
-    method: 'GET',
-    url: '/details/star',
-    data: {
-      articleid,
-    },
-    jsonp: false,
-  }).then((res) => {
-    console.log(res);
-  });
+  return (dispatch: ThunkDispatch<any, any, any>): void => {
+    query({
+      method: 'GET',
+      url: '/details/star',
+      data: {
+        articleid,
+        liked,
+        userid: localStorage.getItem('userid'),
+      },
+      jsonp: false,
+    }).then((res) => {
+      res.code === 0
+        && callback 
+        && callback();
+    });
+  }
 }

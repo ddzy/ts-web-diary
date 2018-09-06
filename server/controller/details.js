@@ -155,6 +155,7 @@ details.get('/', async (ctx, next) => {
       create_time: updateCommentsList.create_time,
       articleContent: updateCommentsList.content,
       comments: setComments,
+      isLiked: updateCommentsList.stared.includes(userid),
     },
   };
 
@@ -287,6 +288,46 @@ details.post('/reply', async (ctx, next) => {
         ),
       },
     },
+  };
+
+});
+
+
+
+/**
+ * 文章详情 => 点赞文章
+ */
+details.get('/star', async (ctx, next) => {
+
+  const { 
+    articleid, 
+    liked,
+    userid,
+  } = ctx.request.query;
+
+  const getArticle = await Posts
+    .findById(changeId(articleid));
+
+  const result = await Posts
+    .findByIdAndUpdate(
+      changeId(articleid),
+      {
+        star: liked === 'true'
+          ? getArticle.star + 1
+          : getArticle.star - 1,
+        stared: liked === 'true'
+          ? getArticle.stared.concat(userid)
+          : getArticle.stared.filter((item) => {
+              return item !== userid;
+            }), 
+      },
+      { new: true, lean: true },
+    );
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    result,
   };
 
 });

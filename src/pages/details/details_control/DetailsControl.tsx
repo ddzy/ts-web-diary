@@ -13,6 +13,8 @@ import {
 
 
 export interface IDetailsControlProps {
+  isLiked: boolean;             // 点赞状态
+
   onControlBarStar: (           // 固定栏点赞
     e: React.MouseEvent,
   ) => void;       
@@ -39,7 +41,14 @@ class DetailsControl extends React.PureComponent<
           <FixedControlList>
             <FixedControlListItem>
               <Icon
-                className="fixed-control-bar-star"
+                // className="fixed-control-bar-star"
+                className={`
+                  fixed-control-bar-star
+                  ${
+                    this.props.isLiked 
+                      && 'fixed-control-bar-star-active'
+                  }
+                `}
                 type="star"
                 theme="filled"
                 onClick={this.props.onControlBarStar}

@@ -101,6 +101,10 @@ const PostsSchema = new Schema({
     type: Number,
     default: 0,
   },
+  // 点过赞的集合
+  stared: [{
+    type: String,
+  }]
 });
 
 const CommentsSchema = new Schema({
