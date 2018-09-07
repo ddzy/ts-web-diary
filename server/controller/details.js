@@ -333,4 +333,22 @@ details.get('/star', async (ctx, next) => {
 });
 
 
+
+/**
+ * 文章详情 => 创建收藏夹
+ */
+details.get('/collection/create', async (ctx, next) => {
+  
+  const { userid, collection } = ctx.request.query;
+  
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    userid,
+    collection,
+  };
+
+});
+
+
 module.exports = details;

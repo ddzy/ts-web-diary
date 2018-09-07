@@ -314,3 +314,25 @@ export const FixedControlListItem = styled<IStyleProps, 'li'>('li')`
     border-bottom: none;
   }
 `;
+
+// 固钉栏 收藏 气泡框
+export const CollectionPopContentContainer = styled<IStyleProps, 'div'>('div')`
+
+`;
+
+export const CollectionsPopShowList = styled<IStyleProps, 'ul'>('ul')`
+
+`;
+
+export const CollectionsPopShowListItem = styled<IStyleProps, 'li'>('li')`
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  line-height: 20px;
+  background-color: #f4f4f4;
+  cursor: pointer;
+`;
+
+export const CollectionPopFormBox = styled<IStyleProps, 'div'>('div')`
+
+`;

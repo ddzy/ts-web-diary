@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   Icon,
   Anchor,
+  Popover,
 } from 'antd';
 
 import {
@@ -10,6 +11,7 @@ import {
   FixedControlList,
   FixedControlListItem,
 } from '../style';
+import DetailsControlCollections from './DetailsControlCollections';
 
 
 export interface IDetailsControlProps {
@@ -18,9 +20,15 @@ export interface IDetailsControlProps {
   onControlBarStar: (           // 固定栏点赞
     e: React.MouseEvent,
   ) => void;      
-  onControlBarCollection: (     // 固钉栏收藏文章 
-    e: React.MouseEvent,
-  ) => void;     
+  
+  collectionInputValue: any,    // 固钉栏弹出层
+  onCollectionsInputChange: (
+    changedFields: any,
+  ) => void;
+  onSendCollection: (
+
+  ) => void;
+
 };
 interface IDetailsControlState { };
 
@@ -42,9 +50,9 @@ class DetailsControl extends React.PureComponent<
       <FixedControlContainer>
         <FixedControlContent>
           <FixedControlList>
+            {/* 点赞 */}
             <FixedControlListItem>
               <Icon
-                // className="fixed-control-bar-star"
                 className={`
                   fixed-control-bar-star
                   ${
@@ -57,6 +65,8 @@ class DetailsControl extends React.PureComponent<
                 onClick={this.props.onControlBarStar}
               />
             </FixedControlListItem>
+            
+            {/* 评论 */}
             <FixedControlListItem>
               <Anchor>
                 <Anchor.Link
@@ -71,13 +81,27 @@ class DetailsControl extends React.PureComponent<
                 />             
               </Anchor>     
             </FixedControlListItem>
+            
+            {/* 收藏 */}
             <FixedControlListItem>
-              <Icon
-                className="fixed-control-bar-collection"
-                type="heart"
-                theme="filled"
-                onClick={this.props.onControlBarCollection}
-              />
+              <Popover
+                trigger="click"
+                placement="right"
+                title="添加收藏夹"
+                content={
+                  <DetailsControlCollections
+                    collectionInputValue={this.props.collectionInputValue} 
+                    onCollectionsInputChange={this.props.onCollectionsInputChange}
+                    onSendCollection={this.props.onSendCollection}
+                  />
+                }
+              >
+                <Icon
+                  className="fixed-control-bar-collection"
+                  type="heart"
+                  theme="filled"
+                />
+              </Popover>
             </FixedControlListItem>
             <FixedControlListItem>
               分享

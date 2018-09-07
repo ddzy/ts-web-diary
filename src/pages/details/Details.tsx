@@ -19,6 +19,7 @@ import {
   reduxHandleSendComment, 
   reduxHandleSendReply,
   reduxHandleFixedControlBarStar,
+  reduxHandleCreateCollection
 } from './Details.redux';
 import { getWindowWH } from '../../utils/utils';
 import {
@@ -56,16 +57,25 @@ export interface IDetailsProps {
     liked: boolean,
     callback?: () => void,
   ) => void;
+  reduxHandleCreateCollection: (
+    collectionName: string,
+  ) => void;
 };
 interface IDetailsState {
   visible: boolean;       // loading显示隐藏
   loadingWrapperWidth: number;      // loading宽
   loadingWrapperHeight: number;   // loading高
+
   commentInputValue: {                   // 评论输入框
     value: string | '',                 
   },
+
   replyInputValue: {
     value: string | '',           // 回复输入框
+  },
+
+  collectionInputValue: {
+    value: string | '',           // 收藏弹出层输入框
   },
 };
 
@@ -84,6 +94,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       value: '',
     },
     replyInputValue: {
+      value: '',
+    },
+    collectionInputValue: {
       value: '',
     },
   }
@@ -198,6 +211,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         );
   }
 
+
   /**
    * 处理固钉栏 点赞
    */
@@ -229,13 +243,28 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
 
   /**
-   * 处理固钉栏 添加收藏
-   * @param e mouseevent
+   * 处理 添加收藏表单
+   * @param changedFields 值
    */
-  public handleControlBarCollection = (
-    e: React.MouseEvent
+  public handleCollectionsInputChange = (
+    changedFields: any,
   ) => {
-    console.log(e); 
+    this.setState({
+      collectionInputValue: {
+        value: changedFields.collection_input.value,
+      },
+    });
+  }
+
+
+  /**
+   * 处理 提交添加收藏表单
+   */
+  public handleSendCollection = () => {
+    this.state.collectionInputValue.value
+      && this.props.reduxHandleCreateCollection(
+      this.state.collectionInputValue.value,
+    );
   }
 
 
@@ -274,7 +303,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         <DetailsControl
           isLiked={this.props.DetailsReducer.detailsInfo.isLiked} 
           onControlBarStar={this.handleControlBarStar}
-          onControlBarCollection={this.handleControlBarCollection}
+
+          onCollectionsInputChange={this.handleCollectionsInputChange}
+          onSendCollection={this.handleSendCollection}
+          collectionInputValue={this.state.collectionInputValue}
         />
 
         {/* Loading */}
@@ -322,6 +354,7 @@ function mapDispatchToProps() {
     reduxHandleSendComment,
     reduxHandleSendReply,
     reduxHandleFixedControlBarStar,
+    reduxHandleCreateCollection,
   };
 }
 

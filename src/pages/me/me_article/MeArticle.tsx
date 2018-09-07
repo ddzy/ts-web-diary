@@ -6,6 +6,7 @@ import {
   MeArticleContainer,
 } from '../style';
 import MeArticleList from './MeArticleList';
+import { isArray } from '../../../utils/utils';
 
 
 
@@ -47,7 +48,8 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
   public initArticleList = (
     type: string,
   ): any => {
-    return this.props.my_article_list
+    return isArray(this.props.my_article_list)
+      && this.props.my_article_list.length !== 0
       ? this.props.my_article_list.map((item) => {
           return item.type === type
             ? (

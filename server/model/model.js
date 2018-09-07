@@ -38,6 +38,10 @@ const UserSchema = new Schema({
     type: String,
     require: false,
   },
+  collections: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Collections',
+  }],
 });
 
 const PostsSchema = new Schema({
@@ -149,11 +153,24 @@ const ReplySchema = new Schema({
   },
 });
 
+const CollectionsSchema = new Schema({
+  name: {
+    type: String,
+    default: '默认',
+  },
+  articles: {
+    type: Schema.Types.ObjectId,
+    ref: 'Posts',
+  },
+});
+
+
 
 const User = mongoose.model('User', UserSchema, 'User');
 const Posts = mongoose.model('Post', PostsSchema, 'Post');
 const Comments = mongoose.model('Comments', CommentsSchema, 'Comments');
 const Replys = mongoose.model('Replys', ReplySchema, 'Replys');
+const Collections = mongoose.model('Collections', CollectionsSchema, 'Collections');
 
 
 
@@ -162,6 +179,7 @@ module.exports = {
   Posts,
   Comments,
   Replys,
+  Collections,
 
   // 转为objectId
   changeId: (id) => {

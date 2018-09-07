@@ -7,7 +7,7 @@ const {
   FILTER_SENSITIVE, 
   FILTER_AUTHOR,
 } = require('../constants/constants');
-const { formatPath } = require('../utils/utils');
+const { formatPath, isArray, } = require('../utils/utils');
 
 
 const me = new Router();
@@ -77,13 +77,14 @@ me.get('/myarticle', async (ctx, next) => {
           create_time: -1,
         },
       },
-    })
+    });
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     myArticleList: myArticleList.articles.filter((item) => {
-      return item.type === type;
+      return item 
+        && item.type === type; 
     }),
   };
 });

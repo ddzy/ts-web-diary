@@ -41,8 +41,22 @@ function getRandom(min, max) {
 }
 
 
+
+/**
+ * 判断是否数组 
+ * @param {*} obj 任意数
+ */
+function isArray(obj) {
+  return ({}).toString.call(null, obj) === '[object Array]';
+}
+
+
+
+
 module.exports = {
   md5,
   formatPath,
   getRandom,
+  isArray,
 };
+

@@ -16,6 +16,7 @@ export interface IInitialState {
     watchCount: number,
     isLiked: boolean,     // 是否点过赞
     comments: any[],      // 评论信息
+    collections: any[],   // 我的收藏夹列表
   },
 };
 
@@ -36,6 +37,8 @@ const initialState: IInitialState = {
     isLiked: false,
 
     comments: [],
+
+    collections: [],
   },
 };
 
@@ -247,4 +250,29 @@ export function reduxHandleFixedControlBarStar(
         && callback();
     });
   }
+}
+
+
+
+/**
+ * 文章详情 => 创建新的收藏夹
+ * @param collection 收藏夹名称
+ */
+export function reduxHandleCreateCollection(
+  collection: string,
+) {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
+    query({
+      url: '/details/collection/create',
+      method: 'GET',
+      jsonp: false,
+      data: {
+        collection,
+        userid: localStorage.getItem('userid'),
+      },
+    })
+      .then((res) => {
+        console.log(res);
+      });
+  };
 }
