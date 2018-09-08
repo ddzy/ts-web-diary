@@ -40,8 +40,8 @@ class RouterConfig extends React.PureComponent<{}, {}> {
                     <Route path="/me" component={Me} />
                     <Route path="/details/:id" component={Details} />
                     <Route path="/edit/:id" component={Edit} />
-                    <Route component={NotFound} />
                     <Route path="/collection/:id" component={Collection} />
+                    <Route component={NotFound} />
                   </Switch>
                 </Admin>
               )}

@@ -40,6 +40,11 @@ export interface IMeArticleProps {
   onSupTabChange: (         // 外层tab切换 (文章 & 收藏)
     type: string,
   ) => void;
+
+  onCollectionItemClick: (        
+    e: React.MouseEvent,
+    collectionId: string,
+  ) => void;
 };
 interface IMeArticleState { };
 
@@ -90,6 +95,8 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
               id={item._id}
               name={item.name}
               create_time={item.create_time}
+
+              onCollectionItemClick={this.props.onCollectionItemClick}
             />
           </Col>
         );

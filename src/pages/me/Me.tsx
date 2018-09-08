@@ -65,7 +65,7 @@ class Me extends React.Component<IMeProps, IMeState> {
   /**
    * 处理 删除成功提示
    */
-  public handleDeleteSuccess = () => {
+  public handleDeleteSuccess = (): void => {
     this.props.MeReducer.delete_article_title
       && notification.success({
           message: '成功删除文章',
@@ -80,7 +80,7 @@ class Me extends React.Component<IMeProps, IMeState> {
   public handleArticleDelete = (
     e: React.MouseEvent,
     id: string,
-  ) => {
+  ): void => {
     this.props.deleteMyArticle(id, () => {
       this.handleDeleteSuccess();
     });
@@ -93,7 +93,7 @@ class Me extends React.Component<IMeProps, IMeState> {
   public handleArticleEdit = (
     e: React.MouseEvent,
     id: string,
-  ) => {
+  ): void => {
     this.props.history.push(`/edit/${id}`);
   }
 
@@ -103,7 +103,7 @@ class Me extends React.Component<IMeProps, IMeState> {
    */
   public handleMyArticleTabChange = (
     type: string,
-  ) => {
+  ): void => {
     this.props.reduxHandleGetMyArticle(
       type,
     );
@@ -116,9 +116,22 @@ class Me extends React.Component<IMeProps, IMeState> {
    */
   public handleSupTabChange = (
     type: string,
-  ) => {
+  ): void => {
     type === '收藏'
       && this.props.reduxHandleGetMyCollection();  
+  }
+
+
+  /**
+   * 处理 点击我的收藏列表 进入收藏页
+   */
+  public handleCollectionItemClick = (
+    e: React.MouseEvent,
+    collectionId: string,
+  ): void => {
+    this.props.history.push(
+      `/collection/${collectionId}`,
+    );
   }
 
 
@@ -142,6 +155,8 @@ class Me extends React.Component<IMeProps, IMeState> {
               onMyArticleTabChange={this.handleMyArticleTabChange}
 
               onSupTabChange={this.handleSupTabChange}
+
+              onCollectionItemClick={this.handleCollectionItemClick}
             />
           </MeContent>
         </MeWrapper>

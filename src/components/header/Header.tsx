@@ -57,6 +57,13 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
     /\/details\/\w*/.test(pathname) 
       && result.push({ path: '/details', value: '详情', children: null });
 
+    /\/collection\/\w*/.test(pathname)
+      && result.push({
+        path: '/collection', 
+        value: '收藏',
+        children: null,
+      });
+
     this.setState((prevState) => {
       return {
         navList: prevState.navList.concat(result),

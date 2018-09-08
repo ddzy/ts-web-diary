@@ -9,6 +9,7 @@ import { MeReducer } from '../pages/me/Me.redux';
 import { ArticleReducer } from '../pages/article/Article.redux';
 import { DetailsReducer } from '../pages/details/Details.redux';
 import { EditReducer } from '../pages/edit/Edit.redux';
+import { CollectionReducer } from '../pages/collection/Collection.redux';
 
 
 const reducers = combineReducers({
@@ -21,6 +22,7 @@ const reducers = combineReducers({
   ArticleReducer,
   DetailsReducer,
   EditReducer,
+  CollectionReducer,
 });
 
 

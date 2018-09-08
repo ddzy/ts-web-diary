@@ -9,6 +9,11 @@ export interface IMyCollectionListProps {
   id: string,
   name: string,
   create_time: string,
+
+  onCollectionItemClick: (
+    e: React.MouseEvent,
+    collectionId: string, 
+  ) => void;
 };
 interface IMyCollectionListState {};
 
@@ -32,14 +37,19 @@ class MyCollectionList extends React.PureComponent<
         style={{ width: 300, marginTop: 16 }}
         actions={[
           <Icon
+            style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+            }}
             type="eye"
             key="eye"
             theme="twoTone"
-          />,
-          <Icon
-            type="minus-circle"
-            key="minus-circle"
-            theme="twoTone"
+            onClick={(e: React.MouseEvent) => 
+              this.props.onCollectionItemClick(
+                e,
+                this.props.id,
+              )
+            }
           />,
         ]}
       >
