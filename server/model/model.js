@@ -162,6 +162,10 @@ const CollectionsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Post',
   }],
+  create_time: {
+    type: String,
+    default: new Date().toLocaleString(),
+  },
 });
 
 

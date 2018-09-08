@@ -1,16 +1,23 @@
 import * as React from 'react';
-import { Row, Col, Card, Tabs } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Tabs,
+} from 'antd';
 
 import {
   MeArticleContainer,
 } from '../style';
 import MeArticleList from './MeArticleList';
 import { isArray } from '../../../utils/utils';
+import MyCollectionList from './MeCollectionList';
 
 
 
 export interface IMeArticleProps {
   my_article_list: any[];
+  my_collection_list: any[];
 
   onArticleDelete: (
     e: React.MouseEvent,
@@ -34,7 +41,7 @@ export interface IMeArticleProps {
     type: string,
   ) => void;
 };
-interface IMeArticleState {};
+interface IMeArticleState { };
 
 
 /**
@@ -54,19 +61,40 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
     return isArray(this.props.my_article_list)
       && this.props.my_article_list.length !== 0
       ? this.props.my_article_list.map((item) => {
-          return item.type === type
-            ? (
-                <MeArticleList
-                  key={item._id}
-                  id={item._id} 
-                  {...item}
-                  onArticleDelete={this.props.onArticleDelete}
-                  onArticleEdit={this.props.onArticleEdit}
-                />
-              )
+        return item.type === type
+          ? (
+            <MeArticleList
+              key={item._id}
+              id={item._id}
+              {...item}
+              onArticleDelete={this.props.onArticleDelete}
+              onArticleEdit={this.props.onArticleEdit}
+            />
+          )
           : null;
-        })
+      })
       : [];
+  }
+
+
+  /**
+   * 初始化收藏列表
+   */
+  public initCollectionList = () => {
+    return isArray(this.props.my_collection_list)
+      && this.props.my_collection_list.length !== 0
+      ? this.props.my_collection_list.map((item) => {
+        return (
+          <Col span={10} key={item._id}>
+            <MyCollectionList
+              id={item._id}
+              name={item.name}
+              create_time={item.create_time}
+            />
+          </Col>
+        );
+      })
+      : []
   }
 
 
@@ -76,20 +104,20 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
         <Row>
           <Col>
             <Card>
-              <Tabs 
-                type="card" 
+              <Tabs
+                type="card"
                 tabBarGutter={10}
-                onChange={this.props.onSupTabChange}  
+                onChange={this.props.onSupTabChange}
               >
-                <Tabs.TabPane 
-                  tab="文章" 
+                <Tabs.TabPane
+                  tab="文章"
                   key="文章"
                   className="card-parent"
-                >                  
+                >
                   {/* 个人文章分类 */}
-                  <Tabs 
-                    type="line" 
-                    tabBarGutter={5} 
+                  <Tabs
+                    type="line"
+                    tabBarGutter={5}
                     size="small"
                     tabPosition='left'
                     onChange={this.props.onMyArticleTabChange}
@@ -125,14 +153,17 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
                   </Tabs>
 
                 </Tabs.TabPane>
+
                 <Tabs.TabPane tab="收藏" key="收藏">
-                  收藏
+                  <Row>
+                    {this.initCollectionList()}
+                  </Row>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="开发中" key="开发中">
                   开发中
                 </Tabs.TabPane>
               </Tabs>
-          </Card>
+            </Card>
           </Col>
         </Row>
       </MeArticleContainer>

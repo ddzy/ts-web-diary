@@ -114,4 +114,34 @@ me.get('/delete', async (ctx, next) => {
 });
 
 
+/**
+ * 个人中心 => 获取我的收藏列表
+ */
+me.get('/mycollection', async (ctx, next) => {
+  
+  const { userid } = ctx.request.query;
+
+  const getMyCollections = await User
+    .findById(
+      changeId(userid),
+      null,
+      {
+        select: {
+          'collections': 'collections',
+        },
+      },
+    )
+    .populate({
+      path: 'collections',
+    });
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    my_collection_list: getMyCollections.collections,
+  };
+
+});
+
+
 module.exports = me;

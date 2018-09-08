@@ -13,6 +13,7 @@ import {
   getMyArticleList, 
   deleteMyArticle,
   reduxHandleGetMyArticle,
+  reduxHandleGetMyCollection,
 } from './Me.redux';
 import { History } from 'history';
 
@@ -28,6 +29,7 @@ export interface IMeProps {
   MeReducer: {
     my_article_list: any[];   // 我的文章列表
     delete_article_title: string;   // 删除的文章标题
+    my_collection_list: any[];      // 我的收藏列表
   },
 
   getMyArticleList: () => void;   // 获取文章列表
@@ -37,7 +39,11 @@ export interface IMeProps {
   ) => void;
   reduxHandleGetMyArticle: (      // 我的文章 分类管理
     type: string,
-  ) => void;              
+  ) => void;           
+  
+  reduxHandleGetMyCollection: (     // 获取我的收藏
+    callback?: () => void,
+  ) => void;   
 };
 interface IMeState {};
 
@@ -111,7 +117,8 @@ class Me extends React.Component<IMeProps, IMeState> {
   public handleSupTabChange = (
     type: string,
   ) => {
-    console.log(type);  
+    type === '收藏'
+      && this.props.reduxHandleGetMyCollection();  
   }
 
 
@@ -157,6 +164,7 @@ function mapDispatchToProps() {
     getMyArticleList,
     deleteMyArticle,
     reduxHandleGetMyArticle,
+    reduxHandleGetMyCollection,
   };
 }
 

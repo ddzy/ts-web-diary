@@ -17,6 +17,7 @@ import Me from '../pages/me/Me';
 import AuthRoute from '../components/authroute/AuthRoute';
 import Details from '../pages/details/Details';
 import Edit from '../pages/edit/Edit';
+import Collection from '../pages/collection/Collection';
 
 
 class RouterConfig extends React.PureComponent<{}, {}> {
@@ -40,6 +41,7 @@ class RouterConfig extends React.PureComponent<{}, {}> {
                     <Route path="/details/:id" component={Details} />
                     <Route path="/edit/:id" component={Edit} />
                     <Route component={NotFound} />
+                    <Route path="/collection/:id" component={Collection} />
                   </Switch>
                 </Admin>
               )}

@@ -173,7 +173,8 @@ details.get('/', async (ctx, next) => {
       create_time: updateCommentsList.create_time,
       articleContent: updateCommentsList.content,
       comments: setComments,
-      isLiked: updateCommentsList.stared.includes(userid),
+      isLiked: updateCommentsList.stared
+        && updateCommentsList.stared.includes(userid),
 
       collections: getCollectionsName.collections,
     },
@@ -365,6 +366,7 @@ details.get('/collection/create', async (ctx, next) => {
   const isCollectionNameExist = await Collections
     .findOne({
       name: collection,
+      create_time: new Date().toLocaleString(),
     })
 
   if(!isCollectionNameExist) {

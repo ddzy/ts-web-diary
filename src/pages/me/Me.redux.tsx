@@ -4,17 +4,21 @@ import { query } from "../../services/request";
 export interface IInitialState {
   my_article_list: any[];     // 我的文章列表
   delete_article_title: string;   // 删除的文章标题
+  my_collection_list: any[],      // 我的收藏列表
 };
 
 
 const initialState = {
   my_article_list: [],
   delete_article_title: '',
+  my_collection_list: [],
 };
 
 
 export const SAVE_MY_ARTICLE_LIST = 'SAVE_MY_ARTICLE_LIST' as string;
 export const SAVE_DELETE_TITLE = 'SAVE_DELETE_TITLE' as string;
+export const SAVE_MY_COLLECTION_LIST = 'SAVE_MY_COLLECTION_LIST' as string;
+
 
 
 export function saveMyArticleList(
@@ -37,6 +41,15 @@ export function saveDeleteTitle(
   };  
 }
 
+export function saveMyCollectionList(
+  data: any
+): { type: string, payload: any } {
+  return {
+    type: SAVE_MY_COLLECTION_LIST,
+    payload: data,
+  };
+}
+
 
 
 export function MeReducer(
@@ -54,6 +67,12 @@ export function MeReducer(
       return {
         ...state,
         delete_article_title: action.payload.title,
+      };
+    }
+    case SAVE_MY_COLLECTION_LIST: {
+      return {
+        ...state,
+        my_collection_list: action.payload.my_collection_list,
       };
     }
     default: {
@@ -133,5 +152,26 @@ export function reduxHandleGetMyArticle(
       .then((res) => {
         dispatch(saveMyArticleList(res));
       });  
+  };
+}
+
+
+/**
+ * 个人中心 获取我的收藏 列表
+ */
+export function reduxHandleGetMyCollection(
+  callback?: () => void,
+) {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
+    query({
+      method: 'GET',
+      url: '/me/mycollection',
+      jsonp: false,
+      data: {
+        userid: localStorage.getItem('userid'),
+      },
+    }).then((res) => {
+      dispatch(saveMyCollectionList(res));
+    });
   };
 }
