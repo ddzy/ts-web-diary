@@ -46,6 +46,7 @@ app.use(koaJwt({ secret: SECRET_FOR_TOKEN }).unless({
     /^\/images/, 
     /^\/details\/mimicat\.ico/,
     /^\/edit\/mimicat\.ico/,
+    /^\/collection\/mimicat\.ico/,
   ],
 }))
 

@@ -23,6 +23,11 @@ import {
 export interface ICollectionProps {
   match: match<any>;
 
+  // 收藏夹信息
+  CollectionReducer: {
+    collectionInfo: any,
+  },
+
   // 获取收藏夹信息
   reduxHandleGetCollectionInfo: (
     collectionId: string,
@@ -60,7 +65,9 @@ class Collection extends React.PureComponent<
 
   public handleInitShowItem = () => {
     return (
-      <CollectionShowItem />
+      <CollectionShowItem 
+        {...this.props.CollectionReducer.collectionInfo}
+      />
     );
   }
 
@@ -81,7 +88,7 @@ class Collection extends React.PureComponent<
             <MainContentWrapper>
               <MainContentTipBox>
                 <MainContentTipText>
-                  我的收藏夹名称
+                {this.props.CollectionReducer.collectionInfo.name}
                 </MainContentTipText>
               </MainContentTipBox>
 

@@ -35,6 +35,7 @@ export function CollectionReducer(
         ...state,
         collectionInfo: {
           ...state.collectionInfo,
+          ...action.payload.collectionInfo,
         },
       };
     }
@@ -64,7 +65,7 @@ export function reduxHandleGetCollectionInfo(
         collectionId,
       },
     }).then((res) => {
-      console.log(res);
+      dispatch(saveCollectionInfo(res));
     });
   };
 }

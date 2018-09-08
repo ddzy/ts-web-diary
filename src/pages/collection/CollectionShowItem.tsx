@@ -7,6 +7,7 @@ import {
   Card,
   Icon,
   Divider,
+  Tag,
 } from 'antd';
 
 import {
@@ -16,68 +17,141 @@ import {
   ContentTag,
   ItemExtraBox,
 } from './style';
-import { formatTime } from '../../utils/utils';
+import { 
+  formatTime, 
+  isArray, 
+} from '../../utils/utils';
+import { TAG_COLOR_PICKER } from '../../constants/constants';
 
 
 
-export interface ICollectionShowItemProps {};
+export interface ICollectionShowItemProps {
+  articles: any[],
+};
 
 
 
 const CollectionShowItem: React.SFC<
   ICollectionShowItemProps
-> = (
-  props: ICollectionShowItemProps,
-): JSX.Element => {
-  
-  return (
-    <Row>
-          <Card hoverable={true}>
-            {/* 文章信息 */}
-            <Col span={18} style={{ paddingLeft: '8px' }}>
-              <ItemContentBox>
-                <ContentTip>                 
-                  <Icon type="tag-o" style={{ marginLeft: '5px' }} />
-                    趣事
-                  <Divider type="vertical" />
-                    999
-                  <Icon type="like-o" style={{ marginLeft: '5px' }} />
-                  <Divider type="vertical" />
-                  <span>作者</span>
-                  <Divider type="vertical" />
-                  发布于:&nbsp;&nbsp;
-                  {formatTime(new Date().getTime())}
+  > = (
+    props: ICollectionShowItemProps,
+  ): JSX.Element => {
 
-                </ContentTip>
-                <ContentTitle>
-                  <Link 
-                    // to={`/details/${this.props.id}`} 
-                    to={`/details/333`}
-                    style={{ 
-                      fontWeight: 'bold',
-                      fontSize: '20px', 
-                      color: 'initial'
-                    }}
-                  >
-                    文章标题
+    /**
+     * 初始化列表数据
+     */
+    function handleInitArticleItem() {
+      const articles = props.articles;
+
+      return isArray(articles)
+        && articles.length !== 0
+        ? articles.map((item) => {
+          return (
+            <Row 
+              key={item._id}
+              style={{
+                marginTop: '10px',
+              }}  
+            >
+              <Card hoverable={true}>
+                {/* 文章信息 */}
+                <Col span={18} style={{ paddingLeft: '8px' }}>
+                  <ItemContentBox>
+                    <ContentTip>
+                      <Icon 
+                        type="tag-o" 
+                        style={{ marginLeft: '5px' }} 
+                      />
+                      {item.type}
+                      <Divider type="vertical" />
+                      {item.star}
+                      <Icon
+                        type="like-o"
+                        style={{ marginLeft: '5px' }}
+                      />
+                      <Divider type="vertical" />
+                      <span>{item.author.username}</span>
+                      <Divider type="vertical" />
+                      发布于:&nbsp;&nbsp;
+                  {formatTime(item.create_time)}
+
+                    </ContentTip>
+                    <ContentTitle>
+                      <Link
+                        to={`/details/${item._id}`} 
+                        style={{
+                          fontWeight: 'bold',
+                          fontSize: '20px',
+                          color: 'initial'
+                        }}
+                      >
+                        {item.title}
                   </Link>
-                </ContentTitle>
-                <ContentTag>
-                  {/* {this.initArticleTag()} */}
-                  文章标签列表
+                    </ContentTitle>
+                    <ContentTag>
+                      {/* {this.initArticleTag()} */}
+                      {/* 文章标签列表 */}
+                      {handleInitItemTag(item.tag)}
                 </ContentTag>
-              </ItemContentBox>
-            </Col>        
-            <Col span={6}>
-              <ItemExtraBox>
-                <img src="" width="80" height="80" alt="文章说明" />
-              </ItemExtraBox>
-            </Col>
-          </Card>
-        </Row>
-  );
+                  </ItemContentBox>
+                </Col>
+                <Col span={6}>
+                  <ItemExtraBox>
+                    <img 
+                      src={item.author.useravatar || ''} 
+                      width="80" 
+                      height="80" 
+                      alt="文章说明" 
+                    />
+                  </ItemExtraBox>
+                </Col>
+              </Card>
+            </Row>
+          );
+        })
+        : (
+          <div
+            style={{
+              lineHeight: '120px',
+              textAlign: 'center',
+              fontWeight: "bold",
+              fontSize: '18px',
+            }}
+          >
+            <h3>该收藏夹没有文章...</h3>
+          </div>
+        );
+    }
 
-}
+
+    /**
+     * 初始化列表 标签数据 
+     */
+    function handleInitItemTag(
+      tag: string,
+    ): JSX.Element[] {
+      return tag
+        .split(',')
+        .map((item) => {
+          return (
+            <Tag
+              key={item}
+              color={TAG_COLOR_PICKER[item]}
+            >
+              {item}
+            </Tag>
+          );
+        });
+    }
+
+
+    return (
+      <React.Fragment>
+        {handleInitArticleItem()}
+      </React.Fragment>
+    );
+
+  }
 
 
 export default CollectionShowItem;
