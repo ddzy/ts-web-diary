@@ -104,6 +104,17 @@ class Me extends React.Component<IMeProps, IMeState> {
   }
 
 
+  /**
+   * 处理 我的收藏分类管理
+   * @param type tab名称
+   */
+  public handleSupTabChange = (
+    type: string,
+  ) => {
+    console.log(type);  
+  }
+
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
@@ -122,6 +133,8 @@ class Me extends React.Component<IMeProps, IMeState> {
               onArticleDelete={this.handleArticleDelete}
               onArticleEdit={this.handleArticleEdit}
               onMyArticleTabChange={this.handleMyArticleTabChange}
+
+              onSupTabChange={this.handleSupTabChange}
             />
           </MeContent>
         </MeWrapper>

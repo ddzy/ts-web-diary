@@ -19,13 +19,19 @@ import {
 
 export interface IDetailsControlCollectionsProps extends FormComponentProps {
 
+  collections: any[];           // 收藏夹列表
   collectionInputValue: any,
   onCollectionsInputChange: (
     changedFields: any,
   ) => void;
   onSendCollection: (
-
+    e: React.MouseEvent,
+    inputRef: any,
   ) => void;
+
+  onSaveToCollection: (         // 确认添加至收藏夹
+    collectionId: string,
+  ) => void    
 
 };
 interface IDetailsControlCollectionsState {};
@@ -40,7 +46,17 @@ class DetailsControlCollections extends React.PureComponent<
   IDetailsControlCollectionsState
 > {
 
+  public inputRef = null
+
+
   public readonly state = {}
+
+
+  public handleGetInputRef = (
+    el: any,
+  ) => {
+    this.inputRef = el;
+  }
 
 
   public render(): JSX.Element {
@@ -49,13 +65,22 @@ class DetailsControlCollections extends React.PureComponent<
     return (
       <CollectionPopContentContainer>
         <CollectionsPopShowList>
-          <Popconfirm
-            title="要添加到该收藏夹吗?"
-          >
-            <CollectionsPopShowListItem>
-              yyy
-            </CollectionsPopShowListItem>
-          </Popconfirm>
+          {
+            this.props.collections.length !== 0
+              && this.props.collections.map((item) => {
+                return (
+                  <Popconfirm 
+                    title="要添加到该收藏夹吗?"
+                    key={item._id}
+                    onConfirm={() => this.props.onSaveToCollection(item._id)}
+                  >
+                    <CollectionsPopShowListItem>
+                      {item.name}
+                    </CollectionsPopShowListItem>
+                  </Popconfirm>
+                );
+              })
+          }
         </CollectionsPopShowList>
         <CollectionPopFormBox>
           <Form>
@@ -68,6 +93,10 @@ class DetailsControlCollections extends React.PureComponent<
                     <Input 
                       type="text"
                       size="small"
+                      placeholder="新建一个收藏夹..."
+                      ref={(
+                        el: any
+                      ) => this.handleGetInputRef(el)}
                     />
                   </Col>
                   <Col span={4}>
@@ -75,7 +104,12 @@ class DetailsControlCollections extends React.PureComponent<
                       htmlType="button"
                       type="default"
                       size="small"
-                      onClick={this.props.onSendCollection}
+                      onClick={(
+                        e: React.MouseEvent
+                      ) => this.props.onSendCollection(
+                        e, 
+                        this.inputRef
+                      )}
                     >创建</Button>
                   </Col>
                 </Row>

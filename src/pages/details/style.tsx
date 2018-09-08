@@ -328,9 +328,18 @@ export const CollectionsPopShowListItem = styled<IStyleProps, 'li'>('li')`
   margin-top: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  line-height: 20px;
+  line-height: 30px;
   background-color: #f4f4f4;
   cursor: pointer;
+  color: #888;
+  font-size: 14px;
+  text-align: center;
+  transition: background-color .3s ease,
+              color .3s ease;
+  &:hover {
+    background-color: #ccc;
+    color: #fff;
+  }
 `;
 
 export const CollectionPopFormBox = styled<IStyleProps, 'div'>('div')`

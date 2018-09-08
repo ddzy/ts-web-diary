@@ -154,14 +154,14 @@ const ReplySchema = new Schema({
 });
 
 const CollectionsSchema = new Schema({
-  name: {
+  name: {                          // 收藏夹名称
     type: String,
     default: '默认',
   },
-  articles: {
+  articles: [{                     // 收藏的文章
     type: Schema.Types.ObjectId,
-    ref: 'Posts',
-  },
+    ref: 'Post',
+  }],
 });
 
 

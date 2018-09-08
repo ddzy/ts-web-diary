@@ -19,7 +19,8 @@ import {
   reduxHandleSendComment, 
   reduxHandleSendReply,
   reduxHandleFixedControlBarStar,
-  reduxHandleCreateCollection
+  reduxHandleCreateCollection,
+  reduxHandleSaveToCollection,
 } from './Details.redux';
 import { getWindowWH } from '../../utils/utils';
 import {
@@ -59,6 +60,12 @@ export interface IDetailsProps {
   ) => void;
   reduxHandleCreateCollection: (
     collectionName: string,
+    callback?: () => void,
+  ) => void;
+  reduxHandleSaveToCollection: (
+    articleId: string,
+    collectionId: string,
+    callback?: () => void,
   ) => void;
 };
 interface IDetailsState {
@@ -259,11 +266,42 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
   /**
    * 处理 提交添加收藏表单
+   * @param e mouseEvent
+   * @param inputRef input输入框
    */
-  public handleSendCollection = () => {
+  public handleSendCollection = (
+    e: React.MouseEvent,
+    inputRef: any,
+  ) => {
     this.state.collectionInputValue.value
       && this.props.reduxHandleCreateCollection(
-      this.state.collectionInputValue.value,
+          this.state.collectionInputValue.value,
+          () => {
+            inputRef.input.value = '';
+          }
+        );
+  }
+
+  
+  /**
+   * 处理 确认添加至收藏夹
+   * @param collectionId 收藏夹id
+   */
+  public handleSaveToCollection = (
+    collectionId: string,
+  ) => {
+    this.props.reduxHandleSaveToCollection(
+      this.props.match.params.id,
+      collectionId,
+      () => {
+        this.props.DetailsReducer.detailsInfo.collectionName
+          && notification.success({
+            message: '提示',
+            description: `成功添加到 ${
+              this.props.DetailsReducer.detailsInfo.collectionName
+            }`,
+          })
+      }
     );
   }
 
@@ -301,12 +339,16 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
         {/* 左侧固钉控制栏 */}
         <DetailsControl
+          collections={this.props.DetailsReducer.detailsInfo.collections}
+
           isLiked={this.props.DetailsReducer.detailsInfo.isLiked} 
           onControlBarStar={this.handleControlBarStar}
 
           onCollectionsInputChange={this.handleCollectionsInputChange}
           onSendCollection={this.handleSendCollection}
           collectionInputValue={this.state.collectionInputValue}
+
+          onSaveToCollection={this.handleSaveToCollection}
         />
 
         {/* Loading */}
@@ -355,6 +397,7 @@ function mapDispatchToProps() {
     reduxHandleSendReply,
     reduxHandleFixedControlBarStar,
     reduxHandleCreateCollection,
+    reduxHandleSaveToCollection,
   };
 }
 

@@ -17,6 +17,7 @@ export interface IInitialState {
     isLiked: boolean,     // 是否点过赞
     comments: any[],      // 评论信息
     collections: any[],   // 我的收藏夹列表
+    collectionName: string,   // 添加至的收藏夹名称
   },
 };
 
@@ -39,6 +40,8 @@ const initialState: IInitialState = {
     comments: [],
 
     collections: [],
+
+    collectionName: '',
   },
 };
 
@@ -46,7 +49,8 @@ const initialState: IInitialState = {
 export const SAVE_DETAILS_INFO = 'SAVE_DETAILS_INFO' as string;
 export const SAVE_COMMENTS_LIST = 'SAVE_COMMENTS_LIST' as string;
 export const SAVE_REPLYS_LIST = 'SAVE_REPLYS_LIST' as string;
-
+export const SAVE_COLLECTION = 'SAVE_COLLECTION' as string;
+export const SAVE_COLLECTION_NAME = 'SAVE_COLLECTION_NAME' as string;
 
 
 export function saveDetailsInfo(
@@ -72,6 +76,24 @@ export function saveReplysList(
 ): { type: string, payload: any } {
   return {
     type: SAVE_REPLYS_LIST,
+    payload: data,
+  };
+}
+
+export function saveCollection(
+  data: any,
+): { type: string, payload: any } {
+  return {
+    type: SAVE_COLLECTION,
+    payload: data,
+  };
+}
+
+export function saveCollectionName(
+  data: any,
+): { type: string, payload: any } {
+  return {
+    type: SAVE_COLLECTION_NAME,
     payload: data,
   };
 }
@@ -124,6 +146,26 @@ export function DetailsReducer(
             }
             return item;
           }),
+        },
+      };
+    }
+    case SAVE_COLLECTION: {
+      return {
+        ...state,
+        detailsInfo: {
+          ...state.detailsInfo,
+          collections: state.detailsInfo.collections.concat(
+            action.payload.collection
+          ),
+        },
+      };
+    }
+    case SAVE_COLLECTION_NAME: {
+      return {
+        ...state,
+        detailsInfo: {
+          ...state.detailsInfo,
+          collectionName: action.payload.collectionName,
         },
       };
     }
@@ -260,6 +302,7 @@ export function reduxHandleFixedControlBarStar(
  */
 export function reduxHandleCreateCollection(
   collection: string,
+  callback?: () => void,
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
@@ -272,7 +315,38 @@ export function reduxHandleCreateCollection(
       },
     })
       .then((res) => {
-        console.log(res);
+        dispatch(saveCollection(res));
+
+        callback && callback();
       });
+  };
+}
+
+
+
+/**
+ * 文章详情 => 确认添加至收藏夹
+ * @param articleId 文章id
+ * @param collectionId 收藏夹id
+ */
+export function reduxHandleSaveToCollection(
+  articleId: string,
+  collectionId: string,
+  callback?: () => void,
+) {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
+    query({
+      method: 'POST',
+      url: '/details/collection/save',
+      jsonp: false,
+      data: {
+        userid: localStorage.getItem('userid'),
+        articleId,
+        collectionId,
+      },
+    }).then((res) => {
+      dispatch(saveCollectionName(res));
+      callback && callback();
+    });
   };
 }

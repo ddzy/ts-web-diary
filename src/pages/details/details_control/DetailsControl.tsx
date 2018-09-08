@@ -16,7 +16,6 @@ import DetailsControlCollections from './DetailsControlCollections';
 
 export interface IDetailsControlProps {
   isLiked: boolean;             // 点赞状态
-
   onControlBarStar: (           // 固定栏点赞
     e: React.MouseEvent,
   ) => void;      
@@ -26,9 +25,15 @@ export interface IDetailsControlProps {
     changedFields: any,
   ) => void;
   onSendCollection: (
-
+    e: React.MouseEvent,
+    inputRef: any,
   ) => void;
 
+  collections: any[];            // 收藏夹列表
+
+  onSaveToCollection: (         // 确认添加至收藏夹
+    collectionId: string,
+  ) => void;       
 };
 interface IDetailsControlState { };
 
@@ -87,12 +92,16 @@ class DetailsControl extends React.PureComponent<
               <Popover
                 trigger="click"
                 placement="right"
-                title="添加收藏夹"
+                title="我的收藏夹"
                 content={
                   <DetailsControlCollections
+                    collections={this.props.collections}
+
                     collectionInputValue={this.props.collectionInputValue} 
                     onCollectionsInputChange={this.props.onCollectionsInputChange}
                     onSendCollection={this.props.onSendCollection}
+
+                    onSaveToCollection={this.props.onSaveToCollection}
                   />
                 }
               >

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Row, Col, Card, Tabs } from 'antd';
-import { connect } from 'react-redux';
 
 import {
   MeArticleContainer,
@@ -28,6 +27,10 @@ export interface IMeArticleProps {
   ) => void;
 
   onMyCollectionsTabChange: (
+    type: string,
+  ) => void;
+
+  onSupTabChange: (         // 外层tab切换 (文章 & 收藏)
     type: string,
   ) => void;
 };
@@ -73,7 +76,11 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
         <Row>
           <Col>
             <Card>
-              <Tabs type="card" tabBarGutter={10}>
+              <Tabs 
+                type="card" 
+                tabBarGutter={10}
+                onChange={this.props.onSupTabChange}  
+              >
                 <Tabs.TabPane 
                   tab="文章" 
                   key="文章"
@@ -135,8 +142,4 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
 }
 
 
-
-
-export default connect(
-
-)(MeArticle) as React.ComponentClass<any>;
+export default MeArticle as React.ComponentClass<any>;

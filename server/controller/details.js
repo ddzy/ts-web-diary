@@ -7,6 +7,7 @@ const {
   changeId, 
   Comments, 
   Replys,
+  Collections,
 } = require('../model/model');
 const { formatPath } = require('../utils/utils');
 
@@ -137,6 +138,23 @@ details.get('/', async (ctx, next) => {
     : [];
 
 
+  // 获取用户收藏夹名称
+  const getCollectionsName = await User
+    .findById(
+      changeId(userid),
+      null,
+      {
+        select: {
+          collections: 'collections',
+        },
+      }
+    )
+    .populate({
+      path: 'collections',
+      select: ['_id', 'name'],
+    })
+
+
   ctx.body = {
     code: 0,
     message: 'Success!',
@@ -156,6 +174,8 @@ details.get('/', async (ctx, next) => {
       articleContent: updateCommentsList.content,
       comments: setComments,
       isLiked: updateCommentsList.stared.includes(userid),
+
+      collections: getCollectionsName.collections,
     },
   };
 
@@ -340,14 +360,89 @@ details.get('/star', async (ctx, next) => {
 details.get('/collection/create', async (ctx, next) => {
   
   const { userid, collection } = ctx.request.query;
-  
+
+  // 收藏夹是否存在
+  const isCollectionNameExist = await Collections
+    .findOne({
+      name: collection,
+    })
+
+  if(!isCollectionNameExist) {
+    const setToCollections = await Collections
+      .create({
+        name: collection,
+      })
+
+    // 同步至 User
+    const setToUserSync = await User
+      .findByIdAndUpdate(
+        changeId(userid),
+        {
+          '$push': { collections: setToCollections },
+        },
+        { 
+          new: true, 
+          lean: true, 
+          select: {
+            '_id': '_id',
+            collections: 'collections',
+          },
+        },
+      )
+      .populate({
+        path: 'collections',
+      })
+
+    ctx.body = {
+      code: 0,
+      message: 'Success!',
+      collection: {
+        name: setToCollections.name,
+        _id: setToCollections._id,
+      },
+    };
+  }else {
+    ctx.body = {
+      code: 1,
+      message: '该收藏夹已经存在!',
+    };
+  }
+
+
+});
+
+
+
+/**
+ * 文章详情 => 确认添加至收藏夹
+ */
+details.post('/collection/save', async (ctx, next) => {
+  const { 
+    userid,
+    articleId,
+    collectionId,
+  } = ctx.request.body;
+
+  const saveToCollection = await Collections
+    .findByIdAndUpdate(
+      changeId(collectionId),
+      {
+        '$addToSet': { articles: articleId },
+      },
+      { lean: true, new: true,},
+    )
+    .populate({
+      path: 'articles',
+      options: {
+        sort: { create_time: -1 },
+      },
+    })
+
   ctx.body = {
     code: 0,
     message: 'Success!',
-    userid,
-    collection,
+    collectionName: saveToCollection.name,
   };
-
 });
 
 
