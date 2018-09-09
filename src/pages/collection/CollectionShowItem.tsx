@@ -27,6 +27,11 @@ import { TAG_COLOR_PICKER } from '../../constants/constants';
 
 export interface ICollectionShowItemProps {
   articles: any[],
+
+  onDeleteCollectionArticle: (
+    e: React.MouseEvent,
+    articleId: string,
+  ) => void,
 };
 
 
@@ -55,12 +60,16 @@ const CollectionShowItem: React.SFC<
             >
               <Card hoverable={true}>
                 {/* 文章信息 */}
-                <Col span={18} style={{ paddingLeft: '8px' }}>
+                <Col 
+                  span={18} 
+                  style={{ 
+                    paddingLeft: '8px' 
+                  }}>
                   <ItemContentBox>
                     <ContentTip>
-                      <Icon 
-                        type="tag-o" 
-                        style={{ marginLeft: '5px' }} 
+                      <Icon
+                        type="tag-o"
+                        style={{ marginLeft: '5px' }}
                       />
                       {item.type}
                       <Divider type="vertical" />
@@ -78,7 +87,7 @@ const CollectionShowItem: React.SFC<
                     </ContentTip>
                     <ContentTitle>
                       <Link
-                        to={`/details/${item._id}`} 
+                        to={`/details/${item._id}`}
                         style={{
                           fontWeight: 'bold',
                           fontSize: '20px',
@@ -86,24 +95,39 @@ const CollectionShowItem: React.SFC<
                         }}
                       >
                         {item.title}
-                  </Link>
+                      </Link>
                     </ContentTitle>
                     <ContentTag>
-                      {/* {this.initArticleTag()} */}
-                      {/* 文章标签列表 */}
                       {handleInitItemTag(item.tag)}
-                </ContentTag>
+                    </ContentTag>
                   </ItemContentBox>
                 </Col>
-                <Col span={6}>
+                <Col span={4}>
                   <ItemExtraBox>
-                    <img 
-                      src={item.author.useravatar || ''} 
-                      width="80" 
-                      height="80" 
-                      alt="文章说明" 
+                    <img
+                      src={item.author.useravatar || ''}
+                      width="80"
+                      height="80"
+                      alt="文章说明"
                     />
                   </ItemExtraBox>
+                </Col>
+
+                {/* 删除收藏夹文章 */}
+                <Col
+                  span={2}
+                  style={{
+                    textAlign: 'right',
+                  }}
+                  title="删除"
+                >
+                  <Icon
+                    type="close"
+                    onClick={(e: React.MouseEvent) => props.onDeleteCollectionArticle(
+                      e,
+                      item._id,
+                    )}
+                  />
                 </Col>
               </Card>
             </Row>

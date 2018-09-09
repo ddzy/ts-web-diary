@@ -54,6 +54,9 @@ class Collection extends React.PureComponent<
   }
 
 
+  /**
+   * 处理 获取单个收藏夹信息
+   */
   public handleGetCollectionInfo = () => {
     const { id } = this.props.match.params;
 
@@ -63,12 +66,30 @@ class Collection extends React.PureComponent<
   }
 
 
+  /**
+   * 处理 初始化单个收藏夹 文章列表
+   */
   public handleInitShowItem = () => {
     return (
       <CollectionShowItem 
         {...this.props.CollectionReducer.collectionInfo}
+        onDeleteCollectionArticle={
+          this.handleDeleteCollectionArticle
+        }
       />
     );
+  }
+
+
+  /**
+   * 处理 删除单个文章
+   */
+  public handleDeleteCollectionArticle = (
+    e: React.MouseEvent,
+    articleId: string,
+  ) => {
+    console.log(e.currentTarget);
+    console.log(articleId);
   }
 
 
