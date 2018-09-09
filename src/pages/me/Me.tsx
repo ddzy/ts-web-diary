@@ -14,6 +14,7 @@ import {
   deleteMyArticle,
   reduxHandleGetMyArticle,
   reduxHandleGetMyCollection,
+  reduxHandleDeleteMyCollection,
 } from './Me.redux';
 import { History } from 'history';
 
@@ -41,9 +42,14 @@ export interface IMeProps {
     type: string,
   ) => void;           
   
-  reduxHandleGetMyCollection: (     // 获取我的收藏
+  reduxHandleGetMyCollection: (     // 获取我的收藏夹 
     callback?: () => void,
-  ) => void;   
+  ) => void; 
+  
+  reduxHandleDeleteMyCollection: (    // 删除我的收藏夹
+    collectionId: string,
+    callback?: () => void,
+  ) => void;
 };
 interface IMeState {};
 
@@ -135,6 +141,25 @@ class Me extends React.Component<IMeProps, IMeState> {
   }
 
 
+  /**
+   * 处理 删除我的收藏夹
+   */
+  public handleCollectionItemDelete = (
+    e: React.MouseEvent,
+    collectionId: string,
+  ) => {
+    this.props.reduxHandleDeleteMyCollection(
+      collectionId,
+      () => {
+        notification.success({
+          message: '提示',
+          description: '成功移除该收藏夹!',
+        });
+      },
+    );
+  }
+
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
@@ -157,6 +182,10 @@ class Me extends React.Component<IMeProps, IMeState> {
               onSupTabChange={this.handleSupTabChange}
 
               onCollectionItemClick={this.handleCollectionItemClick}
+
+              onCollectionItemDelete={
+                this.handleCollectionItemDelete
+              }
             />
           </MeContent>
         </MeWrapper>
@@ -180,6 +209,7 @@ function mapDispatchToProps() {
     deleteMyArticle,
     reduxHandleGetMyArticle,
     reduxHandleGetMyCollection,
+    reduxHandleDeleteMyCollection,
   };
 }
 

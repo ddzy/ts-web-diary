@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   Card,
   Icon,
+  Popconfirm,
 } from 'antd';
 
 
@@ -13,6 +14,12 @@ export interface IMyCollectionListProps {
   onCollectionItemClick: (
     e: React.MouseEvent,
     collectionId: string, 
+  ) => void;
+
+  onCollectionItemDelete: (
+    e: React.MouseEvent,
+    collectionId: string,
+    callback?: () => void,
   ) => void;
 };
 interface IMyCollectionListState {};
@@ -51,6 +58,23 @@ class MyCollectionList extends React.PureComponent<
               )
             }
           />,
+          <Popconfirm
+            key="close-circle"
+            title="要删除该收藏夹吗?"
+            onConfirm={(e: React.MouseEvent) => this.props.onCollectionItemDelete(
+              e,
+              this.props.id,
+            )}
+          >
+            <Icon
+              style={{
+                fontSize: '22px',
+                fontWeight: 'bold',
+              }}
+              type="close-circle"
+              theme="twoTone"
+            />
+          </Popconfirm>
         ]}
       >
         <Card.Meta

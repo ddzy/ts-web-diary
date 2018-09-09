@@ -45,6 +45,12 @@ export interface IMeArticleProps {
     e: React.MouseEvent,
     collectionId: string,
   ) => void;
+
+  onCollectionItemDelete: (
+    e: React.MouseEvent,
+    collectionId: string,
+    callback?: () => void,
+  ) => void;
 };
 interface IMeArticleState { };
 
@@ -77,8 +83,20 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
             />
           )
           : null;
-      })
-      : [];
+        })
+      : (
+          <div
+            style={{
+              color: '#999',
+              fontSize: '20px',
+              fontWeight: 'bold',
+            }}
+          >
+            <p>
+              暂时没有发表的文章...
+            </p>
+          </div>
+        );
   }
 
 
@@ -89,19 +107,33 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
     return isArray(this.props.my_collection_list)
       && this.props.my_collection_list.length !== 0
       ? this.props.my_collection_list.map((item) => {
-        return (
-          <Col span={10} key={item._id}>
-            <MyCollectionList
-              id={item._id}
-              name={item.name}
-              create_time={item.create_time}
+          return (
+            <Col span={10} key={item._id}>
+              <MyCollectionList
+                id={item._id}
+                name={item.name}
+                create_time={item.create_time}
 
-              onCollectionItemClick={this.props.onCollectionItemClick}
-            />
-          </Col>
+                onCollectionItemClick={this.props.onCollectionItemClick}
+
+                onCollectionItemDelete={this.props.onCollectionItemDelete}
+              />
+            </Col>
+          );
+        })
+      : (
+          <div
+            style={{
+              lineHeight: '80px',
+              textAlign: 'center',
+              fontSize: '22px',
+              color: '#999',
+              fontWeight: 'bold',
+            }}
+          >
+            <p>暂时没有收藏夹...</p>
+          </div>
         );
-      })
-      : []
   }
 
 

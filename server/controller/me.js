@@ -2,7 +2,12 @@ const koa = require('koa');
 const Router = require('koa-router');
 const multer = require('koa-multer');
 
-const { changeId, User, Posts } = require('../model/model');
+const { 
+  changeId, 
+  User, 
+  Posts, 
+  Collections,
+} = require('../model/model');
 const { 
   FILTER_SENSITIVE, 
   FILTER_AUTHOR,
@@ -117,7 +122,7 @@ me.get('/delete', async (ctx, next) => {
 /**
  * 个人中心 => 获取我的收藏列表
  */
-me.get('/mycollection', async (ctx, next) => {
+me.get('/collection/getinfo', async (ctx, next) => {
   
   const { userid } = ctx.request.query;
 
@@ -139,6 +144,37 @@ me.get('/mycollection', async (ctx, next) => {
     code: 0,
     message: 'Success!',
     my_collection_list: getMyCollections.collections,
+  };
+
+});
+
+
+/**
+ * 个人中心 => 删除我的收藏夹
+ */
+me.get('/collection/delete', async (ctx, next) => {
+  
+  const { userid, collectionId } = await ctx.request.query;
+
+  const deleteUserResult = await User
+    .findByIdAndUpdate(
+      changeId(userid),
+      {
+        '$pull': { collections: collectionId },
+      },
+      { lean: true, new: true },
+    )
+
+  const deleteCollectionsResult = await Collections
+    .findByIdAndRemove(
+      changeId(collectionId),
+      { lean: true, new: true },
+    )
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    collectionId,
   };
 
 });

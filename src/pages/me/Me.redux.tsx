@@ -18,6 +18,7 @@ const initialState = {
 export const SAVE_MY_ARTICLE_LIST = 'SAVE_MY_ARTICLE_LIST' as string;
 export const SAVE_DELETE_TITLE = 'SAVE_DELETE_TITLE' as string;
 export const SAVE_MY_COLLECTION_LIST = 'SAVE_MY_COLLECTION_LIST' as string;
+export const DELETE_MY_COLLECTION = 'DELETE_MY_COLLECTION' as string;
 
 
 
@@ -50,6 +51,15 @@ export function saveMyCollectionList(
   };
 }
 
+export function deleteMyCollection(
+  data: any
+): { type: string, payload: any } {
+  return {
+    type: DELETE_MY_COLLECTION,
+    payload: data,
+  };
+}
+
 
 
 export function MeReducer(
@@ -73,6 +83,14 @@ export function MeReducer(
       return {
         ...state,
         my_collection_list: action.payload.my_collection_list,
+      };
+    }
+    case DELETE_MY_COLLECTION: {
+      return {
+        ...state,
+        my_collection_list: state.my_collection_list.filter((item) => {
+          return item._id !== action.payload.collectionId;
+        }), 
       };
     }
     default: {
@@ -165,13 +183,39 @@ export function reduxHandleGetMyCollection(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'GET',
-      url: '/me/mycollection',
+      url: '/me/collection/getinfo',
       jsonp: false,
       data: {
         userid: localStorage.getItem('userid'),
       },
     }).then((res) => {
       dispatch(saveMyCollectionList(res));
+    });
+  };
+}
+
+
+/**
+ * 个人中心 删除我的收藏夹 
+ * @param collectionId 删除的收藏夹id
+ * @param callback 回调
+ */
+export function reduxHandleDeleteMyCollection(
+  collectionId: string,
+  callback?: () => void,
+) {
+  return (dispatch: ThunkDispatch<any, any, any>) => {
+    query({
+      method: 'GET',
+      url: '/me/collection/delete',
+      jsonp: false,
+      data: {
+        userid: localStorage.getItem('userid'),
+        collectionId, 
+      },
+    }).then((res) => {
+      dispatch(deleteMyCollection(res));
+      callback && callback();
     });
   };
 }
