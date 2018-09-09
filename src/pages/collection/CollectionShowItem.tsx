@@ -8,6 +8,7 @@ import {
   Icon,
   Divider,
   Tag,
+  Popconfirm,
 } from 'antd';
 
 import {
@@ -121,13 +122,17 @@ const CollectionShowItem: React.SFC<
                   }}
                   title="删除"
                 >
-                  <Icon
-                    type="close"
-                    onClick={(e: React.MouseEvent) => props.onDeleteCollectionArticle(
+                  <Popconfirm
+                    title="要移除此文章吗?"
+                    onConfirm={(e: React.MouseEvent) => props.onDeleteCollectionArticle(
                       e,
                       item._id,
                     )}
-                  />
+                  >
+                    <Icon
+                      type="close"
+                    />
+                  </Popconfirm>
                 </Col>
               </Card>
             </Row>
@@ -136,13 +141,20 @@ const CollectionShowItem: React.SFC<
         : (
           <div
             style={{
-              lineHeight: '120px',
+              lineHeight: '66px',
               textAlign: 'center',
               fontWeight: "bold",
               fontSize: '18px',
             }}
           >
             <h3>该收藏夹没有文章...</h3>
+            <p>
+              去
+              <Link to="/article">
+                这里
+              </Link>
+              发现更多文章!
+            </p>
           </div>
         );
     }

@@ -72,4 +72,36 @@ collection.get('/getinfo', async (ctx, next) => {
 });
 
 
+/**
+ * 收藏页 => 删除收藏夹文章
+ */
+collection.get('/article/delete', async (ctx, next) => {
+  
+  const { 
+    userid, 
+    articleId, 
+    collectionId,
+  } = await ctx.request.query;
+
+  const getDeleteResult = await Collections
+    .findByIdAndUpdate(
+      changeId(collectionId),
+      {
+        '$pull': { articles: articleId },
+      },
+      { new: true, lean: true, },
+    )
+  
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    result: {
+      collectionId,
+      articleId,
+    },
+  };
+
+});
+
+
 module.exports = collection;

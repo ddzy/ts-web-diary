@@ -48,7 +48,7 @@ export const MainContentTipBox = styled<IStyleProps, 'div'>('div')`
 
 export const MainContentTipText = styled<IStyleProps, 'h1'>('h1')`
   text-align: center;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   color: #999;
 `;

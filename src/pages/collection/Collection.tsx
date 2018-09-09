@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { match } from 'react-router';
 import { connect } from 'react-redux';
+import { notification } from 'antd';
 
 import Header from '../../components/header/Header';
 import {
@@ -16,7 +17,8 @@ import {
 import collection_bg from '../../static/images/bg_img.png';
 import CollectionShowItem from './CollectionShowItem';
 import { 
-  reduxHandleGetCollectionInfo
+  reduxHandleGetCollectionInfo,
+  reduxHandleDeleteCollectionArticle,
 } from './Collection.redux';
 
 
@@ -30,6 +32,13 @@ export interface ICollectionProps {
 
   // 获取收藏夹信息
   reduxHandleGetCollectionInfo: (
+    collectionId: string,
+    callback?: () => void,
+  ) => void;
+
+  // 删除收藏夹文章
+  reduxHandleDeleteCollectionArticle: (
+    articleId: string,
     collectionId: string,
     callback?: () => void,
   ) => void;
@@ -88,8 +97,16 @@ class Collection extends React.PureComponent<
     e: React.MouseEvent,
     articleId: string,
   ) => {
-    console.log(e.currentTarget);
-    console.log(articleId);
+    this.props.reduxHandleDeleteCollectionArticle(
+      articleId,
+      this.props.match.params.id,
+      () => {
+        notification.success({
+          message: '提示',
+          description: '成功移除此文章!',
+        });
+      },
+    );
   }
 
 
@@ -135,6 +152,7 @@ function mapStateToProps(state: any) {
 function mapDispatchToProps() {
   return {
     reduxHandleGetCollectionInfo,
+    reduxHandleDeleteCollectionArticle,
   };
 }
 
