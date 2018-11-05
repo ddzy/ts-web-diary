@@ -160,7 +160,7 @@ class DetailsLeftComment extends React.PureComponent<
                         <Input.TextArea
                           ref={(el) => this.getInputRef(el)}
                           rows={4}
-                          placeholder="请输入评论内容..."
+                          placeholder="请理性评论..."
                         />
                       )}
                     </Form.Item>
