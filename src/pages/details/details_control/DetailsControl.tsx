@@ -19,8 +19,8 @@ export interface IDetailsControlProps {
   isLiked: boolean;             // 点赞状态
   onControlBarStar: (           // 固定栏点赞
     e: React.MouseEvent,
-  ) => void;      
-  
+  ) => void;
+
   collectionInputValue: any,    // 固钉栏弹出层
   onCollectionsInputChange: (
     changedFields: any,
@@ -34,7 +34,7 @@ export interface IDetailsControlProps {
 
   onSaveToCollection: (         // 确认添加至收藏夹
     collectionId: string,
-  ) => void;       
+  ) => void;
 };
 interface IDetailsControlState { };
 
@@ -61,8 +61,8 @@ class DetailsControl extends React.PureComponent<
                   className={`
                     fixed-control-bar-star
                     ${
-                      this.props.isLiked 
-                        && 'fixed-control-bar-star-active'
+                    this.props.isLiked
+                    && 'fixed-control-bar-star-active'
                     }
                   `}
                   type="star"
@@ -84,35 +84,37 @@ class DetailsControl extends React.PureComponent<
                       />
                     }
                     href="#left-comment-container"
-                  />             
-                </Anchor>     
+                  />
+                </Anchor>
               </FixedControlListItem>
             </Tooltip>
             {/* 收藏 */}
-            <FixedControlListItem>
-              <Popover
-                trigger="click"
-                placement="right"
-                title="我的收藏夹"
-                content={
-                  <DetailsControlCollections
-                    collections={this.props.collections}
+            <Tooltip title="收藏" placement="right">
+              <FixedControlListItem>
+                <Popover
+                  trigger="click"
+                  placement="right"
+                  title="我的收藏夹"
+                  content={
+                    <DetailsControlCollections
+                      collections={this.props.collections}
 
-                    collectionInputValue={this.props.collectionInputValue} 
-                    onCollectionsInputChange={this.props.onCollectionsInputChange}
-                    onSendCollection={this.props.onSendCollection}
+                      collectionInputValue={this.props.collectionInputValue}
+                      onCollectionsInputChange={this.props.onCollectionsInputChange}
+                      onSendCollection={this.props.onSendCollection}
 
-                    onSaveToCollection={this.props.onSaveToCollection}
+                      onSaveToCollection={this.props.onSaveToCollection}
+                    />
+                  }
+                >
+                  <Icon
+                    className="fixed-control-bar-collection"
+                    type="heart"
+                    theme="filled"
                   />
-                }
-              >
-                <Icon
-                  className="fixed-control-bar-collection"
-                  type="heart"
-                  theme="filled"
-                />
-              </Popover>
-            </FixedControlListItem>
+                </Popover>
+              </FixedControlListItem>
+            </Tooltip>
             <FixedControlListItem>
               分享
             </FixedControlListItem>
