@@ -3,6 +3,7 @@ import {
   Icon,
   Anchor,
   Popover,
+  Tooltip,
 } from 'antd';
 
 import {
@@ -54,21 +55,22 @@ class DetailsControl extends React.PureComponent<
         <FixedControlContent>
           <FixedControlList>
             {/* 点赞 */}
-            <FixedControlListItem>
-              <Icon
-                className={`
-                  fixed-control-bar-star
-                  ${
-                    this.props.isLiked 
-                      && 'fixed-control-bar-star-active'
-                  }
-                `}
-                type="star"
-                theme="filled"
-                onClick={this.props.onControlBarStar}
-              />
-            </FixedControlListItem>
-            
+            <Tooltip title="赞一个" placement="right">
+              <FixedControlListItem>
+                <Icon
+                  className={`
+                    fixed-control-bar-star
+                    ${
+                      this.props.isLiked 
+                        && 'fixed-control-bar-star-active'
+                    }
+                  `}
+                  type="star"
+                  theme="filled"
+                  onClick={this.props.onControlBarStar}
+                />
+              </FixedControlListItem>
+            </Tooltip>
             {/* 评论 */}
             <FixedControlListItem>
               <Anchor>
