@@ -72,21 +72,22 @@ class DetailsControl extends React.PureComponent<
               </FixedControlListItem>
             </Tooltip>
             {/* 评论 */}
-            <FixedControlListItem>
-              <Anchor>
-                <Anchor.Link
-                  title={
-                    <Icon
-                      className="fixed-control-bar-message"
-                      type="message"
-                      theme="filled"
-                    />
-                  }
-                  href="#left-comment-container"
-                />             
-              </Anchor>     
-            </FixedControlListItem>
-            
+            <Tooltip title="去评论" placement="right">
+              <FixedControlListItem>
+                <Anchor>
+                  <Anchor.Link
+                    title={
+                      <Icon
+                        className="fixed-control-bar-message"
+                        type="message"
+                        theme="filled"
+                      />
+                    }
+                    href="#left-comment-container"
+                  />             
+                </Anchor>     
+              </FixedControlListItem>
+            </Tooltip>
             {/* 收藏 */}
             <FixedControlListItem>
               <Popover
