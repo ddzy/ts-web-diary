@@ -48,8 +48,6 @@ class DetailsControl extends React.PureComponent<
 
   public readonly state = {}
 
-  // 3.8.2
-
   public render(): JSX.Element {
     return (
       <FixedControlContainer>
