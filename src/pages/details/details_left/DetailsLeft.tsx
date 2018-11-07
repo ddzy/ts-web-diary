@@ -6,7 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import { formatTime } from '../../../utils/utils';
 import {
-  COLOR_PICKER,
+  MERGED_ARTICLE_TAG,
 } from '../../../constants/constants';
 import DetailsLeftComment from './DetailsLeftComment';
 import {
@@ -70,12 +70,12 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
   public initArticleTag = (): JSX.Element[] => {
     return this.props.tag
       .split(',')
-      .map((item, index: number) => {
+      .map((item) => {
         return (
           <Tag 
             key={item}
             style={{ marginLeft: '3px !important' }} 
-            color={COLOR_PICKER[index]}
+            color={MERGED_ARTICLE_TAG[item]}
           >{item}</Tag>
         );
       });
