@@ -38,6 +38,18 @@ export const TAG_COLOR_PICKER: object = {
 };
 
 /**
+ * 文章具体内容标签
+ */
+export const ARTICLE_TAG_PICKER: string[] = [
+  'react', 'vue', 'angular', 'typescript',
+  'canvas', 'HTTP', 'ES6', 'PornHub',
+  'Python', 'Nginx', 'Java', 'C++',
+  'Go', 'OS', 'Redis', 'NodeJS',
+  '架构', '运营', '安全', 'MongoDB',
+  'Mysql', '面试', 'C#', '云计算',
+];
+
+/**
  * 文章大方向的分类
  */
 export const ARTICLE_TYPE_PICKER = [
