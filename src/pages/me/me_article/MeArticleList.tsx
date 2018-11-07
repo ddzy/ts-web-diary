@@ -23,7 +23,7 @@ import {
   MeArticleControlBox,
   MeArticleControl
 } from '../style';
-import { COLOR_PICKER } from '../../../constants/constants';
+import { MERGED_ARTICLE_TAG } from '../../../constants/constants';
 import { formatTime } from '../../../utils/utils';
 
 
@@ -61,12 +61,12 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
   public initArticleTag = (): JSX.Element[] => {
     return this.props.tag
       .split(',')
-      .map((item, index: number) => {
+      .map((item) => {
         return (
           <Tag 
             key={item}
             style={{ marginLeft: '3px !important' }} 
-            color={COLOR_PICKER[index]}
+            color={MERGED_ARTICLE_TAG[item]}
           >{item}</Tag>
         );
       });
