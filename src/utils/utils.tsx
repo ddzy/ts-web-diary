@@ -66,3 +66,30 @@ export function isArray(obj: any) {
     && ({}).toString.call(null, obj) === '[object Array]'
     || Array.isArray(obj);
 }
+
+
+/**
+ * 两个数组对应的位置分别为对象的键和值
+ * @param arr1 转化为键的数组
+ * @param arr2 转化为值的数组
+ * @returns 对应键值对象
+ * @see arr1.length<=arr2.length
+ */
+export function mixinObj(
+  arr1: any,
+  arr2: any,
+): object {
+  const resultObj = {};
+
+  if (arr1.length === 0 || arr2.length === 0) {
+    return [];
+  } else if (arr1.length > arr2.length) {
+    return [];
+  }
+
+  arr1.forEach((v: string | number, i: number) => {
+    Reflect.set(resultObj, v, arr2[i]);
+  });
+  
+  return resultObj;
+}
