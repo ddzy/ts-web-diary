@@ -22,7 +22,9 @@ import {
   formatTime, 
   isArray, 
 } from '../../utils/utils';
-import { TAG_COLOR_PICKER } from '../../constants/constants';
+import {
+  COLOR_PICKER,
+} from '../../constants/constants';
 
 
 
@@ -168,11 +170,11 @@ const CollectionShowItem: React.SFC<
     ): JSX.Element[] {
       return tag
         .split(',')
-        .map((item) => {
+        .map((item, index: number) => {
           return (
             <Tag
               key={item}
-              color={TAG_COLOR_PICKER[item]}
+              color={COLOR_PICKER[index]}
             >
               {item}
             </Tag>
