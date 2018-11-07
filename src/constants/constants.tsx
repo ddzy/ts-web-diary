@@ -41,3 +41,14 @@ export const TAG_COLOR_PICKER: object = {
   'MongoDB': 'skyblue',
   '面试': '#84bf96',
 };
+
+/**
+ * 文章大方向的分类
+ */
+export const ARTICLE_TYPE_PICKER = [
+  'Android', '前端',
+  'iOS', '后端',
+  '设计', '产品',
+  '工具资源', '阅读',
+  '人工智能', '运维'
+];

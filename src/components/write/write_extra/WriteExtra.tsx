@@ -11,7 +11,10 @@ import {
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
-import { TAG_COLOR_PICKER } from '../../../constants/constants';
+import {
+  TAG_COLOR_PICKER,
+  ARTICLE_TYPE_PICKER,
+} from '../../../constants/constants';
 import { WriteExtraWrapper, TagWrapper } from '../style';
 
 
@@ -67,8 +70,19 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
   }
 
 
+  public handleInitArticleType(): JSX.Element[] {
+    return ARTICLE_TYPE_PICKER.map((v: string, index: number) => (
+      <Radio.Button
+        key={index}
+        value={v}
+      >{v}</Radio.Button>
+    ));
+  }
+
+
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
+    const articleType: JSX.Element[] = this.handleInitArticleType();
 
     return (
       <WriteExtraWrapper>
@@ -93,10 +107,13 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
                       rules: [{ required: true, message: '文章类型一定要选' }],
                     })(
                       <Radio.Group buttonStyle="solid">
-                        <Radio.Button value="随笔">随笔</Radio.Button>
+                        {/* <Radio.Button value="随笔">随笔</Radio.Button>
                         <Radio.Button value="译文">译文</Radio.Button>
                         <Radio.Button value="教程">教程</Radio.Button>
-                        <Radio.Button value="感悟">感悟</Radio.Button>
+                        <Radio.Button value="感悟">感悟</Radio.Button> */}
+                      
+                        {/* 重构 */}
+                        {articleType}
                       </Radio.Group>
                     )}
                 </Form.Item>
