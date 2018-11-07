@@ -5,7 +5,9 @@ import 'react-quill/dist/quill.snow.css';
 
 
 import { formatTime } from '../../../utils/utils';
-import { TAG_COLOR_PICKER } from '../../../constants/constants';
+import {
+  COLOR_PICKER,
+} from '../../../constants/constants';
 import DetailsLeftComment from './DetailsLeftComment';
 import {
   DetailsLeftWrapper,
@@ -68,12 +70,12 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
   public initArticleTag = (): JSX.Element[] => {
     return this.props.tag
       .split(',')
-      .map((item) => {
+      .map((item, index: number) => {
         return (
           <Tag 
             key={item}
             style={{ marginLeft: '3px !important' }} 
-            color={TAG_COLOR_PICKER[item]}
+            color={COLOR_PICKER[index]}
           >{item}</Tag>
         );
       });
