@@ -23,7 +23,7 @@ import {
   MeArticleControlBox,
   MeArticleControl
 } from '../style';
-import { TAG_COLOR_PICKER } from '../../../constants/constants';
+import { COLOR_PICKER } from '../../../constants/constants';
 import { formatTime } from '../../../utils/utils';
 
 
@@ -61,12 +61,12 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
   public initArticleTag = (): JSX.Element[] => {
     return this.props.tag
       .split(',')
-      .map((item) => {
+      .map((item, index: number) => {
         return (
           <Tag 
             key={item}
             style={{ marginLeft: '3px !important' }} 
-            color={TAG_COLOR_PICKER[item]}
+            color={COLOR_PICKER[index]}
           >{item}</Tag>
         );
       });
