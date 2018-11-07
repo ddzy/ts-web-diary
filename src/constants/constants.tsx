@@ -1,4 +1,14 @@
-
+/**
+ * 颜色选择
+ */
+export const COLOR_PICKER: string[] = [
+  'magenta', 'red', 'volcano', 'orange',
+  'gold', 'lime', 'green', 'cyan',
+  'blue', 'geekblue', 'purple', 'pink',
+  '#d50', '#09c', 'yellow', 'darkred',
+  'yellowgreen', 'aqua', 'aquamarine', 'skyblue',
+  '#84bf96', '#fedcbd', '#2a5caa', '#b7ba6b',
+];
 
 /**
  * 文章所属具体内容标签
