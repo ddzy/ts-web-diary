@@ -23,7 +23,7 @@ import {
   isArray, 
 } from '../../utils/utils';
 import {
-  COLOR_PICKER,
+  MERGED_ARTICLE_TAG,
 } from '../../constants/constants';
 
 
@@ -170,11 +170,11 @@ const CollectionShowItem: React.SFC<
     ): JSX.Element[] {
       return tag
         .split(',')
-        .map((item, index: number) => {
+        .map((item) => {
           return (
             <Tag
               key={item}
-              color={COLOR_PICKER[index]}
+              color={MERGED_ARTICLE_TAG[item]}
             >
               {item}
             </Tag>
