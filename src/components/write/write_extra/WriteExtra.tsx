@@ -12,7 +12,7 @@ import {
 import { FormComponentProps } from 'antd/lib/form';
 
 import {
-  TAG_COLOR_PICKER,
+  ARTICLE_TAG_PICKER,
   ARTICLE_TYPE_PICKER,
 } from '../../../constants/constants';
 import { WriteExtraWrapper, TagWrapper } from '../style';
@@ -38,8 +38,7 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
 
 
   public initTags = (): any[] => {
-    return Object
-      .keys(TAG_COLOR_PICKER)
+    return ARTICLE_TAG_PICKER
       .map((item: never) => {
         return (
           <Tag.CheckableTag
