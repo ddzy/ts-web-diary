@@ -42,7 +42,7 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
   public readonly state = {
     navList: [
       { path: '/home', value: '首页', children: null },
-      { path: '/article', value: '日记', children: null },
+      { path: '/article', value: '文章', children: null },
     ],
   }
 
@@ -55,7 +55,9 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
     });
 
     /\/details\/\w*/.test(pathname) 
-      && result.push({ path: '/details', value: '详情', children: null });
+      && result.push({
+        path: '/details', value: '详情', children: null
+      });
 
     /\/collection\/\w*/.test(pathname)
       && result.push({
