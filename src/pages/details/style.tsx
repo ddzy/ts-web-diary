@@ -124,7 +124,7 @@ export const InputBottom = styled<IStyleProps, 'div'>('div')`
 
 
 export const CommentShowBox = styled<IStyleProps, 'div'>('div')`
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 0 20px;
 `;
 
