@@ -64,11 +64,16 @@ class DetailsLeftComment extends React.PureComponent<
   IDetailsLeftCommentProps,
   IDetailLeftCommentState
   > {
-  public inputRef = null
+  public inputRef: any;
 
 
   public readonly state = {
     isShowSendBtnBox: false,
+  }
+
+
+  public componentDidMount(): void {
+    this.handleToggleComment();
   }
 
 
@@ -91,6 +96,17 @@ class DetailsLeftComment extends React.PureComponent<
       === 'none'
       ? 'block'
       : 'none';
+  }
+
+
+  //// 处理切换commentBox
+  public handleToggleComment = (): void => {
+    this.inputRef.textAreaRef.addEventListener('focus', () => {
+      this.setState({ isShowSendBtnBox: true });
+    });
+    this.inputRef.textAreaRef.addEventListener('blur', () => {
+      this.setState({ isShowSendBtnBox: false });
+    });
   }
 
 
@@ -175,7 +191,7 @@ class DetailsLeftComment extends React.PureComponent<
               </Col>
             </Row>
           </InputTop>
-          <InputBottom>
+          <InputBottom isShowSendBtnBox={this.state.isShowSendBtnBox}>
             <Row>
               <Col>
                 <Button
