@@ -158,7 +158,6 @@ export const ItemReplyBox = styled<IStyleProps, 'div'>('div')`
   position: relative;
   margin-top: 10px;
   padding: 0 48px;
-  min-height: 200px;
   &::after {
     content: '';
     position: absolute;
