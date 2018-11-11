@@ -191,7 +191,7 @@ class DetailsLeftComment extends React.PureComponent<
           </InputBottom>
         </CommentInputBox>
         
-        {/* 展示栏 */}
+        {/* 根评论展示栏 */}
         <CommentShowBox>
           <CommentShowList>
             {this.initCommentListItem()}
