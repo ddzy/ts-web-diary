@@ -159,7 +159,7 @@ class DetailsLeftComment extends React.PureComponent<
                       })(
                         <Input.TextArea
                           ref={(el) => this.getInputRef(el)}
-                          rows={4}
+                          autosize={{ minRows: 1 }}
                           placeholder="请理性评论..."
                         />
                       )}

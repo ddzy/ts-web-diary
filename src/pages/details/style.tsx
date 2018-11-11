@@ -85,7 +85,7 @@ export const LeftCommentContainer = styled<IStyleProps, 'div'>('div')`
 
 
 export const CommentTipBox = styled<IStyleProps, 'div'>('div')`
-  padding-top: 40px;
+  padding-top: 20px;
   background-color: #f7f8f9;
   text-align: center;
 `;
