@@ -51,7 +51,10 @@ export interface IDetailsLeftCommentProps extends FormComponentProps {
     commentid: string,
   ) => void;
 };
-interface IDetailLeftCommentState { };
+interface IDetailLeftCommentState {
+  // 控制提交评论区域显隐
+  isShowSendBtnBox: boolean;
+};
 
 
 /**
@@ -64,7 +67,9 @@ class DetailsLeftComment extends React.PureComponent<
   public inputRef = null
 
 
-  public readonly state = {}
+  public readonly state = {
+    isShowSendBtnBox: false,
+  }
 
 
   //// 处理切换ReplyBox

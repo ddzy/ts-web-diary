@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export interface IStyleProps {
   LoadingWrapperWidth?: string;
   LoadingWrapperHeight?: string;
+  isShowSendBtnBox?: boolean;
 };
 
 
@@ -116,7 +117,9 @@ export const InputTopText = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const InputBottom = styled<IStyleProps, 'div'>('div')`
-
+  display: ${(props) => (
+    props.isShowSendBtnBox ? 'block' : 'none'
+  )};
 `;
 
 
