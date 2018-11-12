@@ -94,19 +94,34 @@ class DetailsLeftComment extends React.PureComponent<
     e.currentTarget.classList.toggle('comment-reply-icon-active');
     oReplyNode.style.display = oReplyNode.style.display 
       === 'none'
-      ? 'block'
-      : 'none';
+        ? 'block'
+        : 'none';
   }
 
 
   //// 处理切换commentBox
   public handleToggleComment = (): void => {
-    this.inputRef.textAreaRef.addEventListener('focus', () => {
-      this.setState({ isShowSendBtnBox: true });
-    });
-    this.inputRef.textAreaRef.addEventListener('blur', () => {
-      this.setState({ isShowSendBtnBox: false });
-    });
+    // const excludeEle = document
+    //   .querySelectorAll('.same-show-action-box') as NodeList;
+
+    // this.inputRef.textAreaRef.addEventListener('focus', () => {
+    //   this.setState({ isShowSendBtnBox: true });
+    // });
+    // this.inputRef.textAreaRef.addEventListener('blur', () => {
+    //   this.setState({ isShowSendBtnBox: false });
+    // });
+
+    document.body.addEventListener('click', (
+      e: MouseEvent
+    ) => {
+      const oTarget = e.target as HTMLElement;
+
+      if (oTarget.classList.contains('same-show-action-box')) {
+        this.setState({ isShowSendBtnBox: true });
+      } else {
+        this.setState({ isShowSendBtnBox: false });
+      }
+    }, false);
   }
 
 
@@ -179,9 +194,10 @@ class DetailsLeftComment extends React.PureComponent<
                         rules: [{ required: true, message: '请填写评论!' }], 
                       })(
                         <Input.TextArea
+                          placeholder="请理性评论..."
+                          className="same-show-action-box"
                           ref={(el) => this.getInputRef(el)}
                           autosize={{ minRows: 1 }}
-                          placeholder="请理性评论..."
                         />
                       )}
                     </Form.Item>
@@ -195,6 +211,7 @@ class DetailsLeftComment extends React.PureComponent<
             <Row>
               <Col>
                 <Button
+                  className="same-show-action-box"
                   htmlType="button"
                   type="primary"
                   style={{ 
