@@ -196,15 +196,16 @@ class DetailsLeftComment extends React.PureComponent<
           </InputTop>
           <InputBottom isShowSendBtnBox={this.state.isShowSendBtnBox}>
             <Row>
-              <Col>
+              <Col span={12}>
+                表情框        
+              </Col>
+              <Col span={12}>
                 <Button
                   className="same-show-action-box"
                   htmlType="button"
                   type="primary"
                   style={{ 
-                    float: 'right', 
-                    width: '15%',
-                    marginTop: '10px',
+                    float: 'right',
                   }}
                   onClick={(e: React.MouseEvent) => this.props.onSendComment(
                     e,
