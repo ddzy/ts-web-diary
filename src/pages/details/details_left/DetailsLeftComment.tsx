@@ -101,16 +101,6 @@ class DetailsLeftComment extends React.PureComponent<
 
   //// 处理切换commentBox
   public handleToggleComment = (): void => {
-    // const excludeEle = document
-    //   .querySelectorAll('.same-show-action-box') as NodeList;
-
-    // this.inputRef.textAreaRef.addEventListener('focus', () => {
-    //   this.setState({ isShowSendBtnBox: true });
-    // });
-    // this.inputRef.textAreaRef.addEventListener('blur', () => {
-    //   this.setState({ isShowSendBtnBox: false });
-    // });
-
     document.body.addEventListener('click', (
       e: MouseEvent
     ) => {
