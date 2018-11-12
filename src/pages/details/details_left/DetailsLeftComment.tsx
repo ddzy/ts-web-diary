@@ -105,12 +105,9 @@ class DetailsLeftComment extends React.PureComponent<
       e: MouseEvent
     ) => {
       const oTarget = e.target as HTMLElement;
+      const hasClass = oTarget.classList.contains('same-show-action-box') as boolean;
 
-      if (oTarget.classList.contains('same-show-action-box')) {
-        this.setState({ isShowSendBtnBox: true });
-      } else {
-        this.setState({ isShowSendBtnBox: false });
-      }
+      this.setState({ isShowSendBtnBox: hasClass });
     }, false);
   }
 
