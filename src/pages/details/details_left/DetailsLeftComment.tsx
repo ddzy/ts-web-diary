@@ -7,6 +7,9 @@ import {
   Col,
   Form,
   Divider,
+  // Card,
+  Popover,
+  Icon,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
@@ -25,6 +28,7 @@ import {
 } from '../style';
 import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
+// import { EMOJI_PICKER } from '../../../constants/constants';
 
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
@@ -54,6 +58,8 @@ export interface IDetailsLeftCommentProps extends FormComponentProps {
 interface IDetailLeftCommentState {
   // 控制提交评论区域显隐
   isShowSendBtnBox: boolean;
+  // 控制评论框emoji框显隐
+  isShowCommentEmojiBox: boolean;
 };
 
 
@@ -69,6 +75,7 @@ class DetailsLeftComment extends React.PureComponent<
 
   public readonly state = {
     isShowSendBtnBox: false,
+    isShowCommentEmojiBox: false,
   }
 
 
@@ -106,9 +113,20 @@ class DetailsLeftComment extends React.PureComponent<
     ) => {
       const oTarget = e.target as HTMLElement;
       const hasClass = oTarget.classList.contains('same-show-action-box') as boolean;
+      // const targetClassName = oTarget.localName as string;
 
-      this.setState({ isShowSendBtnBox: hasClass });
+      if (hasClass) {
+        this.setState({ isShowSendBtnBox: hasClass });
+      }
     }, false);
+  }
+
+
+  //// 处理切换评论框 emoji显隐
+  public handleToggleCommentEmoji = () => {
+    this.setState((prevState) => ({
+      isShowCommentEmojiBox: !prevState.isShowCommentEmojiBox,
+    }));
   }
 
 
@@ -197,7 +215,14 @@ class DetailsLeftComment extends React.PureComponent<
           <InputBottom isShowSendBtnBox={this.state.isShowSendBtnBox}>
             <Row>
               <Col span={12}>
-                表情框        
+                <Popover trigger="click">
+                  <Icon
+                    className="same-show-action-box"
+                    type="smile"
+                    theme="twoTone"
+                    onClick={this.handleToggleCommentEmoji}
+                  />
+                </Popover>        
               </Col>
               <Col span={12}>
                 <Button
