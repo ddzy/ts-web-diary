@@ -1,8 +1,8 @@
 ## 实时发布文章的交流平台
 ## Tip
-> 最近更新于 18/11/11
+> 最近更新于 18/11/12
 ## Todo
-> 12号任务: 完成评论区添加表情
+> 13号任务: 完成评论输入框的表情整合
 ## Description
 实时创作发布的交流平台, 采用```react+ts```开发,已实现和未完成的功能如下: 
 - [x] 登录页
@@ -41,9 +41,9 @@
 ## Usage
 1. npm install 
 2. cd node_modules/tslint/config/, 编辑```recommend.js```
-  1. object-literal-sort-keys => false
-  2. no-bitwise => false
+  + object-literal-sort-keys => false
+  + no-bitwise => false
 3. 开启项目
-  1. npm start
+  + npm start
 4. 启动服务器
-  1. cd server/ && nodemon server.js
+  + cd server/ && nodemon server.js
