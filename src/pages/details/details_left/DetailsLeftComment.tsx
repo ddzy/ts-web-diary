@@ -113,11 +113,8 @@ class DetailsLeftComment extends React.PureComponent<
     ) => {
       const oTarget = e.target as HTMLElement;
       const hasClass = oTarget.classList.contains('same-show-action-box') as boolean;
-      // const targetClassName = oTarget.localName as string;
 
-      if (hasClass) {
-        this.setState({ isShowSendBtnBox: hasClass });
-      }
+      hasClass && this.setState({ isShowSendBtnBox: hasClass });
     }, false);
   }
 
