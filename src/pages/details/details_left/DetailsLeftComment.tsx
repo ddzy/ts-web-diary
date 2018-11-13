@@ -114,7 +114,7 @@ class DetailsLeftComment extends React.PureComponent<
       const oTarget = e.target as HTMLElement;
       const hasClass = oTarget.classList.contains('same-show-action-box') as boolean;
 
-      hasClass && this.setState({ isShowSendBtnBox: hasClass });
+      this.setState({ isShowSendBtnBox: hasClass });
     }, false);
   }
 
@@ -123,6 +123,7 @@ class DetailsLeftComment extends React.PureComponent<
   public handleToggleCommentEmoji = () => {
     this.setState((prevState) => ({
       isShowCommentEmojiBox: !prevState.isShowCommentEmojiBox,
+      isShowSendBtnBox: true,
     }));
   }
 
