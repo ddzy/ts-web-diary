@@ -215,7 +215,6 @@ class DetailsLeftComment extends React.PureComponent<
               <Col span={12}>
                 <Popover trigger="click">
                   <Icon
-                    className="same-show-action-box"
                     type="smile"
                     theme="twoTone"
                     onClick={this.handleToggleCommentEmoji}
