@@ -7,12 +7,10 @@ import {
   Col,
   Form,
   Divider,
-  Card,
   Popover,
   Icon,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-
 
 import {
   LeftCommentContainer,
@@ -28,7 +26,7 @@ import {
 } from '../style';
 import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
-import { EMOJI_PICKER } from '../../../constants/constants';
+// import { EMOJI_PICKER } from '../../../constants/constants';
 
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
@@ -161,7 +159,7 @@ class DetailsLeftComment extends React.PureComponent<
 
 
   //// 初始化评论表情框内容
-  public initCommentEmoji = (): JSX.Element[] => {
+/*   public initCommentEmoji = (): JSX.Element[] => {
     const emojiStyle = {
       width: '10px',
       textAlign: 'center',
@@ -176,8 +174,8 @@ class DetailsLeftComment extends React.PureComponent<
           >{emoji}</Card.Grid>
         );
       });
-  }
-
+  } */
+  
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
@@ -235,7 +233,9 @@ class DetailsLeftComment extends React.PureComponent<
                 <Popover
                   trigger="click"
                   content={
-                    '😄'
+                    <React.Fragment>
+                      😄
+                    </React.Fragment>
                   }
                   overlayStyle={{ width: '120px' }}
                 >
