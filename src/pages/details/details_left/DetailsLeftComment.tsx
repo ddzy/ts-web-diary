@@ -7,7 +7,7 @@ import {
   Col,
   Form,
   Divider,
-  // Card,
+  Card,
   Popover,
   Icon,
 } from 'antd';
@@ -28,7 +28,7 @@ import {
 } from '../style';
 import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
-// import { EMOJI_PICKER } from '../../../constants/constants';
+import { EMOJI_PICKER } from '../../../constants/constants';
 
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
@@ -160,6 +160,25 @@ class DetailsLeftComment extends React.PureComponent<
   }
 
 
+  //// 初始化评论表情框内容
+  public initCommentEmoji = (): JSX.Element[] => {
+    const emojiStyle = {
+      width: '10px',
+      textAlign: 'center',
+    };
+
+    return EMOJI_PICKER
+      .map((emoji: string, i: number) => {
+        return (
+          <Card.Grid
+            key={i}
+            style={emojiStyle}
+          >{emoji}</Card.Grid>
+        );
+      });
+  }
+
+
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
 
@@ -213,7 +232,11 @@ class DetailsLeftComment extends React.PureComponent<
           <InputBottom isShowSendBtnBox={this.state.isShowSendBtnBox}>
             <Row>
               <Col span={12}>
-                <Popover trigger="click">
+                <Popover
+                  trigger="click"
+                  content={this.initCommentEmoji()}
+                  overlayStyle={{ width: '120px' }}
+                >
                   <Icon
                     type="smile"
                     theme="twoTone"
