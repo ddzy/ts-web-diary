@@ -121,8 +121,8 @@ class DetailsLeftComment extends React.PureComponent<
 
   //// 处理切换评论框 emoji显隐
   public handleToggleCommentEmoji = () => {
-    this.setState((prevState) => ({
-      isShowCommentEmojiBox: !prevState.isShowCommentEmojiBox,
+    this.setState(() => ({
+      isShowCommentEmojiBox: true,
       isShowSendBtnBox: true,
     }));
   }
@@ -227,7 +227,7 @@ class DetailsLeftComment extends React.PureComponent<
                   trigger="click"
                   placement="left"
                   content={
-                    <EmojiWrapper>
+                    <EmojiWrapper onClick={this.handleToggleCommentEmoji}>
                       {this.initCommentEmoji()}
                     </EmojiWrapper>
                   }
