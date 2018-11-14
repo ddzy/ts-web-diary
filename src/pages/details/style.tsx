@@ -122,6 +122,17 @@ export const InputBottom = styled<IStyleProps, 'div'>('div')`
   )};
 `;
 
+/// 评论区表情框
+export const EmojiWrapper = styled<IStyleProps, 'div'>('div')`
+  display: flex;
+  width: 200px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+export const EmojiItem = styled<IStyleProps, 'span'>('span')`
+  text-align: center;
+`;
+
 
 export const CommentShowBox = styled<IStyleProps, 'div'>('div')`
   margin-top: 30px;

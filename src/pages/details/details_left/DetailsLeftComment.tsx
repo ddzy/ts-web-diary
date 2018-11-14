@@ -23,10 +23,12 @@ import {
   CommentShowList,
   CommentTipBox,
   TipText,
+  EmojiWrapper,
+  EmojiItem,
 } from '../style';
 import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
-// import { EMOJI_PICKER } from '../../../constants/constants';
+import { EMOJI_PICKER } from '../../../constants/constants';
 
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
@@ -159,22 +161,13 @@ class DetailsLeftComment extends React.PureComponent<
 
 
   //// 初始化评论表情框内容
-/*   public initCommentEmoji = (): JSX.Element[] => {
-    const emojiStyle = {
-      width: '10px',
-      textAlign: 'center',
-    };
-
-    return EMOJI_PICKER
-      .map((emoji: string, i: number) => {
-        return (
-          <Card.Grid
-            key={i}
-            style={emojiStyle}
-          >{emoji}</Card.Grid>
-        );
-      });
-  } */
+  public initCommentEmoji = (): JSX.Element[] => {
+    return EMOJI_PICKER.map((emoji: string, i: number) => {
+      return (
+        <EmojiItem key={i}>{emoji}</EmojiItem>
+      );
+    });
+  }
   
 
   public render(): JSX.Element {
@@ -232,12 +225,12 @@ class DetailsLeftComment extends React.PureComponent<
               <Col span={12}>
                 <Popover
                   trigger="click"
+                  placement="left"
                   content={
-                    <React.Fragment>
-                      😄
-                    </React.Fragment>
+                    <EmojiWrapper>
+                      {this.initCommentEmoji()}
+                    </EmojiWrapper>
                   }
-                  overlayStyle={{ width: '120px' }}
                 >
                   <Icon
                     type="smile"
