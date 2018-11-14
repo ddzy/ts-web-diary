@@ -181,7 +181,7 @@ class DetailsLeftComment extends React.PureComponent<
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
-
+    
     return (
       <LeftCommentContainer
         id="left-comment-container"
@@ -234,7 +234,9 @@ class DetailsLeftComment extends React.PureComponent<
               <Col span={12}>
                 <Popover
                   trigger="click"
-                  content={this.initCommentEmoji()}
+                  content={
+                    '😄'
+                  }
                   overlayStyle={{ width: '120px' }}
                 >
                   <Icon
