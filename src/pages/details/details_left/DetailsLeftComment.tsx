@@ -11,6 +11,7 @@ import {
   Icon,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import Emojify from 'react-emojione';
 
 import {
   LeftCommentContainer,
@@ -129,9 +130,7 @@ class DetailsLeftComment extends React.PureComponent<
 
 
   //// 初始化评论列表
-  public initCommentListItem = (
-
-  ): JSX.Element[] | []=> {
+  public initCommentListItem = (): JSX.Element[] | []=> {
     const comments = this.props.comments;
 
     return isArray(comments) 
@@ -227,8 +226,14 @@ class DetailsLeftComment extends React.PureComponent<
                   trigger="click"
                   placement="left"
                   content={
-                    <EmojiWrapper onClick={this.handleToggleCommentEmoji}>
-                      {this.initCommentEmoji()}
+                    <EmojiWrapper
+                      onClick={this.handleToggleCommentEmoji}
+                    >
+                      {/* {this.initCommentEmoji()} */}
+                      <Emojify>
+                        <span>Easy! :wink:</span>
+                        <span>😸 :D  ^__^</span>
+                      </Emojify>
                     </EmojiWrapper>
                   }
                 >
