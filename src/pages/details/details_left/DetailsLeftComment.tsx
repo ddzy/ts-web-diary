@@ -159,7 +159,7 @@ class DetailsLeftComment extends React.PureComponent<
 
   //// 初始化评论表情框内容
   public initCommentEmoji = () => {
-    
+    console.log('one');
   }
   
 
@@ -225,8 +225,8 @@ class DetailsLeftComment extends React.PureComponent<
                     >
                       {/* {this.initCommentEmoji()} */}
                       <Emojify>
-                        <span>Easy! :wink:</span>
-                        <span>😸 :D  ^__^</span>
+                        <EmojiItem>Easy! :wink:</EmojiItem>
+                        <EmojiItem>😸 :D  ^__^</EmojiItem>
                       </Emojify>
                     </EmojiWrapper>
                   }
