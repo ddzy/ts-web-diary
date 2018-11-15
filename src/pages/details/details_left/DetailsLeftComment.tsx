@@ -215,7 +215,6 @@ class DetailsLeftComment extends React.PureComponent<
                       )}
                     </Form.Item>
                   </Form>
-
                 </InputTopText>
               </Col>
             </Row>
@@ -240,11 +239,28 @@ class DetailsLeftComment extends React.PureComponent<
                     </EmojiWrapper>
                   }
                 >
-                  <Icon
-                    type="smile"
-                    theme="twoTone"
+                  <div
                     onClick={this.handleToggleCommentEmoji}
-                  />
+                    style={{
+                      marginLeft: '16%',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Icon
+                      type="smile"
+                      theme="twoTone"
+                      style={{
+                        fontSize: '18px',
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                      }}
+                    />
+                    <span style={{
+                      color: '#1890ff',
+                      display: 'inline-block',
+                      verticalAlign: 'middle',
+                    }}>表情</span>
+                  </div>
                 </Popover>        
               </Col>
               <Col span={12}>
