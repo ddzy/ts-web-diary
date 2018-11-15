@@ -52,6 +52,7 @@ export const EMOJI_PICKER: string[] = [
   ':+1:', ':pray:', ':-1:', ':clap:', ':v:', ':slightly_smiling_face:',
   ':rofl:', ':joy:', ':flushed:', ':mask:', ':smiley_cat:', ':ok_hand:',
   ':writing_hand:', ':pig:', ':sun_with_face:', ':iphone:', ':heartbeat:', ':sparkling_heart:',
-  ':heart:', ':arrow_right:', ':arrow_left:', ':underage:', ':u7981:', ':lock:',
+  ':heart:', ':arrow_right:', ':arrow_left:', ':underage:', ':u7981:', ':lock:', ':star:', ':hear_no_evil:', ':bikini:',
+  ':expressionless:', ':eyes:', ':call_me_hand:',
 ];
 
