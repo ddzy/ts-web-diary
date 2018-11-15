@@ -9,6 +9,7 @@ import {
 import { History } from 'history';
 import { match } from 'react-router';
 import { connect } from 'react-redux';
+import { emojify } from 'react-emojione';
 
 import Header from '../../components/header/Header';
 import DetailsLeft from './details_left/DetailsLeft';
@@ -27,7 +28,6 @@ import {
   DetailsWrapper,
   DetailsContent,
 } from './style';
-
 
 
 export interface IDetailsProps {
@@ -305,6 +305,25 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     );
   }
 
+  
+  /**
+   * 处理 评论框表情输入
+   */
+  public handleCommentEmojiChange = (
+    e: any,
+  ): void => {
+    const emoji: string = e.currentTarget.getAttribute('title');
+
+    this.setState((prevState) => ({
+      commentInputValue: {
+        ...prevState.commentInputValue,
+        value: `${prevState.commentInputValue.value}${
+          emojify(emoji, { output: 'unicode' })
+        }`
+      },
+    }));
+  }
+
 
   public render(): JSX.Element {
 
@@ -322,6 +341,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                   onCommentInputChange={this.handleCommentInputChange}
                   onSendComment={this.handleSendComment}
                   commentInputValue={this.state.commentInputValue}
+                  onCommentEmojiChange={this.handleCommentEmojiChange}
+
                   onReplyInputChange={this.handleReplyInputChange}
                   onSendReply={this.handleSendReply}
                   replyInputValue={this.state.replyInputValue}

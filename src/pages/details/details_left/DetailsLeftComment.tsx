@@ -11,7 +11,7 @@ import {
   Icon,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import Emojify from 'react-emojione';
+import { Emojify } from 'react-emojione';
 
 import {
   LeftCommentContainer,
@@ -43,6 +43,9 @@ export interface IDetailsLeftCommentProps extends FormComponentProps {
   ) => void;
   onCommentInputChange: (
     changedFields: any,
+  ) => void;
+  onCommentEmojiChange: (
+    e: MouseEvent,
   ) => void;
 
   replyInputValue: string | '';
@@ -229,11 +232,14 @@ class DetailsLeftComment extends React.PureComponent<
                     <EmojiWrapper
                       onClick={this.handleToggleCommentEmoji}
                     >
-                      <Emojify style={{
-                        width: '20',
-                        height: '20px',
-                        margin: '4px',
-                      }}>
+                      <Emojify
+                        style={{
+                          width: '20',
+                          height: '20px',
+                          margin: '4px',
+                        }}
+                        onClick={this.props.onCommentEmojiChange}
+                      >
                         {this.initCommentEmoji()}
                       </Emojify>
                     </EmojiWrapper>
