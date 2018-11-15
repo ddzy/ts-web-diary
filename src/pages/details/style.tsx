@@ -131,6 +131,11 @@ export const EmojiWrapper = styled<IStyleProps, 'div'>('div')`
 `;
 export const EmojiItem = styled<IStyleProps, 'span'>('span')`
   text-align: center;
+  cursor: pointer;
+  transition: transform .15s ease-in;
+  &:hover {
+    transform: scale(1.3, 1.3);
+  }
 `;
 
 

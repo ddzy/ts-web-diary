@@ -29,6 +29,7 @@ import {
 } from '../style';
 import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
+import { EMOJI_PICKER } from '../../../constants/constants';
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
   useravatar: string;
@@ -159,7 +160,13 @@ class DetailsLeftComment extends React.PureComponent<
 
   //// 初始化评论表情框内容
   public initCommentEmoji = () => {
-    console.log('one');
+    return EMOJI_PICKER.map((emoji: string, i: number) => {
+      return (
+        <EmojiItem
+          key={i}
+        >{emoji}</EmojiItem>
+      );
+    });
   }
   
 
@@ -223,10 +230,12 @@ class DetailsLeftComment extends React.PureComponent<
                     <EmojiWrapper
                       onClick={this.handleToggleCommentEmoji}
                     >
-                      {/* {this.initCommentEmoji()} */}
-                      <Emojify>
-                        <EmojiItem>Easy! :wink:</EmojiItem>
-                        <EmojiItem>😸 :D  ^__^</EmojiItem>
+                      <Emojify style={{
+                        width: '20',
+                        height: '20px',
+                        margin: '4px',
+                      }}>
+                        {this.initCommentEmoji()}
                       </Emojify>
                     </EmojiWrapper>
                   }
