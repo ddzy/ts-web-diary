@@ -46,7 +46,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = (): JSX.Element => {
           <Col span={22}>
             <InputTopText>
               <TopTextMain
-                contentEditable = {true}
+                contentEditable={true}
                 spellCheck={false}
                 placeholder={'请理性评论...'}
               />
