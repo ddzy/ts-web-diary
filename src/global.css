@@ -192,3 +192,28 @@ table {
 .fixed-control-bar-collection-active {
 	color: #1890ff;
 }
+
+
+/*
+	details页 baseComment组件 输入框样式
+*/
+.base-top-text-main {
+	height: 100%;
+  padding: 9px 12px 7px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+	transition: border .15s ease-in,
+							background-color .15s ease-in;
+}
+.base-top-text-main:focus {
+	border: 1px solid #1890ff;
+	background-color: #fff;
+}
+.base-top-text-main:empty::before {
+	content: attr(placeholder);
+	color: #ccc;
+}
+.base-top-text-main:focus::before {
+	content: none;
+}

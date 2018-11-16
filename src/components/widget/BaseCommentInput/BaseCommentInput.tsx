@@ -13,11 +13,10 @@ import {
   InputBottom,
   InputTopAvatar,
   InputTopText,
-  TopTextMain,
   EmojiWrapper,
   EmojiItem,
 } from './style';
-import { Emojify, emojify } from 'react-emojione';
+import { Emojify } from 'react-emojione';
 import ContentEditable from 'react-contenteditable';
 
 
@@ -33,21 +32,9 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   useravatar,
 }): JSX.Element => {
 
-  const styleOptions = {
-    height: '100%',
-    padding: '9px 12px 7px',
-    border: '1px solid #ccc',
-    borderRadius: '6px',
-    outline: 'none',
-    transition: 'border .15s ease-in',
-  };
-
-  const handleChange = (e: React.ChangeEvent) => {
-    console.log(e.target.nodeValue);
+  const handleChange = (e: any) => {
+    console.log(e.target.value);
   }
-
-  const html = emojify(':writing_hand:', { output: 'unicode' });
-
 
   return (
     <CommentInputBox>
@@ -66,19 +53,11 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
           </Col>
           <Col span={22}>
             <InputTopText>
-              <TopTextMain 
-                contentEditable={true}
-                spellCheck={false}
-                suppressContentEditableWarning={true}
-              >
-                {emojify(':smile:')}
-              </TopTextMain>
-
               <ContentEditable
+                className="base-top-text-main"
                 tagName="div"
-                html={html}
+                html={''}
                 disabled={false}
-                style={styleOptions}
                 onChange={handleChange}
               />
             </InputTopText>
