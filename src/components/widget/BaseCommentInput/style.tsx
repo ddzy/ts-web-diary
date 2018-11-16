@@ -15,14 +15,26 @@ export const InputTopAvatar = styled.div`
 `;
 
 export const InputTopText = styled.div`
-  padding: 9px 12px 7px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+
 `;
 
 export const TopTextMain = styled.div`
   height: 100%;
+  padding: 9px 12px 7px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   outline: none;
+  transition: border .15s ease-in;
+  &:empty::before {
+    content: attr(placeholder);
+    color: #ccc;
+  }
+  &:focus::before {
+    content: none;
+  }
+  &:focus {
+    border: 1px solid #1890ff;
+  }
 `;
 
 export const InputBottom = styled.div`
