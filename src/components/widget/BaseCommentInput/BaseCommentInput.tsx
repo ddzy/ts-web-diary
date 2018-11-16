@@ -17,7 +17,8 @@ import {
   EmojiWrapper,
   EmojiItem,
 } from './style';
-import { Emojify } from 'react-emojione';
+import { Emojify, emojify } from 'react-emojione';
+import ContentEditable from 'react-contenteditable';
 
 
 export interface IBaseCommentInputProps {
@@ -31,6 +32,22 @@ export interface IBaseCommentInputProps {
 const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   useravatar,
 }): JSX.Element => {
+
+  const styleOptions = {
+    height: '100%',
+    padding: '9px 12px 7px',
+    border: '1px solid #ccc',
+    borderRadius: '6px',
+    outline: 'none',
+    transition: 'border .15s ease-in',
+  };
+
+  const handleChange = (e: React.ChangeEvent) => {
+    console.log(e.target.nodeValue);
+  }
+
+  const html = emojify(':writing_hand:', { output: 'unicode' });
+
 
   return (
     <CommentInputBox>
@@ -49,10 +66,20 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
           </Col>
           <Col span={22}>
             <InputTopText>
-              <TopTextMain
+              <TopTextMain 
                 contentEditable={true}
                 spellCheck={false}
-                placeholder={'请理性评论...'}
+                suppressContentEditableWarning={true}
+              >
+                {emojify(':smile:')}
+              </TopTextMain>
+
+              <ContentEditable
+                tagName="div"
+                html={html}
+                disabled={false}
+                style={styleOptions}
+                onChange={handleChange}
               />
             </InputTopText>
           </Col>
