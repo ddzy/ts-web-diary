@@ -289,7 +289,9 @@ class DetailsLeftComment extends React.PureComponent<
         </CommentInputBox>
         
         {/* 重构输入框 */}
-        <BaseCommentInput />
+        <BaseCommentInput
+          useravatar={this.props.useravatar}
+        />
 
         {/* 根评论展示栏 */}
         <CommentShowBox>

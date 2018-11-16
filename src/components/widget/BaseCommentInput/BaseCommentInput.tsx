@@ -20,13 +20,17 @@ import {
 import { Emojify } from 'react-emojione';
 
 
-export interface IBaseCommentInputProps { };
+export interface IBaseCommentInputProps {
+  useravatar: string;
+};
 
 
 /**
  * 评论|回复输入框 通用组件
  */
-const BaseCommentInput: React.SFC<IBaseCommentInputProps> = (): JSX.Element => {
+const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
+  useravatar,
+}): JSX.Element => {
 
   return (
     <CommentInputBox>
@@ -35,7 +39,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = (): JSX.Element => {
           <Col span={2}>
             <InputTopAvatar>
               <Avatar
-                src={''}
+                src={useravatar}
                 shape="circle"
                 icon="user"
                 size="large"
