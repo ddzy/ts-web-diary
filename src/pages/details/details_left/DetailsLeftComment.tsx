@@ -30,6 +30,7 @@ import {
 import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
 import { EMOJI_PICKER } from '../../../constants/constants';
+import BaseCommentInput from '../../../components/widget/BaseCommentInput/BaseCommentInput';
 
 export interface IDetailsLeftCommentProps extends FormComponentProps {
   useravatar: string;
@@ -287,6 +288,9 @@ class DetailsLeftComment extends React.PureComponent<
           </InputBottom>
         </CommentInputBox>
         
+        {/* 重构输入框 */}
+        <BaseCommentInput />
+
         {/* 根评论展示栏 */}
         <CommentShowBox>
           <CommentShowList>
