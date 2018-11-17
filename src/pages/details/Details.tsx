@@ -146,28 +146,16 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
 
   /**
-   * 处理评论输入
-   */
-  public handleCommentInputChange = (changedFields: any) => {
-    this.setState({
-      commentInputValue: {
-        value: changedFields.comment_input.value,
-      },
-    });
-  }
-
-
-  /**
    * 处理评论提交
    */
   public handleSendComment = (
     e: React.MouseEvent,
     inputRef: any,
   ): void => {
-    this.state.commentInputValue.value
+    this.state.commentInputValueNew
       ? this.props.reduxHandleSendComment(
           this.props.match.params.id,
-          this.state.commentInputValue.value,
+          this.state.commentInputValueNew,
           () => {
             // 清空输入框
             inputRef.textAreaRef.value = '';
@@ -358,10 +346,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 <DetailsLeft 
                   {...this.props.DetailsReducer.detailsInfo}
                   {...this.props.AuthRouteReducer}
-                  onCommentInputChange={this.handleCommentInputChange}
                   onSendComment={this.handleSendComment}
-                  commentInputValue={this.state.commentInputValue}
-                  onCommentEmojiChange={this.handleCommentEmojiChange}
 
                   onReplyInputChange={this.handleReplyInputChange}
                   onSendReply={this.handleSendReply}
