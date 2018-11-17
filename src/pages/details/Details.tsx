@@ -84,6 +84,9 @@ interface IDetailsState {
   collectionInputValue: {
     value: string | '',           // 收藏弹出层输入框
   },
+
+
+  commentInputValueNew: string;
 };
 
 
@@ -106,6 +109,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     collectionInputValue: {
       value: '',
     },
+
+
+    // 重构
+    commentInputValueNew: '',
   }
 
 
@@ -325,6 +332,19 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
 
+
+  /// 重构
+  public handleCommentInputChangeNew = (
+    e: React.ChangeEvent,
+  ) => {
+    const value = e.currentTarget.textContent as string;
+
+    this.setState({
+      commentInputValueNew: value,
+    });
+  }
+
+
   public render(): JSX.Element {
 
     return (
@@ -346,6 +366,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                   onReplyInputChange={this.handleReplyInputChange}
                   onSendReply={this.handleSendReply}
                   replyInputValue={this.state.replyInputValue}
+
+
+                  onCommentInputChangeNew={this.handleCommentInputChangeNew}
+                  commentInputValueNew={this.state.commentInputValueNew}
                 />
               </Col>
               <Col span={6}>

@@ -22,6 +22,9 @@ import ContentEditable from 'react-contenteditable';
 
 export interface IBaseCommentInputProps {
   useravatar: string;
+
+  onChange: (e: React.ChangeEvent) => void;
+  inputValue: string;
 };
 
 
@@ -30,11 +33,9 @@ export interface IBaseCommentInputProps {
  */
 const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   useravatar,
+  onChange,
+  inputValue,
 }): JSX.Element => {
-
-  const handleChange = (e: any) => {
-    console.log(e.target.value);
-  }
 
   return (
     <CommentInputBox>
@@ -56,9 +57,9 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
               <ContentEditable
                 className="base-top-text-main"
                 tagName="div"
-                html={''}
+                html={inputValue}
                 disabled={false}
-                onChange={handleChange}
+                onChange={onChange}
               />
             </InputTopText>
           </Col>

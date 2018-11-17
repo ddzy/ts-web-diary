@@ -58,6 +58,12 @@ export interface IDetailsLeftCommentProps extends FormComponentProps {
     inputRef: any,
     commentid: string,
   ) => void;
+
+  ///// 重构
+  onCommentInputChangeNew: (
+    e: React.ChangeEvent,
+  ) => void;
+  commentInputValueNew: string;
 };
 interface IDetailLeftCommentState {
   // 控制提交评论区域显隐
@@ -172,7 +178,7 @@ class DetailsLeftComment extends React.PureComponent<
       );
     });
   }
-  
+
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
@@ -291,6 +297,8 @@ class DetailsLeftComment extends React.PureComponent<
         {/* 重构输入框 */}
         <BaseCommentInput
           useravatar={this.props.useravatar}
+          onChange={this.props.onCommentInputChangeNew}
+          inputValue={this.props.commentInputValueNew}
         />
 
         {/* 根评论展示栏 */}

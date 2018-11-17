@@ -55,6 +55,14 @@ export interface IDetailsLeftProps {
     inputRef: any,
     commentid: string,
   ) => void;
+
+
+
+  // 重构
+  onCommentInputChangeNew: (
+    e: React.ChangeEvent,
+  ) => void;
+  commentInputValueNew: string;
 };
 interface IDetailsLeftState {};
 
@@ -146,6 +154,9 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
           onReplyInputChange={this.props.onReplyInputChange}
           onSendReply={this.props.onSendReply}
           replyInputValue={this.props.replyInputValue}
+
+          onCommentInputChangeNew={this.props.onCommentInputChangeNew}
+          commentInputValueNew={this.props.commentInputValueNew}
         />
       </DetailsLeftWrapper>
     );
