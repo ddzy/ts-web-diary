@@ -211,7 +211,7 @@ table {
 	background-color: #fff;
 }
 .base-top-text-main:empty::before {
-	content: attr(placeholder);
+	content: '请理性评论...';
 	color: #ccc;
 }
 .base-top-text-main:focus::before {
