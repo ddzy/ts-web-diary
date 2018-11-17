@@ -28,6 +28,7 @@ export interface IBaseCommentInputProps {
 
   onChange: (e: React.ChangeEvent) => void;
   inputValue: string;
+  onSend: () => void;
 };
 
 
@@ -38,6 +39,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   useravatar,
   onChange,
   inputValue,
+  onSend,
 }): JSX.Element => {
 
   /**
@@ -131,6 +133,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
               style={{
                 float: 'right',
               }}
+              onClick={onSend}
             >发表</Button>
           </Col>
         </Row>

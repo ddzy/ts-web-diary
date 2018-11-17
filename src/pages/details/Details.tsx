@@ -332,6 +332,24 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     });
   }
 
+  public handleSendCommentNew = () => {
+    this.state.commentInputValueNew
+      ? this.props.reduxHandleSendComment(
+          this.props.match.params.id,
+          this.state.commentInputValueNew,
+          () => {
+            notification.success({
+              message: '提示:',
+              description: '评论发表成功!'
+            });
+          },
+        )
+      : notification.error({
+          message: '错误:',
+          description: '评论不能为空!'
+        });
+  }
+
 
   public render(): JSX.Element {
 
@@ -354,6 +372,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
 
                   onCommentInputChangeNew={this.handleCommentInputChangeNew}
+                  onSendCommentNew={this.handleSendCommentNew}
                   commentInputValueNew={this.state.commentInputValueNew}
                 />
               </Col>
