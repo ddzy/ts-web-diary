@@ -199,12 +199,16 @@ table {
 */
 .base-top-text-main {
 	height: 100%;
-  padding: 9px 12px 7px;
+	padding: 9px 12px 7px;
+	background-color: #f6f6f6;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
 	transition: border .15s ease-in,
 							background-color .15s ease-in;
+}
+.base-top-text-main:hover {
+	background-color: #f8f8f8;
 }
 .base-top-text-main:focus {
 	border: 1px solid #1890ff;
