@@ -26,9 +26,11 @@ import {
 export interface IBaseCommentInputProps {
   useravatar: string;
 
-  onChange: (e: React.ChangeEvent) => void;
+  onInputChange: (e: React.ChangeEvent) => void;
   inputValue: string;
   onSend: () => void;
+
+  onEmojiChange: (e: React.MouseEvent) => void;
 };
 
 
@@ -37,9 +39,10 @@ export interface IBaseCommentInputProps {
  */
 const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   useravatar,
-  onChange,
+  onInputChange,
   inputValue,
   onSend,
+  onEmojiChange,
 }): JSX.Element => {
 
   /**
@@ -75,7 +78,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
                 tagName="div"
                 html={inputValue}
                 disabled={false}
-                onChange={onChange}
+                onChange={onInputChange}
               />
             </InputTopText>
           </Col>
@@ -95,6 +98,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
                       height: '20px',
                       margin: '4px',
                     }}
+                    onClick={onEmojiChange}
                   >
                     {initEmoji()}
                   </Emojify>

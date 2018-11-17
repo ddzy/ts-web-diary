@@ -9,7 +9,6 @@ import {
 import { History } from 'history';
 import { match } from 'react-router';
 import { connect } from 'react-redux';
-import { emojify } from 'react-emojione';
 
 import Header from '../../components/header/Header';
 import DetailsLeft from './details_left/DetailsLeft';
@@ -300,31 +299,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     );
   }
 
-  
-  /**
-   * 处理 评论框表情输入
-   */
-  public handleCommentEmojiChange = (
-    e: any,
-  ): void => {
-    const emoji: string = e.currentTarget.getAttribute('title');
-
-    this.setState((prevState) => ({
-      commentInputValue: {
-        ...prevState.commentInputValue,
-        value: `${prevState.commentInputValue.value}${
-          emojify(emoji, { output: 'unicode' })
-        }`
-      },
-    }));
-  }
-
-
-
   /// 重构
   public handleCommentInputChangeNew = (
     e: React.ChangeEvent,
-  ) => {
+  ): void => {
     const value = e.currentTarget.textContent as string;
 
     this.setState({
@@ -332,7 +310,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     });
   }
 
-  public handleSendCommentNew = () => {
+  public handleSendCommentNew = (): void => {
     this.state.commentInputValueNew
       ? this.props.reduxHandleSendComment(
           this.props.match.params.id,
@@ -348,6 +326,21 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
           message: '错误:',
           description: '评论不能为空!'
         });
+  }
+
+  public handleCommentEmojiChange = (
+    e: React.MouseEvent,
+  ): void => {
+    const target = e.currentTarget;
+    
+    const div = document.createElement('div');
+    const targ = target.cloneNode(true);
+    div.appendChild(targ);
+    const html = div.innerHTML;
+
+    this.setState((prevState) => ({
+      commentInputValueNew: `${prevState.commentInputValueNew}${html}`,
+    }));
   }
 
 
@@ -374,6 +367,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                   onCommentInputChangeNew={this.handleCommentInputChangeNew}
                   onSendCommentNew={this.handleSendCommentNew}
                   commentInputValueNew={this.state.commentInputValueNew}
+
+                  onCommentEmojiChange={this.handleCommentEmojiChange}
                 />
               </Col>
               <Col span={6}>

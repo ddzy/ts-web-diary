@@ -157,9 +157,11 @@ class CommentlistItem extends React.PureComponent<
 
         {/* 评论内容框 */}
         <ItemMiddleBox>
-          <MiddleCommentText>
-            {this.props.commentValue}
-          </MiddleCommentText>
+          <MiddleCommentText
+            dangerouslySetInnerHTML={{
+              __html: this.props.commentValue,
+            }}
+          />
         </ItemMiddleBox>
 
         {/* 评论控制栏 */}

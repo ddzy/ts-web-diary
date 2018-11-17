@@ -58,6 +58,8 @@ export interface IDetailsLeftProps {
   ) => void;
   commentInputValueNew: string;
   onSendCommentNew: () => void;
+
+  onCommentEmojiChange: (e: React.MouseEvent) => void;
 };
 interface IDetailsLeftState {};
 
@@ -150,6 +152,8 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
           onCommentInputChangeNew={this.props.onCommentInputChangeNew}
           onSendCommentNew={this.props.onSendCommentNew}
           commentInputValueNew={this.props.commentInputValueNew}
+
+          onCommentEmojiChange={this.props.onCommentEmojiChange}
         />
       </DetailsLeftWrapper>
     );

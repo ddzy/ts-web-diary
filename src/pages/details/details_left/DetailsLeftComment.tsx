@@ -43,6 +43,10 @@ export interface IDetailsLeftCommentProps {
   ) => void;
   commentInputValueNew: string;
   onSendCommentNew: () => void;
+
+  onCommentEmojiChange: (
+    e: React.MouseEvent,
+  ) => void;
 };
 interface IDetailLeftCommentState {
   // 控制提交评论区域显隐
@@ -174,9 +178,10 @@ class DetailsLeftComment extends React.PureComponent<
         {/* 重构输入框 */}
         <BaseCommentInput
           useravatar={this.props.useravatar}
-          onChange={this.props.onCommentInputChangeNew}
+          onInputChange={this.props.onCommentInputChangeNew}
           inputValue={this.props.commentInputValueNew}
           onSend={this.props.onSendCommentNew}
+          onEmojiChange={this.props.onCommentEmojiChange}
         />
 
         {/* 根评论展示栏 */}
