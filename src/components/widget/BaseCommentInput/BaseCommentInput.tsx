@@ -18,6 +18,9 @@ import {
 } from './style';
 import { Emojify } from 'react-emojione';
 import ContentEditable from 'react-contenteditable';
+import {
+  EMOJI_PICKER,
+} from '../../../constants/constants';
 
 
 export interface IBaseCommentInputProps {
@@ -36,6 +39,17 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   onChange,
   inputValue,
 }): JSX.Element => {
+
+  /**
+   * 初始化表情
+   */
+  const initEmoji = (): JSX.Element[] => {
+    return EMOJI_PICKER.map((emoji: string, i: number) => (
+      <EmojiItem
+        key={i}
+      >{emoji}</EmojiItem>
+    ));
+  }
 
   return (
     <CommentInputBox>
@@ -80,7 +94,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
                       margin: '4px',
                     }}
                   >
-                    <EmojiItem>:smile:</EmojiItem>
+                    {initEmoji()}
                   </Emojify>
                 </EmojiWrapper>
               }
