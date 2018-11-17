@@ -39,6 +39,7 @@ export const TopTextMain = styled.div`
 
 export const InputBottom = styled.div`
   display: block;
+  margin-top: 20px;
 `;
 
 /// 评论区表情框

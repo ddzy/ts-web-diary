@@ -101,7 +101,8 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
             >
               <div
                 style={{
-                  // marginLeft: '16%',
+                  width: '50px',
+                  marginLeft: '16%',
                   cursor: 'pointer',
                 }}
               >
