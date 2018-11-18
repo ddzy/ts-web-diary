@@ -17,7 +17,6 @@ import {
   EmojiItem,
 } from './style';
 import { Emojify } from 'react-emojione';
-import ContentEditable from 'react-contenteditable';
 import {
   EMOJI_PICKER,
 } from '../../../constants/constants';
@@ -74,19 +73,14 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
           </Col>
           <Col span={22}>
             <InputTopText>
-              <ContentEditable
-                className="base-top-text-main"
-                tagName="div"
-                html={inputValue}
-                disabled={false}
-                onChange={onInputChange}
-              />
-              {/* ceshi */}
               <BaseContentEditable
-                className="base-top-text-main"
                 html={inputValue}
                 parentNodeWithAutoFocus="#comment-wrapper"
                 onChange={onInputChange}
+                style={{
+                  width: '100%',
+                  minHeight: 'auto',
+                }}
               />
             </InputTopText>
           </Col>
