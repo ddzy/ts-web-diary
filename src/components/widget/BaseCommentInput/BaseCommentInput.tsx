@@ -83,6 +83,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
               />
               {/* ceshi */}
               <BaseContentEditable
+                className="base-top-text-main"
                 html={inputValue}
                 parentNodeWithAutoFocus="#comment-wrapper"
                 onChange={onInputChange}

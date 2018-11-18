@@ -66,7 +66,7 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
       <ContentEditableWrapper>
         <ContentEditableInput
           id={this.props.id || 'yo-contenteditable'}
-          className={this.props.className || 'yo-contenteditable'}
+          className={this.props.className + ' yo-contenteditable'}
           contentEditable={this.props.contenteditable ||true}
           spellCheck={this.props.spellCheck || false}
           style={this.props.style || {}}
