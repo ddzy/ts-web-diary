@@ -310,6 +310,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
   public handleSendCommentNew = (): void => {
+    console.log(this.state.commentInputValueNew);
+
     this.state.commentInputValueNew
       ? this.props.reduxHandleSendComment(
           this.props.match.params.id,

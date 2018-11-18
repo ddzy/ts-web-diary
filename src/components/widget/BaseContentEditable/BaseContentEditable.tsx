@@ -62,6 +62,13 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
     }
   }
 
+  public handleChange = (e: React.KeyboardEvent) => {
+    this.props.onChange && this.props.onChange(e);
+    // setRange(this.ref, () => {
+    //   this.props.onChange && this.props.onChange(e);
+    // });
+  }
+
   public render(): JSX.Element {
     const className = this.props.className
       ? this.props.className
@@ -79,6 +86,7 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
           dangerouslySetInnerHTML={{ __html: this.props.html }}
           innerRef={this.handleSetRef}
           onBlur={this.handleBlur}
+          onKeyUp={this.handleChange}
         />
       </ContentEditableWrapper>
     );

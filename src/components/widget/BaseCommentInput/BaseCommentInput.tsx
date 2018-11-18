@@ -44,7 +44,6 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   onSend,
   onEmojiChange,
 }): JSX.Element => {
-
   /**
    * 初始化表情
    */
