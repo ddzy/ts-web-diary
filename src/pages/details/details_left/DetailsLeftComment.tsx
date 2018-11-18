@@ -6,6 +6,7 @@ import {
 
 import {
   LeftCommentContainer,
+  CommentWrapper,
   CommentShowBox,
   CommentShowList,
   CommentTipBox,
@@ -20,7 +21,7 @@ import BaseCommentInput from '../../../components/widget/BaseCommentInput/BaseCo
 export interface IDetailsLeftCommentProps {
   useravatar: string;
 
-  comments: any[];      
+  comments: any[];
 
   onSendComment: (
     e: React.MouseEvent,
@@ -87,15 +88,15 @@ class DetailsLeftComment extends React.PureComponent<
     const oReplyNode = Array
       .from(oReplys)
       .find((item) => {
-        return item.getAttribute('data-id') === e.currentTarget.getAttribute('data-id'); 
+        return item.getAttribute('data-id') === e.currentTarget.getAttribute('data-id');
       });
 
     // 切换    BUG: 加类名×
     e.currentTarget.classList.toggle('comment-reply-icon-active');
-    oReplyNode.style.display = oReplyNode.style.display 
+    oReplyNode.style.display = oReplyNode.style.display
       === 'none'
-        ? 'block'
-        : 'none';
+      ? 'block'
+      : 'none';
   }
 
 
@@ -122,10 +123,10 @@ class DetailsLeftComment extends React.PureComponent<
 
 
   //// 初始化评论列表
-  public initCommentListItem = (): JSX.Element[] | []=> {
+  public initCommentListItem = (): JSX.Element[] | [] => {
     const comments = this.props.comments;
 
-    return isArray(comments) 
+    return isArray(comments)
       && comments.length !== 0
       ? comments.map((item) => {
         return (
@@ -141,13 +142,13 @@ class DetailsLeftComment extends React.PureComponent<
           </React.Fragment>
         );
       })
-    : []; 
+      : [];
   }
 
 
   //// 获取输入框ref
   public getInputRef = (el: any): void => {
-    this.inputRef = el;  
+    this.inputRef = el;
   }
 
 
@@ -168,21 +169,23 @@ class DetailsLeftComment extends React.PureComponent<
       <LeftCommentContainer
         id="left-comment-container"
       >
-        {/* 提示文字 */}
-        <CommentTipBox>
-          <TipText>
-            评论
+        <CommentWrapper>
+          {/* 提示文字 */}
+          <CommentTipBox>
+            <TipText>
+              评论
           </TipText>
-        </CommentTipBox>
-        
-        {/* 重构输入框 */}
-        <BaseCommentInput
-          useravatar={this.props.useravatar}
-          onInputChange={this.props.onCommentInputChangeNew}
-          inputValue={this.props.commentInputValueNew}
-          onSend={this.props.onSendCommentNew}
-          onEmojiChange={this.props.onCommentEmojiChange}
-        />
+          </CommentTipBox>
+
+          {/* 重构输入框 */}
+          <BaseCommentInput
+            useravatar={this.props.useravatar}
+            onInputChange={this.props.onCommentInputChangeNew}
+            inputValue={this.props.commentInputValueNew}
+            onSend={this.props.onSendCommentNew}
+            onEmojiChange={this.props.onCommentEmojiChange}
+          />
+        </CommentWrapper>
 
         {/* 根评论展示栏 */}
         <CommentShowBox>

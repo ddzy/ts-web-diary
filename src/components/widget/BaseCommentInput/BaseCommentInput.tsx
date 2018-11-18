@@ -84,6 +84,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
               {/* ceshi */}
               <BaseContentEditable
                 html={'<span>测试文本</span>'}
+                parentNodeWithAutoFocus=""
               />
             </InputTopText>
           </Col>
