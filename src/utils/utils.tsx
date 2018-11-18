@@ -93,3 +93,25 @@ export function mixinObj(
   
   return resultObj;
 }
+
+
+/**
+ * 设置光标位置
+ * @param ref 目标对象
+ * @param callback 回调
+ */
+export function setRange(
+  ref: HTMLElement,
+  callback?: () => void
+) {
+  const sel: Selection = window.getSelection();
+  const range: Range = document.createRange();
+
+  callback && callback();
+
+  range.setStart(ref, ref.childNodes.length);
+  range.setEndAfter(ref);
+
+  sel.removeAllRanges();
+  sel.addRange(range);
+}

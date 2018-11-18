@@ -22,14 +22,11 @@ import {
   reduxHandleCreateCollection,
   reduxHandleSaveToCollection,
 } from './Details.redux';
-import { getWindowWH } from '../../utils/utils';
+import { getWindowWH, setRange } from '../../utils/utils';
 import {
   DetailsWrapper,
   DetailsContent,
 } from './style';
-import { setRange } from 'src/components/widget/BaseContentEditable/BaseContentEditable';
-// import { setRange } from '../../components/widget/BaseContentEditable/BaseContentEditable';
-
 
 export interface IDetailsProps {
   location: Location;

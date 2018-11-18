@@ -4,6 +4,7 @@ import {
   ContentEditableWrapper,
   ContentEditableInput,
 } from './style';
+import { setRange } from 'src/utils/utils';
 
 export interface IProps {
   id?: string;
@@ -20,21 +21,6 @@ export interface IProps {
 interface IState {
 };
 
-export function setRange(
-  ref: HTMLElement,
-  callback?: () => void
-) {
-  const sel: Selection = window.getSelection();
-  const range: Range = document.createRange();
-
-  callback && callback();
-
-  range.setStart(ref, ref.childNodes.length);
-  range.setEndAfter(ref);
-
-  sel.removeAllRanges();
-  sel.addRange(range);
-}
 
 export class BaseContentEditable extends React.PureComponent<IProps, IState> {
 
