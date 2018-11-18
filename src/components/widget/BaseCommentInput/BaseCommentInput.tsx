@@ -21,6 +21,7 @@ import ContentEditable from 'react-contenteditable';
 import {
   EMOJI_PICKER,
 } from '../../../constants/constants';
+import BaseContentEditable from '../BaseContentEditable/BaseContentEditable';
 
 
 export interface IBaseCommentInputProps {
@@ -79,6 +80,10 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
                 html={inputValue}
                 disabled={false}
                 onChange={onInputChange}
+              />
+              {/* ceshi */}
+              <BaseContentEditable
+                html={'<span>测试文本</span>'}
               />
             </InputTopText>
           </Col>
