@@ -169,7 +169,7 @@ class DetailsLeftComment extends React.PureComponent<
       <LeftCommentContainer
         id="left-comment-container"
       >
-        <CommentWrapper>
+        <CommentWrapper id="comment-wrapper">
           {/* 提示文字 */}
           <CommentTipBox>
             <TipText>

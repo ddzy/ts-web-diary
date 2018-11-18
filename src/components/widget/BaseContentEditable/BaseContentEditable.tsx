@@ -13,14 +13,32 @@ export interface IProps {
   spellCheck?: boolean;
   parentNodeWithAutoFocus?: string;
   html: string;
+  onChange?: (
+    e: any,
+  ) => void;
 }
 interface IState {
 };
 
+export function setRange(
+  ref: HTMLElement,
+  callback?: () => void
+) {
+  const sel: Selection = window.getSelection();
+  const range: Range = document.createRange();
 
-export default class BaseContentEditable extends React.PureComponent<IProps, IState> {
+  callback && callback();
 
-  public ref: React.Ref<HTMLDivElement> = React.createRef();
+  range.setStart(ref, ref.childNodes.length);
+  range.setEndAfter(ref);
+
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+export class BaseContentEditable extends React.PureComponent<IProps, IState> {
+
+  public ref: any = React.createRef();
 
   public _error = (e: string) => {
     throw new Error(e);
@@ -45,26 +63,16 @@ export default class BaseContentEditable extends React.PureComponent<IProps, ISt
     this.ref = ref;
   }
 
-  public handleSetRange = (
-    callback?: () => void,
-  ) => {
-    const sel: Selection = window.getSelection();
-    const range: Range = document.createRange();
-    const ref: any = this.ref;
-
-    callback && callback();
-
-    range.setStart(ref, ref.childNodes.length);
-    range.setEndAfter(ref);
-
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-
   public handleBlur = () => {
-    const pNode = this._findOneParent();
+    if (this._findOneParent()) {
+      const node = this._findOneParent() as HTMLElement;
+      const ref: any = this.ref;
 
-    console.log(pNode);
+      node.addEventListener('click', () => {
+        ref.focus();
+        setRange(ref);
+      }, true);
+    }
   }
 
   public render(): JSX.Element {

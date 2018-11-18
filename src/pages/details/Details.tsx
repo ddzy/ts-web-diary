@@ -27,6 +27,8 @@ import {
   DetailsWrapper,
   DetailsContent,
 } from './style';
+import { setRange } from 'src/components/widget/BaseContentEditable/BaseContentEditable';
+// import { setRange } from '../../components/widget/BaseContentEditable/BaseContentEditable';
 
 
 export interface IDetailsProps {
@@ -303,7 +305,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   public handleCommentInputChangeNew = (
     e: React.ChangeEvent,
   ): void => {
-    const value = e.currentTarget.textContent as string;
+    const value = e.currentTarget.innerHTML as string;
 
     this.setState({
       commentInputValueNew: value,
@@ -331,16 +333,22 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   public handleCommentEmojiChange = (
     e: React.MouseEvent,
   ): void => {
-    const target = e.currentTarget;
-    
-    const div = document.createElement('div');
-    const targ = target.cloneNode(true);
-    div.appendChild(targ);
-    const html = div.innerHTML;
+    const target = e.currentTarget as HTMLElement;
+    const clonedTarget = target.cloneNode(true) as HTMLElement;
 
-    this.setState((prevState) => ({
-      commentInputValueNew: `${prevState.commentInputValueNew}${html}`,
-    }));
+    clonedTarget.style.margin = '0';
+
+    const ygC = document
+      .querySelector('.yo-contenteditable') as HTMLElement;
+
+    ygC.appendChild(clonedTarget);
+
+    const lastChild = ygC.lastChild as any;
+
+    if (lastChild.nodeType === 1) {
+      ygC.appendChild(document.createTextNode('\u200b'));
+      setRange(ygC);
+    }
   }
 
 
