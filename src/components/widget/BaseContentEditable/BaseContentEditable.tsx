@@ -13,6 +13,7 @@ export interface IProps {
   contenteditable?: boolean;
   spellCheck?: boolean;
   parentNodeWithAutoFocus?: string;
+  placeholder?: string;
   html: string;
   onChange?: (
     e: any,
@@ -70,6 +71,7 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
           contentEditable={this.props.contenteditable ||true}
           spellCheck={this.props.spellCheck || false}
           style={this.props.style || {}}
+          placeholder={this.props.placeholder}
           dangerouslySetInnerHTML={{ __html: this.props.html }}
           innerRef={this.handleSetRef}
           onBlur={this.handleBlur}

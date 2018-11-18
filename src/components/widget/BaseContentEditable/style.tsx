@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
+export interface IContentEditableInputProps {
+  placeholder?: string;
+};
+
+
 export const ContentEditableWrapper = styled.div`
 
 `;
 
-export const ContentEditableInput = styled.div`
+export const ContentEditableInput = styled<IContentEditableInputProps, 'div'>('div')`
   width: 200px;
   min-height: 25px;
   padding: 9px 12px 7px;
@@ -24,7 +29,11 @@ export const ContentEditableInput = styled.div`
     background-color: #fff;
   }
   &:empty::before {
-    content: '请理性评论...';
+    content: '${(props) => {
+      return props.placeholder
+        ? props.placeholder
+        : '请理性评论...'
+    }}';
     color: #ccc;
   }
 `;
