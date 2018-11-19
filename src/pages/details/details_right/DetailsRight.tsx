@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Affix, } from 'antd';
 import { Link } from 'react-router-dom';
 
 import {
@@ -55,6 +55,7 @@ class DetailsRight extends React.Component<IDetailsRightProps, IDetailsRightStat
 
   public render(): JSX.Element {
     return (
+      <Affix offsetTop={70}>
       <DetailsRightWrapper>
         <RightMain>
           <RightMeInfoBox>
@@ -106,7 +107,8 @@ class DetailsRight extends React.Component<IDetailsRightProps, IDetailsRightStat
             </NewArticleList>
           </RightNewArticleBox>
         </RightMain>
-      </DetailsRightWrapper>
+        </DetailsRightWrapper>
+        </Affix>
     );
   }
 
