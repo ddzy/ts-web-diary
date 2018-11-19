@@ -311,13 +311,12 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
   public handleSendCommentNew = (): void => {
-    console.log(this.state.commentInputValueNew);
-
     this.state.commentInputValueNew
       ? this.props.reduxHandleSendComment(
           this.props.match.params.id,
           this.state.commentInputValueNew,
           () => {
+            this.setState({ commentInputValueNew: '' });
             notification.success({
               message: '提示:',
               description: '评论发表成功!'
