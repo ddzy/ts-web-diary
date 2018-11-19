@@ -73,7 +73,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
           <Col span={22}>
             <InputTopText>
               <ContentEditable
-                className="base-top-text-main"
+                className="yyg-contenteditable"
                 html={inputValue}
                 onChange={onInputChange}
               />

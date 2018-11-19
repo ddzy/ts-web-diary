@@ -336,21 +336,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     const target = e.currentTarget as HTMLElement;
     const tTitle = target.getAttribute('title') as string;
     const emoji = emojify(tTitle, { output: 'unicode' });
-    // const clonedTarget = target.cloneNode(true) as HTMLElement;
 
-    // clonedTarget.style.margin = '0';
-
-    // const ygC = document
-    //   .querySelector('.yo-contenteditable') as HTMLElement;
-
-    // ygC.appendChild(clonedTarget);
-
-    // const lastChild = ygC.lastChild as any;
-
-    // if (lastChild.nodeType === 1) {
-    //   ygC.appendChild(document.createTextNode('\u200b'));
-    //   setRange(ygC);
-    // }
     this.setState((prevState) => ({
       commentInputValueNew: `${prevState.commentInputValueNew}${emoji}`,
     }));
