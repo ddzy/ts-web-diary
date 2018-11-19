@@ -20,7 +20,7 @@ import { Emojify } from 'react-emojione';
 import {
   EMOJI_PICKER,
 } from '../../../constants/constants';
-import {BaseContentEditable} from '../BaseContentEditable/BaseContentEditable';
+import ContentEditable from 'react-contenteditable';
 
 
 export interface IBaseCommentInputProps {
@@ -72,14 +72,10 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
           </Col>
           <Col span={22}>
             <InputTopText>
-              <BaseContentEditable
+              <ContentEditable
+                className="base-top-text-main"
                 html={inputValue}
-                parentNodeWithAutoFocus="#comment-wrapper"
                 onChange={onInputChange}
-                style={{
-                  width: '100%',
-                  minHeight: 'auto',
-                }}
               />
             </InputTopText>
           </Col>

@@ -22,11 +22,12 @@ import {
   reduxHandleCreateCollection,
   reduxHandleSaveToCollection,
 } from './Details.redux';
-import { getWindowWH, setRange } from '../../utils/utils';
+import { getWindowWH } from '../../utils/utils';
 import {
   DetailsWrapper,
   DetailsContent,
 } from './style';
+import { emojify } from 'react-emojione';
 
 export interface IDetailsProps {
   location: Location;
@@ -302,7 +303,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   public handleCommentInputChangeNew = (
     e: React.ChangeEvent,
   ): void => {
-    const value = e.currentTarget.innerHTML as string;
+    const value = e.currentTarget.textContent as string;
 
     this.setState({
       commentInputValueNew: value,
@@ -333,21 +334,26 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     e: React.MouseEvent,
   ): void => {
     const target = e.currentTarget as HTMLElement;
-    const clonedTarget = target.cloneNode(true) as HTMLElement;
+    const tTitle = target.getAttribute('title') as string;
+    const emoji = emojify(tTitle, { output: 'unicode' });
+    // const clonedTarget = target.cloneNode(true) as HTMLElement;
 
-    clonedTarget.style.margin = '0';
+    // clonedTarget.style.margin = '0';
 
-    const ygC = document
-      .querySelector('.yo-contenteditable') as HTMLElement;
+    // const ygC = document
+    //   .querySelector('.yo-contenteditable') as HTMLElement;
 
-    ygC.appendChild(clonedTarget);
+    // ygC.appendChild(clonedTarget);
 
-    const lastChild = ygC.lastChild as any;
+    // const lastChild = ygC.lastChild as any;
 
-    if (lastChild.nodeType === 1) {
-      ygC.appendChild(document.createTextNode('\u200b'));
-      setRange(ygC);
-    }
+    // if (lastChild.nodeType === 1) {
+    //   ygC.appendChild(document.createTextNode('\u200b'));
+    //   setRange(ygC);
+    // }
+    this.setState((prevState) => ({
+      commentInputValueNew: `${prevState.commentInputValueNew}${emoji}`,
+    }));
   }
 
 

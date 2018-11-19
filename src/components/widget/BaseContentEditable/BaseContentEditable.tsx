@@ -46,6 +46,22 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
     }
   }
 
+  public _setRange = (
+    ref: HTMLElement,
+    callback?: () => void,
+  ) => {
+    const sel: Selection = window.getSelection();
+    const range: Range = document.createRange();
+  
+    callback && callback();
+
+    range.setStart(ref, ref.childNodes.length);
+    range.setEnd(ref, ref.childNodes.length);
+    
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
   public handleSetRef = (ref: React.Ref<HTMLDivElement>) => {
     this.ref = ref;
   }
@@ -64,9 +80,6 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
 
   public handleChange = (e: React.KeyboardEvent) => {
     this.props.onChange && this.props.onChange(e);
-    // setRange(this.ref, () => {
-    //   this.props.onChange && this.props.onChange(e);
-    // });
   }
 
   public render(): JSX.Element {
