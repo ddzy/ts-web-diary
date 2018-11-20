@@ -89,9 +89,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   //// 处理富文本
-  // public handleChange = (value: string): void => {
-  //   this.props.onEditContentChange(value);
-  // }
   public handleChange = (...args: any[]): void => {
     const editor: Quill = args[3];
     const { ops }: DeltaStatic = editor.getContents();
@@ -146,7 +143,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
               }
             >
               <ReactQuill
-                value={html }
+                value={html}
                 modules={this.initModules()}
                 formats={this.initFormats()}
                 placeholder="创作您的文章..."
