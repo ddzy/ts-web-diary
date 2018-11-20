@@ -13,6 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
+import Quill, { DeltaStatic } from 'quill';
 
 
 
@@ -73,9 +74,39 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 
 
+  public _convertBase64UrlToBlob = (url: string): Blob => {
+    const bytes = window.atob(url.split(',')[1]);
+    const ab = new ArrayBuffer(bytes.length);
+    const ia = new Uint8Array(ab);
+
+    ia.forEach((v: number, i: number) => ia[i] = bytes.charCodeAt(i));
+
+    return new Blob([ia], {
+      type: url.split(',')[0].split(':')[1].split(';')[0],
+    });
+  }
+
+
   //// 处理富文本
-  public handleChange = (value: string): void => {
-    this.props.onEditContentChange(value);
+  // public handleChange = (value: string): void => {
+  //   this.props.onEditContentChange(value);
+  // }
+  public handleChange = (...args: any[]): void => {
+    const editor: Quill = args[3];
+    const { ops }: DeltaStatic = editor.getContents();
+    const regUrl: RegExp = /\.(png|jpg|jpeg|gif)$/;
+
+    const filteredOps = ops && ops.map((v: any) => {
+      const img = v.insert.image;
+
+      if (img && !regUrl.test(img)) {
+        return this._convertBase64UrlToBlob(img);
+      }
+
+      return v;
+    });
+
+    console.log(filteredOps);
   }
 
 
