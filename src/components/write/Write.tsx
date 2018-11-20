@@ -9,6 +9,7 @@ import WriteEdit from './write_edit/WriteEdit';
 import WriteUpload from './write_upload/WriteUpload';
 import WriteExtra from './write_extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
+import { DeltaOperation } from 'quill';
 
 
 export interface IWriteProps {
@@ -20,7 +21,7 @@ export interface IWriteProps {
 };
 interface IWriteState {
   editTitle?: string;        // 文章标题
-  editContent?: string;      // 文章内容
+  editContent?: any;      // 文章内容
   article_title_image?: string;          // 文章标题图片
   extraContent?: {            // 附加信息
     article_mode: { value: string },
@@ -40,7 +41,7 @@ class Write extends React.PureComponent<
 
   public readonly state = {
     editTitle: '',        
-    editContent: '',      
+    editContent: {},      
     article_title_image: '',         
     extraContent: {       
       article_mode: { 
@@ -87,7 +88,7 @@ class Write extends React.PureComponent<
 
 
   //// 处理富文本编辑
-  public handleEditContentChange = (values: string) => {
+  public handleEditContentChange = (values: DeltaOperation) => {
     this.setState({ editContent: values });
   }
 

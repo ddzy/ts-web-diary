@@ -9,7 +9,8 @@ import {
   Form, 
   Popover 
 } from 'antd';
-import 'react-quill/dist/quill.snow.css';  
+import 'react-quill/dist/quill.snow.css';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'; 
 
 import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
@@ -19,9 +20,9 @@ import Quill, { DeltaStatic } from 'quill';
 
 export interface IWriteEditProps extends FormComponentProps {
   editTitle: string;
-  editContent: string;
+  editContent: any;
   onEditTitleChange: (data: any) => void;
-  onEditContentChange: (value: string) => void;
+  onEditContentChange: (value: any) => void;
 };
 interface IWriteEditState {
 };
@@ -94,19 +95,8 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   public handleChange = (...args: any[]): void => {
     const editor: Quill = args[3];
     const { ops }: DeltaStatic = editor.getContents();
-    const regUrl: RegExp = /\.(png|jpg|jpeg|gif)$/;
 
-    const filteredOps = ops && ops.map((v: any) => {
-      const img = v.insert.image;
-
-      if (img && !regUrl.test(img)) {
-        return this._convertBase64UrlToBlob(img);
-      }
-
-      return v;
-    });
-
-    console.log(filteredOps);
+    this.props.onEditContentChange(ops);
   }
 
 
@@ -118,6 +108,8 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
+    const converter = new QuillDeltaToHtmlConverter(this.props.editContent, {});
+    const html = converter.convert();
 
     return (
       <WriteEditWrapper>
@@ -154,7 +146,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
               }
             >
               <ReactQuill
-                value={this.props.editContent }
+                value={html }
                 modules={this.initModules()}
                 formats={this.initFormats()}
                 placeholder="创作您的文章..."
