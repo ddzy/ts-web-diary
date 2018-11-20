@@ -14,8 +14,7 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
-import Quill, { DeltaStatic } from 'quill';
-
+import { Sources, Delta } from 'quill';
 
 
 export interface IWriteEditProps extends FormComponentProps {
@@ -25,6 +24,7 @@ export interface IWriteEditProps extends FormComponentProps {
   onEditContentChange: (value: any) => void;
 };
 interface IWriteEditState {
+  selfEditContent: string;
 };
 
 
@@ -36,7 +36,9 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   public ref: any = null
 
 
-  public readonly state = {}
+  public readonly state = {
+    selfEditContent: '',
+  }
 
 
   public initModules = () => {
@@ -89,11 +91,21 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   //// 处理富文本
-  public handleChange = (...args: any[]): void => {
-    const editor: Quill = args[3];
-    const { ops }: DeltaStatic = editor.getContents();
+  // public handleChange = (...args: any[]): void => {
+  //   const editor: Quill = args[3];
+  //   const { ops }: DeltaStatic = editor.getContents();
 
-    this.props.onEditContentChange(ops);
+  //   this.props.onEditContentChange(ops);
+  // }
+  public handleChange = (
+    content: string,
+    delta: Delta,
+    source: Sources,
+    editor: any,
+  ) => {
+    //content: string, delta: Delta, source: Sources, editor: UnprivilegedEditor
+    
+    
   }
 
 

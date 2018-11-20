@@ -9,7 +9,6 @@ import WriteEdit from './write_edit/WriteEdit';
 import WriteUpload from './write_upload/WriteUpload';
 import WriteExtra from './write_extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
-import { DeltaOperation } from 'quill';
 
 
 export interface IWriteProps {
@@ -81,14 +80,12 @@ class Write extends React.PureComponent<
 
   //// 处理标题栏表单
   public handleEditFormChange = (changedFields: any): void => {
-    this.setState((prevState) => ({
-      editTitle: changedFields.editTitle.value,
-    }));
+    this.setState({ editTitle: changedFields.editTitle.value });
   }
 
 
   //// 处理富文本编辑
-  public handleEditContentChange = (values: DeltaOperation) => {
+  public handleEditContentChange = (values: any) => {
     this.setState({ editContent: values });
   }
 
