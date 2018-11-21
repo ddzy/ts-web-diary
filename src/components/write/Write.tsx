@@ -90,7 +90,6 @@ class Write extends React.PureComponent<
     delta: any,
   ) => {
     this.setState({ editContent: content });
-    console.log(delta);
   }
 
 
