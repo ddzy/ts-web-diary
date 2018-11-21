@@ -10,7 +10,6 @@ import {
   Popover 
 } from 'antd';
 import 'react-quill/dist/quill.snow.css';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'; 
 
 import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
@@ -21,11 +20,12 @@ export interface IWriteEditProps extends FormComponentProps {
   editTitle: string;
   editContent: any;
   onEditTitleChange: (data: any) => void;
-  onEditContentChange: (value: any) => void;
+  onEditContentChange: (
+    content: string,
+    delta: any,
+  ) => void;
 };
-interface IWriteEditState {
-  selfEditContent: string;
-};
+interface IWriteEditState {};
 
 
 /**
@@ -37,7 +37,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   public readonly state = {
-    selfEditContent: '',
   }
 
 
@@ -91,21 +90,16 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   //// 处理富文本
-  // public handleChange = (...args: any[]): void => {
-  //   const editor: Quill = args[3];
-  //   const { ops }: DeltaStatic = editor.getContents();
-
-  //   this.props.onEditContentChange(ops);
-  // }
   public handleChange = (
     content: string,
-    delta: Delta,
-    source: Sources,
+    _delta: Delta,
+    _source: Sources,
     editor: any,
   ) => {
-    //content: string, delta: Delta, source: Sources, editor: UnprivilegedEditor
-    
-    
+    this.props.onEditContentChange(
+      content,
+      editor.getContents(),
+    );
   }
 
 
@@ -117,8 +111,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
-    const converter = new QuillDeltaToHtmlConverter(this.props.editContent, {});
-    const html = converter.convert();
 
     return (
       <WriteEditWrapper>
@@ -155,7 +147,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
               }
             >
               <ReactQuill
-                value={html}
+                value={this.props.editContent}
                 modules={this.initModules()}
                 formats={this.initFormats()}
                 placeholder="创作您的文章..."

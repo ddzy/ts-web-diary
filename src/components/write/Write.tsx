@@ -85,8 +85,12 @@ class Write extends React.PureComponent<
 
 
   //// 处理富文本编辑
-  public handleEditContentChange = (values: any) => {
-    this.setState({ editContent: values });
+  public handleEditContentChange = (
+    content: string,
+    delta: any,
+  ) => {
+    this.setState({ editContent: content });
+    console.log(delta);
   }
 
 
