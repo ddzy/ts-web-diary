@@ -115,3 +115,22 @@ export function setRange(
   sel.removeAllRanges();
   sel.addRange(range);
 }
+
+
+/**
+ * base64转blob
+ * @param url base64图片
+ */
+export function convertBase64UrlToBlob(
+  url: string,
+): Blob {
+  const bytes = window.atob(url.split(',')[1]);
+  const ab = new ArrayBuffer(bytes.length);
+  const ia = new Uint8Array(ab);
+
+  ia.forEach((v: number, i: number) => ia[i] = bytes.charCodeAt(i));
+
+  return new Blob([ia], {
+    type: url.split(',')[0].split(':')[1].split(';')[0],
+  });
+}
