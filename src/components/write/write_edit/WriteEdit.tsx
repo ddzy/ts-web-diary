@@ -41,7 +41,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 
 
-  public initModules = () => {
+  public initModules = (): { toolbar: any[][] } => {
     return {
       toolbar: [
         [{ 'header': [1, 2, 3, 4, false] },],
@@ -62,7 +62,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 
 
-  public initFormats = () => {
+  public initFormats = (): string[] => {
     return [
       'header', 'size', 'color',
       'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block',
@@ -83,7 +83,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     _delta: Delta,
     _source: Sources,
     editor: any,
-  ) => {
+  ): void => {
     this.props.onEditContentChange(
       content,
       editor.getContents(),
@@ -92,12 +92,12 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   //// 获取input的inputRef
-  public getInputinputRef = (el: any) => {
+  public getInputinputRef = (el: Input): void => {
     this.inputRef = el;
   }
 
-
-  public getEditorRef = (el: ReactQuill) => {
+  //// 获取editor的ref
+  public getEditorRef = (el: ReactQuill): void => {
     this.editorRef = el;
   }
 
@@ -117,7 +117,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
                       rules: [{ required: true, message: '标题一定要填!' }],
                     })(
                       <Input
-                        ref={(el) => this.getInputinputRef(el)}
+                        ref={this.getInputinputRef}
                         type="text"
                         prefix={
                           <Popover
