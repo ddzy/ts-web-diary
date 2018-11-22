@@ -33,19 +33,6 @@ interface IWriteEditState {};
  */
 class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
-  //// 辅助函数 创建input
-  public static _createInputEle = () => {
-    const input = document.createElement('input');
-    input.style.display = 'none';
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp');
-    input.setAttribute('id', 'ql-image');
-    input.setAttribute('class', 'ql-image');
-    
-    document.body.appendChild(input);
-  }
-
-
   public inputRef: Input;
   public editorRef: ReactQuill;
 
@@ -54,27 +41,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 
 
-/*   public initModules = (): any => {
-    return {
-      toolbar: [
-        [{ 'header': [1, 2, 3, 4, false] },],
-        [
-          { 'size': ['small', false, 'large', 'huge'] }, {
-            'color': [
-              '#000', '#e70000', '#ff9a00', '#ff0', '#00bb00', '#1890ff', '#0066cd', '#facdcd', '#f06666',
-              '#bcbcbc', '#fff',
-            ]
-          }
-        ],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        ['link', 'image'],
-        ['clean']
-      ],
-    };
-  } */
-
-  public initModules = (): any => {
+  public initModules = (): object => {
     return {
       toolbar: {
         container: [
@@ -112,8 +79,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   
   public componentDidMount(): void {
     this.inputRef.focus();
-    // WriteEditForm._createInputEle();
-    // this.handleEditorImageUpload();
   }
 
 
@@ -132,7 +97,10 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   //// 处理富文本图片上传
-  public handleEditorImageUpload = (image: any, callback: any) => {
+  public handleEditorImageUpload = (
+    image: any,
+    callback: any
+  ): void => {
     const editor: Quill = this.editorRef.getEditor();
     const editorSelRange = editor.getSelection();
     
@@ -153,7 +121,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 
 
-  //// 获取input的inputRef
+  //// 获取input的ref
   public getInputinputRef = (el: Input): void => {
     this.inputRef = el;
   }
@@ -203,7 +171,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             >
               <ReactQuill
                 ref={this.getEditorRef}
-                defaultValue={this.props.editContent}
+                value={this.props.editContent}
                 modules={this.initModules()}
                 formats={this.initFormats()}
                 placeholder="创作您的文章..."
