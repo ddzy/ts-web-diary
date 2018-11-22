@@ -7,17 +7,27 @@ import {
   MainContentItem,
   LOADING,
 } from './style';
+import { getWindowWH } from 'src/utils/utils';
 
 
 export interface IBaseLoadingProps {
   visible: boolean;
+  width?: number;
+  height?: number;
 };
 
 
 const BaseLoading: React.SFC<IBaseLoadingProps> = (
-  { visible }: IBaseLoadingProps,
+  {
+    visible,
+    width,
+    height,
+  }: IBaseLoadingProps,
 ): JSX.Element => {
-  
+  const { winWidth, winHeight } = getWindowWH();
+  const nWidth: number = width ? width : winWidth;
+  const nHeight: number = height ? height : winHeight;
+
   const initLoaderItem = (): JSX.Element[] => {
     const result: JSX.Element[] = [];
     let i: number = 0;
@@ -34,8 +44,13 @@ const BaseLoading: React.SFC<IBaseLoadingProps> = (
     return result;
   }
 
+
   return (
-    <LoadingWrapper visible={visible}>
+    <LoadingWrapper
+      visible={visible}
+      width={nWidth}
+      height={nHeight}
+    >
       <LoadingMain>
         <LoadingMainContent>
           {initLoaderItem()}

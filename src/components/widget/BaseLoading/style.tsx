@@ -2,6 +2,8 @@ import styled, { keyframes } from 'styled-components';
 
 export interface ILoadingWrapperProps {
   visible: boolean;
+  width?: number;
+  height?: number;
 };
 
 //
@@ -17,8 +19,8 @@ export const LoadingWrapper = styled<ILoadingWrapperProps, 'div'>('div')`
   left: 0;
   top: 0;
   z-index: 999;
-  width: 800px;
-  height: 600px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   background-color: rgba(255, 255, 255, .7);
 `;
 
