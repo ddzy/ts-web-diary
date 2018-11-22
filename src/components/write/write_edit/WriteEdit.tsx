@@ -54,7 +54,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 
 
-  public initModules = (): { toolbar: any[][] } => {
+/*   public initModules = (): any => {
     return {
       toolbar: [
         [{ 'header': [1, 2, 3, 4, false] },],
@@ -72,6 +72,31 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
         ['clean']
       ],
     };
+  } */
+
+  public initModules = (): any => {
+    return {
+      toolbar: {
+        container: [
+          [{ 'header': [1, 2, 3, 4, false] },],
+          [
+            { 'size': ['small', false, 'large', 'huge'] }, {
+              'color': [
+                '#000', '#e70000', '#ff9a00', '#ff0', '#00bb00', '#1890ff', '#0066cd', '#facdcd', '#f06666',
+                '#bcbcbc', '#fff',
+              ]
+            }
+          ],
+          ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+          ['link', 'image'],
+          ['clean']
+        ],
+        handlers: {
+          image: this.handleEditorImageUpload,
+        },
+      },
+    };
   }
 
 
@@ -87,8 +112,8 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   
   public componentDidMount(): void {
     this.inputRef.focus();
-    WriteEditForm._createInputEle();
-    this.handleEditorImageUpload();
+    // WriteEditForm._createInputEle();
+    // this.handleEditorImageUpload();
   }
 
 
@@ -107,36 +132,24 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   //// 处理富文本图片上传
-  public handleEditorImageUpload = (): void => {
+  public handleEditorImageUpload = (image: any, callback: any) => {
     const editor: Quill = this.editorRef.getEditor();
-    const module = editor.getModule('toolbar');
+    const editorSelRange = editor.getSelection();
     
-    module.addHandler('image', () => {
-      const qlImage = document
-        .getElementById('ql-image') as HTMLInputElement;
+    editor.insertEmbed(
+      editorSelRange.index,
+      'image',
+      'baidu.com',
+      'user'
+    );
 
-      qlImage.click();
-
-      qlImage.addEventListener('change', (e) => {
-        const editorRangeIndex: number = editor
-          .getSelection()
-          .index;
-        const editorContentLen: number = editor
-          .getLength();
-        
-        editor.insertEmbed(
-          editorRangeIndex,
-          'image',
-          'xxx',
-          'user',
-        )
-        editor.setSelection(
-          editorRangeIndex + 1,
-          editorContentLen - 1,
-          'user',
-        );
-      });
-    });
+    // 重新定位光标
+    const editorContentLen: number = editor.getLength();
+    editor.setSelection(
+      editorSelRange.index + 1,
+      editorContentLen - 1,
+      'user',
+    );
   }
 
 
@@ -190,7 +203,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             >
               <ReactQuill
                 ref={this.getEditorRef}
-                value={this.props.editContent}
+                defaultValue={this.props.editContent}
                 modules={this.initModules()}
                 formats={this.initFormats()}
                 placeholder="创作您的文章..."
