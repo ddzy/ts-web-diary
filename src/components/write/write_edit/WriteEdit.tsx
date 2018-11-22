@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
-import { Sources, Delta } from 'quill';
+import Quill, { Sources, Delta } from 'quill';
 
 
 export interface IWriteEditProps extends FormComponentProps {
@@ -32,6 +32,19 @@ interface IWriteEditState {};
  * 富文本编辑
  */
 class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
+
+  //// 辅助函数 创建input
+  public static _createInputEle = () => {
+    const input = document.createElement('input');
+    input.style.display = 'none';
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp');
+    input.setAttribute('id', 'ql-image');
+    input.setAttribute('class', 'ql-image');
+    
+    document.body.appendChild(input);
+  }
+
 
   public inputRef: Input;
   public editorRef: ReactQuill;
@@ -74,6 +87,8 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   
   public componentDidMount(): void {
     this.inputRef.focus();
+    WriteEditForm._createInputEle();
+    this.handleEditorImageUpload();
   }
 
 
@@ -88,6 +103,23 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       content,
       editor.getContents(),
     );
+  }
+
+
+  //// 处理富文本图片上传
+  public handleEditorImageUpload = (): void => {
+    const editor: Quill = this.editorRef.getEditor();
+    const module = editor.getModule('toolbar');
+    
+    module.addHandler('image', (...args: any[]) => {
+      const qlImage = document.getElementById('ql-image') as HTMLInputElement;
+
+      qlImage.click();
+
+      qlImage.addEventListener('change', (e) => {
+        console.log(e);
+      });
+    });
   }
 
 
@@ -153,7 +185,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       </WriteEditWrapper>
     );
   }
-
 }
 
 
