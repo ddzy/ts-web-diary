@@ -97,10 +97,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
 
   //// 处理富文本图片上传
-  public handleEditorImageUpload = (
-    image: any,
-    callback: any
-  ): void => {
+  public handleEditorImageUpload = (): void => {
     const editor: Quill = this.editorRef.getEditor();
     const editorSelRange = editor.getSelection();
     
