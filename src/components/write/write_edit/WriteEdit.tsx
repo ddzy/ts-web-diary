@@ -25,6 +25,9 @@ export interface IWriteEditProps extends FormComponentProps {
     content: string,
     delta: any,
   ) => void;
+  onEditContentImageUpload: (callback: (
+    record: any,
+  ) => void) => void;
 };
 interface IWriteEditState { };
 
@@ -179,7 +182,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             </Col>
           </Row>
         </WriteEditWrapper>
-        <BaseLoading visible={true}/>
+        <BaseLoading visible={false}/>
       </React.Fragment>
     );
   }

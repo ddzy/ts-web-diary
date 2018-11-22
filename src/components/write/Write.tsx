@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Card, Row, Col, Button } from 'antd';
+import { connect } from 'react-redux';
 
 import { 
   WriteWrapper,
@@ -124,6 +125,14 @@ class Write extends React.PureComponent<
   }
 
 
+  //// 处理 富文本上传图片
+  public handleEditContentImageUpload = (
+    callback: (record: any) => void,
+  ): void => {
+    
+  }
+
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
@@ -135,6 +144,7 @@ class Write extends React.PureComponent<
               editContent={this.state.editContent}
               onEditTitleChange={this.handleEditFormChange}
               onEditContentChange={this.handleEditContentChange}
+              onEditContentImageUpload={this.handleEditContentImageUpload}
             />
 
             {/* 上传图片 */}
@@ -173,4 +183,4 @@ class Write extends React.PureComponent<
 }
 
 
-export default Write;
+export default connect()(Write);
