@@ -111,13 +111,30 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     const editor: Quill = this.editorRef.getEditor();
     const module = editor.getModule('toolbar');
     
-    module.addHandler('image', (...args: any[]) => {
-      const qlImage = document.getElementById('ql-image') as HTMLInputElement;
+    module.addHandler('image', () => {
+      const qlImage = document
+        .getElementById('ql-image') as HTMLInputElement;
 
       qlImage.click();
 
       qlImage.addEventListener('change', (e) => {
-        console.log(e);
+        const editorRangeIndex: number = editor
+          .getSelection()
+          .index;
+        const editorContentLen: number = editor
+          .getLength();
+        
+        editor.insertEmbed(
+          editorRangeIndex,
+          'image',
+          'xxx',
+          'user',
+        )
+        editor.setSelection(
+          editorRangeIndex + 1,
+          editorContentLen - 1,
+          'user',
+        );
       });
     });
   }
