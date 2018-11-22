@@ -1,19 +1,20 @@
 import * as React from 'react';
 import ReactQuill from 'react-quill';
-import { 
-  Row, 
-  Col, 
-  Card, 
-  Input, 
-  Icon, 
-  Form, 
-  Popover 
+import {
+  Row,
+  Col,
+  Card,
+  Input,
+  Icon,
+  Form,
+  Popover
 } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 
 import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
 import Quill, { Sources, Delta } from 'quill';
+import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
 
 
 export interface IWriteEditProps extends FormComponentProps {
@@ -25,7 +26,7 @@ export interface IWriteEditProps extends FormComponentProps {
     delta: any,
   ) => void;
 };
-interface IWriteEditState {};
+interface IWriteEditState { };
 
 
 /**
@@ -35,7 +36,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
   public inputRef: Input;
   public editorRef: ReactQuill;
-
 
   public readonly state = {
   }
@@ -76,7 +76,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     ];
   }
 
-  
+
   public componentDidMount(): void {
     this.inputRef.focus();
   }
@@ -100,7 +100,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   public handleEditorImageUpload = (): void => {
     const editor: Quill = this.editorRef.getEditor();
     const editorSelRange = editor.getSelection();
-    
+
     editor.insertEmbed(
       editorSelRange.index,
       'image',
@@ -133,51 +133,54 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <WriteEditWrapper>
-        <Row style={{ marginTop: '15px' }}>
-          <Col>
-            <Card
-              title={
-                <Form>
-                  <Form.Item>
-                    {getFieldDecorator('editTitle', {
-                      rules: [{ required: true, message: '标题一定要填!' }],
-                    })(
-                      <Input
-                        ref={this.getInputinputRef}
-                        type="text"
-                        prefix={
-                          <Popover
-                            title="警告信息"
-                            content={
-                              <p>给你的文章取个响亮的标题, 必填项!</p>
-                            }
-                          >
-                            <Icon 
-                              type="exclamation-circle" 
-                              style={{ color: '#d50' }} 
-                            />
-                          </Popover>
-                        }
-                        placeholder="文章标题, 此为必填项!"
-                      />
-                    )}
-                  </Form.Item>
-                </Form>
-              }
-            >
-              <ReactQuill
-                ref={this.getEditorRef}
-                value={this.props.editContent}
-                modules={this.initModules()}
-                formats={this.initFormats()}
-                placeholder="创作您的文章..."
-                onChange={this.handleChange}
-              />
-            </Card>
-          </Col>
-        </Row>
-      </WriteEditWrapper>
+      <React.Fragment>
+        <WriteEditWrapper>
+          <Row style={{ marginTop: '15px' }}>
+            <Col>
+              <Card
+                title={
+                  <Form>
+                    <Form.Item>
+                      {getFieldDecorator('editTitle', {
+                        rules: [{ required: true, message: '标题一定要填!' }],
+                      })(
+                        <Input
+                          ref={this.getInputinputRef}
+                          type="text"
+                          prefix={
+                            <Popover
+                              title="警告信息"
+                              content={
+                                <p>给你的文章取个响亮的标题, 必填项!</p>
+                              }
+                            >
+                              <Icon
+                                type="exclamation-circle"
+                                style={{ color: '#d50' }}
+                              />
+                            </Popover>
+                          }
+                          placeholder="文章标题, 此为必填项!"
+                        />
+                      )}
+                    </Form.Item>
+                  </Form>
+                }
+              >
+                <ReactQuill
+                  ref={this.getEditorRef}
+                  value={this.props.editContent}
+                  modules={this.initModules()}
+                  formats={this.initFormats()}
+                  placeholder="创作您的文章..."
+                  onChange={this.handleChange}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </WriteEditWrapper>
+        <BaseLoading visible={true}/>
+      </React.Fragment>
     );
   }
 }
