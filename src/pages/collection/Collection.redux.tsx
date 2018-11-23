@@ -80,7 +80,7 @@ export function reduxHandleGetCollectionInfo(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'GET',
-      url: '/collection/getinfo',
+      url: '/api/collection/getinfo',
       jsonp: false,
       data: {
         userid: localStorage.getItem('userid'),
@@ -106,7 +106,7 @@ export function reduxHandleDeleteCollectionArticle(
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
-      url: '/collection/article/delete',
+      url: '/api/collection/article/delete',
       method: 'GET',
       jsonp: false,
       data: {
