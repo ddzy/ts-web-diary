@@ -108,7 +108,7 @@ export function getMyArticleList() {
   return (dispatch: ThunkDispatch<any, any, any>) => {
   
     query({ 
-      url: '/me/myarticle', 
+      url: '/api/me/myarticle', 
       method: 'GET', 
       data: { 
         type: '随笔',
@@ -135,7 +135,7 @@ export function deleteMyArticle(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'GET',
-      url: '/me/delete',
+      url: '/api/me/delete',
       data: {
         articleid,
         userid: localStorage.getItem('userid'),
@@ -159,7 +159,7 @@ export function reduxHandleGetMyArticle(
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({ 
-      url: '/me/myarticle', 
+      url: '/api/me/myarticle', 
       method: 'GET', 
       data: { 
         type,
@@ -183,7 +183,7 @@ export function reduxHandleGetMyCollection(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'GET',
-      url: '/me/collection/getinfo',
+      url: '/api/me/collection/getinfo',
       jsonp: false,
       data: {
         userid: localStorage.getItem('userid'),
@@ -207,7 +207,7 @@ export function reduxHandleDeleteMyCollection(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'GET',
-      url: '/me/collection/delete',
+      url: '/api/me/collection/delete',
       jsonp: false,
       data: {
         userid: localStorage.getItem('userid'),
