@@ -49,7 +49,7 @@ export function AuthRouteReducer(
 
 export function reduxHandleCheckAuth(callback: () => void) {
   return (dispatch: ThunkDispatch<any, any, any>): void => {
-    query({ url: '/checkauth', method: 'POST', jsonp: false, data: { userid: localStorage.getItem('userid') } })
+    query({ url: '/api/checkauth', method: 'POST', jsonp: false, data: { userid: localStorage.getItem('userid') } })
       .then((res) => {
         res.code === 0
           && dispatch(setAuth(res));
