@@ -10,6 +10,7 @@ import { ArticleReducer } from '../pages/article/Article.redux';
 import { DetailsReducer } from '../pages/details/Details.redux';
 import { EditReducer } from '../pages/edit/Edit.redux';
 import { CollectionReducer } from '../pages/collection/Collection.redux';
+import { WriteReducer } from '../components/write/Write.redux';
 
 
 const reducers = combineReducers({
@@ -23,6 +24,7 @@ const reducers = combineReducers({
   DetailsReducer,
   EditReducer,
   CollectionReducer,
+  WriteReducer,
 });
 
 
