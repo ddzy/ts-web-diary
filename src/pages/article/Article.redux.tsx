@@ -85,7 +85,7 @@ export function ArticleReducer(
 export function getArticleList() {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({ 
-      url: 'article/list', 
+      url: '/api/article/list', 
       method: 'GET',
       data: {
         page: 1,
@@ -108,7 +108,7 @@ export function reduxHandleStar(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'GET',
-      url: '/article/star',
+      url: '/api/article/star',
       data: {
         star,
         articleid,
@@ -131,7 +131,7 @@ export function handleArticleLoadMore(
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
-      url: '/article/list',
+      url: '/api/article/list',
       method: 'GET',
       jsonp: false,
       data: {
