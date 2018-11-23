@@ -140,12 +140,17 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             `http://${domain}/${key}`,
             'user',
           );
+
+          // fix_bug, 每次会插入两次图片
+          editor.deleteText(
+            editorSelRange.index + 1,
+            1,
+          );
           
           // 光标位置调整
-          const editorContentLen: number = editor.getLength();
           editor.setSelection(
             editorSelRange.index + 1,
-            editorContentLen - 1,
+            editor.getLength() - 1,
             'user',
           );
         });
