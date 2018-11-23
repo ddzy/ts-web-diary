@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import { query } from "src/services/request";
 
 
 export interface IInitialState {
@@ -42,11 +43,26 @@ export function WriteReducer(
 }
 
 
-export function reduxHandleEditorUpload(
-  record: any,
+/**
+ * 获取七牛云token
+ * @param record 参数
+ * @param callback 回调
+ */
+export function reduxHandleGetQiniuToken(
+  record: { userid: string },
   callback?: () => void,
 ) {
   return (dispatch: Dispatch) => {
-    console.log(dispatch);
+    query({
+      url: '/upload/get_qiniu_token',
+      method: 'GET',
+      data: {
+        userid: record.userid,
+      },
+      jsonp: false,
+    })
+      .then((res) => {
+        console.log(res.data);
+      });
   }
 }

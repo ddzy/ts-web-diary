@@ -8,6 +8,8 @@ const {
 
 
 upload.get('/get_qiniu_token', async (ctx) => {
+  const { userid } = await ctx.request.query;
+
   const mac = await new qiniu.auth.digest.Mac(
     QINIU_KEY.AccessKey,
     QINIU_KEY.SecretKey,
@@ -22,6 +24,7 @@ upload.get('/get_qiniu_token', async (ctx) => {
       code: 0,
       message: 'Success',
       uploadToken,
+      userid,
     };
   } else {
     ctx.body = {
