@@ -126,9 +126,7 @@ class Write extends React.PureComponent<
 
 
   //// 处理 富文本上传图片
-  public handleEditContentImageUpload = (
-    callback: (record: any) => void,
-  ): void => {
+  public handleEditContentImageUpload = (): void => {
     console.log(2);
   }
 

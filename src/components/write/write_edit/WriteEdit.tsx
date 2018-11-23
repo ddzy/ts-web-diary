@@ -25,9 +25,7 @@ export interface IWriteEditProps extends FormComponentProps {
     content: string,
     delta: any,
   ) => void;
-  onEditContentImageUpload: (callback: (
-    record: any,
-  ) => void) => void;
+  onEditContentImageUpload: () => void;
 };
 interface IWriteEditState { };
 
