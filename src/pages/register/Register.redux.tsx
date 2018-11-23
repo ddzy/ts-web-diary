@@ -52,7 +52,7 @@ export function reduxHandleRegister(
   callback: () => void
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
-    query({ url: '/register', method: 'POST', data, jsonp: false })
+    query({ url: '/api/register', method: 'POST', data, jsonp: false })
       .then((res) => {
         res.code === 0
           ? dispatch(authSuccess(res)) && callback()
