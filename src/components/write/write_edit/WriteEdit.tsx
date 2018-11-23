@@ -10,6 +10,7 @@ import {
   Popover
 } from 'antd';
 import 'react-quill/dist/quill.snow.css';
+import * as qiniu from 'qiniu-js';
 
 import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
@@ -123,9 +124,18 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const files = target.files as FileList;
       const file = files.item(0) as File;
 
-      this.props.onEditContentImageUpload((info) => {
-        console.log(info);
-        console.log(file);
+      this.props.onEditContentImageUpload((info: {
+        uploadToken: string,
+      }) => {
+        const $qiniu = qiniu.upload(
+          file,
+          'test/first/',
+          info.uploadToken,
+          {},
+          {},
+        );
+
+        $qiniu.subscribe(console.log);
       });
 
       //   editor.insertEmbed(

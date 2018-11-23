@@ -134,7 +134,7 @@ class Write extends React.PureComponent<
 
   //// 处理 富文本上传图片
   public handleEditContentImageUpload = (
-    callback: (info: object) => void,
+    callback: (info: any) => void,
   ): void => {
     this.props.reduxHandleGetQiniuToken({
       userid: localStorage.getItem('userid') || '',
