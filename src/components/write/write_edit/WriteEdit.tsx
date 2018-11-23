@@ -127,43 +127,30 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       this.props.onEditContentImageUpload((info: any) => {
         const date: string = new Date().toLocaleDateString();
         const username: string = 'duan';
-        const key: string = `/${date}/${username}/posts/${Date.now()}`;
-        const $qiniu = qiniu.upload(
-          file,
-          key,
-          info.uploadToken,
-          {},
-          {},
-        );
+        const key: string = `${date}/${username}/posts/${Date.now()}`;
+        const token: string = info.uploadToken;
+        const domain: string = info.domain;
+        const $qiniu = qiniu.upload(file,key,token,{},{},);
 
-        $qiniu.subscribe({
-          next(res) {
-            console.log(res);
-          },
-          error(err) {
-            console.log(err);
-          },
-          complete() {
-            console.log('complete');
-          },
+        $qiniu.subscribe(() => {
+          // 插入editor
+          editor.insertEmbed(
+            editorSelRange.index,
+            'image',
+            `http://${domain}/${key}`,
+            'user',
+          );
+          
+          // 光标位置调整
+          const editorContentLen: number = editor.getLength();
+          editor.setSelection(
+            editorSelRange.index + 1,
+            editorContentLen - 1,
+            'user',
+          );
         });
       });
-
-      //   editor.insertEmbed(
-      //     editorSelRange.index,
-      //     'image',
-      //     base64,
-      //     'user',
-      //   );
-
-      const editorContentLen: number = editor.getLength();
-      editor.setSelection(
-        editorSelRange.index + 1,
-        editorContentLen - 1,
-        'user',
-      );
     });
-
   }
 
 
@@ -180,7 +167,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
-    
+
     return (
       <React.Fragment>
         <WriteEditWrapper>
