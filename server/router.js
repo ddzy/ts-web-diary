@@ -17,16 +17,16 @@ const uploadController = require('./controller/upload');
 
 // 装载路由
 router
-  .use('/', homeController.routes(), homeController.allowedMethods())
-  .use('/article', articleController.routes(), articleController.allowedMethods())
-  .use('/login', loginController.routes(), loginController.allowedMethods())
-  .use('/register', registerController.routes(), registerController.allowedMethods())
-  .use('/me', meController.routes(), meController.allowedMethods())
-  .use('/write', writeController.routes(), writeController.allowedMethods())
-  .use('/checkauth', checkAuthController.routes(), checkAuthController.allowedMethods())
-  .use('/details', detailsController.routes(), detailsController.allowedMethods())
-  .use('/collection', collectionController.routes(), collectionController.allowedMethods())
-  .use('/upload', uploadController.routes(), uploadController.allowedMethods());
+  .use('/api', homeController.routes(), homeController.allowedMethods())
+  .use('/api/article', articleController.routes(), articleController.allowedMethods())
+  .use('/api/login', loginController.routes(), loginController.allowedMethods())
+  .use('/api/register', registerController.routes(), registerController.allowedMethods())
+  .use('/api/me', meController.routes(), meController.allowedMethods())
+  .use('/api/write', writeController.routes(), writeController.allowedMethods())
+  .use('/api/checkauth', checkAuthController.routes(), checkAuthController.allowedMethods())
+  .use('/api/details', detailsController.routes(), detailsController.allowedMethods())
+  .use('/api/collection', collectionController.routes(), collectionController.allowedMethods())
+  .use('/api/upload', uploadController.routes(), uploadController.allowedMethods());
 
 
 module.exports = {

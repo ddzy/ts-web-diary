@@ -70,7 +70,7 @@ export function LoginReducer(
  */
 export function reduxHandleLogin(data: IInitialState, callback: () => void) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
-    query({ url: '/login', method: 'POST', data, jsonp: false })
+    query({ url: '/api/login', method: 'POST', data, jsonp: false })
       .then((res) => {
         
         if(res.code === 0) {
