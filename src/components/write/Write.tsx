@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Card, Row, Col, Button } from 'antd';
-import { connect } from 'react-redux';
 
 import { 
   WriteWrapper,
@@ -10,7 +9,6 @@ import WriteEdit from './write_edit/WriteEdit';
 import WriteUpload from './write_upload/WriteUpload';
 import WriteExtra from './write_extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
-import { reduxHandleGetQiniuToken } from './Write.redux';
 
 
 export interface IWriteProps {
@@ -19,12 +17,6 @@ export interface IWriteProps {
   ) => void;
 
   defaultEditValue?: any;     // 编辑文章默认数据
-
-  WriteReducer: { editorImageInfo: object };
-  reduxHandleGetQiniuToken: (
-    record: { userid: string },
-    callback: () => void,
-  ) => void;
 };
 interface IWriteState {
   editTitle?: string;        // 文章标题
@@ -136,11 +128,7 @@ class Write extends React.PureComponent<
   public handleEditContentImageUpload = (
     callback: (info: any) => void,
   ): void => {
-    this.props.reduxHandleGetQiniuToken({
-      userid: localStorage.getItem('userid') || '',
-    }, () => {
-      callback && callback(this.props.WriteReducer.editorImageInfo);
-    });
+    console.log(2);
   }
 
 
@@ -194,18 +182,4 @@ class Write extends React.PureComponent<
 }
 
 
-function mapStateToProps(state: any) {
-  return {
-    WriteReducer: state.WriteReducer,
-  };
-}
-function mapDispatchToProps() {
-  return {
-    reduxHandleGetQiniuToken,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps(),
-)(Write);
+export default Write;
