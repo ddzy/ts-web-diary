@@ -124,18 +124,29 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const files = target.files as FileList;
       const file = files.item(0) as File;
 
-      this.props.onEditContentImageUpload((info: {
-        uploadToken: string,
-      }) => {
+      this.props.onEditContentImageUpload((info: any) => {
+        const date: string = new Date().toLocaleDateString();
+        const username: string = 'duan';
+        const key: string = `/${date}/${username}/posts/${Date.now()}`;
         const $qiniu = qiniu.upload(
           file,
-          'test/first/',
+          key,
           info.uploadToken,
           {},
           {},
         );
 
-        $qiniu.subscribe(console.log);
+        $qiniu.subscribe({
+          next(res) {
+            console.log(res);
+          },
+          error(err) {
+            console.log(err);
+          },
+          complete() {
+            console.log('complete');
+          },
+        });
       });
 
       //   editor.insertEmbed(

@@ -18,7 +18,8 @@ upload.get('/get_qiniu_token', async (ctx) => {
     scope: 'duan',
   });
   const uploadToken = await putPolicy.uploadToken(mac);
-  
+  const domain = await QINIU_KEY.Domain;
+
   if (uploadToken) {
     ctx.body = {
       code: 0,
@@ -26,6 +27,7 @@ upload.get('/get_qiniu_token', async (ctx) => {
       data: {
         uploadToken,
         userid,
+        domain,
       },
     };
   } else {

@@ -9,6 +9,7 @@ import WriteEdit from './write_edit/WriteEdit';
 import WriteUpload from './write_upload/WriteUpload';
 import WriteExtra from './write_extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
+import { query } from 'src/services/request';
 
 
 export interface IWriteProps {
@@ -128,7 +129,16 @@ class Write extends React.PureComponent<
   public handleEditContentImageUpload = (
     callback: (info: any) => void,
   ): void => {
-    console.log(2);
+    query({
+      url: '/upload/get_qiniu_token',
+      method: 'GET',
+      data: {
+        userid: localStorage.getItem('userid'),
+      },
+      jsonp: false,
+    }).then((res) => {
+      callback(res.data);
+    });
   }
 
 

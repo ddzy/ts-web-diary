@@ -28,6 +28,8 @@ const WEBSITE = {
 const QINIU_KEY = {
   AccessKey: 'n4eSoB1ITSy1zcht0nQQ2XTLyYNsqCpUuOYEJ4m6',
   SecretKey: 'z1RJP_OGgPA-oyuT2DjG53ICLF2DeUS5maSRt83b',
+  Domain: 'pijg44hb3.bkt.clouddn.com',
+  Bucket: 'duan',
 };
 
 
