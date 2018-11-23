@@ -188,7 +188,7 @@ export function getOneArticleInfo(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({ 
       method: 'GET', 
-      url: '/details',  
+      url: '/api/details',  
       data: {
         articleid,
         userid: localStorage.getItem('userid'),
@@ -216,7 +216,7 @@ export function reduxHandleSendComment(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'POST',
-      url: '/details/comment',
+      url: '/api/details/comment',
       jsonp: false,
       data: {
         userid: localStorage.getItem('userid') || '',
@@ -248,7 +248,7 @@ export function reduxHandleSendReply(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'POST',
-      url: '/details/reply',
+      url: '/api/details/reply',
       jsonp: false,
       data: {
         commentid,
@@ -279,7 +279,7 @@ export function reduxHandleFixedControlBarStar(
   return (dispatch: ThunkDispatch<any, any, any>): void => {
     query({
       method: 'GET',
-      url: '/details/star',
+      url: '/api/details/star',
       data: {
         articleid,
         liked,
@@ -306,7 +306,7 @@ export function reduxHandleCreateCollection(
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
-      url: '/details/collection/create',
+      url: '/api/details/collection/create',
       method: 'GET',
       jsonp: false,
       data: {
@@ -337,7 +337,7 @@ export function reduxHandleSaveToCollection(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'POST',
-      url: '/details/collection/save',
+      url: '/api/details/collection/save',
       jsonp: false,
       data: {
         userid: localStorage.getItem('userid'),
