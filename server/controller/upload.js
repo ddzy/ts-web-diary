@@ -23,8 +23,10 @@ upload.get('/get_qiniu_token', async (ctx) => {
     ctx.body = {
       code: 0,
       message: 'Success',
-      uploadToken,
-      userid,
+      data: {
+        uploadToken,
+        userid,
+      },
     };
   } else {
     ctx.body = {

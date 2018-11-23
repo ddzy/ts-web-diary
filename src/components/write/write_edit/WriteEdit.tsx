@@ -122,6 +122,8 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const file = files.item(0) as File;
       const reader = new FileReader() as FileReader;
 
+      this.props.onEditContentImageUpload();
+
       reader.readAsDataURL(file);
 
       reader.onload = () => {

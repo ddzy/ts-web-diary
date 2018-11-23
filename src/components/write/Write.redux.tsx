@@ -63,6 +63,7 @@ export function reduxHandleGetQiniuToken(
     })
       .then((res) => {
         console.log(res.data);
+        
       });
   }
 }

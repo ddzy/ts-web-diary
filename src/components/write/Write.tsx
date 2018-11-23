@@ -10,6 +10,7 @@ import WriteEdit from './write_edit/WriteEdit';
 import WriteUpload from './write_upload/WriteUpload';
 import WriteExtra from './write_extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
+import { reduxHandleGetQiniuToken } from './Write.redux';
 
 
 export interface IWriteProps {
@@ -18,6 +19,11 @@ export interface IWriteProps {
   ) => void
 
   defaultEditValue?: any     // 编辑文章默认数据
+
+  reduxHandleGetQiniuToken: (
+    record: { userid: string },
+    callback?: () => void,
+  ) => void;
 };
 interface IWriteState {
   editTitle?: string;        // 文章标题
@@ -127,7 +133,9 @@ class Write extends React.PureComponent<
 
   //// 处理 富文本上传图片
   public handleEditContentImageUpload = (): void => {
-    console.log(2);
+    this.props.reduxHandleGetQiniuToken({
+      userid: localStorage.getItem('userid') || '',
+    });
   }
 
 
@@ -181,4 +189,18 @@ class Write extends React.PureComponent<
 }
 
 
-export default connect()(Write);
+function mapStateToProps(state: any) {
+  return {
+    WriteReducer: state.WriteReducer,
+  };
+}
+function mapDispatchToProps() {
+  return {
+    reduxHandleGetQiniuToken,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps(),
+)(Write);
