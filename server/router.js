@@ -12,6 +12,7 @@ const writeController = require('./controller/write');
 const checkAuthController = require('./controller/checkAuth');
 const detailsController = require('./controller/details');
 const collectionController = require('./controller/collection');
+const uploadController = require('./controller/upload');
 
 
 // 装载路由
@@ -24,7 +25,8 @@ router
   .use('/write', writeController.routes(), writeController.allowedMethods())
   .use('/checkauth', checkAuthController.routes(), checkAuthController.allowedMethods())
   .use('/details', detailsController.routes(), detailsController.allowedMethods())
-  .use('/collection', collectionController.routes(), collectionController.allowedMethods());
+  .use('/collection', collectionController.routes(), collectionController.allowedMethods())
+  .use('/upload', uploadController.routes(), uploadController.allowedMethods());
 
 
 module.exports = {
