@@ -47,7 +47,7 @@ export function reduxHandleSendArticle(
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({ 
-      url: '/write/insert', 
+      url: '/api/write/insert', 
       method: 'POST', 
       data: { ...data, userid: localStorage.getItem('userid') }, jsonp: false 
     })
