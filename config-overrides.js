@@ -1,10 +1,10 @@
 const tsImportPluginFactory = require('ts-import-plugin')
 const { getLoader } = require("react-app-rewired");
 
-module.exports = function override(config: any) {
+module.exports = function override(config) {
   const tsLoader = getLoader(
     config.module.rules,
-    (rule: any) =>
+    (rule) =>
       rule.loader &&
       typeof rule.loader === 'string' &&
       rule.loader.includes('ts-loader')
