@@ -37,6 +37,17 @@ interface IWriteEditState { };
  */
 class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
+  public static _createFileInput = (): HTMLInputElement => {
+    const oInput: HTMLInputElement = document.createElement('input');
+    oInput.setAttribute('type', 'file');
+    oInput.setAttribute('accept', 'image/jpg,image/gif,image/png, image/bmp,image/jpeg');
+    oInput.setAttribute('id', 'ql-upload-image');
+    oInput.style.cssText = `display: none;`;
+    document.body.appendChild(oInput);
+
+    return oInput;
+  }
+
   public inputRef: Input;
   public editorRef: ReactQuill;
 
@@ -103,21 +114,38 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   public handleEditorImageUpload = (): void => {
     const editor: Quill = this.editorRef.getEditor();
     const editorSelRange = editor.getSelection();
+    const oInput = WriteEditForm._createFileInput();
 
-    editor.insertEmbed(
-      editorSelRange.index,
-      'image',
-      'baidu.com',
-      'user'
-    );
+    oInput.click();
 
-    // 重新定位光标
-    const editorContentLen: number = editor.getLength();
-    editor.setSelection(
-      editorSelRange.index + 1,
-      editorContentLen - 1,
-      'user',
-    );
+    oInput.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      const files = target.files as FileList;
+      const file = files.item(0) as File;
+      const reader = new FileReader() as FileReader;
+
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const base64 = reader.result as string;
+
+        editor.insertEmbed(
+          editorSelRange.index,
+          'image',
+          base64,
+          'user',
+        );
+
+        // 重新定位光标
+        const editorContentLen: number = editor.getLength();
+        editor.setSelection(
+          editorSelRange.index + 1,
+          editorContentLen - 1,
+          'user',
+        );
+      }
+    });
+
   }
 
 
@@ -182,7 +210,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             </Col>
           </Row>
         </WriteEditWrapper>
-        <BaseLoading visible={false}/>
+        <BaseLoading visible={false} />
       </React.Fragment>
     );
   }

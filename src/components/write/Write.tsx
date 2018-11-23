@@ -129,7 +129,7 @@ class Write extends React.PureComponent<
   public handleEditContentImageUpload = (
     callback: (record: any) => void,
   ): void => {
-    
+    console.log(2);
   }
 
 
