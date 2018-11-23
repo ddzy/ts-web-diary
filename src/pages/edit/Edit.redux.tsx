@@ -49,7 +49,7 @@ export function getEditArticleInfo(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'GET',
-      url: '/write/geteditinfo',
+      url: '/api/write/geteditinfo',
       data: {
         articleid,
       },
@@ -69,7 +69,7 @@ export function sendEditArticleInfo(
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
       method: 'POST',
-      url: '/write/update',
+      url: '/api/write/update',
       data: {
         userid: localStorage.getItem('userid'),
         ...data,
