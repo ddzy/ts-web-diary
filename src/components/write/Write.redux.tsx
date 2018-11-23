@@ -15,8 +15,8 @@ export const SAVE_EDITOR_IMAGE: string = 'SAVE_EDITOR_IMAGE';
 
 
 export function saveEditorImage(
-  data: any,
-): { type: string, payload: any } {
+  data: object,
+): { type: string, payload: object } {
   return {
     type: SAVE_EDITOR_IMAGE,
     payload: data,
@@ -50,7 +50,7 @@ export function WriteReducer(
  */
 export function reduxHandleGetQiniuToken(
   record: { userid: string },
-  callback?: () => void,
+  callback: () => void,
 ) {
   return (dispatch: Dispatch) => {
     query({
@@ -62,8 +62,8 @@ export function reduxHandleGetQiniuToken(
       jsonp: false,
     })
       .then((res) => {
-        console.log(res.data);
-        
+        dispatch(saveEditorImage(res.data));
+        callback && callback();
       });
   }
 }

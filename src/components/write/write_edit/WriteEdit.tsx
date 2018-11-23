@@ -25,7 +25,9 @@ export interface IWriteEditProps extends FormComponentProps {
     content: string,
     delta: any,
   ) => void;
-  onEditContentImageUpload: () => void;
+  onEditContentImageUpload: (
+    callback: (info: object) => void,
+  ) => void;
 };
 interface IWriteEditState { };
 
@@ -120,30 +122,25 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const target = e.target as HTMLInputElement;
       const files = target.files as FileList;
       const file = files.item(0) as File;
-      const reader = new FileReader() as FileReader;
 
-      this.props.onEditContentImageUpload();
+      this.props.onEditContentImageUpload((info) => {
+        console.log(info);
+        console.log(file);
+      });
 
-      reader.readAsDataURL(file);
+      //   editor.insertEmbed(
+      //     editorSelRange.index,
+      //     'image',
+      //     base64,
+      //     'user',
+      //   );
 
-      reader.onload = () => {
-        const base64 = reader.result as string;
-
-        editor.insertEmbed(
-          editorSelRange.index,
-          'image',
-          base64,
-          'user',
-        );
-
-        // 重新定位光标
-        const editorContentLen: number = editor.getLength();
-        editor.setSelection(
-          editorSelRange.index + 1,
-          editorContentLen - 1,
-          'user',
-        );
-      }
+      const editorContentLen: number = editor.getLength();
+      editor.setSelection(
+        editorSelRange.index + 1,
+        editorContentLen - 1,
+        'user',
+      );
     });
 
   }
@@ -162,7 +159,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
-
+    
     return (
       <React.Fragment>
         <WriteEditWrapper>

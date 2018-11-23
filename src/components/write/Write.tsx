@@ -16,13 +16,14 @@ import { reduxHandleGetQiniuToken } from './Write.redux';
 export interface IWriteProps {
   onSendArticle: (      // 发表文章
     data: any,
-  ) => void
+  ) => void;
 
-  defaultEditValue?: any     // 编辑文章默认数据
+  defaultEditValue?: any;     // 编辑文章默认数据
 
+  WriteReducer: { editorImageInfo: object };
   reduxHandleGetQiniuToken: (
     record: { userid: string },
-    callback?: () => void,
+    callback: () => void,
   ) => void;
 };
 interface IWriteState {
@@ -132,9 +133,13 @@ class Write extends React.PureComponent<
 
 
   //// 处理 富文本上传图片
-  public handleEditContentImageUpload = (): void => {
+  public handleEditContentImageUpload = (
+    callback: (info: object) => void,
+  ): void => {
     this.props.reduxHandleGetQiniuToken({
       userid: localStorage.getItem('userid') || '',
+    }, () => {
+      callback && callback(this.props.WriteReducer.editorImageInfo);
     });
   }
 
@@ -145,7 +150,7 @@ class Write extends React.PureComponent<
         <WriteWrapper>
           <WriteContent>
             {/* 编辑器 */}
-            <WriteEdit 
+            <WriteEdit
               editTitle={this.state.editTitle}
               editContent={this.state.editContent}
               onEditTitleChange={this.handleEditFormChange}
