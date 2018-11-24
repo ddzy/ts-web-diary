@@ -11,11 +11,15 @@ import {
 } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 import * as qiniu from 'qiniu-js';
-
-import { WriteEditWrapper } from '../style';
 import { FormComponentProps } from 'antd/lib/form';
 import Quill, { Sources, Delta } from 'quill';
+
+import { WriteEditWrapper } from '../style';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
+import QuillImageBlot from './QuillImageBlot';
+
+
+Quill.register(QuillImageBlot, true);
 
 
 export interface IWriteEditProps extends FormComponentProps {
@@ -147,20 +151,24 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
           const waterMarked = qiniu.watermark({
             mode: 2,
             text: `gayhub@${username}`,
-            dissolve: 70,
+            dissolve: 99,
             gravity: 'SouthEast',
             fontsize: 14,
             font: '微软雅黑',
             dx: 10,
             dy: 10,
-            fill: 'white',
+            fill: '#1890ff',
           }, key, domain);
           
           // 插入editor
           editor.insertEmbed(
             editorSelRange.index,
             'image',
-            `http://${waterMarked}`,
+            { 
+              src: `http://${waterMarked}`, 
+              'data-src': '',
+              alt: key,
+            },
             'user',
           );
 
