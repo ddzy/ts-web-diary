@@ -39,14 +39,14 @@ app.use(async (ctx, next) => {
 
 app.use(koaJwt({ secret: SECRET_FOR_TOKEN }).unless({
   path: [
-    /^\/login/, 
-    /^\/register/,
-    /^\/article/,
-    /^\/details/,
+    /^\/api\/login/, 
+    /^\/api\/register/,
+    /^\/api\/article/,
+    /^\/api\/details/,
     /^\/images/, 
-    /^\/details\/mimicat\.ico/,
-    /^\/edit\/mimicat\.ico/,
-    /^\/collection\/mimicat\.ico/,
+    /^\/api\/details\/mimicat\.ico/,
+    /^\/api\/edit\/mimicat\.ico/,
+    /^\/api\/collection\/mimicat\.ico/,
   ],
 }))
 

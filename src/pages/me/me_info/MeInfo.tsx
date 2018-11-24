@@ -87,7 +87,7 @@ class MeInfo extends React.Component<IMeInfoProps, IMeInfoState> {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                   }}
                   showUploadList={false}
-                  action="/me/upload/avatar"
+                  action="/api/me/upload/avatar"
                   data={{ userid: localStorage.getItem('userid') }}
                   beforeUpload={this.beforeUpload}
                   onChange={this.handleAvatarChange}
