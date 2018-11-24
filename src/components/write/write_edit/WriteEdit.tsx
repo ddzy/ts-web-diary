@@ -125,7 +125,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const target = e.target as HTMLInputElement;
       const files = target.files as FileList;
       const file = files.item(0) as File;
-      console.log(file);
+
       this.props.onEditContentImageUpload(async (info: any) => {
         const date: string = new Date().toLocaleDateString();
         const username: string = this.props.username;
@@ -133,8 +133,8 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
         const token: string = info.uploadToken;
         const domain: string = info.domain;
 
-        // fix: 修复插入图片太大, 编辑器无法显示 
-        //上传前压缩
+        // fix_bug: 修复插入图片太大, 编辑器无法显示 
+        // 上传前压缩
         const compressedImg = await qiniu.compressImage(file, {
           maxWidh: 200,
           maxHeight: 200,
@@ -151,7 +151,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             'user',
           );
 
-          // fix_bug, 每次会插入两次图片
+          // fix_bug: 每次会插入两次图片
           editor.deleteText(
             editorSelRange.index + 1,
             1,
@@ -163,8 +163,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             editor.getLength() - 1,
             'user',
           );
-        }, (err) => {
-          console.log(err);
         });
       });
     });

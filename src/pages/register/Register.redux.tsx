@@ -58,8 +58,5 @@ export function reduxHandleRegister(
           ? dispatch(authSuccess(res)) && callback()
           : dispatch(authFailed(res)) && callback();
       })
-      .catch((err) => {
-        console.log(err);
-      })
   };
 }
