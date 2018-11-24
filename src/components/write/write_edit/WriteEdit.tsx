@@ -19,6 +19,8 @@ import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
 
 
 export interface IWriteEditProps extends FormComponentProps {
+  username: string;
+
   editTitle: string;
   editContent: any;
   onEditTitleChange: (data: any) => void;
@@ -126,7 +128,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
       this.props.onEditContentImageUpload((info: any) => {
         const date: string = new Date().toLocaleDateString();
-        const username: string = 'duan';
+        const username: string = this.props.username;
         const key: string = `${date}/${username}/posts/${Date.now()}`;
         const token: string = info.uploadToken;
         const domain: string = info.domain;

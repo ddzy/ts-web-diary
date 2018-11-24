@@ -16,6 +16,7 @@ export interface IEditProps {
   history: History;
 
   EditReducer: { articleInfo: any };
+  AuthRoueReducer: { username: string };
 
   getEditArticleInfo: (
     articleid: string,
@@ -69,7 +70,8 @@ class Edit extends React.PureComponent<IEditProps, IEditState> {
     return (
       <React.Fragment>
         <Header />
-        <Write 
+        <Write
+          username={this.props.AuthRoueReducer.username}  
           onSendArticle={this.handleSendArticle}
           defaultEditValue={this.props.EditReducer.articleInfo}
         />
@@ -82,6 +84,7 @@ class Edit extends React.PureComponent<IEditProps, IEditState> {
 
 function mapStateToProps(state: any) {
   return {
+    AuthRouteReducer: state.AuthRouteReducer,
     EditReducer: state.EditReducer,
   };
 }

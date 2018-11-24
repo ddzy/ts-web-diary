@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card, Row, Col, Button } from 'antd';
 
-import { 
+import {
   WriteWrapper,
   WriteContent,
 } from './style';
@@ -16,6 +16,7 @@ export interface IWriteProps {
   onSendArticle: (      // 发表文章
     data: any,
   ) => void;
+  username: string;
 
   defaultEditValue?: any;     // 编辑文章默认数据
 };
@@ -27,7 +28,7 @@ interface IWriteState {
     article_mode: { value: string },
     article_type: { value: string },
     article_tag: { value: string[] },
-  };     
+  };
 };
 
 
@@ -35,30 +36,30 @@ interface IWriteState {
  * 写文章
  */
 class Write extends React.PureComponent<
-  IWriteProps, 
+  IWriteProps,
   IWriteState
-> {
+  > {
 
   public readonly state = {
-    editTitle: '',        
-    editContent: {},      
-    article_title_image: '',         
-    extraContent: {       
-      article_mode: { 
-        value: '' 
+    editTitle: '',
+    editContent: {},
+    article_title_image: '',
+    extraContent: {
+      article_mode: {
+        value: ''
       },
-      article_type: { 
-        value: '', 
+      article_type: {
+        value: '',
       },
-      article_tag: { 
-        value: [], 
+      article_tag: {
+        value: [],
       },
     },
   }
 
 
   public componentWillReceiveProps(nextProps: any) {
-    if(nextProps.defaultEditValue) {
+    if (nextProps.defaultEditValue) {
       this.setState({
         editTitle: nextProps.defaultEditValue.title,
         editContent: nextProps.defaultEditValue.content,
@@ -149,6 +150,7 @@ class Write extends React.PureComponent<
           <WriteContent>
             {/* 编辑器 */}
             <WriteEdit
+              username={this.props.username}
               editTitle={this.state.editTitle}
               editContent={this.state.editContent}
               onEditTitleChange={this.handleEditFormChange}
@@ -157,7 +159,7 @@ class Write extends React.PureComponent<
             />
 
             {/* 上传图片 */}
-            <WriteUpload 
+            <WriteUpload
               article_title_image={
                 this.state.article_title_image
               }
@@ -165,7 +167,7 @@ class Write extends React.PureComponent<
             />
 
             {/* 附加信息 */}
-            <WriteExtra 
+            <WriteExtra
               onChange={this.handleExtraFormChange}
               {...this.state.extraContent}
             />

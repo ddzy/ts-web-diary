@@ -11,7 +11,7 @@ import { reduxHandleSendArticle } from './Publish.redux';
 export interface IPublishProps {
   history: History;
 
-  AuthRouteReducer: any;
+  AuthRouteReducer: { isAuth: boolean, username: string };
   PublishReducer: { message: string, articleid: string };
 
   reduxHandleSendArticle: (
@@ -76,7 +76,8 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
     return (
       <React.Fragment>
         <Header />
-        <Write 
+        <Write
+          username={this.props.AuthRouteReducer.username}  
           onSendArticle={this.handleSendArticle}
         />
       </React.Fragment>
