@@ -36,7 +36,9 @@ export interface IWriteEditProps extends FormComponentProps {
     callback: (info: object) => void,
   ) => void;
 };
-interface IWriteEditState { };
+interface IWriteEditState {
+  loadingVisible: boolean;
+};
 
 
 /**
@@ -59,6 +61,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
   public editorRef: ReactQuill;
 
   public readonly state = {
+    loadingVisible: false,
   }
 
 
@@ -137,6 +140,9 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
         const token: string = info.uploadToken;
         const domain: string = info.domain;
 
+        // loading
+        this.setState({ loadingVisible: true });
+
         // fix_bug: 修复插入图片太大, 编辑器无法显示 
         // 上传前压缩
         const compressedImg = await qiniu.compressImage(file, {
@@ -184,6 +190,9 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             editor.getLength() - 1,
             'user',
           );
+
+          // loading
+          this.setState({ loadingVisible: false });
         });
       });
     });
@@ -251,7 +260,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             </Col>
           </Row>
         </WriteEditWrapper>
-        <BaseLoading visible={false} />
+        <BaseLoading visible={this.state.loadingVisible} />
       </React.Fragment>
     );
   }
