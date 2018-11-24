@@ -125,14 +125,22 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const target = e.target as HTMLInputElement;
       const files = target.files as FileList;
       const file = files.item(0) as File;
-
-      this.props.onEditContentImageUpload((info: any) => {
+      console.log(file);
+      this.props.onEditContentImageUpload(async (info: any) => {
         const date: string = new Date().toLocaleDateString();
         const username: string = this.props.username;
         const key: string = `${date}/${username}/posts/${Date.now()}`;
         const token: string = info.uploadToken;
         const domain: string = info.domain;
-        const $qiniu = qiniu.upload(file,key,token,{},{},);
+
+        // fix: 修复插入图片太大, 编辑器无法显示 
+        //上传前压缩
+        const compressedImg = await qiniu.compressImage(file, {
+          maxWidh: 200,
+          maxHeight: 200,
+        });
+        // 上传
+        const $qiniu = qiniu.upload(compressedImg.dist, key, token, {}, {});
 
         $qiniu.subscribe(() => {
           // 插入editor
@@ -155,6 +163,8 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             editor.getLength() - 1,
             'user',
           );
+        }, (err) => {
+          console.log(err);
         });
       });
     });
