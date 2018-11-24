@@ -143,11 +143,24 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
         const $qiniu = qiniu.upload(compressedImg.dist, key, token, {}, {});
 
         $qiniu.subscribe(() => {
+          // 加水印
+          const waterMarked = qiniu.watermark({
+            mode: 2,
+            text: `gayhub@${username}`,
+            dissolve: 70,
+            gravity: 'SouthEast',
+            fontsize: 14,
+            font: '微软雅黑',
+            dx: 10,
+            dy: 10,
+            fill: 'white',
+          }, key, domain);
+          
           // 插入editor
           editor.insertEmbed(
             editorSelRange.index,
             'image',
-            `http://${domain}/${key}`,
+            `http://${waterMarked}`,
             'user',
           );
 
