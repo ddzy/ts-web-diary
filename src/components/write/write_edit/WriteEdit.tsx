@@ -79,6 +79,9 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             }
           ],
           ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
+
+          [{ 'header': 1 }, { 'header': 2 }],
+
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['link', 'image'],
           ['clean']
@@ -95,6 +98,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     return [
       'header', 'size', 'color',
       'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block',
+      'header', 'header',
       'list', 'bullet', 'indent',
       'link', 'image',
     ];

@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Divider, Tag } from 'antd';
-// import ReactQuill from 'react-quill';
-// import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import 'react-quill/dist/quill.snow.css';  
 
 

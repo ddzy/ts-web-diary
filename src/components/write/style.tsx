@@ -19,8 +19,13 @@ export const WriteContent = styled<IStyleProps, 'div'>('div')`
 
 // 富文本
 export const WriteEditWrapper = styled<IStyleProps, 'div'>('div')`
-
+  h2::after {
+    display: block;
+    content: ' ';
+    border-bottom: 1px solid #d9dce1;
+  }
 `;
+
 
 // 上传图片
 export const WriteUploadWrapper = styled<IStyleProps, 'div'>('div')`

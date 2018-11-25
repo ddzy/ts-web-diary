@@ -37,8 +37,8 @@ export const LeftTitleBox = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const LeftTitle = styled<IStyleProps, 'h1'>('h1')`
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: bolder;
 `;
 
 export const LeftInfoBox = styled<IStyleProps, 'div'>('div')`
@@ -72,6 +72,12 @@ export const LeftContentContainer = styled<IStyleProps, 'div'>('div')`
 
 export const LeftContent = styled.article`
   padding: 0 30px 40px;
+  h2::after {
+    display: block;
+    content: ' ';
+    margin-top: 15px;
+    border-bottom: 1px solid #d9dce1;
+  }
   img {
     max-width: 680px;
   }
@@ -251,7 +257,6 @@ export const MeInfoAvatar = styled<IStyleProps, 'div'>('div')`
 export const MeInfoName = styled<IStyleProps, 'h2'>('h2')`
   margin-top: 10px;
   font-size: 20px;
-  font-weight: 600;
 `;
 
 export const MeInfoCount = styled<IStyleProps, 'ul'>('ul')`
@@ -271,7 +276,6 @@ export const MeInfoCountItem = styled<IStyleProps, 'li'>('li')`
 
 export const MeInfoCountItemNumber = styled<IStyleProps, 'p'>('p')`
   font-size: 18px;
-  font-weight: 500;
 `;
 
 export const MeInfoCountItemText = styled<IStyleProps, 'p'>('p')`
