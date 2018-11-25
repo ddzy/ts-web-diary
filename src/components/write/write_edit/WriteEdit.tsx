@@ -143,36 +143,46 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
         // loading
         this.setState({ loadingVisible: true });
 
-        // fix_bug: 修复插入图片太大, 编辑器无法显示 
-        // 上传前压缩
-        const compressedImg = await qiniu.compressImage(file, {
-          maxWidh: 200,
-          maxHeight: 200,
-        });
-        // 上传
-        const $qiniu = qiniu.upload(compressedImg.dist, key, token, {}, {});
+        const $qiniu: qiniu.Observable = qiniu.upload(
+          file,
+          key,
+          token,
+          {},
+          {},
+        );
 
-        $qiniu.subscribe(() => {
-          // 加水印
-          const waterMarked = qiniu.watermark({
-            mode: 2,
-            text: `gayhub@${username}`,
-            dissolve: 99,
-            gravity: 'SouthEast',
-            fontsize: 14,
-            font: '微软雅黑',
-            dx: 10,
-            dy: 10,
-            fill: '#1890ff',
-          }, key, domain);
+        $qiniu.subscribe(() => {              
+          const processedImgUrl: string = qiniu.pipeline([
+            {
+              fop: 'watermark',
+              mode: 2,
+              text: `gayhub@${username}`,
+              dissolve: 99,
+              gravity: 'SouthEast',
+              fontsize: 14,
+              font: '微软雅黑',
+              dx: 10,
+              dy: 10,
+              fill: '#1890ff',
+            }, {
+              fop: 'imageView2',
+              mode: 3,           
+              w: 600,
+              h: 600,
+              q: 100,
+              format: 'png'
+            }
+          ], key, domain);
+          const finalProcessedImgUrl: string = `http://${processedImgUrl}`;
+          const finalOriginImgUrl: string = `http://${domain}/${key}`;
           
           // 插入editor
           editor.insertEmbed(
             editorSelRange.index,
             'image',
             { 
-              src: `http://${waterMarked}`, 
-              'data-src': '',
+              src: finalProcessedImgUrl, 
+              'data-src': finalOriginImgUrl,
               alt: key,
             },
             'user',
