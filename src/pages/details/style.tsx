@@ -70,8 +70,20 @@ export const LeftContentContainer = styled<IStyleProps, 'div'>('div')`
   
 `;
 
-export const LeftContent = styled<IStyleProps, 'div'>('div')`
-
+export const LeftContent = styled.article`
+  padding: 0 30px 40px;
+  img {
+    max-width: 680px;
+  }
+  blockquote {
+    padding: 10px 23px;
+    border-left: 4px solid #cbcbcb;
+    background-color: #f8f8f8;
+  }
+  pre {
+    padding: 18px 15px 12px;
+    background-color: #f8f8f8;
+  }
 `;
 
 
@@ -180,7 +192,7 @@ export const ItemReplyBox = styled<IStyleProps, 'div'>('div')`
     position: absolute;
     left: 77px;
     top: -16px;
-    border 8px solid transparent;
+    border: 8px solid transparent;
     border-bottom: 8px solid #eaeaea;
   }
 `;

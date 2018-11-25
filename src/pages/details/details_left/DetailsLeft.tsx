@@ -19,6 +19,7 @@ import {
   LeftInfoBox,
   LeftInfoList,
   LeftInfoListItem,
+  LeftContent,
 } from '../style';
 import Quill from 'quill';
 
@@ -92,6 +93,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
   }
 
 
+  //// 初始化富文本editor内容
   public initArticleContent = (): string => {
     const { articleContent } = this.props;
     const parsedArticleContent = articleContent
@@ -146,13 +148,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
 
         {/* 富文本 */}
         <LeftContentContainer>
-          {/* <ReactQuill
-            className="details-rich-editor"
-            value={this.props.articleContent}
-            readOnly={true}
-          /> */}
-          <div
-            className="details-rich-editor"
+          <LeftContent
             dangerouslySetInnerHTML={{
               __html: this.initArticleContent(),
             }}

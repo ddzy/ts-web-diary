@@ -142,31 +142,6 @@ table {
 }
 
 
-/* 隐藏details页 toolbar */
-.details-rich-editor .ql-toolbar {
-	display: none;
-}
-
-.details-rich-editor .ql-container {
-	border: 0 !important;
-	font-size: 16px;
-}
-
-.details-rich-editor .ql-container blockquote {
-	padding: 10px 10px 10px 16px;
-	background-color: #f6f6f6;
-	color: #666;
-}
-
-.details-rich-editor .ql-container p {
-	margin: 10px 0;
-}
-
-.details-rich-editor .ql-container .ql-editor pre.ql-syntax {
-	background-color: #f0f0f0;
-	color: #666;
-}
-
 
 /* 展示隐藏回复框 & 切换message icon */
 .comment-reply-icon-active {
