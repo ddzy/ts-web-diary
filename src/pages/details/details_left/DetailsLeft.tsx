@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Divider, Tag } from 'antd';
-import ReactQuill from 'react-quill';
+// import ReactQuill from 'react-quill';
+// import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import 'react-quill/dist/quill.snow.css';  
 
 
@@ -19,6 +20,7 @@ import {
   LeftInfoList,
   LeftInfoListItem,
 } from '../style';
+import Quill from 'quill';
 
 
 
@@ -90,6 +92,20 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
   }
 
 
+  public initArticleContent = (): string => {
+    const { articleContent } = this.props;
+    const parsedArticleContent = articleContent
+      ? JSON.parse(articleContent)
+      : { ops: [] };
+
+    const tempCont = document.createElement("div");
+    (new Quill(tempCont)).setContents(parsedArticleContent);
+
+    return tempCont
+      .getElementsByClassName("ql-editor")[0].innerHTML;
+  }
+
+
   public render(): JSX.Element {
     return (
       <DetailsLeftWrapper>
@@ -130,10 +146,16 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
 
         {/* 富文本 */}
         <LeftContentContainer>
-          <ReactQuill
+          {/* <ReactQuill
             className="details-rich-editor"
             value={this.props.articleContent}
             readOnly={true}
+          /> */}
+          <div
+            className="details-rich-editor"
+            dangerouslySetInnerHTML={{
+              __html: this.initArticleContent(),
+            }}
           />
         </LeftContentContainer>
         <Divider />

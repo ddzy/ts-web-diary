@@ -41,13 +41,14 @@ write.post('/insert', async (ctx, next) => {
   const body = ctx.request.body || {};
 
   const getUser = await User.findById(changeId(body.userid));
-
+  
   // 存储文章
   const saveArticle = await Posts.create({
     author: getUser._id,
     title: body.editTitle,
     description: body.editContent.slice(0, getRandom(5, 10)),
-    content: body.editContent,
+    // content: body.editContent,
+    content: JSON.stringify(body.editContentWithDelta),
     mode: body.extraContent.article_mode.value,
     type: body.extraContent.article_type.value,
     tag: body.extraContent.article_tag.value,

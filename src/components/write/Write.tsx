@@ -29,6 +29,8 @@ interface IWriteState {
     article_type: { value: string },
     article_tag: { value: string[] },
   };
+
+  editContentWithDelta?: object,    // delta数据, 解决光标跳动bug
 };
 
 
@@ -91,7 +93,10 @@ class Write extends React.PureComponent<
     content: string,
     delta: any,
   ) => {
-    this.setState({ editContent: content });
+    this.setState({
+      editContent: content,
+      editContentWithDelta: delta,
+    });
   }
 
 
