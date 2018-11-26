@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Divider, Tag } from 'antd';
-import 'react-quill/dist/quill.snow.css';  
-
+import Quill from 'quill';
+import 'react-quill/dist/quill.snow.css';
 
 import { formatTime } from '../../../utils/utils';
 import {
   MERGED_ARTICLE_TAG,
 } from '../../../constants/constants';
 import DetailsLeftComment from './DetailsLeftComment';
+import BaseImagePreview from '../../../components/widget/BaseImagePreview/BaseImagePreview';
 import {
   DetailsLeftWrapper,
   LeftTitleContainer,
@@ -19,7 +20,7 @@ import {
   LeftInfoListItem,
   LeftContent,
 } from '../style';
-import Quill from 'quill';
+
 
 
 
@@ -62,7 +63,12 @@ export interface IDetailsLeftProps {
 
   onCommentEmojiChange: (e: React.MouseEvent) => void;
 };
-interface IDetailsLeftState {};
+interface IDetailsLeftState {
+  articleImgPreviewInfo: {
+    previewBox: boolean,
+    previewImgUrl: string,
+  },
+};
 
 
 
@@ -72,7 +78,48 @@ interface IDetailsLeftState {};
 class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftState> {
 
 
-  public readonly state = {}
+  public readonly state = {
+    articleImgPreviewInfo: {
+      previewBox: false,
+      previewImgUrl: '',
+    },
+  }
+
+
+  public componentDidMount(): void {
+    this.handleArticleImagePreview();
+  }
+
+
+  /**
+   * 处理 富文本图片预览
+   */
+  public handleArticleImagePreview = () => {
+    const oArticleEle = document
+      .querySelector('#article-detail-content') as HTMLDivElement;
+
+    oArticleEle.addEventListener('click', (e) => {
+      const oTarget = e.target as HTMLElement;
+
+      if (oTarget.localName === 'img') {
+        if (oTarget.hasAttribute('data-src')) {
+          const sTargetUrl = oTarget
+            .getAttribute('data-src') as string;
+
+          this.setState((prevState) => {
+            return {
+              ...prevState,
+              articleImgPreviewInfo: {
+                ...prevState.articleImgPreviewInfo,
+                previewBox: true,
+                previewImgUrl: sTargetUrl,
+              },
+            };
+          });
+        }
+      }
+    });
+  }
 
 
   //// 初始化文章标签
@@ -81,9 +128,9 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
       .split(',')
       .map((item) => {
         return (
-          <Tag 
+          <Tag
             key={item}
-            style={{ marginLeft: '3px !important' }} 
+            style={{ marginLeft: '3px !important' }}
             color={MERGED_ARTICLE_TAG[item]}
           >{item}</Tag>
         );
@@ -123,19 +170,19 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
               <LeftInfoListItem>
                 {this.props.mode}
               </LeftInfoListItem>
-              <Divider type="vertical"/>
+              <Divider type="vertical" />
               <LeftInfoListItem>
                 {this.props.author}
               </LeftInfoListItem>
-              <Divider type="vertical"/>
+              <Divider type="vertical" />
               <LeftInfoListItem>
                 {this.props.type}
               </LeftInfoListItem>
-              <Divider type="vertical"/>
+              <Divider type="vertical" />
               <LeftInfoListItem>
                 {this.initArticleTag()}
               </LeftInfoListItem>
-              <Divider type="vertical"/>
+              <Divider type="vertical" />
               <LeftInfoListItem>
                 {formatTime(this.props.create_time)}
               </LeftInfoListItem>
@@ -147,6 +194,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
         {/* 富文本 */}
         <LeftContentContainer>
           <LeftContent
+            id="article-detail-content"
             dangerouslySetInnerHTML={{
               __html: this.initArticleContent(),
             }}
@@ -158,7 +206,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
         <DetailsLeftComment
           useravatar={this.props.useravatar}
 
-          comments={this.props.comments} 
+          comments={this.props.comments}
           onSendComment={this.props.onSendComment}
 
           onReplyInputChange={this.props.onReplyInputChange}
@@ -170,6 +218,12 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
           commentInputValueNew={this.props.commentInputValueNew}
 
           onCommentEmojiChange={this.props.onCommentEmojiChange}
+        />
+
+        {/* 图片预览 */}
+        <BaseImagePreview
+          visible={this.state.articleImgPreviewInfo.previewBox}
+          currentUrl={this.state.articleImgPreviewInfo.previewImgUrl}
         />
       </DetailsLeftWrapper>
     );
