@@ -35,6 +35,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 html, body, #app {
+	overflow: hidden;
 	height: 100%;
 }
 

@@ -28,20 +28,13 @@ export default class BaseImagePreview extends React.PureComponent<IBaseImagePrev
     };
   }
 
-  public previewRef: any
-
   public readonly state = {
     visible: this.props.visible,
-  }
-
-  public handleGetContainerRef = (el: any) => {
-    this.previewRef = el;
   }
 
   public render(): JSX.Element {
     return (
       <ImagePreviewContainer
-        ref={this.handleGetContainerRef}
         visible={this.state.visible}
       >
         <ImagePreviewMain>
