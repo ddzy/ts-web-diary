@@ -22,8 +22,6 @@ import {
 } from '../style';
 
 
-
-
 export interface IDetailsLeftProps {
   author: string;
   articleContent: string;
@@ -41,7 +39,6 @@ export interface IDetailsLeftProps {
     inputRef: any,
   ) => void;
 
-
   replyInputValue: string | '';
   onReplyInputChange: (
     changedFields: any,
@@ -51,7 +48,6 @@ export interface IDetailsLeftProps {
     inputRef: any,
     commentid: string,
   ) => void;
-
 
 
   // 重构
@@ -65,11 +61,10 @@ export interface IDetailsLeftProps {
 };
 interface IDetailsLeftState {
   articleImgPreviewInfo: {
-    previewBox: boolean,
+    previewBoxVisible: boolean,
     previewImgUrl: string,
   },
 };
-
 
 
 /**
@@ -77,19 +72,16 @@ interface IDetailsLeftState {
  */
 class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftState> {
 
-
   public readonly state = {
     articleImgPreviewInfo: {
-      previewBox: false,
+      previewBoxVisible: false,
       previewImgUrl: '',
     },
   }
 
-
   public componentDidMount(): void {
     this.handleArticleImagePreview();
   }
-
 
   /**
    * 处理 富文本图片预览
@@ -111,7 +103,7 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
               ...prevState,
               articleImgPreviewInfo: {
                 ...prevState.articleImgPreviewInfo,
-                previewBox: true,
+                previewBoxVisible: true,
                 previewImgUrl: sTargetUrl,
               },
             };
@@ -121,8 +113,23 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
     });
   }
 
+  /**
+   * 处理图片预览容器点击
+   */
+  public handleImagePreviewContainerClick = (e: React.MouseEvent): void => {
+    this.setState((prevState) => {
+      return {
+        articleImgPreviewInfo: {
+          ...prevState.articleImgPreviewInfo,
+          previewBoxVisible: false,
+        },
+      };
+    });
+  }
 
-  //// 初始化文章标签
+  /**
+   * 初始化文章标签
+   */
   public initArticleTag = (): JSX.Element[] => {
     return this.props.tag
       .split(',')
@@ -137,8 +144,9 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
       });
   }
 
-
-  //// 初始化富文本editor内容
+  /**
+   * 初始化富文本editor内容
+   */
   public initArticleContent = (): string => {
     const { articleContent } = this.props;
     const parsedArticleContent = articleContent
@@ -151,7 +159,6 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
     return tempCont
       .getElementsByClassName("ql-editor")[0].innerHTML;
   }
-
 
   public render(): JSX.Element {
     return (
@@ -222,8 +229,9 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
 
         {/* 图片预览 */}
         <BaseImagePreview
-          visible={this.state.articleImgPreviewInfo.previewBox}
+          visible={this.state.articleImgPreviewInfo.previewBoxVisible}
           currentUrl={this.state.articleImgPreviewInfo.previewImgUrl}
+          onImagePreviewContainerClick={this.handleImagePreviewContainerClick}
         />
       </DetailsLeftWrapper>
     );

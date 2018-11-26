@@ -12,6 +12,9 @@ import {
 export interface IBaseImagePreviewProps {
   currentUrl: string,
   visible: boolean;
+  onImagePreviewContainerClick: (
+    e: React.MouseEvent,
+  ) => void;
 };
 interface IBaseImagePreviewState {
   visible: boolean;
@@ -22,20 +25,11 @@ interface IBaseImagePreviewState {
  */
 export default class BaseImagePreview extends React.PureComponent<IBaseImagePreviewProps, IBaseImagePreviewState> {
 
-  public static getDerivedStateFromProps = (nextProps: IBaseImagePreviewProps) => {
-    return {
-      visible: nextProps.visible,
-    };
-  }
-
-  public readonly state = {
-    visible: this.props.visible,
-  }
-
   public render(): JSX.Element {
     return (
       <ImagePreviewContainer
-        visible={this.state.visible}
+        visible={this.props.visible}
+        onClick={this.props.onImagePreviewContainerClick}
       >
         <ImagePreviewMain>
           <PreviewMainContent>
