@@ -5,28 +5,27 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import './global.css';
 
 
-export interface IAppProps extends RouteComponentProps<any> {};
+export interface IAppProps extends RouteComponentProps<any> {
+  children: React.ReactElement<HTMLElement>;
+};
 
-
-class App extends React.Component<IAppProps, {}> {
-
-  public render(): JSX.Element {
-    return (
-      <TransitionGroup 
+const App: React.SFC<IAppProps> = (
+  props: IAppProps,
+): JSX.Element => {
+  return (
+    <TransitionGroup 
         className="transition-router" 
-        style={{ height: '100%' }} 
+        // style={{ height: '100%' }} 
       >
         <CSSTransition
-          key={this.props.location.pathname}
+          key={props.location.pathname}
           timeout={1000}
           classNames="left"
         >
-          {this.props.children}
+          {props.children}
         </CSSTransition>
       </TransitionGroup>
-    );
-  }
-  
+  );
 }
 
 
