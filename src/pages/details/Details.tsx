@@ -72,10 +72,6 @@ interface IDetailsState {
   loadingWrapperWidth: number;      // loading宽
   loadingWrapperHeight: number;   // loading高
 
-  commentInputValue: {                   // 评论输入框
-    value: string | '',                 
-  },
-
   replyInputValue: {
     value: string | '',           // 回复输入框
   },
@@ -84,8 +80,7 @@ interface IDetailsState {
     value: string | '',           // 收藏弹出层输入框
   },
 
-
-  commentInputValueNew: string;
+  commentInputValue: string;
 };
 
 
@@ -99,9 +94,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     visible: false,
     loadingWrapperWidth: 0,
     loadingWrapperHeight: 0,
-    commentInputValue: {
-      value: '',
-    },
     replyInputValue: {
       value: '',
     },
@@ -109,9 +101,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       value: '',
     },
 
-
-    // 重构
-    commentInputValueNew: '',
+    commentInputValue: '',
   }
 
 
@@ -141,33 +131,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       loadingWrapperWidth: winWidth,
       loadingWrapperHeight: winHeight,
     });
-  }
-
-
-  /**
-   * 处理评论提交
-   */
-  public handleSendComment = (
-    e: React.MouseEvent,
-    inputRef: any,
-  ): void => {
-    this.state.commentInputValueNew
-      ? this.props.reduxHandleSendComment(
-          this.props.match.params.id,
-          this.state.commentInputValueNew,
-          () => {
-            // 清空输入框
-            inputRef.textAreaRef.value = '';
-            notification.success({
-              message: '提示:',
-              description: '评论发表成功!'
-            });
-          },
-        )
-      : notification.error({
-          message: '错误:',
-          description: '评论不能为空!'
-        });
   }
 
 
@@ -300,23 +263,23 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
   /// 重构
-  public handleCommentInputChangeNew = (
+  public handleCommentInputChange = (
     e: React.ChangeEvent,
   ): void => {
     const value = e.currentTarget.textContent as string;
 
     this.setState({
-      commentInputValueNew: value,
+      commentInputValue: value,
     });
   }
 
-  public handleSendCommentNew = (): void => {
-    this.state.commentInputValueNew
+  public handleSendComment = (): void => {
+    this.state.commentInputValue
       ? this.props.reduxHandleSendComment(
           this.props.match.params.id,
-          this.state.commentInputValueNew,
+          this.state.commentInputValue,
           () => {
-            this.setState({ commentInputValueNew: '' });
+            this.setState({ commentInputValue: '' });
             notification.success({
               message: '提示:',
               description: '评论发表成功!'
@@ -337,13 +300,12 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     const emoji = emojify(tTitle, { output: 'unicode' });
 
     this.setState((prevState) => ({
-      commentInputValueNew: `${prevState.commentInputValueNew}${emoji}`,
+      commentInputValue: `${prevState.commentInputValue}${emoji}`,
     }));
   }
 
 
   public render(): JSX.Element {
-
     return (
       <React.Fragment>
         <Header />
@@ -355,16 +317,14 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 <DetailsLeft 
                   {...this.props.DetailsReducer.detailsInfo}
                   {...this.props.AuthRouteReducer}
-                  onSendComment={this.handleSendComment}
 
                   onReplyInputChange={this.handleReplyInputChange}
                   onSendReply={this.handleSendReply}
                   replyInputValue={this.state.replyInputValue}
 
-
-                  onCommentInputChangeNew={this.handleCommentInputChangeNew}
-                  onSendCommentNew={this.handleSendCommentNew}
-                  commentInputValueNew={this.state.commentInputValueNew}
+                  onCommentInputChange={this.handleCommentInputChange}
+                  onSendComment={this.handleSendComment}
+                  commentInputValue={this.state.commentInputValue}
 
                   onCommentEmojiChange={this.handleCommentEmojiChange}
                 />

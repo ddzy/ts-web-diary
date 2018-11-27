@@ -34,11 +34,6 @@ export interface IDetailsLeftProps {
 
   useravatar: string;
 
-  onSendComment: (
-    e: React.MouseEvent,
-    inputRef: any,
-  ) => void;
-
   replyInputValue: string | '';
   onReplyInputChange: (
     changedFields: any,
@@ -49,14 +44,11 @@ export interface IDetailsLeftProps {
     commentid: string,
   ) => void;
 
-
-  // 重构
-  onCommentInputChangeNew: (
+  commentInputValue: string;
+  onCommentInputChange: (
     e: React.ChangeEvent,
   ) => void;
-  commentInputValueNew: string;
-  onSendCommentNew: () => void;
-
+  onSendComment: () => void;
   onCommentEmojiChange: (e: React.MouseEvent) => void;
 };
 interface IDetailsLeftState {
@@ -214,15 +206,14 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
           useravatar={this.props.useravatar}
 
           comments={this.props.comments}
-          onSendComment={this.props.onSendComment}
 
           onReplyInputChange={this.props.onReplyInputChange}
           onSendReply={this.props.onSendReply}
           replyInputValue={this.props.replyInputValue}
 
-          onCommentInputChangeNew={this.props.onCommentInputChangeNew}
-          onSendCommentNew={this.props.onSendCommentNew}
-          commentInputValueNew={this.props.commentInputValueNew}
+          onCommentInputChange={this.props.onCommentInputChange}
+          onSendComment={this.props.onSendComment}
+          commentInputValue={this.props.commentInputValue}
 
           onCommentEmojiChange={this.props.onCommentEmojiChange}
         />

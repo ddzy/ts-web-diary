@@ -23,11 +23,6 @@ export interface IDetailsLeftCommentProps {
 
   comments: any[];
 
-  onSendComment: (
-    e: React.MouseEvent,
-    inputRef: any,
-  ) => void;
-
   replyInputValue: string | '';
   onReplyInputChange: (
     changedFields: any,
@@ -38,13 +33,11 @@ export interface IDetailsLeftCommentProps {
     commentid: string,
   ) => void;
 
-  ///// 重构
-  onCommentInputChangeNew: (
+  commentInputValue: string;
+  onCommentInputChange: (
     e: React.ChangeEvent,
   ) => void;
-  commentInputValueNew: string;
-  onSendCommentNew: () => void;
-
+  onSendComment: () => void;
   onCommentEmojiChange: (
     e: React.MouseEvent,
   ) => void;
@@ -180,9 +173,9 @@ class DetailsLeftComment extends React.PureComponent<
           {/* 重构输入框 */}
           <BaseCommentInput
             useravatar={this.props.useravatar}
-            onInputChange={this.props.onCommentInputChangeNew}
-            inputValue={this.props.commentInputValueNew}
-            onSend={this.props.onSendCommentNew}
+            onInputChange={this.props.onCommentInputChange}
+            inputValue={this.props.commentInputValue}
+            onSend={this.props.onSendComment}
             onEmojiChange={this.props.onCommentEmojiChange}
           />
         </CommentWrapper>
