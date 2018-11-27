@@ -16,31 +16,31 @@ export interface IBaseImagePreviewProps {
     e: React.MouseEvent,
   ) => void;
 };
-interface IBaseImagePreviewState {
-  visible: boolean;
-};
+
 
 /**
  * 图片预览组件
  */
-export default class BaseImagePreview extends React.PureComponent<IBaseImagePreviewProps, IBaseImagePreviewState> {
-
-  public render(): JSX.Element {
-    return (
-      <ImagePreviewContainer
-        visible={this.props.visible}
-        onClick={this.props.onImagePreviewContainerClick}
-      >
-        <ImagePreviewMain>
-          <PreviewMainContent>
-            <PreviewLink>
-              <PreviewImage
-                srcSet={this.props.currentUrl}
-              />
-            </PreviewLink>
-          </PreviewMainContent>
-        </ImagePreviewMain>
-      </ImagePreviewContainer>
-    );
-  }
+const BaseImagePreview: React.SFC<IBaseImagePreviewProps> = (
+  props: IBaseImagePreviewProps,
+): JSX.Element => {
+  return (
+    <ImagePreviewContainer
+      visible={props.visible}
+      onClick={props.onImagePreviewContainerClick}
+    >
+      <ImagePreviewMain>
+        <PreviewMainContent>
+          <PreviewLink>
+            <PreviewImage
+              srcSet={props.currentUrl}
+            />
+          </PreviewLink>
+        </PreviewMainContent>
+      </ImagePreviewMain>
+    </ImagePreviewContainer>
+  );
 }
+
+
+export default BaseImagePreview;
