@@ -15,7 +15,7 @@ export interface IPreviewImageProps {
 
 
 export const ImagePreviewContainer = styled<IImagePreviewContainerProps, 'div'>('div')`
-  display: ${(props: any) => props.visible ? 'block' : 'none'};
+  /* display: ${(props: any) => props.visible ? 'block' : 'none'}; */
   position: fixed;
   left: 0;
   top: 0;
@@ -23,6 +23,8 @@ export const ImagePreviewContainer = styled<IImagePreviewContainerProps, 'div'>(
   width: ${winWidth}px;
   height: ${winHeight}px;
   background-color: rgba(0, 0, 0, .6);
+  transform: scale(${(props: any) => props.visible ? 1 : 0});
+  transition: transform .5s cubic-bezier(0.075, 0.82, 0.165, 1);
 `;
 
 export const ImagePreviewMain = styled.div`
