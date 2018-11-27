@@ -2,8 +2,8 @@
 ## Tip
 > 最近更新于 18/11/27
 ## Todo
-> 图片预览
-> 路由过渡卡顿优化 & 评论回复Item组件提取
+> bug解决
+> 解决header塌陷bug & 评论回复组件提取
 ## Description
 实时创作发布的交流平台, 采用```react+ts```开发,已实现和未完成的功能如下: 
 - [x] 登录页
@@ -40,11 +40,11 @@
   + [x] 回复
   + [x] 点赞 
 ## Usage
-1. npm install 
-2. cd node_modules/tslint/config/, 编辑```recommend.js```
-  + object-literal-sort-keys => false
-  + no-bitwise => false
-3. 开启项目
-  + npm start
+1. npm install   
+2. cd node_modules/tslint/config/, 编辑```recommend.js```  
+  + object-literal-sort-keys => false  
+  + no-bitwise => false  
+3. 开启项目  
+  + npm start  
 4. 启动服务器
-  + cd server/ && nodemon server.js
+  + cd server/ && nodemon server.js  

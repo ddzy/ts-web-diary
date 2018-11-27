@@ -1,5 +1,5 @@
 import { ThunkDispatch } from "redux-thunk";
-import { query } from "../../services/request";
+// import { query } from "../../services/request";
 
 export interface IInitialState {
   articleList: any[];   // 首页新闻列表
@@ -43,12 +43,6 @@ export function HomeReducer(
 // 获取首页文章列表
 export function getHomeArticleList() {
   return (dispatch: ThunkDispatch<any, any, any>): void => {
-    query({
-      url: 'http://v.juhe.cn/toutiao/index?type=top&key=00d6adb318f9374e5f14529d101ecae0',
-      jsonp: false,
-      method: 'GET',  
-    }).then((res) => {
-      res.result.data && dispatch(saveList(res.result.data.slice(0, 10)));
-    }); 
+    console.log();
   };
 }
