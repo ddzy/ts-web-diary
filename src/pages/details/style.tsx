@@ -80,6 +80,7 @@ export const LeftContent = styled.article`
   }
   img {
     max-width: 680px;
+    cursor: zoom-in;
   }
   blockquote {
     padding: 10px 23px;

@@ -41,5 +41,5 @@ export const PreviewLink = styled.a``;
 export const PreviewImage = styled<IPreviewImageProps, 'img'>('img').attrs({
   src: (props: IPreviewImageProps) => (props.src ? props.src : undefined),
 })`
-
+  cursor: zoom-out;
 `;
