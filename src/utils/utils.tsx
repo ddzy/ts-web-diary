@@ -49,9 +49,16 @@ export function getBase64(
  * 获取window内宽高
  */
 export function getWindowWH() {
+  let { innerWidth, innerHeight } = window;
+
+  window.addEventListener('resize', () => {
+    innerWidth = window.innerWidth;
+    innerHeight = window.innerHeight;
+  });
+  
   return {
-    winWidth: window.innerWidth,
-    winHeight: window.innerHeight,
+    winWidth: innerWidth,
+    winHeight: innerHeight,
   };
 }
 
