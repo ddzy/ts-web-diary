@@ -1,8 +1,12 @@
 import axios from 'axios';
 import jsonp from 'jsonp';
+import NProgress from 'nprogress';
 
 
 axios.interceptors.request.use((config) => {
+  // nprogress START
+  NProgress.start();
+  
   // Add token
   localStorage.getItem('token')
     &&  Reflect.set(
@@ -18,6 +22,9 @@ axios.interceptors.request.use((config) => {
 
 
 axios.interceptors.response.use((config) => {
+  // nprogress END
+  NProgress.done();
+
   return config;
 }, (err) => {
   return Promise.reject(err.response);
