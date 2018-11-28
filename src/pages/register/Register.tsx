@@ -16,7 +16,6 @@ import { reduxHandleRegister } from './Register.redux';
 import { History } from 'history';
 
 
-
 export interface IRegisterProps extends FormComponentProps {
   history: History;
 
@@ -34,7 +33,6 @@ class Login extends React.PureComponent<IRegisterProps, IRegisterState> {
 
   public readonly state = {}
 
-
   public handleSubmit: React.FormEventHandler = (e: React.FormEvent): void => {
     e.preventDefault();
 
@@ -51,7 +49,6 @@ class Login extends React.PureComponent<IRegisterProps, IRegisterState> {
       }
     });
   }
-
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;

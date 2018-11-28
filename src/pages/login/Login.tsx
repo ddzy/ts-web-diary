@@ -42,8 +42,6 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
 
   public readonly state = {}
 
-
-
   public handleSubmit: React.FormEventHandler = (e: React.FormEvent): void => {
     e.preventDefault();
 
@@ -61,7 +59,6 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
     });
   }
 
-
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
 
@@ -71,7 +68,10 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
       >
         <LoginContent>
           <FormWrapper>
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form
+              onSubmit={this.handleSubmit}
+              className="login-form"
+            >
               <Form.Item>
                 <FormTitle>请登录</FormTitle>
               </Form.Item>
