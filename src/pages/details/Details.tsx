@@ -2,18 +2,19 @@ import * as React from 'react';
 import {
   Row,
   Col,
-  Spin,
   notification,
   message,
 } from 'antd';
 import { History } from 'history';
 import { match } from 'react-router';
 import { connect } from 'react-redux';
+import { emojify } from 'react-emojione';
 
 import Header from '../../components/header/Header';
 import DetailsLeft from './details_left/DetailsLeft';
 import DetailsRight from './details_right/DetailsRight';
 import DetailsControl from './details_control/DetailsControl';
+import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
 import { 
   getOneArticleInfo, 
   reduxHandleSendComment, 
@@ -27,7 +28,7 @@ import {
   DetailsWrapper,
   DetailsContent,
 } from './style';
-import { emojify } from 'react-emojione';
+
 
 export interface IDetailsProps {
   location: Location;
@@ -89,7 +90,6 @@ interface IDetailsState {
  */
 class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
-
   public readonly state = {
     visible: false,
     loadingWrapperWidth: 0,
@@ -103,7 +103,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
     commentInputValue: '',
   }
-
 
   public componentDidMount(): void {
 
@@ -119,7 +118,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     );
   }
 
-
   /**
    * 处理loading状态
    */
@@ -133,7 +131,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     });
   }
 
-
   /**
    * 处理回复 输入
    */
@@ -144,7 +141,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       },
     });
   }
-
 
   /**
    * 处理回复 提交
@@ -175,7 +171,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         );
   }
 
-
   /**
    * 处理固钉栏 点赞
    */
@@ -205,7 +200,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       .toggle('fixed-control-bar-star-active');
   }
 
-
   /**
    * 处理 添加收藏表单
    * @param changedFields 值
@@ -219,7 +213,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       },
     });
   }
-
 
   /**
    * 处理 提交添加收藏表单
@@ -238,7 +231,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
           }
         );
   }
-
   
   /**
    * 处理 确认添加至收藏夹
@@ -262,7 +254,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     );
   }
 
-  /// 重构
   public handleCommentInputChange = (
     e: React.ChangeEvent,
   ): void => {
@@ -303,7 +294,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       commentInputValue: `${prevState.commentInputValue}${emoji}`,
     }));
   }
-
 
   public render(): JSX.Element {
     return (
@@ -354,31 +344,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         />
 
         {/* Loading */}
-        <div
-          id="details-loading"
-          style={{
-            position: 'fixed',
-            left: '0',
-            top: '50px',
-            display: this.state.visible
-              ? 'block'
-              : 'none',
-            width: `${this.state.loadingWrapperWidth}px`,
-            height: `${this.state.loadingWrapperHeight}px`,
-            backgroundColor: 'rgba(0,0,0,.05)'
-          }}
-        >
-          <div
-            style={{ 
-              display: 'flex', 
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-            }}
-          >
-            <Spin size="large" />
-          </div>
-        </div>
+        <BaseLoading visible={this.state.visible} />
       </React.Fragment>
     );
   }

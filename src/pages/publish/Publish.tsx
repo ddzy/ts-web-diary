@@ -31,35 +31,33 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
     this.handleShowTipModal();
   }
 
-
-  //// 显示写作规范
-  public handleShowTipModal = () => {
+  /**
+   * 显示写作规范
+   */
+  public handleShowTipModal = (): void => {
     this.props.AuthRouteReducer.isAuth
-      ? Modal.warning({
-          title: '请仔细阅读写作规范!',
-          content: (
-            <div>
-              <ol>
-                <li>不得出现暴力、色情、犯罪等内容</li>
-                <li>不能发布虚假信息</li>
-                <li>不得包含个人广告, 任何二维码等信息</li>
-                <li>尊重原创, 转载请注明出处</li>
-              </ol>
-            </div>
-          ),
-          okText: '已阅',
-        })
-      : notification.error({
-          message: '错误!',
-          description: '请登录后再发表文章!'
-        });
+      && Modal.warning({
+        title: '请仔细阅读写作规范!',
+        content: (
+          <div>
+            <ol>
+              <li>不得出现暴力、色情、犯罪等内容</li>
+              <li>不能发布虚假信息</li>
+              <li>不得包含个人广告, 任何二维码等信息</li>
+              <li>尊重原创, 转载请注明出处</li>
+            </ol>
+          </div>
+        ),
+        okText: '已阅',
+      });
   }
 
-
-  //// 提交文章
+  /**
+   * 提交文章
+   */
   public handleSendArticle = (
     data: any,
-  ) => {
+  ): void => {
     this.props.reduxHandleSendArticle(data, () => {
       notification.success({
         message: '提示',
@@ -70,7 +68,6 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
       }, 1000);
     });
   }
-
 
   public render(): JSX.Element {
     return (
@@ -83,7 +80,6 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
       </React.Fragment>
     );
   }
-
 }
 
 
