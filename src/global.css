@@ -7,7 +7,7 @@ html {
 	word-break: break-word;
 	text-rendering: optimizeLegibility;
 	color: #333;
-	background-color: #f4f5f5;
+	/* background-color: #f4f5f5; */
 }
 
 html, body, div, span, applet, object, iframe,

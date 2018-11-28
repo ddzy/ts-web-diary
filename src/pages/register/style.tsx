@@ -12,6 +12,7 @@ export const RegisterWrapper = styled<IStyleProps, 'div'>('div')`
   align-items: center;
   height: 100%;
   background-image: url(${props => props.bg_url});
+  background-size: cover;
 `;
 
 export const RegisterContent = styled<IStyleProps, 'div'>('div')`
@@ -20,9 +21,6 @@ export const RegisterContent = styled<IStyleProps, 'div'>('div')`
   align-items: center;
   width: 600px;
   height: 500px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  filter: drop-shadow(0, 0, 10px rgba(7,17,27,.03));
 `;
 
 export const FormWrapper = styled<IStyleProps, 'div'>('div')`
