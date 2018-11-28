@@ -49,11 +49,17 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
       if (!err) {
         this.props.reduxHandleLogin(values, () => {
           // 提示框
-          message.info(this.props.LoginReducer.message, () => {
-            // 登录成功跳到主页
-            this.props.LoginReducer.userid
-              && this.props.history.push('/home');
-          });
+          if (this.props.LoginReducer.userid) {
+            this.props.history.push('/home');
+            message.info(
+              (<React.Fragment>
+                欢迎进入
+                <span style={{ color: '#1890ff' }}>
+                  --Gayhub
+                </span>
+              </React.Fragment>)
+            );
+          }
         });
       }
     });
