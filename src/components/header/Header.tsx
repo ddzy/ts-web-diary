@@ -36,7 +36,6 @@ interface IHeaderState {
 };
 
 
-
 class Header extends React.Component<IHeaderProps, IHeaderState> {
 
   public readonly state = {
@@ -45,7 +44,6 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
       { path: '/article', value: '文章', children: null },
     ],
   }
-
 
   public componentDidMount(): void {
     const { pathname } = this.props.location;
@@ -85,8 +83,9 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
     
   }
 
-
-  //// 初始化菜单栏
+  /**
+   * 初始化菜单栏
+   */
   public initHeaderNavList = (): JSX.Element[] => {
     return this.state.navList.map((item) => {
       return (
@@ -100,8 +99,9 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
     });
   }
 
-
-  //// 退出登录
+  /**
+   * 退出登录
+   */
   public handleLogout: React.MouseEventHandler = (): void => {
     Modal.confirm({
       content: '确定要退出登录吗?',
@@ -113,18 +113,19 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
     });
   }
 
-
-  //// 个人中心
+  /**
+   * 个人中心
+   */
   public handleToMe: React.MouseEventHandler = (): void => {
     this.props.history.push('/me');
   }
 
-
-  //// 写文章
+  /**
+   * 写文章
+   */
   public handleToWrite: React.MouseEventHandler = () => {
     this.props.history.push('/publish');
   }
-
 
   public initPopoverContent = (): JSX.Element => {
     return (
@@ -161,7 +162,6 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
     );
   }
 
-
   public render(): JSX.Element {
     return (
       <HeaderWrapper>
@@ -177,7 +177,6 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
             </MainNavList>
           </MainNav>
           <MainQuick>
-
             {
               this.props.AuthRouteReducer.isAuth
                 ? (
@@ -206,7 +205,6 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
                     </React.Fragment>
                   )
             }
-            
             <QuickWrite>
               <Button 
                 htmlType="button"
