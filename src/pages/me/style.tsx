@@ -9,7 +9,7 @@ export interface IStyleProps {
 
 export const MeWrapper = styled<IStyleProps, 'div'>('div')`
   min-height: 600px;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   padding-top: 20px;
   background-color: #f4f5f5;
 `;

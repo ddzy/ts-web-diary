@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import { Button, Avatar, Popover, Modal } from 'antd';
+import {
+  Button,
+  Avatar,
+  Popover,
+  Modal,
+  Affix,
+} from 'antd';
 
 import headerNavConfig from '../../config/headerNav.config';
 import { 
@@ -164,7 +170,10 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
 
   public render(): JSX.Element {
     return (
-      <HeaderWrapper>
+      <Affix
+        offsetTop={1}
+      >
+        <HeaderWrapper>
         <HeaderMain>
           <MainLogo>
             <MainLogoContent>
@@ -216,12 +225,12 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
           </MainQuick>
         </HeaderMain>
       </HeaderWrapper>
+      </Affix>
     );
-  }
-
+  } 
 }
-
-
+    
+    
 function mapStateToProps(state: any) {
   return {
     AuthRouteReducer: state.AuthRouteReducer,

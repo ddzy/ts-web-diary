@@ -6,7 +6,7 @@ export interface IStyleProps {};
 
 // 写文章
 export const WriteWrapper = styled<IStyleProps, 'div'>('div')`
-  margin-top: 50px;
+  /* margin-top: 50px; */
   padding-top: 10px;
   background-color: #f4f5f5;
 `;

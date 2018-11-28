@@ -6,7 +6,7 @@ export interface IStyleProps {};
 
 // 文章列表
 export const MainWrapper = styled<IStyleProps, 'div'>('div')`
-  margin-top: 50px;
+  /* margin-top: 50px; */
   background-color: #f4f5f5;
 `;
 

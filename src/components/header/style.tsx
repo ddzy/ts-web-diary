@@ -5,10 +5,10 @@ export interface IStyleProps {};
 
 
 export const HeaderWrapper = styled<IStyleProps, 'div'>('div')`
-  position: fixed;
+/*   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 100; */
   width: 100%;
   // background-color: hsla(0,0%,100%,.4);
   background-color: #fff;

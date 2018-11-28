@@ -10,7 +10,7 @@ export interface IStyleProps {
 
 //// 单个文章详情页
 export const DetailsWrapper = styled<IStyleProps, 'div'>('div')`
-  margin-top: 50px;
+  /* margin-top: 50px; */
   background-color: #f4f5f5;
 `;
 
