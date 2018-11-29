@@ -17,19 +17,19 @@ export const DetailsWrapper = styled<IStyleProps, 'div'>('div')`
 export const DetailsContent = styled<IStyleProps, 'div'>('div')`
   width: 1000px;
   margin: 0 auto;
-  padding-top: 20px;
+  padding-top: 1.25rem;
 `;
 
 
 //// 左边文章区域
 export const DetailsLeftWrapper = styled<IStyleProps, 'div'>('div')`
-  padding-right: 10px;
+  padding-right: 0.625rem;
   background-color: #fff;
 `;
 
 // 左边标题
 export const LeftTitleContainer = styled<IStyleProps, 'div'>('div')`
-  padding: 10px 0 0 50px;
+  padding: 0.625rem 0 0 3.125rem;
 `;
 
 export const LeftTitleBox = styled<IStyleProps, 'div'>('div')`
@@ -37,7 +37,7 @@ export const LeftTitleBox = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const LeftTitle = styled<IStyleProps, 'h1'>('h1')`
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bolder;
 `;
 
@@ -51,16 +51,16 @@ export const LeftInfoList = styled<IStyleProps, 'ul'>('ul')`
 
 export const LeftInfoListItem = styled<IStyleProps, 'li'>('li')`
   display: inline-block;
-  height: 30px;
-  line-height: 30px;
+  height: 1.875rem;
+  line-height: 1.875rem;
   text-align: center;
 
   &:nth-of-type(1) {
-    padding: 5px 10px;
+    padding: 0.3125rem 0.625rem;
     background-color: #67c23a;
     color: #fff;
-    line-height: 18px;
-    border-radius: 10px;
+    line-height: 1.125rem;
+    border-radius: 0.625rem;
   }
 `;
 
@@ -71,24 +71,24 @@ export const LeftContentContainer = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const LeftContent = styled.article`
-  padding: 0 30px 40px;
+  padding: 0 1.875rem 2.5rem;
   h2::after {
     display: block;
     content: ' ';
-    margin-top: 15px;
+    margin-top: 0.9375rem;
     border-bottom: 1px solid #d9dce1;
   }
   img {
-    max-width: 680px;
+    max-width: 42.5rem;
     cursor: zoom-in;
   }
   blockquote {
-    padding: 10px 23px;
+    padding: 0.625rem 1.4375rem;
     border-left: 4px solid #cbcbcb;
     background-color: #f8f8f8;
   }
   pre {
-    padding: 18px 15px 12px;
+    padding: 1.125rem 0.9375rem 0.75rem;
     background-color: #f8f8f8;
   }
 `;
@@ -97,30 +97,30 @@ export const LeftContent = styled.article`
 
 // 左边评论
 export const LeftCommentContainer = styled<IStyleProps, 'div'>('div')`
-  margin-top: 10px;
-  // padding: 0 120px 20px 50px;
-  padding: 0 100px 20px;
+  margin-top: 0.625rem;
+  // padding: 0 7.5rem 1.25rem 3.125rem;
+  padding: 0 6.25rem 1.25rem;
   background-color: #fff;
 `;
 
 export const CommentWrapper = styled.div``;
 
 export const CommentTipBox = styled<IStyleProps, 'div'>('div')`
-  padding-top: 20px;
+  padding-top: 1.25rem;
   background-color: #f7f8f9;
   text-align: center;
 `;
 
 export const TipText = styled<IStyleProps, 'h3'>('h3')`
   margin-bottom: auto;
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #999;
 `;
 
 
 
 export const CommentInputBox = styled<IStyleProps, 'div'>('div')`
-  padding: 0 30px;
+  padding: 0 1.875rem;
   background-color: #f7f8f9;
 `;
 
@@ -145,7 +145,7 @@ export const InputBottom = styled<IStyleProps, 'div'>('div')`
 /// 评论区表情框
 export const EmojiWrapper = styled<IStyleProps, 'div'>('div')`
   display: flex;
-  width: 200px;
+  width: 12.5rem;
   justify-content: space-around;
   flex-wrap: wrap;
 `;
@@ -160,8 +160,8 @@ export const EmojiItem = styled<IStyleProps, 'span'>('span')`
 
 
 export const CommentShowBox = styled<IStyleProps, 'div'>('div')`
-  margin-top: 30px;
-  padding: 0 20px;
+  margin-top: 1.875rem;
+  padding: 0 1.25rem;
 `;
 
 export const CommentShowList = styled<IStyleProps, 'ul'>('ul')`
@@ -177,7 +177,7 @@ export const ItemTopBox = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const ItemMiddleBox = styled<IStyleProps, 'div'>('div')`
-  padding: 0 44px;
+  padding: 0 2.75rem;
 `;
 
 export const MiddleCommentText = styled<IStyleProps, 'blockquote'>('blockquote')`
@@ -185,20 +185,20 @@ export const MiddleCommentText = styled<IStyleProps, 'blockquote'>('blockquote')
 `;
 
 export const ItemBottomBox = styled<IStyleProps, 'div'>('div')`
-  padding: 0 48px;
+  padding: 0 3rem;
   color: #999;
 `;
 
 // 回复
 export const ItemReplyBox = styled<IStyleProps, 'div'>('div')`
   position: relative;
-  margin-top: 10px;
-  padding: 0 48px;
+  margin-top: 0.625rem;
+  padding: 0 3rem;
   &::after {
     content: '';
     position: absolute;
-    left: 77px;
-    top: -16px;
+    left: 4.8125rem;
+    top: -1rem;
     border: 8px solid transparent;
     border-bottom: 8px solid #eaeaea;
   }
@@ -210,7 +210,7 @@ export const ItemReplyContent = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const ReplyList = styled<IStyleProps, 'ul'>('ul')`
-  padding: 20px 40px 20px 10px;
+  padding: 1.25rem 2.5rem 1.25rem 0.625rem;
 `;
 
 export const ReplyListItem = styled<IStyleProps, 'li'>('li')`
@@ -218,8 +218,8 @@ export const ReplyListItem = styled<IStyleProps, 'li'>('li')`
 `;
 
 export const ReplyInput = styled<IStyleProps, 'div'>('div')`
-  padding: 0 40px;
-  padding-top: 23px;
+  padding: 0 2.5rem;
+  padding-top: 1.4375rem;
 `;
 
 
@@ -228,14 +228,14 @@ export const ReplyInput = styled<IStyleProps, 'div'>('div')`
 
 //// 右边文章侧边栏区域
 export const DetailsRightWrapper = styled<IStyleProps, 'div'>('div')`
-  margin-left: 20px;
-  padding: 20px 10px;
+  margin-left: 1.25rem;
+  padding: 1.25rem 0.625rem;
   // background-color: #f2f2f2;
   background-color: #fff;
 `;
 
 export const RightMain = styled<IStyleProps, 'div'>('div')`
-  padding-top: 20px;
+  padding-top: 1.25rem;
 `;
 
 // 右边文章所属个人信息框
@@ -244,8 +244,8 @@ export const RightMeInfoBox = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const MeInfoAvatar = styled<IStyleProps, 'div'>('div')`
-  width: 120px;
-  height: 120px;
+  width: 7.5rem;
+  height: 7.5rem;
   margin: 0 auto;
 
   img {
@@ -256,19 +256,19 @@ export const MeInfoAvatar = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const MeInfoName = styled<IStyleProps, 'h2'>('h2')`
-  margin-top: 10px;
-  font-size: 20px;
+  margin-top: 0.625rem;
+  font-size: 1.25rem;
 `;
 
 export const MeInfoCount = styled<IStyleProps, 'ul'>('ul')`
-  margin-top: 15px;
+  margin-top: 0.9375rem;
 `;
 
 export const MeInfoCountItem = styled<IStyleProps, 'li'>('li')`
   display: inline-block;
   width: 43%;
-  height: 80px;
-  line-height: 25px;
+  height: 5rem;
+  line-height: 1.5625rem;
   &:nth-of-type(1) {
     border-right: 1px solid #ccc;
   }
@@ -276,18 +276,18 @@ export const MeInfoCountItem = styled<IStyleProps, 'li'>('li')`
 
 
 export const MeInfoCountItemNumber = styled<IStyleProps, 'p'>('p')`
-  font-size: 18px;
+  font-size: 1.125rem;
 `;
 
 export const MeInfoCountItemText = styled<IStyleProps, 'p'>('p')`
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #999;
 `;
 
 
 // 右侧最新文章框
 export const RightNewArticleBox = styled<IStyleProps, 'div'>('div')`
-  margin-top: 10px;
+  margin-top: 0.625rem;
 `;
 
 export const NewArticleTip = styled<IStyleProps, 'div'>('div')`
@@ -298,13 +298,13 @@ export const NewArticleTip = styled<IStyleProps, 'div'>('div')`
 
 export const NewArticleList = styled<IStyleProps, 'ul'>('ul')`
   list-style-type: lower-roman;
-  padding-top: 5px;
-  padding-left: 20px;	
+  padding-top: 0.3125rem;
+  padding-left: 1.25rem;	
 `;
 
 export const NewArticleListItem = styled<IStyleProps, 'li'>('li')`
-  height: 28px;
-  line-height: 28px;
+  height: 1.75rem;
+  line-height: 1.75rem;
   a {
     transition: color .5s ease;
     color: #000;
@@ -321,11 +321,11 @@ export const NewArticleListItem = styled<IStyleProps, 'li'>('li')`
 //// 文章详情页 => 左侧固钉控制栏
 export const FixedControlContainer = styled<IStyleProps, 'div'>('div')`
   position: fixed;
-  top: 115px;
-  left: 100px;
-  width: 40px;
+  top: 7.1875rem;
+  left: 6.25rem;
+  width: 2.5rem;
   background-color: #fff;
-  font-size: 20px;
+  font-size: 1.25rem;
   text-align: center;
 `;
 
@@ -338,12 +338,12 @@ export const FixedControlList = styled<IStyleProps, 'ul'>('ul')`
 `;
 
 export const FixedControlListItem = styled<IStyleProps, 'li'>('li')`
-  height: 40px;
-  margin-top: 10px;
+  height: 2.5rem;
+  margin-top: 0.625rem;
   border-bottom: 1px solid #ccc;
   border-radius: 50%;
   &:nth-of-type(4) {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #999;
   }
   &:nth-of-type(7) {
@@ -361,14 +361,14 @@ export const CollectionsPopShowList = styled<IStyleProps, 'ul'>('ul')`
 `;
 
 export const CollectionsPopShowListItem = styled<IStyleProps, 'li'>('li')`
-  margin-top: 10px;
+  margin-top: 0.625rem;
   border: 1px solid #ddd;
   border-radius: 8px;
-  line-height: 30px;
+  line-height: 1.875rem;
   background-color: #f4f4f4;
   cursor: pointer;
   color: #888;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: center;
   transition: background-color .3s ease,
               color .3s ease;

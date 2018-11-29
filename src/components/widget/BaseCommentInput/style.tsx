@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 
 export const CommentInputBox = styled.div`
-  padding: 0 30px;
+  padding: 0 1.875rem;
   background-color: #f7f8f9;
 `;
 
@@ -20,9 +20,9 @@ export const InputTopText = styled.div`
 
 export const TopTextMain = styled.div`
   height: 100%;
-  padding: 9px 12px 7px;
+  padding: 0.5625rem 0.75rem 0.4375rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   outline: none;
   transition: border .15s ease-in;
   &:empty::before {
@@ -39,13 +39,13 @@ export const TopTextMain = styled.div`
 
 export const InputBottom = styled.div`
   display: block;
-  margin-top: 20px;
+  margin-top: 1.25rem;
 `;
 
 /// 评论区表情框
 export const EmojiWrapper = styled.div`
   display: flex;
-  width: 200px;
+  width: 12.5rem;
   justify-content: space-around;
   flex-wrap: wrap;
 `;

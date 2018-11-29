@@ -10,12 +10,12 @@ export const ContentEditableWrapper = styled.div`
 `;
 
 export const ContentEditableInput = styled<IContentEditableInputProps, 'div'>('div')`
-  width: 200px;
-  min-height: 25px;
-  padding: 9px 12px 7px;
+  width: 12.5rem;
+  min-height: 1.5625rem;
+  padding: 0.5625rem 0.75rem 0.4375rem;
   background-color: #f6f6f6;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   outline: none;
   cursor: text;
   transition: border .15s ease-in,
@@ -34,6 +34,6 @@ export const ContentEditableInput = styled<IContentEditableInputProps, 'div'>('d
         ? props.placeholder
         : '请理性评论...'
     }}';
-    color: #ccc;
+    color '#ccc';
   }
 `;

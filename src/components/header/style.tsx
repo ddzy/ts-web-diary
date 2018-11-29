@@ -18,10 +18,10 @@ export const HeaderWrapper = styled<IStyleProps, 'div'>('div')`
 
 export const HeaderMain = styled<IStyleProps, 'div'>('div')`
   display: flex;
-  width: 1200px;
-  height: 50px;
+  width: 75rem;
+  height: 3.125rem;
   margin: 0 auto;
-  line-height: 50px;
+  line-height: 3.125rem;
   text-align: center;
 `;
 
@@ -31,7 +31,7 @@ export const MainLogo = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const MainLogoContent = styled<IStyleProps, 'h1'>('h1')`
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #09c;
 `;
 
@@ -44,13 +44,13 @@ export const MainNavList = styled<IStyleProps, 'ul'>('ul')`
   display: flex;
   justify-content: flex-start;
   height: 100%;
-  font-size: 16px;
+  font-size: 1rem;
 `;
 
 export const MainNavItem = styled<IStyleProps, 'li'>('li')`
-  width: 60px;
+  width: 3.75rem;
   height: 100%;
-  margin: 0 10px;
+  margin: 0 0.625rem;
   text-align: center;
   transition: background-color .3s ease,
               color .3s ease;
@@ -93,7 +93,7 @@ export const QuickWrite = styled<IStyleProps, 'div'>('div')`
 
 // 个人中心 气泡提示内容
 export const PopoverContent = styled<IStyleProps, 'div'>('div')`
-  width: 140px;
+  width: 8.75rem;
 `;
 
 export const PopoverContentList = styled<IStyleProps, 'ul'>('ul')`
@@ -103,10 +103,10 @@ export const PopoverContentList = styled<IStyleProps, 'ul'>('ul')`
 export const PopoverListItem = styled<IStyleProps, 'li'>('li')`
   width: 100%;
   &:nth-of-type(2) {
-    margin-top: 10px;
+    margin-top: 0.625rem;
   }
   &:nth-of-type(2) {
-    margin-top: 5px;
+    margin-top: 0.3125rem;
   }
 `;
 

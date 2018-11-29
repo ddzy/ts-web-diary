@@ -11,9 +11,9 @@ export const MainWrapper = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const MainContent = styled<IStyleProps, 'div'>('div')`
-  width: 900px;
+  width: 56.25rem;
   margin: 0 auto;
-  padding: 10px;
+  padding: 0.625rem;
   background-color: #fff;
 `;
 
@@ -26,6 +26,6 @@ export const ContentCarousel = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const ContentArtical = styled<IStyleProps, 'div'>('div')`
-  margin-top: 50px;
+  margin-top: 3.125rem;
 `;
 

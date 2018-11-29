@@ -7,7 +7,7 @@ export interface IStyleProps {};
 // 写文章
 export const WriteWrapper = styled<IStyleProps, 'div'>('div')`
   /* margin-top: 50px; */
-  padding-top: 10px;
+  padding-top: 0.625rem;
   background-color: #f4f5f5;
 `;
 
@@ -39,7 +39,7 @@ export const WriteExtraWrapper = styled<IStyleProps, 'div'>('div')`
 
 
 export const TagWrapper = styled<IStyleProps, 'div'>('div')`
-  width: 300px;
+  width: 18.75rem;
   padding: 10px;
   border: 1px solid #09c;
 `;

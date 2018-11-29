@@ -8,8 +8,8 @@ export interface ILoadingWrapperProps {
 
 //
 export const LOADING = keyframes`
-  50% { height: 40px; }
-  100% { height: 15px; }
+  50% { height: 2.5rem; }
+  100% { height: 0.9375rem; }
 `;
 //
 
@@ -36,15 +36,15 @@ export const LoadingMainContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 300px;
-  height: 300px;
+  width: 18.75rem;
+  height: 18.75rem;
 `;
 
 export const MainContentItem = styled.div`
   display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin-left: 2px;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  margin-left: 0.125rem;
   background-color: #1890ff;
 `;
 
