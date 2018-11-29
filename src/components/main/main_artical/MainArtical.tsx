@@ -6,6 +6,7 @@ import {
   ContentArtical,
 } from '../style';
 import { formatTime } from '../../../utils/utils';
+import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
 
 
 export interface IMainArticalProps {
@@ -143,7 +144,6 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
                       split={true}
                       grid={{ gutter: 16 }}
                       dataSource={this.initListData()}
-                      loading={this.state.loading}
                       loadMore={loadMoreButton}
                       renderItem={(item: any) => (
                         <List.Item
@@ -265,6 +265,7 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
               />
             )
         }
+        <BaseLoading visible={this.state.loading}/>
       </ContentArtical>
     );
   }
