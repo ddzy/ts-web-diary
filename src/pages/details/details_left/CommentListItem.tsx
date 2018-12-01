@@ -17,6 +17,8 @@ import {
   ItemMiddleBox,
   MiddleCommentText,
   ItemBottomBox,
+  ItemBottomLikeBox,
+  ItemBottomReplyBox,
   ItemReplyBox,
   ItemReplyContent,
   ReplyList,
@@ -166,15 +168,24 @@ class CommentlistItem extends React.PureComponent<
 
         {/* 评论控制栏 */}
         <ItemBottomBox>
-          <Icon type="like-o" />
-          <Divider type="vertical" />
-
-          <Icon
+          <ItemBottomLikeBox
             data-id={this.props._id}
-            type="message"
+          > 
+            <Icon type="like-o" />
+            <span>999</span>
+            <Divider type="vertical" />
+          </ItemBottomLikeBox>
+          
+          <ItemBottomReplyBox
+            data-id={this.props._id}
             onClick={this.props.onToggleReply}
-          />
-          <Divider type="vertical" />
+          >
+            <Icon
+              type="message"
+            />
+            <span>回复</span>
+            <Divider type="vertical" />
+          </ItemBottomReplyBox>
 
           <span>{formatTime(this.props.create_time)}</span>
         </ItemBottomBox>

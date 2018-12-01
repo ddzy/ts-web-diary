@@ -184,9 +184,24 @@ export const MiddleCommentText = styled<IStyleProps, 'blockquote'>('blockquote')
   font-weight: bold;
 `;
 
+// 评论控制
 export const ItemBottomBox = styled<IStyleProps, 'div'>('div')`
   padding: 0 3rem;
+  font-size: .8125rem;
   color: #999;
+  cursor: pointer;
+`;
+export const ItemBottomLikeBox = styled.div`
+  display: inline-block;
+  &:hover {
+    color: #1890ff;
+  }
+`;
+export const ItemBottomReplyBox = styled.div`
+  display: inline-block;
+  &:hover {
+    color: #1890ff;
+  }
 `;
 
 // 回复
