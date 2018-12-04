@@ -337,16 +337,14 @@ export const NewArticleListItem = styled<IStyleProps, 'li'>('li')`
 export const FixedControlContainer = styled<IStyleProps, 'div'>('div')`
   position: fixed;
   top: 7.1875rem;
-  left: 6.25rem;
+  left: 7rem;
   width: 2.5rem;
   background-color: #fff;
   font-size: 1.25rem;
   text-align: center;
 `;
 
-export const FixedControlContent = styled<IStyleProps, 'div'>('div')`
-
-`;
+export const FixedControlContent = styled<IStyleProps, 'div'>('div')``;
 
 export const FixedControlList = styled<IStyleProps, 'ul'>('ul')`
   margin: 0;
@@ -357,6 +355,7 @@ export const FixedControlListItem = styled<IStyleProps, 'li'>('li')`
   margin-top: 0.625rem;
   border-bottom: 1px solid #ccc;
   border-radius: 50%;
+  color: #b2b2c2;
   &:nth-of-type(4) {
     font-size: 0.875rem;
     color: #999;
