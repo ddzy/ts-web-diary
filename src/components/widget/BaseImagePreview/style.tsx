@@ -22,8 +22,10 @@ export const ImagePreviewContainer = styled<IImagePreviewContainerProps, 'div'>(
   width: ${winWidth}px;
   height: ${winHeight}px;
   background-color: rgba(0, 0, 0, .6);
+  /* transform: scale(${(props: IImagePreviewContainerProps) => props.visible ? 1 : 0}); */
   transform: scale(${(props: IImagePreviewContainerProps) => props.visible ? 1 : 0});
-  transition: transform .5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  opacity: ${(props) => props.visible ? 1 : 0};
+  transition: opacity .9s cubic-bezier(0.075, 0.82, 0.165, 1);
 `;
 
 export const ImagePreviewMain = styled.div`
