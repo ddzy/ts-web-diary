@@ -13,25 +13,17 @@ import {
   TipText,
   EmojiItem,
 } from '../style';
-import CommentListItem from './CommentListItem';
+// import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
 import { EMOJI_PICKER } from '../../../constants/constants';
 import BaseCommentInput from '../../../components/widget/BaseCommentInput/BaseCommentInput';
+import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentItem';
 
 export interface IDetailsLeftCommentProps {
   useravatar: string;
 
+  // ? 评论内容
   comments: any[];
-
-  replyInputValue: string | '';
-  onReplyInputChange: (
-    changedFields: any,
-  ) => void;
-  onSendReply: (
-    e: React.MouseEvent,
-    inputRef: any,
-    commentid: string,
-  ) => void;
 
   commentInputValue: string;
   onCommentInputChange: (
@@ -57,43 +49,19 @@ class DetailsLeftComment extends React.PureComponent<
   IDetailsLeftCommentProps,
   IDetailLeftCommentState
   > {
-  public inputRef: any;
-
 
   public readonly state = {
     isShowSendBtnBox: false,
     isShowCommentEmojiBox: false,
   }
 
-
   public componentDidMount(): void {
     this.handleToggleComment();
   }
 
-
-  //// 处理切换ReplyBox
-  public handleToggleReply = (
-    e: React.MouseEvent,
-  ) => {
-    const oReplys = document
-      .querySelectorAll('.comment-reply-box') as NodeListOf<any>;
-
-    const oReplyNode = Array
-      .from(oReplys)
-      .find((item) => {
-        return item.getAttribute('data-id') === e.currentTarget.getAttribute('data-id');
-      });
-
-    // 切换    BUG: 加类名×
-    e.currentTarget.classList.toggle('comment-reply-icon-active');
-    oReplyNode.style.display = oReplyNode.style.display
-      === 'none'
-      ? 'block'
-      : 'none';
-  }
-
-
-  //// 处理切换commentBox
+  /**
+   * 处理切换commentBox
+   */
   public handleToggleComment = (): void => {
     document.body.addEventListener('click', (
       e: MouseEvent
@@ -105,8 +73,9 @@ class DetailsLeftComment extends React.PureComponent<
     }, false);
   }
 
-
-  //// 处理切换评论框 emoji显隐
+  /**
+   * 处理切换评论框 emoji显隐
+   */
   public handleToggleCommentEmoji = () => {
     this.setState(() => ({
       isShowCommentEmojiBox: true,
@@ -114,8 +83,9 @@ class DetailsLeftComment extends React.PureComponent<
     }));
   }
 
-
-  //// 初始化评论列表
+  /**
+   * 初始化评论列表
+   */
   public initCommentListItem = (): JSX.Element[] | [] => {
     const comments = this.props.comments;
 
@@ -124,12 +94,8 @@ class DetailsLeftComment extends React.PureComponent<
       ? comments.map((item) => {
         return (
           <React.Fragment key={item._id}>
-            <CommentListItem
+            <BaseCommentItem
               {...item}
-              onToggleReply={this.handleToggleReply}
-              onReplyInputChange={this.props.onReplyInputChange}
-              onSendReply={this.props.onSendReply}
-              replyInputValue={this.props.replyInputValue}
             />
             <Divider />
           </React.Fragment>
@@ -138,14 +104,9 @@ class DetailsLeftComment extends React.PureComponent<
       : [];
   }
 
-
-  //// 获取输入框ref
-  public getInputRef = (el: any): void => {
-    this.inputRef = el;
-  }
-
-
-  //// 初始化评论表情框内容
+  /**
+   * 初始化评论表情框内容
+   */
   public initCommentEmoji = () => {
     return EMOJI_PICKER.map((emoji: string, i: number) => {
       return (

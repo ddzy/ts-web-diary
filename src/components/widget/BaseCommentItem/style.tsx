@@ -1,0 +1,79 @@
+import styled from 'styled-components';
+
+// 每条评论
+export const CommentShowListItem = styled.li`
+`;
+
+export const ItemTopBox = styled.div`
+
+`;
+
+export const ItemMiddleBox = styled.div`
+  padding: 0 2.75rem;
+`;
+
+export const MiddleCommentText = styled.blockquote`
+  display: inline-block;
+  font-weight: bold;
+`;
+
+// 评论回复判别
+export const MiddleCommentReplyRange = styled.div`
+  display: inline-block;
+`;
+export const MiddleCommentReplyFrom = styled.span``;
+export const MiddleCommentReplyTo = styled.span``;
+
+
+// 评论控制
+export const ItemBottomBox = styled.blockquote`
+  padding: 0 3rem;
+  font-size: .8125rem;
+  color: #999;
+  cursor: pointer;
+`;
+export const ItemBottomLikeBox = styled.div`
+  display: inline-block;
+  &:hover {
+    color: #1890ff;
+  }
+`;
+export const ItemBottomReplyBox = styled.div`
+  display: inline-block;
+  &:hover {
+    color: #1890ff;
+  }
+`;
+
+// 回复
+export const ItemReplyBox = styled.div`
+  position: relative;
+  margin-top: 0.625rem;
+  padding: 0 3rem;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 4.8125rem;
+    top: -1rem;
+    border: 8px solid transparent;
+    border-bottom: 8px solid #eaeaea;
+  }
+`;
+
+export const ItemReplyContent = styled.div`
+  height: 100%;
+  border: 1px solid #eaeaea;
+`;
+
+export const ReplyList = styled.div`
+  padding: 1.25rem 2.5rem 1.25rem 0.625rem;
+`;
+
+export const ReplyListItem = styled.div`
+
+`;
+
+export const ReplyInput = styled.div`
+  padding: 0 2.5rem;
+  padding-top: 1.4375rem;
+`;

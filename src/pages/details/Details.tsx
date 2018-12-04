@@ -308,10 +308,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                   {...this.props.DetailsReducer.detailsInfo}
                   {...this.props.AuthRouteReducer}
 
-                  onReplyInputChange={this.handleReplyInputChange}
-                  onSendReply={this.handleSendReply}
-                  replyInputValue={this.state.replyInputValue}
-
                   onCommentInputChange={this.handleCommentInputChange}
                   onSendComment={this.handleSendComment}
                   commentInputValue={this.state.commentInputValue}
