@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export interface IMiddleCommentReplyRangeProps {
+  isReply: boolean;
+};
+
+
 // 每条评论
 export const CommentShowListItem = styled.li`
 `;
@@ -9,7 +14,7 @@ export const ItemTopBox = styled.div`
 `;
 
 export const ItemMiddleBox = styled.div`
-  padding: 0 2.75rem;
+  padding: 0 3.1rem;
 `;
 
 export const MiddleCommentText = styled.blockquote`
@@ -19,7 +24,8 @@ export const MiddleCommentText = styled.blockquote`
 
 // 评论回复判别
 export const MiddleCommentReplyRange = styled.div`
-  display: inline-block;
+  /* display: inline-block; */
+  display: ${(props: IMiddleCommentReplyRangeProps) => props.isReply ? 'inline-block' : 'none'};
 `;
 export const MiddleCommentReplyFrom = styled.span``;
 export const MiddleCommentReplyTo = styled.span``;

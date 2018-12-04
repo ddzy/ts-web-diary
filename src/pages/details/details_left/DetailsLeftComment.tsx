@@ -94,6 +94,7 @@ class DetailsLeftComment extends React.PureComponent<
         return (
           <React.Fragment key={item._id}>
             <BaseCommentItem
+              isReply={true}
               {...item}
             />
             <Divider />

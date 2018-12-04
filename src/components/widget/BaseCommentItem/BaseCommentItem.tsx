@@ -23,6 +23,8 @@ import { formatTime } from '../../../utils/utils';
 
 
 export interface ICommentListItemProps extends FormComponentProps {
+  isReply: boolean;       // 是否为回复内容
+
   _id: string;            // 评论id
   whom: {                 // 评论人信息
     _id: string,
@@ -71,7 +73,7 @@ class BaseCommentItem extends React.PureComponent<
 
         {/* 评论内容框 */}
         <ItemMiddleBox>
-          <MiddleCommentReplyRange>
+          <MiddleCommentReplyRange isReply={this.props.isReply}>
             <MiddleCommentReplyFrom>
               段(作者)回复
             </MiddleCommentReplyFrom>
