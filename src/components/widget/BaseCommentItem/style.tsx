@@ -26,6 +26,7 @@ export const MiddleCommentText = styled.blockquote`
 export const MiddleCommentReplyRange = styled.div`
   /* display: inline-block; */
   display: ${(props: IMiddleCommentReplyRangeProps) => props.isReply ? 'inline-block' : 'none'};
+  font-size: .8rem;
 `;
 export const MiddleCommentReplyFrom = styled.span``;
 export const MiddleCommentReplyTo = styled.span``;
