@@ -22,7 +22,6 @@ import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentIt
 export interface IDetailsLeftCommentProps {
   useravatar: string;
 
-  // ? 评论内容
   comments: any[];
 
   commentInputValue: string;
@@ -117,7 +116,6 @@ class DetailsLeftComment extends React.PureComponent<
     });
   }
 
-
   public render(): JSX.Element {
     return (
       <LeftCommentContainer
@@ -153,20 +151,4 @@ class DetailsLeftComment extends React.PureComponent<
 
 }
 
-
-
-// export default Form.create({
-//   onFieldsChange(props: any, changedFields) {
-//     props.onCommentInputChange(changedFields);
-//   },
-
-//   mapPropsToFields(props) {
-//     return {
-//       comment_input: Form.createFormField({
-//         ...props.commentInputValue,
-//         value: props.commentInputValue.value || '',
-//       }),
-//     };
-//   },
-// })(DetailsLeftComment);
 export default DetailsLeftComment;
