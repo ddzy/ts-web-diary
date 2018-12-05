@@ -45,7 +45,7 @@ interface ICommentListItemState {
 
 
 /**
- * 评论列表 单个评论
+ * 评论|回复列表 单个评论|回复 通用组件
  */
 class BaseCommentItem extends React.PureComponent<
   ICommentListItemProps,
@@ -69,7 +69,9 @@ class BaseCommentItem extends React.PureComponent<
     console.log(e.target);
   }
 
-  // ! 处理切换replybox
+  /**
+   * 处理切换replybox
+   */
   public handleToggleReplyBox: React.MouseEventHandler = (
     e: React.MouseEvent
   ): void => {
