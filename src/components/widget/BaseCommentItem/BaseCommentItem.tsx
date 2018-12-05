@@ -4,10 +4,8 @@ import {
   Divider,
   Icon,
 } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
 
 import {
-  CommentShowListItem,
   ItemTopBox,
   ItemMiddleBox,
   MiddleCommentText,
@@ -23,7 +21,7 @@ import { formatTime } from '../../../utils/utils';
 import BaseCommentInput from '../BaseCommentInput/BaseCommentInput';
 
 
-export interface ICommentListItemProps extends FormComponentProps {
+export interface ICommentListItemProps {
   isReply: boolean;       // 是否为回复内容
 
   _id: string;            // 评论id
@@ -45,7 +43,7 @@ interface ICommentListItemState {
 
 
 /**
- * 评论|回复列表 单个评论|回复 通用组件
+ * 回复|评论展示 通用组件
  */
 class BaseCommentItem extends React.PureComponent<
   ICommentListItemProps,
@@ -87,9 +85,9 @@ class BaseCommentItem extends React.PureComponent<
 
   public render(): JSX.Element {
     return (
-      <CommentShowListItem>
+      <React.Fragment>
 
-        {/* 评论用户信息框 */}
+        {/* 用户信息框 */}
         <ItemTopBox>
           <Avatar
             src={this.props.whom.useravatar}
@@ -106,7 +104,7 @@ class BaseCommentItem extends React.PureComponent<
           >{this.props.whom.username}</span>
         </ItemTopBox>
 
-        {/* 评论内容框 */}
+        {/* 内容框 */}
         <ItemMiddleBox>
           <MiddleCommentReplyRange isReply={this.props.isReply}>
             <MiddleCommentReplyFrom>
@@ -123,7 +121,7 @@ class BaseCommentItem extends React.PureComponent<
           />
         </ItemMiddleBox>
 
-        {/* 评论控制栏 */}
+        {/* 控制栏 */}
         <ItemBottomBox>
           <ItemBottomLikeBox
             data-id={this.props._id}
@@ -166,7 +164,7 @@ class BaseCommentItem extends React.PureComponent<
             onEmojiChange={this.handleEmojiChange}
           />
         </ItemReplyBox>
-      </CommentShowListItem>
+      </React.Fragment>
     );
   }
 

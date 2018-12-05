@@ -166,78 +166,8 @@ export const CommentShowBox = styled<IStyleProps, 'div'>('div')`
 export const CommentShowList = styled<IStyleProps, 'ul'>('ul')`
 
 `;
-
-// 每条评论
-export const CommentShowListItem = styled<IStyleProps, 'li'>('li')`
+export const CommentShowListItem = styled.li`
 `;
-
-export const ItemTopBox = styled<IStyleProps, 'div'>('div')`
-
-`;
-
-export const ItemMiddleBox = styled<IStyleProps, 'div'>('div')`
-  padding: 0 2.75rem;
-`;
-
-export const MiddleCommentText = styled<IStyleProps, 'blockquote'>('blockquote')`
-  font-weight: bold;
-`;
-
-// 评论控制
-export const ItemBottomBox = styled<IStyleProps, 'div'>('div')`
-  padding: 0 3rem;
-  font-size: .8125rem;
-  color: #999;
-  cursor: pointer;
-`;
-export const ItemBottomLikeBox = styled.div`
-  display: inline-block;
-  &:hover {
-    color: #1890ff;
-  }
-`;
-export const ItemBottomReplyBox = styled.div`
-  display: inline-block;
-  &:hover {
-    color: #1890ff;
-  }
-`;
-
-// 回复
-export const ItemReplyBox = styled<IStyleProps, 'div'>('div')`
-  position: relative;
-  margin-top: 0.625rem;
-  padding: 0 3rem;
-  &::after {
-    content: '';
-    position: absolute;
-    left: 4.8125rem;
-    top: -1rem;
-    border: 8px solid transparent;
-    border-bottom: 8px solid #eaeaea;
-  }
-`;
-
-export const ItemReplyContent = styled<IStyleProps, 'div'>('div')`
-  height: 100%;
-  border: 1px solid #eaeaea;
-`;
-
-export const ReplyList = styled<IStyleProps, 'ul'>('ul')`
-  padding: 1.25rem 2.5rem 1.25rem 0.625rem;
-`;
-
-export const ReplyListItem = styled<IStyleProps, 'li'>('li')`
-
-`;
-
-export const ReplyInput = styled<IStyleProps, 'div'>('div')`
-  padding: 0 2.5rem;
-  padding-top: 1.4375rem;
-`;
-
-
-
 
 
 //// 右边文章侧边栏区域

@@ -6,9 +6,6 @@ export interface IMiddleCommentReplyRangeProps {
 
 
 // 每条评论
-export const CommentShowListItem = styled.li`
-`;
-
 export const ItemTopBox = styled.div`
 
 `;

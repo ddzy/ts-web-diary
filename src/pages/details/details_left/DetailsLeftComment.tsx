@@ -17,7 +17,7 @@ import {
 import { isArray } from 'util';
 import { EMOJI_PICKER } from '../../../constants/constants';
 import BaseCommentInput from '../../../components/widget/BaseCommentInput/BaseCommentInput';
-import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentItem';
+import CommentListItem from './CommentListItem';
 
 export interface IDetailsLeftCommentProps {
   useravatar: string;
@@ -93,7 +93,7 @@ class DetailsLeftComment extends React.PureComponent<
       ? comments.map((item) => {
         return (
           <React.Fragment key={item._id}>
-            <BaseCommentItem
+            <CommentListItem
               isReply={false}
               {...item}
             />
