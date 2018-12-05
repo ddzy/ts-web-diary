@@ -19,7 +19,7 @@ import {
   ItemBottomReplyBox,
 } from './style';
 import { formatTime } from '../../../utils/utils';
-
+import BaseCommentInput from '../BaseCommentInput/BaseCommentInput';
 
 
 export interface ICommentListItemProps extends FormComponentProps {
@@ -37,7 +37,9 @@ export interface ICommentListItemProps extends FormComponentProps {
 
   replys: any[];          // 回复信息列表
 };
-interface ICommentListItemState { };
+interface ICommentListItemState {
+  replyInputValue: string;
+};
 
 
 /**
@@ -48,7 +50,21 @@ class BaseCommentItem extends React.PureComponent<
   ICommentListItemState
   > {
 
-  public readonly state = {}
+  public readonly state = {
+    replyInputValue: '',
+  }
+
+  public handleReplyInputChange = (e: any): void => {
+    console.log(e);
+  } 
+
+  public handleSendReply = () => {
+    console.log('send');
+  }
+
+  public handleEmojiChange = (e: React.MouseEvent) => {
+    console.log(e.target);
+  }
 
   public render(): JSX.Element {
     return (
@@ -110,6 +126,16 @@ class BaseCommentItem extends React.PureComponent<
 
           <span>{formatTime(this.props.create_time)}</span>
         </ItemBottomBox>
+        
+        {/* 评论输入通用组件 */}
+        <BaseCommentInput
+          useravatar={''}
+          avatarSize={'default'}
+          onInputChange={this.handleReplyInputChange}
+          inputValue={this.state.replyInputValue}
+          onSend={this.handleSendReply}
+          onEmojiChange={this.handleEmojiChange}
+        />
       </CommentShowListItem>
     );
   }

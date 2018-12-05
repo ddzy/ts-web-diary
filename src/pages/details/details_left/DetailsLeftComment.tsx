@@ -127,7 +127,7 @@ class DetailsLeftComment extends React.PureComponent<
           <CommentTipBox>
             <TipText>
               评论
-          </TipText>
+            </TipText>
           </CommentTipBox>
 
           {/* 重构输入框 */}

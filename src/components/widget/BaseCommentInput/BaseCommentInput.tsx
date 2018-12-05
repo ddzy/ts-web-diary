@@ -9,6 +9,7 @@ import {
 } from 'antd';
 import {
   CommentInputBox,
+  CommentInputMain,
   InputTop,
   InputBottom,
   InputTopAvatar,
@@ -25,6 +26,7 @@ import ContentEditable from 'react-contenteditable';
 
 export interface IBaseCommentInputProps {
   useravatar: string;
+  avatarSize?: 'small' | 'large' | 'default';
 
   onInputChange: (e: React.ChangeEvent) => void;
   inputValue: string;
@@ -39,6 +41,7 @@ export interface IBaseCommentInputProps {
  */
 const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   useravatar,
+  avatarSize = 'large',
   onInputChange,
   inputValue,
   onSend,
@@ -57,31 +60,32 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
 
   return (
     <CommentInputBox>
-      <InputTop>
-        <Row>
-          <Col span={2}>
-            <InputTopAvatar>
-              <Avatar
-                src={useravatar}
-                shape="circle"
-                icon="user"
-                size="large"
-                alt="useravatar"
-              />
-            </InputTopAvatar>
-          </Col>
-          <Col span={22}>
-            <InputTopText>
-              <ContentEditable
-                className="yyg-contenteditable"
-                html={inputValue}
-                onChange={onInputChange}
-              />
-            </InputTopText>
-          </Col>
-        </Row>
-      </InputTop>
-      <InputBottom>
+      <CommentInputMain>
+        <InputTop>
+          <Row>
+            <Col span={3}>
+              <InputTopAvatar>
+                <Avatar
+                  src={useravatar}
+                  shape="circle"
+                  icon="user"
+                  size={avatarSize}
+                  alt="useravatar"
+                />
+              </InputTopAvatar>
+            </Col>
+            <Col span={21}>
+              <InputTopText>
+                <ContentEditable
+                  className="yyg-contenteditable"
+                  html={inputValue}
+                  onChange={onInputChange}
+                />
+              </InputTopText>
+            </Col>
+          </Row>
+        </InputTop>
+        <InputBottom>
         <Row>
           <Col span={12}>
             <Popover
@@ -139,6 +143,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
           </Col>
         </Row>
       </InputBottom>
+      </CommentInputMain>
     </CommentInputBox>
   );
 }

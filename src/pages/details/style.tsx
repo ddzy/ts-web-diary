@@ -107,7 +107,6 @@ export const CommentWrapper = styled.div``;
 
 export const CommentTipBox = styled<IStyleProps, 'div'>('div')`
   padding-top: 1.25rem;
-  background-color: #f7f8f9;
   text-align: center;
 `;
 

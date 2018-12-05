@@ -2,7 +2,11 @@ import styled from 'styled-components';
 
 
 export const CommentInputBox = styled.div`
-  padding: 0 1.875rem;
+  padding: 0 3rem;
+`;
+
+export const CommentInputMain = styled.div`
+  padding: 1.5rem;
   background-color: #f7f8f9;
 `;
 
