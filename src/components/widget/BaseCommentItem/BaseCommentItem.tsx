@@ -155,6 +155,7 @@ class BaseCommentItem extends React.PureComponent<
           }}
         >
           <BaseCommentInput
+            placeHolder={'回复 duan'}
             useravatar={this.props.whom.useravatar}
             avatarSize={'default'}
             onInputChange={this.handleReplyInputChange}

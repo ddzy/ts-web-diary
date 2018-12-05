@@ -30,6 +30,7 @@ export interface IBaseCommentInputProps {
 
   onInputChange: (e: React.ChangeEvent) => void;
   inputValue: string;
+  placeHolder?: string;
   onSend: () => void;
 
   onEmojiChange: (e: React.MouseEvent) => void;
@@ -44,6 +45,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
   avatarSize = 'large',
   onInputChange,
   inputValue,
+  placeHolder = '请理性评论...',
   onSend,
   onEmojiChange,
 }): JSX.Element => {
@@ -77,6 +79,7 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
             <Col span={21}>
               <InputTopText>
                 <ContentEditable
+                  data-placeholder={placeHolder}
                   className="yyg-contenteditable"
                   html={inputValue}
                   onChange={onInputChange}

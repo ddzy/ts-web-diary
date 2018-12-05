@@ -228,12 +228,12 @@ transition: all 0.6s ease-out;
 	background-color: #fff;
 }
 .yyg-contenteditable:empty::before {
-	content: '请理性评论...';
+	content: attr(data-placeholder);
 	color: #ccc;
 }
-.yyg-contenteditable:focus::before {
+/* .yyg-contenteditable:focus::before {
 	content: none;
-}
+} */
 
 
 /*
