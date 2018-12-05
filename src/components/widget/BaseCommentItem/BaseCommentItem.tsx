@@ -17,6 +17,7 @@ import {
   ItemBottomBox,
   ItemBottomLikeBox,
   ItemBottomReplyBox,
+  ItemReplyBox,
 } from './style';
 import { formatTime } from '../../../utils/utils';
 import BaseCommentInput from '../BaseCommentInput/BaseCommentInput';
@@ -39,6 +40,7 @@ export interface ICommentListItemProps extends FormComponentProps {
 };
 interface ICommentListItemState {
   replyInputValue: string;
+  replyBoxId: string;
 };
 
 
@@ -52,6 +54,7 @@ class BaseCommentItem extends React.PureComponent<
 
   public readonly state = {
     replyInputValue: '',
+    replyBoxId: '',
   }
 
   public handleReplyInputChange = (e: any): void => {
@@ -64,6 +67,20 @@ class BaseCommentItem extends React.PureComponent<
 
   public handleEmojiChange = (e: React.MouseEvent) => {
     console.log(e.target);
+  }
+
+  // ! 处理切换replybox
+  public handleToggleReplyBox: React.MouseEventHandler = (
+    e: React.MouseEvent
+  ): void => {
+    const target: EventTarget & Element = e.currentTarget;
+    const commentId = target.getAttribute('data-id') as string;
+
+    this.setState((prevState) => {
+      return {
+        replyBoxId: prevState.replyBoxId ? '' : commentId,
+      };
+    });
   }
 
   public render(): JSX.Element {
@@ -116,6 +133,7 @@ class BaseCommentItem extends React.PureComponent<
           
           <ItemBottomReplyBox
             data-id={this.props._id}
+            onClick={this.handleToggleReplyBox}
           >
             <Icon
               type="message"
@@ -128,14 +146,23 @@ class BaseCommentItem extends React.PureComponent<
         </ItemBottomBox>
         
         {/* 评论输入通用组件 */}
-        <BaseCommentInput
-          useravatar={''}
-          avatarSize={'default'}
-          onInputChange={this.handleReplyInputChange}
-          inputValue={this.state.replyInputValue}
-          onSend={this.handleSendReply}
-          onEmojiChange={this.handleEmojiChange}
-        />
+        <ItemReplyBox
+          data-id={this.props._id}
+          style={{
+            display: this.props._id === this.state.replyBoxId
+              ? 'block'
+              : 'none'
+          }}
+        >
+          <BaseCommentInput
+            useravatar={this.props.whom.useravatar}
+            avatarSize={'default'}
+            onInputChange={this.handleReplyInputChange}
+            inputValue={this.state.replyInputValue}
+            onSend={this.handleSendReply}
+            onEmojiChange={this.handleEmojiChange}
+          />
+        </ItemReplyBox>
       </CommentShowListItem>
     );
   }

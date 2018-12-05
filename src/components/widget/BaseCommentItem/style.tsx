@@ -54,33 +54,5 @@ export const ItemBottomReplyBox = styled.div`
 
 // 回复
 export const ItemReplyBox = styled.div`
-  position: relative;
-  margin-top: 0.625rem;
-  padding: 0 3rem;
-  &::after {
-    content: '';
-    position: absolute;
-    left: 4.8125rem;
-    top: -1rem;
-    border: 8px solid transparent;
-    border-bottom: 8px solid #eaeaea;
-  }
-`;
 
-export const ItemReplyContent = styled.div`
-  height: 100%;
-  border: 1px solid #eaeaea;
-`;
-
-export const ReplyList = styled.div`
-  padding: 1.25rem 2.5rem 1.25rem 0.625rem;
-`;
-
-export const ReplyListItem = styled.div`
-
-`;
-
-export const ReplyInput = styled.div`
-  padding: 0 2.5rem;
-  padding-top: 1.4375rem;
 `;
