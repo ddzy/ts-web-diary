@@ -2,13 +2,14 @@ import styled from 'styled-components';
 
 
 export const MeWrapper = styled.div`
-  min-height: 600px;
+  /* min-height: 37.5rem; */
+  /* height: 100%; */
   /* margin-top: 50px; */
-  padding-top: 20px;
+  padding-top: 4.3rem;
   background-color: #f4f5f5;
 `;
 
 export const MeContent = styled.div`
-  width: 900px;
+  width: 56.25rem;
   margin: 0 auto;
 `;

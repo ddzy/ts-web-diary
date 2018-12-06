@@ -8,7 +8,7 @@ export const DetailsWrapper = styled.div`
 `;
 
 export const DetailsContent = styled.div`
-  width: 1000px;
+  width: 62.5rem;
   margin: 0 auto;
   padding-top: 1.25rem;
 `;

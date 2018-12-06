@@ -10,7 +10,7 @@ export const NotFoundWrapper = styled<IStyleProps, 'div'>('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 500px;
+  min-height: 31.25rem;
   background-image: url(${(props) => props.bg_img});
 `;
 
@@ -19,10 +19,10 @@ export const NotFoundContent = styled<IStyleProps, 'div'>('div')`
 `;
 
 export const NotFoundTitle = styled<IStyleProps, 'p'>('p')`
-  font-size: 26px;
+  font-size: 1.625rem;
   color: #999;
 `;
 
 export const NotFoundRedirect = styled<IStyleProps, 'p'>('p')`
-  font-size: 20px;
+  font-size: 1.25rem;
 `;
