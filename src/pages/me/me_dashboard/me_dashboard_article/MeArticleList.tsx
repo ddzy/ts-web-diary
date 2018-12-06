@@ -22,9 +22,9 @@ import {
   ContentTag,
   MeArticleControlBox,
   MeArticleControl
-} from '../style';
-import { MERGED_ARTICLE_TAG } from '../../../constants/constants';
-import { formatTime } from '../../../utils/utils';
+} from '../../style';
+import { MERGED_ARTICLE_TAG } from '../../../../constants/constants';
+import { formatTime } from '../../../../utils/utils';
 
 
 export interface IMeArticleListProps {

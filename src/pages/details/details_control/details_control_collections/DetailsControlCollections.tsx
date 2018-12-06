@@ -14,7 +14,7 @@ import {
   CollectionPopFormBox,
   CollectionsPopShowList,
   CollectionsPopShowListItem,
-} from '../style';
+} from '../../style';
 
 
 export interface IDetailsControlCollectionsProps extends FormComponentProps {

@@ -7,7 +7,7 @@ import { formatTime } from '../../../utils/utils';
 import {
   MERGED_ARTICLE_TAG,
 } from '../../../constants/constants';
-import DetailsLeftComment from './DetailsLeftComment';
+import DetailsLeftComment from './details_main_comment/DetailsMainComment';
 import BaseImagePreview from '../../../components/widget/BaseImagePreview/BaseImagePreview';
 import {
   DetailsLeftWrapper,

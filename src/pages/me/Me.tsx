@@ -8,7 +8,7 @@ import {
 } from './style';
 import Header from '../../components/header/Header';
 import MeInfo from './me_info/MeInfo';
-import MeArticle from './me_article/MeArticle';
+import MeArticle from './me_dashboard/MeDashboard';
 import { 
   getMyArticleList, 
   deleteMyArticle,

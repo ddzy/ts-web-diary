@@ -9,13 +9,13 @@ import {
 import {
   MeArticleContainer,
 } from '../style';
-import MeArticleList from './MeArticleList';
+import MeArticleList from './me_dashboard_article/MeArticleList';
 import { isArray } from '../../../utils/utils';
-import MyCollectionList from './MeCollectionList';
+import MyCollectionList from './me_dashboard_collection/MeCollectionList';
 
 
 
-export interface IMeArticleProps {
+export interface IMeDashboardProps {
   my_article_list: any[];
   my_collection_list: any[];
 
@@ -52,13 +52,13 @@ export interface IMeArticleProps {
     callback?: () => void,
   ) => void;
 };
-interface IMeArticleState { };
+interface IMeDashboardState { };
 
 
 /**
  * 个人文章
  */
-class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
+class MeDashboard extends React.Component<IMeDashboardProps, IMeDashboardState> {
 
   public readonly state = {}
 
@@ -212,4 +212,4 @@ class MeArticle extends React.Component<IMeArticleProps, IMeArticleState> {
 }
 
 
-export default MeArticle as React.ComponentClass<any>;
+export default MeDashboard as React.ComponentClass<any>;

@@ -19,17 +19,17 @@ import {
 } from '../style';
 
 
-export interface IDetailsRightProps {
+export interface IDetailsActionProps {
   author: string | '';
   authorAvatar: string | '';
   newArticle: object[];
   articleCount: number | '';
   watchCount: number | 0;
 };
-interface IDetailsRightState {};
+interface IDetailsActionState {};
 
 
-class DetailsRight extends React.Component<IDetailsRightProps, IDetailsRightState> {
+class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionState> {
 
 
   public readonly state = {}
@@ -115,4 +115,4 @@ class DetailsRight extends React.Component<IDetailsRightProps, IDetailsRightStat
 }
 
 
-export default DetailsRight;
+export default DetailsAction;

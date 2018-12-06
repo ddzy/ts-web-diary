@@ -12,7 +12,7 @@ import {
   FixedControlList,
   FixedControlListItem,
 } from '../style';
-import DetailsControlCollections from './DetailsControlCollections';
+import DetailsControlCollections from './details_control_collections/DetailsControlCollections';
 
 
 export interface IDetailsControlProps {

@@ -11,8 +11,8 @@ import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 
 import Header from '../../components/header/Header';
-import DetailsLeft from './details_left/DetailsLeft';
-import DetailsRight from './details_right/DetailsRight';
+import DetailsLeft from './details_main/DetailsMain';
+import DetailsRight from './details_action/DetailsAction';
 import DetailsControl from './details_control/DetailsControl';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
 import { 

@@ -17,14 +17,14 @@ import {
   ContentTitle,
   ContentTag,
   ItemExtraBox,
-} from './style';
+} from '../style';
 import { 
   formatTime, 
   isArray, 
-} from '../../utils/utils';
+} from '../../../utils/utils';
 import {
   MERGED_ARTICLE_TAG,
-} from '../../constants/constants';
+} from '../../../constants/constants';
 
 
 
