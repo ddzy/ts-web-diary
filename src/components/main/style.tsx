@@ -21,11 +21,5 @@ export const ContentWrapper = styled<IStyleProps, 'div'>('div')`
 
 `;
 
-export const ContentCarousel = styled<IStyleProps, 'div'>('div')`
-  
-`;
 
-export const ContentArtical = styled<IStyleProps, 'div'>('div')`
-  margin-top: 3.125rem;
-`;
 

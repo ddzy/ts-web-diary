@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {
   CommentShowListItem,
-} from '../../style';
+} from './style';
 import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentItem';
 
 export interface ICommentListItemProps {

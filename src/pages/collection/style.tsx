@@ -57,27 +57,3 @@ export const MainContentTipText = styled<IStyleProps, 'h1'>('h1')`
 export const MainContentShowBox = styled<IStyleProps, 'div'>('div')`
 
 `;
-
-
-// 文章简介
-export const ItemContentBox = styled<IStyleProps, 'div'>('div')`
-  padding-left: 50px;
-  color: #999;
-  font-size: 14px;
-`;
-
-export const ContentTip = styled<IStyleProps, 'div'>('div')`
-
-`;
-
-export const ContentTitle = styled<IStyleProps, 'h2'>('h2')`
-
-`;
-
-export const ContentTag = styled<IStyleProps, 'div'>('div')`
-  
-`;
-
-export const ItemExtraBox = styled<IStyleProps, 'div'>('div')`
-
-`;

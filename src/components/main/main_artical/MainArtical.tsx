@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { 
   ContentArtical,
-} from '../style';
+} from './style';
 import { formatTime } from '../../../utils/utils';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
 

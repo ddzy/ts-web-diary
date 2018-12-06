@@ -17,7 +17,7 @@ import {
   ContentTitle,
   ContentTag,
   ItemExtraBox,
-} from '../style';
+} from './style';
 import { 
   formatTime, 
   isArray, 
@@ -25,7 +25,6 @@ import {
 import {
   MERGED_ARTICLE_TAG,
 } from '../../../constants/constants';
-
 
 
 export interface ICollectionShowItemProps {
@@ -36,7 +35,6 @@ export interface ICollectionShowItemProps {
     articleId: string,
   ) => void,
 };
-
 
 
 const CollectionShowItem: React.SFC<

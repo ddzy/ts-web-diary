@@ -11,7 +11,7 @@ import {
   FixedControlContent,
   FixedControlList,
   FixedControlListItem,
-} from '../style';
+} from './style';
 import DetailsControlCollections from './details_control_collections/DetailsControlCollections';
 
 

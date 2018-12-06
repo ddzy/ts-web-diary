@@ -14,7 +14,9 @@ import * as qiniu from 'qiniu-js';
 import { FormComponentProps } from 'antd/lib/form';
 import Quill, { Sources, Delta } from 'quill';
 
-import { WriteEditWrapper } from '../style';
+import {
+  WriteEditWrapper,
+} from './style';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
 import QuillImageBlot from './QuillImageBlot';
 

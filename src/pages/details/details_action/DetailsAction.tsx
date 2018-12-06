@@ -16,7 +16,7 @@ import {
   NewArticleTip,
   NewArticleList,
   NewArticleListItem,
-} from '../style';
+} from './style';
 
 
 export interface IDetailsActionProps {

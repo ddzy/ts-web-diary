@@ -22,7 +22,7 @@ import {
   ContentTag,
   MeArticleControlBox,
   MeArticleControl
-} from '../../style';
+} from './style';
 import { MERGED_ARTICLE_TAG } from '../../../../constants/constants';
 import { formatTime } from '../../../../utils/utils';
 

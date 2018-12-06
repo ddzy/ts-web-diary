@@ -3,13 +3,17 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { ContentCarousel } from '../style';
-
+import {
+  ContentCarousel,
+} from './style';
 
 export interface IMainCarouselProps {};
 
 
-const MainCarousel: React.SFC<IMainCarouselProps> = (props: IMainCarouselProps): JSX.Element => {
+
+const MainCarousel: React.SFC<IMainCarouselProps> = (
+  props: IMainCarouselProps
+): JSX.Element => {
   
   const initOption = (): object => {
     return {

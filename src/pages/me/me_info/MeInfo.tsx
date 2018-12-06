@@ -7,7 +7,7 @@ import {
   InfoAvatarBox,
   MeName,
   MeGender,
-} from '../style'; 
+} from './style'; 
 
 
 export interface IMeInfoProps {

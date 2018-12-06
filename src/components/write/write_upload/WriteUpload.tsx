@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Row, Col, Card, Icon, Upload, Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
-import { WriteUploadWrapper } from '../style';
+import { WriteUploadWrapper } from './style';
 
 
 

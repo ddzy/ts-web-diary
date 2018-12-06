@@ -19,7 +19,7 @@ import {
   LeftInfoList,
   LeftInfoListItem,
   LeftContent,
-} from '../style';
+} from './style';
 
 
 export interface IDetailsLeftProps {

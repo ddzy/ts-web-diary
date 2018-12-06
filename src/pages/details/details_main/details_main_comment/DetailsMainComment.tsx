@@ -12,12 +12,12 @@ import {
   CommentTipBox,
   TipText,
   EmojiItem,
-} from '../../style';
+} from './style';
 // import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
 import { EMOJI_PICKER } from '../../../../constants/constants';
 import BaseCommentInput from '../../../../components/widget/BaseCommentInput/BaseCommentInput';
-import CommentListItem from './CommentListItem';
+import CommentListItem from './details_main_comment_list_item/CommentListItem';
 
 export interface IDetailsLeftCommentProps {
   useravatar: string;

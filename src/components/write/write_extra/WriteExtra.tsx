@@ -15,7 +15,10 @@ import {
   ARTICLE_TAG_PICKER,
   ARTICLE_TYPE_PICKER,
 } from '../../../constants/constants';
-import { WriteExtraWrapper, TagWrapper } from '../style';
+import {
+  WriteExtraWrapper,
+  TagWrapper,
+} from './style';
 
 
 
