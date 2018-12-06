@@ -49,16 +49,18 @@ class CommentListItem extends React.PureComponent<
           onEmojiChange={this.props.onEmojiChange}
         />
         {/* 回复展示 */}
-        <div style={{ width: '100%', height: '100%', padding: '5px', backgroundColor: '#ccc' }}>
-          <BaseCommentItem
-            isReply={true}
-            content={content}
-            {...this.props}
-            inputValue={this.props.inputValue}
-            onInputChange={this.props.onInputChange}
-            onSend={this.props.onSend}
-            onEmojiChange={this.props.onEmojiChange}
-          />
+        <div style={{ width: '100%', height: '100%', padding: '0 3rem' }}>
+          <div style={{backgroundColor: '#fafbfc', padding: '1rem'}}>
+            <BaseCommentItem
+              isReply={true}
+              content={content}
+              {...this.props}
+              inputValue={this.props.inputValue}
+              onInputChange={this.props.onInputChange}
+              onSend={this.props.onSend}
+              onEmojiChange={this.props.onEmojiChange}
+            />
+          </div>
         </div>
       </CommentShowListItem>
     );
