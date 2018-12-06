@@ -32,6 +32,12 @@ export interface IDetailsLeftCommentProps {
   onCommentEmojiChange: (
     e: React.MouseEvent,
   ) => void;
+
+  // !!! 重构 ---- 回复 !!!
+  replyInputValue: string;
+  onReplyInputChange: (e: React.ChangeEvent) => void;
+  onSendReply: () => void;
+  onReplyEmojiChange: (e: React.MouseEvent) => void;
 };
 interface IDetailLeftCommentState {
   // 控制提交评论区域显隐
@@ -94,8 +100,11 @@ class DetailsLeftComment extends React.PureComponent<
         return (
           <React.Fragment key={item._id}>
             <CommentListItem
-              isReply={false}
               {...item}
+              inputValue={this.props.replyInputValue}
+              onEmojiChange={this.props.onReplyEmojiChange}
+              onInputChange={this.props.onReplyInputChange}
+              onSend={this.props.onSendReply}
             />
             <Divider />
           </React.Fragment>

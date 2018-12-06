@@ -24,20 +24,25 @@ import BaseCommentInput from '../BaseCommentInput/BaseCommentInput';
 export interface ICommentListItemProps {
   isReply: boolean;       // 是否为回复内容
 
-  _id: string;            // 评论id
-  whom: {                 // 评论人信息
-    _id: string,
-    username: string,
-    useravatar: string,
-  };
-  article: string;        // 当前文章id
-  commentValue: string;   // 评论内容
-  create_time: number;    // 评论时间
-
-  replys: any[];          // 回复信息列表
+  // !!! 重构 !!!
+  content: {
+    _id: string;            // 评论id
+    whom: {                 // 评论人信息
+      _id: string,
+      username: string,
+      useravatar: string,
+    };
+    article: string;        // 当前文章id
+    commentValue: string;   // 评论内容
+    create_time: number;    // 评论时间
+    children?: any;
+  },
+  inputValue: string;
+  onInputChange: (e: React.ChangeEvent) => void;
+  onSend: () => void;
+  onEmojiChange: (e: React.MouseEvent) => void;
 };
 interface ICommentListItemState {
-  replyInputValue: string;
   replyBoxId: string;
 };
 
@@ -51,20 +56,7 @@ class BaseCommentItem extends React.PureComponent<
   > {
 
   public readonly state = {
-    replyInputValue: '',
     replyBoxId: '',
-  }
-
-  public handleReplyInputChange = (e: any): void => {
-    console.log(e);
-  } 
-
-  public handleSendReply = () => {
-    console.log('send');
-  }
-
-  public handleEmojiChange = (e: React.MouseEvent) => {
-    console.log(e.target);
   }
 
   /**
@@ -90,7 +82,7 @@ class BaseCommentItem extends React.PureComponent<
         {/* 用户信息框 */}
         <ItemTopBox>
           <Avatar
-            src={this.props.whom.useravatar}
+            src={this.props.content.whom.useravatar}
             icon="user"
             size="default"
             shape="circle"
@@ -101,7 +93,7 @@ class BaseCommentItem extends React.PureComponent<
             style={{
               color: '#999',
             }}
-          >{this.props.whom.username}</span>
+          >{this.props.content.whom.username}</span>
         </ItemTopBox>
 
         {/* 内容框 */}
@@ -116,7 +108,7 @@ class BaseCommentItem extends React.PureComponent<
           </MiddleCommentReplyRange>
           <MiddleCommentText
             dangerouslySetInnerHTML={{
-              __html: this.props.commentValue,
+              __html: this.props.content.commentValue,
             }}
           />
         </ItemMiddleBox>
@@ -124,15 +116,15 @@ class BaseCommentItem extends React.PureComponent<
         {/* 控制栏 */}
         <ItemBottomBox>
           <ItemBottomLikeBox
-            data-id={this.props._id}
-          > 
+            data-id={this.props.content._id}
+          >
             <Icon type="like-o" />
             <span>999</span>
             <Divider type="vertical" />
           </ItemBottomLikeBox>
-          
+
           <ItemBottomReplyBox
-            data-id={this.props._id}
+            data-id={this.props.content._id}
             onClick={this.handleToggleReplyBox}
           >
             <Icon
@@ -142,26 +134,26 @@ class BaseCommentItem extends React.PureComponent<
             <Divider type="vertical" />
           </ItemBottomReplyBox>
 
-          <span>{formatTime(this.props.create_time)}</span>
+          <span>{formatTime(this.props.content.create_time)}</span>
         </ItemBottomBox>
-        
+
         {/* 评论输入通用组件 */}
         <ItemReplyBox
-          data-id={this.props._id}
+          data-id={this.props.content._id}
           style={{
-            display: this.props._id === this.state.replyBoxId
+            display: this.props.content._id === this.state.replyBoxId
               ? 'block'
               : 'none'
           }}
         >
           <BaseCommentInput
             placeHolder={'回复 duan'}
-            useravatar={this.props.whom.useravatar}
+            useravatar={this.props.content.whom.useravatar}
             avatarSize={'default'}
-            onInputChange={this.handleReplyInputChange}
-            inputValue={this.state.replyInputValue}
-            onSend={this.handleSendReply}
-            onEmojiChange={this.handleEmojiChange}
+            onInputChange={this.props.onInputChange}
+            inputValue={this.props.inputValue}
+            onSend={this.props.onSend}
+            onEmojiChange={this.props.onEmojiChange}
           />
         </ItemReplyBox>
       </React.Fragment>

@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { emojify } from 'react-emojione';
 
 import Header from '../../components/header/Header';
-import DetailsLeft from './details_main/DetailsMain';
+import DetailsMain from './details_main/DetailsMain';
 import DetailsRight from './details_action/DetailsAction';
 import DetailsControl from './details_control/DetailsControl';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
@@ -73,15 +73,12 @@ interface IDetailsState {
   loadingWrapperWidth: number;      // loading宽
   loadingWrapperHeight: number;   // loading高
 
-  replyInputValue: {
-    value: string | '',           // 回复输入框
-  },
-
   collectionInputValue: {
     value: string | '',           // 收藏弹出层输入框
   },
 
   commentInputValue: string;
+  replyInputValue: string;
 };
 
 
@@ -94,14 +91,12 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     visible: false,
     loadingWrapperWidth: 0,
     loadingWrapperHeight: 0,
-    replyInputValue: {
-      value: '',
-    },
     collectionInputValue: {
       value: '',
     },
 
     commentInputValue: '',
+    replyInputValue: '',
   }
 
   public componentDidMount(): void {
@@ -129,46 +124,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       loadingWrapperWidth: winWidth,
       loadingWrapperHeight: winHeight,
     });
-  }
-
-  /**
-   * 处理回复 输入
-   */
-  public handleReplyInputChange = (changedFields: any): void => {
-    this.setState({
-      replyInputValue: {
-        value: changedFields.reply_input.value,
-      },
-    });
-  }
-
-  /**
-   * 处理回复 提交
-   */
-  public handleSendReply = (
-    e: React.MouseEvent,
-    inputRef: any,
-    commentid: string,
-  ): void => {
-
-    this.state.replyInputValue.value === ''
-      ? notification.error({
-          message: '提示',
-          description: '回复不能为空!',
-        })
-      : this.props.reduxHandleSendReply(
-          commentid,
-          this.state.replyInputValue.value,
-          this.props.match.params.id,
-          () => {
-            // 清空输入框
-            inputRef.input.value = '';
-            notification.success({
-              message: '提示',
-              description: '回复成功!'
-            });
-          },
-        );
   }
 
   /**
@@ -295,6 +250,34 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     }));
   }
 
+  // !!! 重构 --- 回复 !!!
+  public handleReplyInputChange = (
+    e: React.ChangeEvent,
+  ): void => {
+    const target = e.currentTarget;
+    const html = target.innerHTML as string;
+
+    this.setState({
+      replyInputValue: html,
+    });
+  }
+
+  public handleReplyEmojiChange = (
+    e: React.MouseEvent,
+  ): void => {
+    const target = e.currentTarget as HTMLElement;
+    const tTitle = target.getAttribute('title') as string;
+    const emoji = emojify(tTitle, { output: 'unicode' });
+
+    this.setState((prevState) => ({
+      replyInputValue: `${prevState.replyInputValue}${emoji}`,
+    }));
+  }
+
+  public handleSendReply = (): void => {
+    console.log('发送了回复');
+  }
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
@@ -304,15 +287,20 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
             <Row>
               <Col span={18}>
                 {/* 左边内容区域 */}
-                <DetailsLeft 
+                <DetailsMain 
                   {...this.props.DetailsReducer.detailsInfo}
                   {...this.props.AuthRouteReducer}
 
                   onCommentInputChange={this.handleCommentInputChange}
                   onSendComment={this.handleSendComment}
                   commentInputValue={this.state.commentInputValue}
-
                   onCommentEmojiChange={this.handleCommentEmojiChange}
+
+                  // !!! 重构 -----  !!!
+                  onReplyInputChange={this.handleReplyInputChange}
+                  onSendReply={this.handleSendReply}
+                  replyInputValue={this.state.replyInputValue}
+                  onReplyEmojiChange={this.handleReplyEmojiChange}
                 />
               </Col>
               <Col span={6}>

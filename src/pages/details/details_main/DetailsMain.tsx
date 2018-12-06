@@ -22,7 +22,7 @@ import {
 } from './style';
 
 
-export interface IDetailsLeftProps {
+export interface IDetailsMainProps {
   author: string;
   articleContent: string;
   articleTitle: string;
@@ -35,13 +35,17 @@ export interface IDetailsLeftProps {
   useravatar: string;
 
   commentInputValue: string;
-  onCommentInputChange: (
-    e: React.ChangeEvent,
-  ) => void;
+  onCommentInputChange: (e: React.ChangeEvent,) => void;
   onSendComment: () => void;
   onCommentEmojiChange: (e: React.MouseEvent) => void;
+
+  // !!! 重构 ---- 回复 !!!
+  replyInputValue: string;
+  onReplyInputChange: (e: React.ChangeEvent) => void;
+  onSendReply: () => void;
+  onReplyEmojiChange: (e: React.MouseEvent) => void;
 };
-interface IDetailsLeftState {
+interface IDetailsMainState {
   articleImgPreviewInfo: {
     previewBoxVisible: boolean,
     previewImgUrl: string,
@@ -52,7 +56,7 @@ interface IDetailsLeftState {
 /**
  * 左侧文章信息区域
  */
-class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftState> {
+class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainState> {
 
   public readonly state = {
     articleImgPreviewInfo: {
@@ -200,8 +204,13 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
           onCommentInputChange={this.props.onCommentInputChange}
           onSendComment={this.props.onSendComment}
           commentInputValue={this.props.commentInputValue}
-
           onCommentEmojiChange={this.props.onCommentEmojiChange}
+
+          // !!! 重构 !!!
+          onReplyInputChange={this.props.onReplyInputChange}
+          onSendReply={this.props.onSendReply}
+          replyInputValue={this.props.replyInputValue}
+          onReplyEmojiChange={this.props.onReplyEmojiChange}
         />
 
         {/* 图片预览 */}
@@ -217,4 +226,4 @@ class DetailsLeft extends React.PureComponent<IDetailsLeftProps, IDetailsLeftSta
 }
 
 
-export default DetailsLeft;
+export default DetailsMain;

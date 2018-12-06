@@ -6,8 +6,6 @@ import {
 import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentItem';
 
 export interface ICommentListItemProps {
-  isReply: boolean;       // 是否为回复内容
-
   _id: string;            // 评论id
   whom: {                 // 评论人信息
     _id: string,
@@ -19,6 +17,12 @@ export interface ICommentListItemProps {
   create_time: number;    // 评论时间
 
   replys: any[];          // 回复信息列表
+
+  // !!! 重构 !!!
+  inputValue: string;
+  onInputChange: (e: React.ChangeEvent) => void;
+  onSend: () => void;
+  onEmojiChange: (e: React.MouseEvent) => void;
 };
 interface ICommentListItemState {};
 
@@ -31,15 +35,30 @@ class CommentListItem extends React.PureComponent<
   ICommentListItemState
   > {
   public render(): JSX.Element {
+    const content = this.props;
     return (
       <CommentShowListItem>
-        {/* 通用评论展示组件 */}
+        {/* 评论展示 */}
         <BaseCommentItem
+          isReply={false}
+          content={content}
           {...this.props}
+          inputValue={this.props.inputValue}
+          onInputChange={this.props.onInputChange}
+          onSend={this.props.onSend}
+          onEmojiChange={this.props.onEmojiChange}
         />
-        {/* 回复框 */}
-        <div style={{ width: '100%', height: '100%', }}>
-          hahahha
+        {/* 回复展示 */}
+        <div style={{ width: '100%', height: '100%', padding: '5px', backgroundColor: '#ccc' }}>
+          <BaseCommentItem
+            isReply={true}
+            content={content}
+            {...this.props}
+            inputValue={this.props.inputValue}
+            onInputChange={this.props.onInputChange}
+            onSend={this.props.onSend}
+            onEmojiChange={this.props.onEmojiChange}
+          />
         </div>
       </CommentShowListItem>
     );
