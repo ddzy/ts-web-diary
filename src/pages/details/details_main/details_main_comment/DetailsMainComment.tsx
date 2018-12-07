@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  // Form,
   Divider,
 } from 'antd';
 
@@ -13,7 +12,6 @@ import {
   TipText,
   EmojiItem,
 } from './style';
-// import CommentListItem from './CommentListItem';
 import { isArray } from 'util';
 import { EMOJI_PICKER } from '../../../../constants/constants';
 import BaseCommentInput from '../../../../components/widget/BaseCommentInput/BaseCommentInput';
