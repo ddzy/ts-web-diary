@@ -49,13 +49,14 @@ export interface ICommentListItemProps {
     commentValue?: string;   // 评论内容
     replyValue?: string;
     children?: any;
-    comment?: string;       
+    comment?: string;
     star?: number;
   },
   onSend: (v: string) => void;
 };
 interface ICommentListItemState {
   replyBoxId: string;
+  replyBox: any;
 };
 
 
@@ -69,33 +70,36 @@ class BaseCommentItem extends React.PureComponent<
 
   public readonly state = {
     replyBoxId: '',
+    replyBox: null,
   }
 
-  /**
-   * 处理切换replybox
-   */
-  public handleToggleReplyBox: React.MouseEventHandler = (
-    e: React.MouseEvent
+  // !!! 重构
+  public handleToggleReplyBox: React.MouseEventHandler<HTMLElement> = (
+    e: React.MouseEvent<HTMLElement>,
   ): void => {
-    const target: EventTarget & Element = e.currentTarget;
-    const commentId = target.getAttribute('data-id') as string;
+    const oTarget = e.currentTarget;
+    const oTargetId = oTarget.getAttribute('data-id');
+    const commentId = this.props.content._id;
+    const replyBox = (
+      <ItemReplyBox
+        className="item-reply-box"
+        data-id={this.props.content._id}
+      >
+        <BaseCommentInput
+          placeHolder={'回复 duan'}
+          useravatar={this.props.content.whom.useravatar}
+          avatarSize={'default'}
+          onSend={this.props.onSend}
+        />
+      </ItemReplyBox>
+    );
 
-    // 关闭其他的 回复框replyBox
-    const oItemReplyBoxArr = document
-      .querySelectorAll('.item-reply-box') as NodeListOf<HTMLDivElement>;
-    oItemReplyBoxArr.forEach((element) => {
-      const id = element.getAttribute('data-id') as string;
-      const sId = this.state.replyBoxId;
-      if (id !== sId) {
-        element.style.display = 'none';
-      }
-    });
-
-    this.setState((prevState) => {
-      return {
-        replyBoxId: prevState.replyBoxId ? '' : commentId,
-      };
-    });
+    oTargetId === commentId
+      && this.setState((prevState) => {
+        return {
+          replyBox: prevState.replyBox ? '' : replyBox,
+        };
+      });
   }
 
   public render(): JSX.Element {
@@ -161,22 +165,7 @@ class BaseCommentItem extends React.PureComponent<
         </ItemBottomBox>
 
         {/* 评论输入通用组件 */}
-        <ItemReplyBox
-          className="item-reply-box"
-          data-id={this.props.content._id}
-          style={{
-            display: this.props.content._id === this.state.replyBoxId
-              ? 'block'
-              : 'none'
-          }}
-        >
-          <BaseCommentInput
-            placeHolder={'回复 duan'}
-            useravatar={this.props.content.whom.useravatar}
-            avatarSize={'default'}
-            onSend={this.props.onSend}
-          />
-        </ItemReplyBox>
+        {this.state.replyBox}
       </React.Fragment>
     );
   }
