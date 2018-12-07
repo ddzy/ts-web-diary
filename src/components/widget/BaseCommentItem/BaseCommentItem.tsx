@@ -52,10 +52,7 @@ export interface ICommentListItemProps {
     comment?: string;       
     star?: number;
   },
-  inputValue: string;
-  onInputChange: (e: React.ChangeEvent) => void;
-  onSend: () => void;
-  onEmojiChange: (e: React.MouseEvent) => void;
+  onSend: (v: string) => void;
 };
 interface ICommentListItemState {
   replyBoxId: string;
@@ -177,10 +174,7 @@ class BaseCommentItem extends React.PureComponent<
             placeHolder={'回复 duan'}
             useravatar={this.props.content.whom.useravatar}
             avatarSize={'default'}
-            onInputChange={this.props.onInputChange}
-            inputValue={this.props.inputValue}
             onSend={this.props.onSend}
-            onEmojiChange={this.props.onEmojiChange}
           />
         </ItemReplyBox>
       </React.Fragment>

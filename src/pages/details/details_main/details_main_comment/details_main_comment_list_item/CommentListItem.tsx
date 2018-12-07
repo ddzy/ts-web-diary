@@ -19,11 +19,7 @@ export interface ICommentListItemProps {
 
   replys: any[];          // 回复信息列表
 
-  // !!! 重构 !!!
-  inputValue: string;
-  onInputChange: (e: React.ChangeEvent) => void;
-  onSend: () => void;
-  onEmojiChange: (e: React.MouseEvent) => void;
+  onSend: (v: string) => void;
 };
 interface ICommentListItemState { };
 
@@ -47,10 +43,7 @@ class CommentListItem extends React.PureComponent<
             isReply={true}
             content={reply}
             {...this.props}
-            inputValue={this.props.inputValue}
-            onInputChange={this.props.onInputChange}
             onSend={this.props.onSend}
-            onEmojiChange={this.props.onEmojiChange}
           />
         );
       });
@@ -67,10 +60,7 @@ class CommentListItem extends React.PureComponent<
           isReply={false}
           content={content}
           {...this.props}
-          inputValue={this.props.inputValue}
-          onInputChange={this.props.onInputChange}
           onSend={this.props.onSend}
-          onEmojiChange={this.props.onEmojiChange}
         />
         {/* 回复展示 */}
         <div style={{ width: '100%', height: '100%', padding: '0 3rem' }}>

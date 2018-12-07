@@ -34,16 +34,8 @@ export interface IDetailsMainProps {
 
   useravatar: string;
 
-  commentInputValue: string;
-  onCommentInputChange: (e: React.ChangeEvent,) => void;
-  onSendComment: () => void;
-  onCommentEmojiChange: (e: React.MouseEvent) => void;
-
-  // !!! 重构 ---- 回复 !!!
-  replyInputValue: string;
-  onReplyInputChange: (e: React.ChangeEvent) => void;
-  onSendReply: () => void;
-  onReplyEmojiChange: (e: React.MouseEvent) => void;
+  onSendComment: (v: string) => void;
+  onSendReply: (v: string) => void;
 };
 interface IDetailsMainState {
   articleImgPreviewInfo: {
@@ -198,19 +190,9 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
         {/* 评论 */}
         <DetailsLeftComment
           useravatar={this.props.useravatar}
-
           comments={this.props.comments}
-
-          onCommentInputChange={this.props.onCommentInputChange}
           onSendComment={this.props.onSendComment}
-          commentInputValue={this.props.commentInputValue}
-          onCommentEmojiChange={this.props.onCommentEmojiChange}
-
-          // !!! 重构 !!!
-          onReplyInputChange={this.props.onReplyInputChange}
           onSendReply={this.props.onSendReply}
-          replyInputValue={this.props.replyInputValue}
-          onReplyEmojiChange={this.props.onReplyEmojiChange}
         />
 
         {/* 图片预览 */}

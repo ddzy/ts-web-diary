@@ -17,7 +17,7 @@ import {
   EmojiWrapper,
   EmojiItem,
 } from './style';
-import { Emojify } from 'react-emojione';
+import { Emojify, emojify } from 'react-emojione';
 import {
   EMOJI_PICKER,
 } from '../../../constants/constants';
@@ -27,32 +27,30 @@ import ContentEditable from 'react-contenteditable';
 export interface IBaseCommentInputProps {
   useravatar: string;
   avatarSize?: 'small' | 'large' | 'default';
-
-  onInputChange: (e: React.ChangeEvent) => void;
-  inputValue: string;
   placeHolder?: string;
-  onSend: () => void;
-
-  onEmojiChange: (e: React.MouseEvent) => void;
+  onSend: (v: string) => void;
+};
+interface IBaseCommentInputState {
+  html: string;
 };
 
 
 /**
  * 评论|回复输入框 通用组件
  */
-const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
-  useravatar,
-  avatarSize = 'large',
-  onInputChange,
-  inputValue,
-  placeHolder = '请理性评论...',
-  onSend,
-  onEmojiChange,
-}): JSX.Element => {
+class BaseCommentInput extends React.PureComponent<
+  IBaseCommentInputProps,
+  IBaseCommentInputState
+  >{
+  
+  public readonly state = {
+    html: '',
+  };
+  
   /**
    * 初始化表情
    */
-  const initEmoji = (): JSX.Element[] => {
+  public initEmoji = (): JSX.Element[] => {
     return EMOJI_PICKER.map((emoji: string, i: number) => (
       <EmojiItem
         key={i}
@@ -60,95 +58,124 @@ const BaseCommentInput: React.SFC<IBaseCommentInputProps> = ({
     ));
   }
 
-  return (
-    <CommentInputBox>
-      <CommentInputMain>
-        <InputTop>
+  public handleChange: React.ChangeEventHandler = (
+    e: React.ChangeEvent,
+  ): void => {
+    const target = e.currentTarget;
+    const html = target.innerHTML as string;
+
+    this.setState({
+      html,
+    });
+  }
+
+  public handleReplyEmojiChange = (
+    e: React.MouseEvent,
+  ): void => {
+    const target = e.currentTarget as HTMLElement;
+    const tTitle = target.getAttribute('title') as string;
+    const emoji = emojify(tTitle, { output: 'unicode' });
+
+    this.setState((prevState) => ({
+      html: `${prevState.html}${emoji}`,
+    }));
+  }
+
+  public handleSend: React.MouseEventHandler<HTMLElement> = (): void => {
+    this.props.onSend(this.state.html);
+  }
+
+  public render(): JSX.Element {
+    return (
+      <CommentInputBox>
+        <CommentInputMain>
+          <InputTop>
+            <Row>
+              <Col span={3}>
+                <InputTopAvatar>
+                  <Avatar
+                    src={this.props.useravatar}
+                    shape="circle"
+                    icon="user"
+                    size={this.props.avatarSize}
+                    alt="useravatar"
+                  />
+                </InputTopAvatar>
+              </Col>
+              <Col span={21}>
+                <InputTopText>
+                  <ContentEditable
+                    data-placeholder={this.props.placeHolder}
+                    className="yyg-contenteditable"
+                    html={this.state.html}
+                    onChange={this.handleChange}
+                  />
+                </InputTopText>
+              </Col>
+            </Row>
+          </InputTop>
+          <InputBottom>
           <Row>
-            <Col span={3}>
-              <InputTopAvatar>
-                <Avatar
-                  src={useravatar}
-                  shape="circle"
-                  icon="user"
-                  size={avatarSize}
-                  alt="useravatar"
-                />
-              </InputTopAvatar>
-            </Col>
-            <Col span={21}>
-              <InputTopText>
-                <ContentEditable
-                  data-placeholder={placeHolder}
-                  className="yyg-contenteditable"
-                  html={inputValue}
-                  onChange={onInputChange}
-                />
-              </InputTopText>
-            </Col>
-          </Row>
-        </InputTop>
-        <InputBottom>
-        <Row>
-          <Col span={12}>
-            <Popover
-              trigger="click"
-              placement="left"
-              content={
-                <EmojiWrapper>
-                  <Emojify
-                    style={{
-                      width: '20',
-                      height: '20px',
-                      margin: '4px',
-                    }}
-                    onClick={onEmojiChange}
-                  >
-                    {initEmoji()}
-                  </Emojify>
-                </EmojiWrapper>
-              }
-            >
-              <div
-                style={{
-                  width: '50px',
-                  marginLeft: '16%',
-                  cursor: 'pointer',
-                }}
+            <Col span={12}>
+              <Popover
+                trigger="click"
+                placement="left"
+                content={
+                  <EmojiWrapper>
+                    <Emojify
+                      style={{
+                        width: '20',
+                        height: '20px',
+                        margin: '4px',
+                      }}
+                      onClick={this.handleReplyEmojiChange}
+                    >
+                      {this.initEmoji()}
+                    </Emojify>
+                  </EmojiWrapper>
+                }
               >
-                <Icon
-                  type="smile"
-                  theme="twoTone"
+                <div
                   style={{
-                    fontSize: '18px',
+                    width: '50px',
+                    marginLeft: '16%',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Icon
+                    type="smile"
+                    theme="twoTone"
+                    style={{
+                      fontSize: '18px',
+                      display: 'inline-block',
+                      verticalAlign: 'middle',
+                    }}
+                  />
+                  <span style={{
+                    color: '#1890ff',
                     display: 'inline-block',
                     verticalAlign: 'middle',
-                  }}
-                />
-                <span style={{
-                  color: '#1890ff',
-                  display: 'inline-block',
-                  verticalAlign: 'middle',
-                }}>表情</span>
-              </div>
-            </Popover>
-          </Col>
-          <Col span={12}>
-            <Button
-              className="same-show-action-box"
-              htmlType="button"
-              type="primary"
-              style={{
-                float: 'right',
-              }}
-              onClick={onSend}
-            >发表</Button>
-          </Col>
-        </Row>
-      </InputBottom>
-      </CommentInputMain>
-    </CommentInputBox>
-  );
+                  }}>表情</span>
+                </div>
+              </Popover>
+            </Col>
+            <Col span={12}>
+              <Button
+                className="same-show-action-box"
+                htmlType="button"
+                type="primary"
+                style={{
+                  float: 'right',
+                }}
+                onClick={this.handleSend}
+              >发表</Button>
+            </Col>
+          </Row>
+        </InputBottom>
+        </CommentInputMain>
+      </CommentInputBox>
+    );  
+  }
 }
 
 

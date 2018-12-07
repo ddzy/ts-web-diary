@@ -8,7 +8,6 @@ import {
 import { History } from 'history';
 import { match } from 'react-router';
 import { connect } from 'react-redux';
-import { emojify } from 'react-emojione';
 
 import Header from '../../components/header/Header';
 import DetailsMain from './details_main/DetailsMain';
@@ -76,9 +75,6 @@ interface IDetailsState {
   collectionInputValue: {
     value: string | '',           // 收藏弹出层输入框
   },
-
-  commentInputValue: string;
-  replyInputValue: string;
 };
 
 
@@ -96,7 +92,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     },
 
     commentInputValue: '',
-    replyInputValue: '',
   }
 
   public componentDidMount(): void {
@@ -209,73 +204,18 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     );
   }
 
-  public handleCommentInputChange = (
-    e: React.ChangeEvent,
-  ): void => {
-    const value = e.currentTarget.textContent as string;
-
-    this.setState({
-      commentInputValue: value,
-    });
+  /**
+   * 处理评论提交
+   */
+  public handleSendComment = (v: string): void => {
+    console.log(v);
   }
 
-  public handleSendComment = (): void => {
-    this.state.commentInputValue
-      ? this.props.reduxHandleSendComment(
-          this.props.match.params.id,
-          this.state.commentInputValue,
-          () => {
-            this.setState({ commentInputValue: '' });
-            notification.success({
-              message: '提示:',
-              description: '评论发表成功!'
-            });
-          },
-        )
-      : notification.error({
-          message: '错误:',
-          description: '评论不能为空!'
-        });
-  }
-
-  public handleCommentEmojiChange = (
-    e: React.MouseEvent,
-  ): void => {
-    const target = e.currentTarget as HTMLElement;
-    const tTitle = target.getAttribute('title') as string;
-    const emoji = emojify(tTitle, { output: 'unicode' });
-
-    this.setState((prevState) => ({
-      commentInputValue: `${prevState.commentInputValue}${emoji}`,
-    }));
-  }
-
-  // !!! 重构 --- 回复 !!!
-  public handleReplyInputChange = (
-    e: React.ChangeEvent,
-  ): void => {
-    const target = e.currentTarget;
-    const html = target.innerHTML as string;
-
-    this.setState({
-      replyInputValue: html,
-    });
-  }
-
-  public handleReplyEmojiChange = (
-    e: React.MouseEvent,
-  ): void => {
-    const target = e.currentTarget as HTMLElement;
-    const tTitle = target.getAttribute('title') as string;
-    const emoji = emojify(tTitle, { output: 'unicode' });
-
-    this.setState((prevState) => ({
-      replyInputValue: `${prevState.replyInputValue}${emoji}`,
-    }));
-  }
-
-  public handleSendReply = (): void => {
-    console.log('发送了回复');
+  /**
+   * 处理回复提交
+   */
+  public handleSendReply = (v: string): void => {
+    console.log(v);
   }
 
   public render(): JSX.Element {
@@ -290,17 +230,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 <DetailsMain 
                   {...this.props.DetailsReducer.detailsInfo}
                   {...this.props.AuthRouteReducer}
-
-                  onCommentInputChange={this.handleCommentInputChange}
                   onSendComment={this.handleSendComment}
-                  commentInputValue={this.state.commentInputValue}
-                  onCommentEmojiChange={this.handleCommentEmojiChange}
-
-                  // !!! 重构 -----  !!!
-                  onReplyInputChange={this.handleReplyInputChange}
                   onSendReply={this.handleSendReply}
-                  replyInputValue={this.state.replyInputValue}
-                  onReplyEmojiChange={this.handleReplyEmojiChange}
                 />
               </Col>
               <Col span={6}>
