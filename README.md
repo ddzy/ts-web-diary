@@ -7,6 +7,6 @@
 - [x] rem完善
 - [x] 评论组件完善
 - [x] 初步尝试replys数据遍历展示
-- [ ] sendReply重构
+- [x] sendReply重构
 - [ ] sendReply分页
 ## updating, ing, ing...
