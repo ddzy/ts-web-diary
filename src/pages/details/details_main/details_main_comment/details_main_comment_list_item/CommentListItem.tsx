@@ -5,6 +5,7 @@ import {
 } from './style';
 import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentItem';
 
+
 export interface ICommentListItemProps {
   _id: string;            // 评论id
   whom: {                 // 评论人信息
@@ -24,7 +25,7 @@ export interface ICommentListItemProps {
   onSend: () => void;
   onEmojiChange: (e: React.MouseEvent) => void;
 };
-interface ICommentListItemState {};
+interface ICommentListItemState { };
 
 
 /**
@@ -34,6 +35,29 @@ class CommentListItem extends React.PureComponent<
   ICommentListItemProps,
   ICommentListItemState
   > {
+  // !!! 初始化回复列表
+  public initReplyList = (): JSX.Element[] => {
+    const { replys } = this.props;
+
+    if (Array.isArray(replys) && replys.length !== 0) {
+      return replys.map((reply, index) => {
+        return (
+          <BaseCommentItem
+            key={index}
+            isReply={true}
+            content={reply}
+            {...this.props}
+            inputValue={this.props.inputValue}
+            onInputChange={this.props.onInputChange}
+            onSend={this.props.onSend}
+            onEmojiChange={this.props.onEmojiChange}
+          />
+        );
+      });
+    }
+    return [];
+  }
+
   public render(): JSX.Element {
     const content = this.props;
     return (
@@ -50,16 +74,8 @@ class CommentListItem extends React.PureComponent<
         />
         {/* 回复展示 */}
         <div style={{ width: '100%', height: '100%', padding: '0 3rem' }}>
-          <div style={{backgroundColor: '#fafbfc', padding: '1rem'}}>
-            <BaseCommentItem
-              isReply={true}
-              content={content}
-              {...this.props}
-              inputValue={this.props.inputValue}
-              onInputChange={this.props.onInputChange}
-              onSend={this.props.onSend}
-              onEmojiChange={this.props.onEmojiChange}
-            />
+          <div style={{ backgroundColor: '#fafbfc', padding: '1rem' }}>
+            {this.initReplyList()}
           </div>
         </div>
       </CommentShowListItem>

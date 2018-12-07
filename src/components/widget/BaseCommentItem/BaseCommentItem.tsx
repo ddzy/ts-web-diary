@@ -26,16 +26,31 @@ export interface ICommentListItemProps {
 
   // !!! 重构 !!!
   content: {
-    _id: string;            // 评论id
-    whom: {                 // 评论人信息
+    _id: string;            // 评论|回复id
+    whom: {                 // 评论|回复人信息
       _id: string,
       username: string,
       useravatar: string,
     };
     article: string;        // 当前文章id
-    commentValue: string;   // 评论内容
     create_time: number;    // 评论时间
+
+    // !! 重构 distinguish comment&reply
+    from?: {
+      _id: string,
+      username: string,
+      useravatar: string,
+    };
+    to?: {
+      _id: string,
+      username: string,
+      useravatar: string,
+    };
+    commentValue?: string;   // 评论内容
+    replyValue?: string;
     children?: any;
+    comment?: string;       
+    star?: number;
   },
   inputValue: string;
   onInputChange: (e: React.ChangeEvent) => void;
@@ -67,6 +82,17 @@ class BaseCommentItem extends React.PureComponent<
   ): void => {
     const target: EventTarget & Element = e.currentTarget;
     const commentId = target.getAttribute('data-id') as string;
+
+    // 关闭其他的 回复框replyBox
+    const oItemReplyBoxArr = document
+      .querySelectorAll('.item-reply-box') as NodeListOf<HTMLDivElement>;
+    oItemReplyBoxArr.forEach((element) => {
+      const id = element.getAttribute('data-id') as string;
+      const sId = this.state.replyBoxId;
+      if (id !== sId) {
+        element.style.display = 'none';
+      }
+    });
 
     this.setState((prevState) => {
       return {
@@ -108,7 +134,7 @@ class BaseCommentItem extends React.PureComponent<
           </MiddleCommentReplyRange>
           <MiddleCommentText
             dangerouslySetInnerHTML={{
-              __html: this.props.content.commentValue,
+              __html: this.props.content.commentValue || this.props.content.replyValue || '',
             }}
           />
         </ItemMiddleBox>
@@ -139,6 +165,7 @@ class BaseCommentItem extends React.PureComponent<
 
         {/* 评论输入通用组件 */}
         <ItemReplyBox
+          className="item-reply-box"
           data-id={this.props.content._id}
           style={{
             display: this.props.content._id === this.state.replyBoxId
