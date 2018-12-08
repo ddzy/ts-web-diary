@@ -52,6 +52,10 @@ export interface ICommentListItemProps {
     comment?: string;
     star?: number;
   },
+
+  // ! 自定义回复模态框样式
+  baseInputContainerStyle?: React.CSSProperties;
+  baseInputStyle?: React.CSSProperties;
   onSend: (v: string) => void;
 };
 interface ICommentListItemState {
@@ -86,6 +90,8 @@ class BaseCommentItem extends React.PureComponent<
         data-id={this.props.content._id}
       >
         <BaseCommentInput
+          containerStyle={this.props.baseInputContainerStyle ? this.props.baseInputContainerStyle : {}}
+          inputStyle={this.props.baseInputStyle ? this.props.baseInputStyle : {}}
           placeHolder={'回复 duan'}
           useravatar={this.props.content.whom.useravatar}
           avatarSize={'default'}

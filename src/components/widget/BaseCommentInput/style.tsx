@@ -1,45 +1,32 @@
 import styled from 'styled-components';
 
+export interface ICommentInputMainProps {
+  containerStyle: React.CSSProperties;
+};
+
 
 export const CommentInputBox = styled.div`
   padding: 0 3rem;
 `;
 
-export const CommentInputMain = styled.div`
-  padding: 1.5rem;
-  background-color: #f7f8f9;
+export const CommentInputMain = styled<ICommentInputMainProps, 'div'>('div')`
+  padding: ${((props) => {
+    return props.containerStyle.padding
+      ? props.containerStyle.padding
+      : '1.5rem'
+  })};
+  background-color: ${(props) => {
+    return props.containerStyle.backgroundColor
+      ? props.containerStyle.backgroundColor
+      : '#fafbfc'
+  }};
 `;
 
-export const InputTop = styled.div`
-  
-`;
+export const InputTop = styled.div``;
 
-export const InputTopAvatar = styled.div`
-  
-`;
+export const InputTopAvatar = styled.div``;
 
-export const InputTopText = styled.div`
-
-`;
-
-export const TopTextMain = styled.div`
-  height: 100%;
-  padding: 0.5625rem 0.75rem 0.4375rem;
-  border: 1px solid #ccc;
-  border-radius: 0.375rem;
-  outline: none;
-  transition: border .15s ease-in;
-  &:empty::before {
-    content: attr(placeholder);
-    color: #ccc;
-  }
-  &:focus::before {
-    content: none;
-  }
-  &:focus {
-    border: 1px solid #1890ff;
-  }
-`;
+export const InputTopText = styled.div``;
 
 export const InputBottom = styled.div`
   display: block;

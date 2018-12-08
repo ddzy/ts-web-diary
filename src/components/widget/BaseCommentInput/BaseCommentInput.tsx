@@ -28,6 +28,8 @@ export interface IBaseCommentInputProps {
   useravatar: string;
   avatarSize?: 'small' | 'large' | 'default';
   placeHolder?: string;
+  containerStyle?: React.CSSProperties;
+  inputStyle?: React.CSSProperties;
   onSend: (v: string) => void;
 };
 interface IBaseCommentInputState {
@@ -42,11 +44,11 @@ class BaseCommentInput extends React.PureComponent<
   IBaseCommentInputProps,
   IBaseCommentInputState
   >{
-  
+
   public readonly state = {
     html: '',
   };
-  
+
   /**
    * 初始化表情
    */
@@ -88,7 +90,9 @@ class BaseCommentInput extends React.PureComponent<
   public render(): JSX.Element {
     return (
       <CommentInputBox>
-        <CommentInputMain>
+        <CommentInputMain
+          containerStyle={this.props.containerStyle ? this.props.containerStyle : {}}
+        >
           <InputTop>
             <Row>
               <Col span={3}>
@@ -105,6 +109,7 @@ class BaseCommentInput extends React.PureComponent<
               <Col span={21}>
                 <InputTopText>
                   <ContentEditable
+                    style={this.props.inputStyle ? this.props.inputStyle : {}}
                     data-placeholder={this.props.placeHolder}
                     className="yyg-contenteditable"
                     html={this.state.html}
@@ -174,7 +179,7 @@ class BaseCommentInput extends React.PureComponent<
         </InputBottom>
         </CommentInputMain>
       </CommentInputBox>
-    );  
+    );
   }
 }
 

@@ -31,7 +31,10 @@ class CommentListItem extends React.PureComponent<
   ICommentListItemProps,
   ICommentListItemState
   > {
-  // !!! 初始化回复列表
+
+  /**
+   * 初始化回复列表
+   */
   public initReplyList = (): JSX.Element[] => {
     const { replys } = this.props;
 
@@ -39,6 +42,9 @@ class CommentListItem extends React.PureComponent<
       return replys.map((reply, index) => {
         return (
           <BaseCommentItem
+            baseInputContainerStyle={{
+              backgroundColor: '#fff',
+            }}
             key={index}
             isReply={true}
             content={reply}
@@ -57,11 +63,15 @@ class CommentListItem extends React.PureComponent<
       <CommentShowListItem>
         {/* 评论展示 */}
         <BaseCommentItem
+          baseInputStyle={{
+            backgroundColor: '#fff',
+          }}
           isReply={false}
           content={content}
           {...this.props}
           onSend={this.props.onSend}
         />
+
         {/* 回复展示 */}
         <div style={{ width: '100%', height: '100%', padding: '0 3rem' }}>
           <div style={{ backgroundColor: '#fafbfc', padding: '1rem' }}>
