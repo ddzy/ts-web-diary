@@ -34,7 +34,7 @@ export const MainHeaderContent = styled<IStyleProps, 'div'>('div')`
 
 
 /**
- * 收藏页 => 容器 => 内容 
+ * 收藏页 => 容器 => 内容
  */
 export const MainContentWrapper = styled<IStyleProps, 'div'>('div')`
   width: 46.875rem;
@@ -48,7 +48,6 @@ export const MainContentTipBox = styled<IStyleProps, 'div'>('div')`
 
 export const MainContentTipText = styled<IStyleProps, 'h1'>('h1')`
   text-align: center;
-  color: #999;
 `;
 
 /**

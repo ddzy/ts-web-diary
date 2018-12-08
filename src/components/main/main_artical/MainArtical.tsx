@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Tabs, List, Icon, Button, message } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { 
+import {
   ContentArtical,
 } from './style';
 import { formatTime } from '../../../utils/utils';
@@ -40,7 +40,7 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
   //// 初始化列表数据
   public initListData = () => {
     const articleList = this.props.articleList || [];
-    
+
     return articleList.length
       ? articleList
           .filter((item) => {
@@ -70,7 +70,6 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
 
     return (
         <span
-          style={{ color: '#999' }}
           data-type={data.type}
           data-id={data.id}
           onClick={this.handleChangeStar}
@@ -111,7 +110,7 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
           });
         }
       );
-    });  
+    });
   }
 
 
@@ -220,30 +219,30 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
                     key={item.title}
                     style={{ marginTop: '25px', padding: '0 20px' }}
                     actions={[
-                      this.initIconText({ 
-                        type: 'eye-o', 
-                        text: '150', 
+                      this.initIconText({
+                        type: 'eye-o',
+                        text: '150',
                         tip: '浏览量',
-                      }), 
-                      this.initIconText({ 
-                        type: 'like-o', 
-                        text: '156', 
+                      }),
+                      this.initIconText({
+                        type: 'like-o',
+                        text: '156',
                         tip: '点赞',
                       }),
-                      this.initIconText({ 
-                        type: 'clock-circle-o', 
-                        text: item.create_time, 
+                      this.initIconText({
+                        type: 'clock-circle-o',
+                        text: item.create_time,
                         tip: '发布于',
                       }),
-                      this.initIconText({ 
-                        type: 'info-circle', 
-                        text: item.author_name, 
+                      this.initIconText({
+                        type: 'info-circle',
+                        text: item.author_name,
                         tip: '作者',
                       })
                     ]}
                     extra={
                       <div style={{ width: '120px', height: '120px' }}>
-                        <img width={120} height={120} 
+                        <img width={120} height={120}
                         alt="extra_logo" src={item.pic_url} />
                       </div>
                     }
@@ -252,7 +251,7 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
                       title={
                         <a
                           href={item.url}
-                          style={{ 
+                          style={{
                             fontSize: '20px',
                             fontWeight: 'bold'
                           }}
