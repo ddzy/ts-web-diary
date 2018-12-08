@@ -8,8 +8,7 @@ export interface IInputBottonProps {
 // 左边评论
 export const LeftCommentContainer = styled.div`
   margin-top: 0.625rem;
-  // padding: 0 7.5rem 1.25rem 3.125rem;
-  padding: 0 6.25rem 1.25rem;
+  padding: 0 3rem 1.25rem;
   background-color: #fff;
 `;
 
@@ -70,7 +69,7 @@ export const EmojiItem = styled.span`
 
 export const CommentShowBox = styled.div`
   margin-top: 1.875rem;
-  padding: 0 1.25rem;
+  padding-left: 3rem;
 `;
 
 export const CommentShowList = styled.ul``;

@@ -95,7 +95,7 @@ class BaseCommentInput extends React.PureComponent<
         >
           <InputTop>
             <Row>
-              <Col span={3}>
+              <Col span={2}>
                 <InputTopAvatar>
                   <Avatar
                     src={this.props.useravatar}
@@ -106,7 +106,7 @@ class BaseCommentInput extends React.PureComponent<
                   />
                 </InputTopAvatar>
               </Col>
-              <Col span={21}>
+              <Col span={22}>
                 <InputTopText>
                   <ContentEditable
                     style={this.props.inputStyle ? this.props.inputStyle : {}}
