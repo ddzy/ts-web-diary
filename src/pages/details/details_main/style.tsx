@@ -46,7 +46,6 @@ export const LeftInfoListItem = styled.li`
 export const LeftContentContainer = styled.div``;
 
 export const LeftContent = styled.article`
-  color: #000;
   ul, ol {
     list-style-type: initial !important;
     padding: 0 2rem;

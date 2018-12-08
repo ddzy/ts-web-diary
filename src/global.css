@@ -1,15 +1,6 @@
 /*
 	! By reset.css
 */
-html {
-	font-size: 16px;
-	font-family: -apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Arial,sans-serif;
-	word-break: break-word;
-	text-rendering: optimizeLegibility;
-	color: #333;
-	/* background-color: #f4f5f5; */
-}
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -36,13 +27,19 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-
+html {
+	font-size: 16px;
+	word-break: break-word;
+	text-rendering: optimizeLegibility;
+}
 html, body, #app {
 	height: 100%;
 }
 
 body {
-	line-height: 1;
+	font-family: -apple-system,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Arial,sans-serif !important;
+	color: #000 !important;
+	line-height: 1.75;
 }
 ol, ul {
 	list-style: none;

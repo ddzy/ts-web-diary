@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Divider, Tag } from 'antd';
+import * as hljs from 'highlight.js';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
+import 'highlight.js/styles/atom-one-light.css';
 
 import { formatTime } from '../../../utils/utils';
 import {
@@ -131,8 +133,20 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
       ? JSON.parse(articleContent)
       : { ops: [] };
 
-    const tempCont = document.createElement("div");
-    (new Quill(tempCont)).setContents(parsedArticleContent);
+    // delta-to-html暂时使用这种方式替代
+    const tempCont = document
+      .createElement("div");
+    (new Quill(tempCont))
+      .setContents(parsedArticleContent);
+    const tempContPres = tempCont
+      .querySelectorAll('pre') as NodeListOf<HTMLPreElement>;
+
+    // 代码高亮
+    tempContPres.forEach((element) => {
+      const elementTagname = element.localName as string;
+      elementTagname === 'pre'
+        && hljs.highlightBlock(element);
+    });
 
     return tempCont
       .getElementsByClassName("ql-editor")[0].innerHTML;
