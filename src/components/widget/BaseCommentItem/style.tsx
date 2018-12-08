@@ -36,6 +36,9 @@ export const ItemBottomBox = styled.blockquote`
   color: #999;
   cursor: pointer;
 `;
+export const ItemBottonRightBox = styled.div`
+  float: right;
+`;
 export const ItemBottomLikeBox = styled.div`
   display: inline-block;
   &:hover {
@@ -48,6 +51,7 @@ export const ItemBottomReplyBox = styled.div`
     color: #1890ff;
   }
 `;
+export const ItemBottomTimeBox = styled.span``;
 
 // 回复
 export const ItemReplyBox = styled.div`

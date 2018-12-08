@@ -3,6 +3,8 @@ import {
   Avatar,
   Divider,
   Icon,
+  Row,
+  Col,
 } from 'antd';
 
 import {
@@ -13,8 +15,10 @@ import {
   MiddleCommentReplyFrom,
   MiddleCommentReplyTo,
   ItemBottomBox,
+  ItemBottonRightBox,
   ItemBottomLikeBox,
   ItemBottomReplyBox,
+  ItemBottomTimeBox,
   ItemReplyBox,
 } from './style';
 import { formatTime } from '../../../utils/utils';
@@ -100,11 +104,18 @@ class BaseCommentItem extends React.PureComponent<
       </ItemReplyBox>
     );
 
+    // 点击active样式
+
+
     oTargetId === commentId
       && this.setState((prevState) => {
         return {
           replyBox: prevState.replyBox ? '' : replyBox,
         };
+      }, () => {
+        oTarget.style.cssText += `${
+          this.state.replyBox ? 'color: #1890ff;' : 'color: #999;'
+          }`;
       });
   }
 
@@ -148,26 +159,35 @@ class BaseCommentItem extends React.PureComponent<
 
         {/* 控制栏 */}
         <ItemBottomBox>
-          <ItemBottomLikeBox
-            data-id={this.props.content._id}
-          >
-            <Icon type="like-o" />
-            <span>999</span>
-            <Divider type="vertical" />
-          </ItemBottomLikeBox>
 
-          <ItemBottomReplyBox
-            data-id={this.props.content._id}
-            onClick={this.handleToggleReplyBox}
-          >
-            <Icon
-              type="message"
-            />
-            <span>回复</span>
-            <Divider type="vertical" />
-          </ItemBottomReplyBox>
+          <Row>
+            <Col span={12}>
+              <ItemBottomTimeBox>
+                {formatTime(this.props.content.create_time)}
+              </ItemBottomTimeBox>
+            </Col>
+            <Col span={12}>
+              <ItemBottonRightBox>
+                <ItemBottomLikeBox
+                  data-id={this.props.content._id}
+                >
+                  <Icon type="like-o" />
+                  <span>999</span>
+                  <Divider type="vertical" />
+                </ItemBottomLikeBox>
 
-          <span>{formatTime(this.props.content.create_time)}</span>
+                <ItemBottomReplyBox
+                  data-id={this.props.content._id}
+                  onClick={this.handleToggleReplyBox}
+                >
+                  <Icon
+                    type="message"
+                  />
+                  <span>回复</span>
+                </ItemBottomReplyBox>
+              </ItemBottonRightBox>
+            </Col>
+          </Row>
         </ItemBottomBox>
 
         {/* 评论输入通用组件 */}

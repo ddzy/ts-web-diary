@@ -2,6 +2,10 @@ import * as React from 'react';
 
 import {
   CommentShowListItem,
+  CommentContainer,
+  ReplyContainer,
+  ReplyList,
+  ReplyListItem,
 } from './style';
 import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentItem';
 
@@ -41,16 +45,19 @@ class CommentListItem extends React.PureComponent<
     if (Array.isArray(replys) && replys.length !== 0) {
       return replys.map((reply, index) => {
         return (
-          <BaseCommentItem
-            baseInputContainerStyle={{
-              backgroundColor: '#fff',
-            }}
+          <ReplyListItem
             key={index}
-            isReply={true}
-            content={reply}
-            {...this.props}
-            onSend={this.props.onSend}
-          />
+          >
+            <BaseCommentItem
+              baseInputContainerStyle={{
+                backgroundColor: '#fff',
+              }}
+              isReply={true}
+              content={reply}
+              {...this.props}
+              onSend={this.props.onSend}
+            />
+          </ReplyListItem>
         );
       });
     }
@@ -62,22 +69,24 @@ class CommentListItem extends React.PureComponent<
     return (
       <CommentShowListItem>
         {/* 评论展示 */}
-        <BaseCommentItem
-          baseInputStyle={{
-            backgroundColor: '#fff',
-          }}
-          isReply={false}
-          content={content}
-          {...this.props}
-          onSend={this.props.onSend}
-        />
+        <CommentContainer>
+          <BaseCommentItem
+            baseInputStyle={{
+              backgroundColor: '#fff',
+            }}
+            isReply={false}
+            content={content}
+            {...this.props}
+            onSend={this.props.onSend}
+          />
+        </CommentContainer>
 
         {/* 回复展示 */}
-        <div style={{ width: '100%', height: '100%', padding: '0 3rem' }}>
-          <div style={{ backgroundColor: '#fafbfc', padding: '1rem' }}>
+        <ReplyContainer>
+          <ReplyList>
             {this.initReplyList()}
-          </div>
-        </div>
+          </ReplyList>
+        </ReplyContainer>
       </CommentShowListItem>
     );
   }
