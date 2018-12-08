@@ -5,7 +5,6 @@
   "dependencies": {
     "@types/antd": "^1.0.0",
     "@types/axios": "^0.14.0",
-    "@types/highlight.js": "^9.12.3",
     "@types/jsonp": "^0.2.0",
     "@types/jsonwebtoken": "^7.2.8",
     "@types/koa": "^2.0.46",
@@ -32,6 +31,7 @@
     "axios": "^0.18.0",
     "draft-js-emoji-plugin": "^2.1.1",
     "draft-js-plugin-editor": "0.0.0",
+    "highlight.js": "^9.13.1",
     "jsonp": "^0.2.1",
     "jsonwebtoken": "^8.3.0",
     "koa": "^2.5.2",
