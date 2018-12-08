@@ -21,7 +21,6 @@ export const MiddleCommentText = styled.blockquote`
 
 // 评论回复判别
 export const MiddleCommentReplyRange = styled.div`
-  /* display: inline-block; */
   display: ${(props: IMiddleCommentReplyRangeProps) => props.isReply ? 'inline-block' : 'none'};
   font-size: .8rem;
 `;
@@ -35,6 +34,7 @@ export const ItemBottomBox = styled.blockquote`
   font-size: .8125rem;
   color: #999;
   cursor: pointer;
+  user-select: none;
 `;
 export const ItemBottonRightBox = styled.div`
   float: right;

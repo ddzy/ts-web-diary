@@ -81,7 +81,9 @@ class BaseCommentItem extends React.PureComponent<
     replyBox: null,
   }
 
-  // !!! 重构
+  /**
+   * 处理切换回复模态框
+   */
   public handleToggleReplyBox: React.MouseEventHandler<HTMLElement> = (
     e: React.MouseEvent<HTMLElement>,
   ): void => {
