@@ -14,6 +14,7 @@ export interface IInitialState {
     tag: string,
     type: string,
     watchCount: number,
+    img: string,
     isLiked: boolean,     // 是否点过赞
     comments: any[],      // 评论信息
     collections: any[],   // 我的收藏夹列表
@@ -36,7 +37,7 @@ const initialState: IInitialState = {
     type: '',
     watchCount: 0,
     isLiked: false,
-
+    img: '',
     comments: [],
 
     collections: [],
@@ -186,9 +187,9 @@ export function getOneArticleInfo(
   callback: () => void,
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
-    query({ 
-      method: 'GET', 
-      url: '/api/details',  
+    query({
+      method: 'GET',
+      url: '/api/details',
       data: {
         articleid,
         userid: localStorage.getItem('userid'),
@@ -203,7 +204,7 @@ export function getOneArticleInfo(
 
 
 /**
- * 发表评论 
+ * 发表评论
  * @param articleid 文章id
  * @param commentValue 评论内容
  * @param callback 回调函数
@@ -288,7 +289,7 @@ export function reduxHandleFixedControlBarStar(
       jsonp: false,
     }).then((res) => {
       res.code === 0
-        && callback 
+        && callback
         && callback();
     });
   }

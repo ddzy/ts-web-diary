@@ -22,7 +22,7 @@ export interface IDetailsMainProps {
   tag: string;
   type: string;
   comments: any[];
-
+  img: string;
   useravatar: string;
 
   onSendComment: (v: string) => void;

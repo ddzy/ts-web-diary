@@ -2,10 +2,10 @@ const koa = require('koa');
 const Router = require('koa-router');
 
 const {
-  User, 
-  Posts, 
-  changeId, 
-  Comments, 
+  User,
+  Posts,
+  changeId,
+  Comments,
   Replys,
   Collections,
 } = require('../model/model');
@@ -18,7 +18,7 @@ const details = new Router();
  * 文章详情 => 获取信息
  */
 details.get('/', async (ctx, next) => {
-  
+
   const { articleid, userid } = ctx.request.query;
 
   const setWatch = await Posts
@@ -46,7 +46,7 @@ details.get('/', async (ctx, next) => {
   const watchArr = await Posts
     .find({ author: result.author._id })
     .populate('author', 'username');
-  
+
 
   // 统计作者文章总阅读数量
   const watchCount = await watchArr
@@ -111,7 +111,7 @@ details.get('/', async (ctx, next) => {
 
   // 格式化图片路径
   const setComments = updateCommentsList.comments
-    && updateCommentsList.comments.length 
+    && updateCommentsList.comments.length
     && updateCommentsList.comments.length !== 0
     ? updateCommentsList.comments.map((item) => {
         return {
@@ -159,6 +159,7 @@ details.get('/', async (ctx, next) => {
     code: 0,
     message: 'Success!',
     result: {
+      img: setWatch.img,
       author: updateCommentsList.author.username,
       authorAvatar: formatPath(
         updateCommentsList.author.useravatar
@@ -187,7 +188,7 @@ details.get('/', async (ctx, next) => {
  * 文章详情 => 发表评论
  */
 details.post('/comment', async (ctx, next) => {
-  
+
   const {
     userid,
     articleid,
@@ -251,10 +252,10 @@ details.post('/comment', async (ctx, next) => {
  * 文章详情 => 发表回复
  */
 details.post('/reply', async (ctx, next) => {
-  
-  const { 
-    commentid, 
-    replyValue, 
+
+  const {
+    commentid,
+    replyValue,
     articleid,
     userid,
   } = ctx.request.body;
@@ -320,8 +321,8 @@ details.post('/reply', async (ctx, next) => {
  */
 details.get('/star', async (ctx, next) => {
 
-  const { 
-    articleid, 
+  const {
+    articleid,
     liked,
     userid,
   } = ctx.request.query;
@@ -340,7 +341,7 @@ details.get('/star', async (ctx, next) => {
           ? getArticle.stared.concat(userid)
           : getArticle.stared.filter((item) => {
               return item !== userid;
-            }), 
+            }),
       },
       { new: true, lean: true },
     );
@@ -359,7 +360,7 @@ details.get('/star', async (ctx, next) => {
  * 文章详情 => 创建收藏夹
  */
 details.get('/collection/create', async (ctx, next) => {
-  
+
   const { userid, collection } = ctx.request.query;
 
   // 收藏夹是否存在
@@ -382,9 +383,9 @@ details.get('/collection/create', async (ctx, next) => {
         {
           '$push': { collections: setToCollections },
         },
-        { 
-          new: true, 
-          lean: true, 
+        {
+          new: true,
+          lean: true,
           select: {
             '_id': '_id',
             collections: 'collections',
@@ -419,7 +420,7 @@ details.get('/collection/create', async (ctx, next) => {
  * 文章详情 => 确认添加至收藏夹
  */
 details.post('/collection/save', async (ctx, next) => {
-  const { 
+  const {
     userid,
     articleId,
     collectionId,

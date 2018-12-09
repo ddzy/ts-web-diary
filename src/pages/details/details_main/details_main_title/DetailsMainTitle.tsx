@@ -11,6 +11,8 @@ import {
   LeftTitleBox,
   LeftInfoList,
   LeftInfoListItem,
+  LeftImgBox,
+  LeftImgInner,
 } from './style';
 import { MERGED_ARTICLE_TAG } from 'src/constants/constants';
 import { formatTime } from 'src/utils/utils';
@@ -23,12 +25,14 @@ export interface IDetailsMainTitleProps {
   type: string;
   tag: string;
   create_time: number;
+  img: string;
 };
 
 
 const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
   props
 ): JSX.Element => {
+
   const initArticleTag = (): JSX.Element[] => {
     return props.tag
       .split(',')
@@ -76,6 +80,11 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
           </LeftInfoListItem>
         </LeftInfoList>
       </LeftInfoBox>
+      <LeftImgBox>
+        <LeftImgInner
+          imgUrl={props.img}
+        />
+      </LeftImgBox>
     </LeftTitleContainer>
   );
 }

@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export interface ILeftImgInnerProps {
+  imgUrl: string;
+};
+
 
 export const LeftTitleContainer = styled.div`
   padding: 0.625rem 0 0 3.125rem;
@@ -31,4 +35,17 @@ export const LeftInfoListItem = styled.li`
     line-height: 1.125rem;
     border-radius: 0.625rem;
   }
+`;
+
+export const LeftImgBox = styled.div`
+  padding-right: 2.5rem;
+`;
+export const LeftImgInner = styled<ILeftImgInnerProps, 'div'>('div')`
+  max-width: 40.625rem;
+  max-height: 22.9375rem;
+  min-height: ${(props) => props.imgUrl ? '20rem' : 0};
+  border-radius: 6px;
+  background-image: url(${(props) => props.imgUrl});
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
