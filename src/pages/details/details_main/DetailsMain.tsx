@@ -11,16 +11,15 @@ import {
 } from '../../../constants/constants';
 import DetailsLeftComment from './details_main_comment/DetailsMainComment';
 import BaseImagePreview from '../../../components/widget/BaseImagePreview/BaseImagePreview';
+import DetailsMainRich from './details_main_rich/DetailsMainRich';
 import {
   DetailsLeftWrapper,
   LeftTitleContainer,
-  LeftContentContainer,
   LeftTitleBox,
   LeftTitle,
   LeftInfoBox,
   LeftInfoList,
   LeftInfoListItem,
-  LeftContent,
 } from './style';
 
 
@@ -190,16 +189,13 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
         </LeftTitleContainer>
         <Divider />
 
-        {/* 富文本 */}
-        <LeftContentContainer>
-          <LeftContent
-            id="article-detail-content"
-            dangerouslySetInnerHTML={{
-              __html: this.initArticleContent(),
-            }}
+        {/* 富文本展示区 */}
+        <React.Fragment>
+          <DetailsMainRich
+            html={this.initArticleContent()}
           />
-        </LeftContentContainer>
-        <Divider />
+          <Divider />
+        </React.Fragment>
 
         {/* 评论 */}
         <DetailsLeftComment
