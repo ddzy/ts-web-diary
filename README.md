@@ -7,8 +7,11 @@
 - [x] CommentItem样式调整
 - [x] highlight.js高亮
 - [x] 提取details_main下子组件
-- [ ] details_title主题图片完善
+- [x] details_title主题图片完善
+- [ ] 后台ts重构
+- [ ] details_control缩放问题
 - [ ] main_component重构
 - [ ] 完善回复提交的各种信息
 - [ ] sendReply分页
+- [ ] header组件动态路由
 ## updating, ing, ing...
