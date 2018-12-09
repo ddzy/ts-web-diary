@@ -6,7 +6,6 @@ import 'react-quill/dist/quill.snow.css';
 import 'highlight.js/styles/atom-one-light.css';
 
 import DetailsLeftComment from './details_main_comment/DetailsMainComment';
-import BaseImagePreview from '../../../components/widget/BaseImagePreview/BaseImagePreview';
 import DetailsMainRich from './details_main_rich/DetailsMainRich';
 import DetailsMainTitle from './details_main_title/DetailsMainTitle';
 import {
@@ -29,12 +28,7 @@ export interface IDetailsMainProps {
   onSendComment: (v: string) => void;
   onSendReply: (v: string) => void;
 };
-interface IDetailsMainState {
-  articleImgPreviewInfo: {
-    previewBoxVisible: boolean,
-    previewImgUrl: string,
-  },
-};
+interface IDetailsMainState {};
 
 
 /**
@@ -42,64 +36,7 @@ interface IDetailsMainState {
  */
 class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainState> {
 
-  public readonly state = {
-    articleImgPreviewInfo: {
-      previewBoxVisible: false,
-      previewImgUrl: '',
-    },
-  }
-
-  public componentDidMount(): void {
-    this.handleArticleImagePreview();
-  }
-
-  /**
-   * 处理 富文本图片预览
-   */
-  public handleArticleImagePreview = () => {
-    const oArticleEle = document
-      .querySelector('#article-detail-content') as HTMLDivElement;
-
-    oArticleEle.addEventListener('click', (e) => {
-      const oTarget = e.target as HTMLElement;
-
-      if (oTarget.localName === 'img') {
-        if (oTarget.hasAttribute('data-src')) {
-          const sTargetUrl = oTarget
-            .getAttribute('data-src') as string;
-
-          this.setState((prevState) => {
-            return {
-              ...prevState,
-              articleImgPreviewInfo: {
-                ...prevState.articleImgPreviewInfo,
-                previewBoxVisible: true,
-                previewImgUrl: sTargetUrl,
-              },
-            };
-          });
-        }
-      }
-    });
-  }
-
-  /**
-   * 处理图片预览容器点击
-   */
-  public handleImagePreviewContainerClick = (e: React.MouseEvent): void => {
-    this.setState((prevState) => {
-      return {
-        articleImgPreviewInfo: {
-          ...prevState.articleImgPreviewInfo,
-          previewBoxVisible: false,
-        },
-      };
-    });
-  }
-
-  /**
-   * 初始化文章标签
-   */
+  public readonly state = {}
 
   /**
    * 初始化富文本editor内容
@@ -148,20 +85,15 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
           <Divider />
         </React.Fragment>
 
-        {/* 评论 */}
-        <DetailsLeftComment
-          useravatar={this.props.useravatar}
-          comments={this.props.comments}
-          onSendComment={this.props.onSendComment}
-          onSendReply={this.props.onSendReply}
-        />
-
-        {/* 图片预览 */}
-        <BaseImagePreview
-          visible={this.state.articleImgPreviewInfo.previewBoxVisible}
-          currentUrl={this.state.articleImgPreviewInfo.previewImgUrl}
-          onImagePreviewContainerClick={this.handleImagePreviewContainerClick}
-        />
+        {/* 评论区 */}
+        <React.Fragment>
+          <DetailsLeftComment
+            useravatar={this.props.useravatar}
+            comments={this.props.comments}
+            onSendComment={this.props.onSendComment}
+            onSendReply={this.props.onSendReply}
+          />
+        </React.Fragment>
       </DetailsLeftWrapper>
     );
   }
