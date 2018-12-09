@@ -1,25 +1,16 @@
 import * as React from 'react';
-import { Divider, Tag } from 'antd';
+import { Divider } from 'antd';
 import * as hljs from 'highlight.js';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import 'highlight.js/styles/atom-one-light.css';
 
-import { formatTime } from '../../../utils/utils';
-import {
-  MERGED_ARTICLE_TAG,
-} from '../../../constants/constants';
 import DetailsLeftComment from './details_main_comment/DetailsMainComment';
 import BaseImagePreview from '../../../components/widget/BaseImagePreview/BaseImagePreview';
 import DetailsMainRich from './details_main_rich/DetailsMainRich';
+import DetailsMainTitle from './details_main_title/DetailsMainTitle';
 import {
   DetailsLeftWrapper,
-  LeftTitleContainer,
-  LeftTitleBox,
-  LeftTitle,
-  LeftInfoBox,
-  LeftInfoList,
-  LeftInfoListItem,
 } from './style';
 
 
@@ -109,19 +100,6 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
   /**
    * 初始化文章标签
    */
-  public initArticleTag = (): JSX.Element[] => {
-    return this.props.tag
-      .split(',')
-      .map((item) => {
-        return (
-          <Tag
-            key={item}
-            style={{ marginLeft: '3px !important' }}
-            color={MERGED_ARTICLE_TAG[item]}
-          >{item}</Tag>
-        );
-      });
-  }
 
   /**
    * 初始化富文本editor内容
@@ -154,40 +132,13 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
   public render(): JSX.Element {
     return (
       <DetailsLeftWrapper>
-        <LeftTitleContainer>
-          {/* 标题 */}
-          <LeftTitleBox>
-            <LeftTitle>
-              {this.props.articleTitle}
-            </LeftTitle>
-          </LeftTitleBox>
-
-          {/* 信息栏 */}
-          <LeftInfoBox>
-            <LeftInfoList>
-              <LeftInfoListItem>
-                {this.props.mode}
-              </LeftInfoListItem>
-              <Divider type="vertical" />
-              <LeftInfoListItem>
-                {this.props.author}
-              </LeftInfoListItem>
-              <Divider type="vertical" />
-              <LeftInfoListItem>
-                {this.props.type}
-              </LeftInfoListItem>
-              <Divider type="vertical" />
-              <LeftInfoListItem>
-                {this.initArticleTag()}
-              </LeftInfoListItem>
-              <Divider type="vertical" />
-              <LeftInfoListItem>
-                {formatTime(this.props.create_time)}
-              </LeftInfoListItem>
-            </LeftInfoList>
-          </LeftInfoBox>
-        </LeftTitleContainer>
-        <Divider />
+        {/* 标题文章信息展示区 */}
+        <React.Fragment>
+          <DetailsMainTitle
+            {...this.props}
+          />
+          <Divider />
+        </React.Fragment>
 
         {/* 富文本展示区 */}
         <React.Fragment>
