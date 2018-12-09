@@ -11,7 +11,7 @@ import {
   LeftTitleBox,
   LeftInfoList,
   LeftInfoListItem,
-} from '../style';
+} from './style';
 import { MERGED_ARTICLE_TAG } from 'src/constants/constants';
 import { formatTime } from 'src/utils/utils';
 
