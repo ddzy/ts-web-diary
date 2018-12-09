@@ -8,7 +8,7 @@ export const LeftTitleContainer = styled.div`
 export const LeftTitleBox = styled.div``;
 
 export const LeftTitle = styled.h1`
-  font-size: 1.75rem;
+  font-size: 1.8rem;
   font-weight: bolder;
 `;
 
