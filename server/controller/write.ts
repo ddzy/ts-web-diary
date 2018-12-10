@@ -1,24 +1,39 @@
-const koa = require('koa');
-const Router = require('koa-router');
-const multer = require('koa-multer');
+import * as Router from 'koa-router';
+import {
+  changeId,
+  User,
+  Posts,
+} from '../model/model';
+import {
+  getRandom,
+} from '../utils/utils';
 
-const { changeId, isObjectId, User, Posts } = require('../model/model');
-const { 
-  FILTER_SENSITIVE, 
-} = require('../constants/constants');
-const { formatPath, getRandom } = require('../utils/utils');
-
-const write = new Router();
+const writeController: Router = new Router();
 
 
-//// 获取编辑的文章信息
-write.get('/geteditinfo', async (ctx, next) => {
+// ** Define Interface **
+interface IRouteInsertProps {
+  userid: string;
+  articleid: string;
+  editTitle: string;
+  editContent: string;
+  editContentWithDelta: any;
+  extraContent: any;
+  article_title_image: string;
+};
+
+
+
+/**
+ * 获取编辑的文章信息
+ */
+writeController.get('/geteditinfo', async (ctx) => {
   const { articleid } = ctx.request.query;
 
   const articleInfo = await Posts
     .findById(
       changeId(articleid),
-      { 
+      {
         create_time: 0,
         description: 0,
         star: 0,
@@ -35,13 +50,15 @@ write.get('/geteditinfo', async (ctx, next) => {
 });
 
 
-//// 写文章
-write.post('/insert', async (ctx, next) => {
-  
-  const body = ctx.request.body || {};
+/**
+ * 写文章
+ */
+writeController.post('/insert', async (ctx) => {
+
+  const body = ctx.request.body as IRouteInsertProps;
 
   const getUser = await User.findById(changeId(body.userid));
-  
+
   // 存储文章
   const saveArticle = await Posts.create({
     author: getUser._id,
@@ -57,13 +74,13 @@ write.post('/insert', async (ctx, next) => {
   });
 
   // 同步到User
-  const saveToUser = await User
+  await User
     .findByIdAndUpdate(
       changeId(body.userid),
       { '$push': { articles: saveArticle } },
       { new: true },
     )
-  
+
   ctx.body = {
     code: 0,
     userid: getUser._id,
@@ -73,10 +90,11 @@ write.post('/insert', async (ctx, next) => {
 });
 
 
-//// 更新文章
-write.post('/update', async (ctx, next) => {
+/**
+ * 更新文章 */
+writeController.post('/update', async (ctx) => {
 
-  const body = ctx.request.body;
+  const body = ctx.request.body as IRouteInsertProps;
 
   const result = await Posts
     .findByIdAndUpdate(
@@ -92,7 +110,7 @@ write.post('/update', async (ctx, next) => {
       },
       { new: true }
     )
-  
+
   ctx.body = {
     code: 0,
     message: 'Success!',
@@ -102,4 +120,4 @@ write.post('/update', async (ctx, next) => {
 });
 
 
-module.exports = write;
+export default writeController as Router;

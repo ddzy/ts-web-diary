@@ -1,24 +1,21 @@
-const koa = require('koa');
-const Router = require('koa-router');
-const multer = require('koa-multer');
+import * as Router from 'koa-router';
+import * as multer from 'koa-multer';
 
-const { 
-  changeId, 
-  User, 
-  Posts, 
+import {
+  changeId,
+  User,
+  Posts,
   Collections,
-} = require('../model/model');
-const { 
-  FILTER_SENSITIVE, 
-  FILTER_AUTHOR,
-} = require('../constants/constants');
-const { formatPath, isArray, } = require('../utils/utils');
+} from '../model/model';
+import {
+  FILTER_SENSITIVE,
+} from '../constants/constants';
+import {
+  formatPath,
+} from '../utils/utils';
 
 
-const me = new Router();
-
-
-
+const meController: Router = new Router();
 // 自定义本地储存
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -31,15 +28,20 @@ const storage = multer.diskStorage({
 });
 
 
-//// 个人中心 => 上传头像
-me.post(
-  '/upload/avatar', 
-  new multer({ storage }).single('user_avatar'), 
-  async (ctx, next) => {
+/**
+ * 个人中心 => 上传头像
+ */
+meController.post(
+  '/upload/avatar',
+  multer({ storage }).single('user_avatar'),
+  async (ctx) => {
 
-    const { userid } = ctx.req.body || '';
-    const { path } = ctx.req.file;
-    
+    // const { userid } = ctx.req.body || '';
+    // const { path } = ctx.req.file;
+    const req = ctx.req as any;
+    const { userid } = req.body || '';
+    const { path } = req.file || null;
+
     const result = await User.findByIdAndUpdate(
       changeId(userid),
       { useravatar: path },
@@ -54,16 +56,18 @@ me.post(
 );
 
 
-//// 个人中心 => 获取我的文章分类列表
-me.get('/myarticle', async (ctx, next) => {
+/**
+ * 个人中心 => 获取我的文章分类列表
+ */
+meController.get('/myarticle', async (ctx) => {
 
-  const { 
-    userid, 
+  const {
+    userid,
     type,
   } = ctx.request.query;
 
 
-  const newList = await Posts
+  await Posts
     .find({ author: userid })
     .populate('author')
     .sort({ create_time: -1 });
@@ -76,7 +80,7 @@ me.get('/myarticle', async (ctx, next) => {
     )
     .populate({
       path: 'articles',
-      options: { 
+      options: {
         lean: true,
         sort: {
           create_time: -1,
@@ -87,17 +91,17 @@ me.get('/myarticle', async (ctx, next) => {
   ctx.body = {
     code: 0,
     message: 'Success!',
-    myArticleList: myArticleList.articles.filter((item) => {
-      return item 
-        && item.type === type; 
+    myArticleList: myArticleList.articles.filter((item: any) => {
+      return item
+        && item.type === type;
     }),
   };
 });
 
 
 //// 个人中心 => 删除我的文章
-me.get('/delete', async (ctx, next) => {
-  
+meController.get('/delete', async (ctx) => {
+
   const { articleid, userid } = ctx.request.query;
 
   // 删除指定文章
@@ -122,8 +126,8 @@ me.get('/delete', async (ctx, next) => {
 /**
  * 个人中心 => 获取我的收藏列表
  */
-me.get('/collection/getinfo', async (ctx, next) => {
-  
+meController.get('/collection/getinfo', async (ctx) => {
+
   const { userid } = ctx.request.query;
 
   const getMyCollections = await User
@@ -152,11 +156,11 @@ me.get('/collection/getinfo', async (ctx, next) => {
 /**
  * 个人中心 => 删除我的收藏夹
  */
-me.get('/collection/delete', async (ctx, next) => {
-  
+meController.get('/collection/delete', async (ctx) => {
+
   const { userid, collectionId } = await ctx.request.query;
 
-  const deleteUserResult = await User
+  await User
     .findByIdAndUpdate(
       changeId(userid),
       {
@@ -165,7 +169,7 @@ me.get('/collection/delete', async (ctx, next) => {
       { lean: true, new: true },
     )
 
-  const deleteCollectionsResult = await Collections
+  await Collections
     .findByIdAndRemove(
       changeId(collectionId),
       { lean: true, new: true },
@@ -180,4 +184,4 @@ me.get('/collection/delete', async (ctx, next) => {
 });
 
 
-module.exports = me;
+export default meController;

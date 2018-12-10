@@ -1,23 +1,26 @@
-const koa = require('koa');
-const Router = require('koa-router');
+// const koa = require('koa');
+// const Router = require('koa-router');
+import * as Router from 'koa-router';
 
-const {
+import {
   User,
   Posts,
   changeId,
   Comments,
   Replys,
   Collections,
-} = require('../model/model');
-const { formatPath } = require('../utils/utils');
+} from '../model/model';
+import {
+  formatPath,
+} from '../utils/utils';
 
-const details = new Router();
+const detailsController: Router = new Router();
 
 
 /**
  * 文章详情 => 获取信息
  */
-details.get('/', async (ctx, next) => {
+detailsController.get('/', async (ctx, next) => {
 
   const { articleid, userid } = ctx.request.query;
 
@@ -113,7 +116,7 @@ details.get('/', async (ctx, next) => {
   const setComments = updateCommentsList.comments
     && updateCommentsList.comments.length
     && updateCommentsList.comments.length !== 0
-    ? updateCommentsList.comments.map((item) => {
+    ? updateCommentsList.comments.map((item: any) => {
         return {
           ...item,
           whom: {
@@ -122,7 +125,7 @@ details.get('/', async (ctx, next) => {
               item.whom.useravatar,
             )
           },
-          replys: item.replys.map((reply) => {
+          replys: item.replys.map((reply: any) => {
             return {
               ...reply,
               whom: {
@@ -187,13 +190,13 @@ details.get('/', async (ctx, next) => {
 /**
  * 文章详情 => 发表评论
  */
-details.post('/comment', async (ctx, next) => {
+detailsController.post('/comment', async (ctx, next) => {
 
   const {
     userid,
     articleid,
     commentValue,
-  } = ctx.request.body;
+  }: any = ctx.request.body;
 
   // 存储评论
   const result = await Comments
@@ -205,7 +208,7 @@ details.post('/comment', async (ctx, next) => {
     });
 
   // 同步到Posts
-  const saveToPosts = await Posts
+  await Posts
     .findByIdAndUpdate(
       changeId(articleid),
       { '$push': { comments: result } },
@@ -251,14 +254,14 @@ details.post('/comment', async (ctx, next) => {
 /**
  * 文章详情 => 发表回复
  */
-details.post('/reply', async (ctx, next) => {
+detailsController.post('/reply', async (ctx, next) => {
 
   const {
     commentid,
     replyValue,
     articleid,
     userid,
-  } = ctx.request.body;
+  }: any = ctx.request.body;
 
   // 存储回复信息
   const result = await Replys
@@ -271,7 +274,7 @@ details.post('/reply', async (ctx, next) => {
     });
 
   // 同步到Comments
-  const saveToComments = await Comments
+  await Comments
     .findByIdAndUpdate(
       changeId(commentid),
       { '$push': { replys: result, } },
@@ -319,7 +322,7 @@ details.post('/reply', async (ctx, next) => {
 /**
  * 文章详情 => 点赞文章
  */
-details.get('/star', async (ctx, next) => {
+detailsController.get('/star', async (ctx, next) => {
 
   const {
     articleid,
@@ -339,7 +342,7 @@ details.get('/star', async (ctx, next) => {
           : getArticle.star - 1,
         stared: liked === 'true'
           ? getArticle.stared.concat(userid)
-          : getArticle.stared.filter((item) => {
+          : getArticle.stared.filter((item: any) => {
               return item !== userid;
             }),
       },
@@ -359,7 +362,7 @@ details.get('/star', async (ctx, next) => {
 /**
  * 文章详情 => 创建收藏夹
  */
-details.get('/collection/create', async (ctx, next) => {
+detailsController.get('/collection/create', async (ctx, next) => {
 
   const { userid, collection } = ctx.request.query;
 
@@ -377,7 +380,7 @@ details.get('/collection/create', async (ctx, next) => {
       })
 
     // 同步至 User
-    const setToUserSync = await User
+    await User
       .findByIdAndUpdate(
         changeId(userid),
         {
@@ -419,12 +422,12 @@ details.get('/collection/create', async (ctx, next) => {
 /**
  * 文章详情 => 确认添加至收藏夹
  */
-details.post('/collection/save', async (ctx, next) => {
+detailsController.post('/collection/save', async (ctx, next) => {
   const {
-    userid,
+    // userid,
     articleId,
     collectionId,
-  } = ctx.request.body;
+  }: any = ctx.request.body;
 
   const saveToCollection = await Collections
     .findByIdAndUpdate(
@@ -449,4 +452,4 @@ details.post('/collection/save', async (ctx, next) => {
 });
 
 
-module.exports = details;
+export default detailsController;

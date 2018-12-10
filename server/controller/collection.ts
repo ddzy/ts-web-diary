@@ -1,28 +1,24 @@
-const koa = require('koa');
-const Router = require('koa-router');
+import * as Router from 'koa-router';
 
-const {
-  User, 
-  Posts, 
-  changeId, 
-  Comments, 
-  Replys,
+import {
+  changeId,
   Collections,
-} = require('../model/model');
-const { formatPath, isArray } = require('../utils/utils');
+} from '../model/model';
+import {
+  formatPath,
+} from '../utils/utils';
 
-const collection = new Router();
-
+const collectionController: Router = new Router();
 
 
 /**
  * 收藏页 => 获取收藏夹信息
  */
-collection.get('/getinfo', async (ctx, next) => {
-  
-  const { 
-    collectionId, 
-    userid,
+collectionController.get('/getinfo', async (ctx, next) => {
+
+  const {
+    collectionId,
+    // userid,
   } = await ctx.request.query;
 
   const getCollectionInfo = await Collections
@@ -47,7 +43,7 @@ collection.get('/getinfo', async (ctx, next) => {
 
   // 格式化图片路径
   const formatAvatarPath = getCollectionInfo.articles
-    .map((item) => {
+    .map((item: any) => {
       return item && {
         ...item,
         author: {
@@ -59,7 +55,7 @@ collection.get('/getinfo', async (ctx, next) => {
       };
     });
 
-   
+
   ctx.body = {
     code: 0,
     message: 'Success!',
@@ -75,15 +71,15 @@ collection.get('/getinfo', async (ctx, next) => {
 /**
  * 收藏页 => 删除收藏夹文章
  */
-collection.get('/article/delete', async (ctx, next) => {
-  
-  const { 
-    userid, 
-    articleId, 
+collectionController.get('/article/delete', async (ctx, next) => {
+
+  const {
+    // userid,
+    articleId,
     collectionId,
   } = await ctx.request.query;
 
-  const getDeleteResult = await Collections
+  await Collections
     .findByIdAndUpdate(
       changeId(collectionId),
       {
@@ -91,7 +87,7 @@ collection.get('/article/delete', async (ctx, next) => {
       },
       { new: true, lean: true, },
     )
-  
+
   ctx.body = {
     code: 0,
     message: 'Success!',
@@ -104,4 +100,4 @@ collection.get('/article/delete', async (ctx, next) => {
 });
 
 
-module.exports = collection;
+export default collectionController;

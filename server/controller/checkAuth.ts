@@ -1,29 +1,31 @@
-const Router = require('koa-router');
+import * as Router from 'koa-router';
 
-const models = require('../model/model');
-const { md5 } = require('../utils/utils');
-const { 
-  FILTER_SENSITIVE 
-} = require('../constants/constants');
-const { formatPath } = require('../utils/utils');
+import {
+  User,
+} from '../model/model';
+import {
+  FILTER_SENSITIVE,
+} from '../constants/constants';
+import {
+  formatPath,
+} from '../utils/utils';
 
-
-const checkAuth = new Router();
-const User = models.User;
+const checkAuthController: Router = new Router();
 
 
 /**
  * 前端路由切换
  * 权限认证
  */
-checkAuth.post('/', async (ctx, next) => {
-  const { userid } = ctx.request.body;
+checkAuthController.post('/', async (ctx, next) => {
+  const {
+    userid,
+  }: any = await ctx.request.body;
 
   // 查询
   const result = await User.findById(userid, { ...FILTER_SENSITIVE });
 
-
-  result 
+  result
     ? ctx.body = {
         code: 0,
         isAuth: true,
@@ -40,4 +42,4 @@ checkAuth.post('/', async (ctx, next) => {
 });
 
 
-module.exports = checkAuth;
+export default checkAuthController;

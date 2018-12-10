@@ -1,11 +1,14 @@
-const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
+import {
+  ObjectId,
+} from 'bson';
 
-// mongoose.Promise = global.Promise;
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
   'mongodb://localhost:27017/web-diary-log',
   { useNewUrlParser: true },
 );
+
 const Schema = mongoose.Schema;
 
 
@@ -15,9 +18,9 @@ const Schema = mongoose.Schema;
  * Posts: 文章
  * Comments: 评论
  * Reply: 回复
+ * Collection: 收藏夹
  */
-
-const UserSchema = new Schema({
+const UserSchema: mongoose.Schema = new Schema({
   articles: [{
     type: Schema.Types.ObjectId,
     ref: 'Post',
@@ -44,7 +47,7 @@ const UserSchema = new Schema({
   }],
 });
 
-const PostsSchema = new Schema({
+const PostsSchema: mongoose.Schema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -105,14 +108,14 @@ const PostsSchema = new Schema({
   }]
 });
 
-const CommentsSchema = new Schema({
+const CommentsSchema: mongoose.Schema = new Schema({
   whom: {                         // 评论人
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
   article: {                        // 文章
     type: Schema.Types.ObjectId,
-    ref: 'Post',    
+    ref: 'Post',
   },
   create_time: {
     type: Number,
@@ -127,7 +130,7 @@ const CommentsSchema = new Schema({
   }],
 });
 
-const ReplySchema = new Schema({
+const ReplySchema: mongoose.Schema = new Schema({
   whom: {           // 回复人
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -153,7 +156,7 @@ const ReplySchema = new Schema({
   },
 });
 
-const CollectionsSchema = new Schema({
+const CollectionsSchema: mongoose.Schema = new Schema({
   name: {                          // 收藏夹名称
     type: String,
     default: '默认',
@@ -170,28 +173,33 @@ const CollectionsSchema = new Schema({
 
 
 
-const User = mongoose.model('User', UserSchema, 'User');
-const Posts = mongoose.model('Post', PostsSchema, 'Post');
-const Comments = mongoose.model('Comments', CommentsSchema, 'Comments');
-const Replys = mongoose.model('Replys', ReplySchema, 'Replys');
-const Collections = mongoose.model('Collections', CollectionsSchema, 'Collections');
+export const User: mongoose.Model<any> = mongoose
+  .model('User', UserSchema, 'User');
+export const Posts: mongoose.Model<any> = mongoose
+  .model('Post', PostsSchema, 'Post');
+export const Comments: mongoose.Model<any> = mongoose
+  .model('Comments', CommentsSchema, 'Comments');
+export const Replys: mongoose.Model<any> = mongoose
+  .model('Replys', ReplySchema, 'Replys');
+export const Collections: mongoose.Model<any> = mongoose
+  .model('Collections', CollectionsSchema, 'Collections');
 
+/**
+ * 转化为ObjectId
+ * @param id id值
+ */
+export function changeId(
+  id: string,
+): ObjectId {
+  return mongoose.Types.ObjectId(id);
+}
 
-
-module.exports = {
-  User,
-  Posts,
-  Comments,
-  Replys,
-  Collections,
-
-  // 转为objectId
-  changeId: (id) => {
-    return mongoose.Types.ObjectId(id);
-  },
-
-  //
-  isObjectId: (id) => {
-    return mongoose.Types.ObjectId.isValid(id);
-  },
-};
+/**
+ * 判断是否ObjectId
+ * @param id id值
+ */
+export function isObjectId(
+  id: string,
+): boolean {
+  return mongoose.Types.ObjectId.isValid(id);
+}

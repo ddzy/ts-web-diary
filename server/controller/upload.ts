@@ -1,13 +1,13 @@
-const Router = require('koa-router');
-const qiniu = require('qiniu');
-
-const upload = new Router();
-const {
+import * as Router from 'koa-router';
+import * as qiniu from 'qiniu';
+import {
   QINIU_KEY,
-} = require('../constants/constants');
+} from '../constants/constants';
+
+const uploadController: Router = new Router();
 
 
-upload.get('/get_qiniu_token', async (ctx) => {
+uploadController.get('/get_qiniu_token', async (ctx) => {
   const { userid } = await ctx.request.query;
 
   const mac = await new qiniu.auth.digest.Mac(
@@ -39,4 +39,4 @@ upload.get('/get_qiniu_token', async (ctx) => {
 });
 
 
-module.exports = upload;
+export default uploadController as Router;

@@ -1,18 +1,16 @@
-const Router = require('koa-router');
+import * as Router from 'koa-router';
+import homeController from './controller/home';
+import articleController from './controller/article';
+import loginController from './controller/login';
+import registerController from './controller/register';
+import meController from './controller/me';
+import writeController from './controller/write';
+import checkAuthController from './controller/checkAuth';
+import detailsController from './controller/details';
+import collectionController from './controller/collection';
+import uploadController from './controller/upload';
 
-const router = new Router();
-
-// 子路由
-const homeController = require('./controller/home');
-const articleController = require('./controller/article');
-const loginController = require('./controller/login');
-const registerController = require('./controller/register');
-const meController = require('./controller/me');
-const writeController = require('./controller/write');
-const checkAuthController = require('./controller/checkAuth');
-const detailsController = require('./controller/details');
-const collectionController = require('./controller/collection');
-const uploadController = require('./controller/upload');
+const router: Router = new Router();
 
 
 // 装载路由
@@ -29,6 +27,4 @@ router
   .use('/api/upload', uploadController.routes(), uploadController.allowedMethods());
 
 
-module.exports = {
-  router,
-};
+export default router;

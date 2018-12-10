@@ -1,27 +1,29 @@
-const Router = require('koa-router');
-const jwt = require('jsonwebtoken');
+import * as Router from 'koa-router';
+import * as jwt from 'jsonwebtoken';
 
-const models = require('../model/model');
-const { md5 } = require('../utils/utils');
-const { 
-  SECRET_FOR_TOKEN, 
-  FILTER_SENSITIVE 
-} = require('../constants/constants');
+import {
+  User,
+} from '../model/model';
+import {
+  md5,
+} from '../utils/utils';
+import {
+  SECRET_FOR_TOKEN,
+  FILTER_SENSITIVE,
+} from '../constants/constants';
+
+const loginController: Router = new Router();
 
 
-const login = new Router();
-const User = models.User;
-
-
-login.post('/', async (ctx, next) => {
-  let { username, userpwd } = await ctx.request.body;
+loginController.post('/', async (ctx) => {
+  let { username, userpwd }: any = await ctx.request.body;
   userpwd = md5(userpwd); // 加密
-  
+
   // 查询
   const result = await User.findOne({ username }, { ...FILTER_SENSITIVE });
 
-  
-  result 
+
+  result
     ? ctx.body = {
         code: 0,
         message: '登录成功!',
@@ -39,4 +41,4 @@ login.post('/', async (ctx, next) => {
 });
 
 
-module.exports = login;
+export default loginController;
