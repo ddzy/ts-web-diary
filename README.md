@@ -13,5 +13,6 @@
 - [ ] main_component重构
 - [ ] 完善回复提交的各种信息
 - [ ] sendReply分页
+- [ ] header知乎_滑动效果
 - [ ] header组件动态路由
 ## updating, ing, ing...
