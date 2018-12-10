@@ -74,7 +74,7 @@
     "build": "react-app-rewired build --scripts-version react-scripts-ts",
     "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts-ts",
     "eject": "react-scripts-ts eject",
-    "server": "nodemon --watch ./server/**/*.ts --ignore src/**/*.spec.ts --exec ts-node' ./server/server.ts"
+    "server": "nodemon --watch ./server/**/*.ts --ignore src/**/*.spec.ts --exec ts-node ./server/server.ts"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",
