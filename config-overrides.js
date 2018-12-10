@@ -11,13 +11,17 @@ module.exports = function override(config) {
   );
 
   tsLoader.options = {
+    transpileOnly: true,
     getCustomTransformers: () => ({
       before: [ tsImportPluginFactory({
         libraryDirectory: 'es',
         libraryName: 'antd',
         style: 'css',
       }) ]
-    })
+    }),
+    compilerOptions: {
+      module: 'es2015'
+    },
   };
 
   return config;
