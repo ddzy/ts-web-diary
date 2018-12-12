@@ -99,7 +99,9 @@ meController.get('/myarticle', async (ctx) => {
 });
 
 
-//// 个人中心 => 删除我的文章
+/**
+ * 个人中心 => 删除我的文章
+ */
 meController.get('/delete', async (ctx) => {
 
   const { articleid, userid } = ctx.request.query;

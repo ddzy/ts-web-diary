@@ -16,7 +16,9 @@ const loginController: Router = new Router();
 
 
 loginController.post('/', async (ctx) => {
-  let { username, userpwd }: any = await ctx.request.body;
+  const { username }: any = await ctx.request.body;
+  let { userpwd }: any = await ctx.request.body;
+
   userpwd = md5(userpwd); // 加密
 
   // 查询

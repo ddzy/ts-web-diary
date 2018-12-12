@@ -91,7 +91,8 @@ writeController.post('/insert', async (ctx) => {
 
 
 /**
- * 更新文章 */
+ * 更新文章
+ */
 writeController.post('/update', async (ctx) => {
 
   const body = ctx.request.body as IRouteInsertProps;
