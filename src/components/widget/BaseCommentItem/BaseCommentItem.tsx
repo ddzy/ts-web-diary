@@ -160,10 +160,18 @@ class BaseCommentItem extends React.PureComponent<
         <ItemMiddleBox>
           <MiddleCommentReplyRange isReply={this.props.isReply}>
             <MiddleCommentReplyFrom>
-              段(作者)回复
+              {
+                this.props.content.from
+                  ? this.props.content.from.username
+                  : 'undefined'
+              }(作者)回复
             </MiddleCommentReplyFrom>
             <MiddleCommentReplyTo>
-              <a>duan</a>:&nbsp;&nbsp;
+              <a>{
+                this.props.content.to
+                  ? this.props.content.to.username
+                  : 'undefined'
+              }</a>:&nbsp;&nbsp;
             </MiddleCommentReplyTo>
           </MiddleCommentReplyRange>
           <MiddleCommentText
