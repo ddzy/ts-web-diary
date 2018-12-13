@@ -62,7 +62,7 @@ export interface ICommentListItemProps {
   baseInputStyle?: React.CSSProperties;
   onSend: (
     inputEl: HTMLElement,
-    v: string,
+    v: any,
   ) => void;
 };
 interface ICommentListItemState {
@@ -82,6 +82,17 @@ class BaseCommentItem extends React.PureComponent<
   public readonly state = {
     replyBoxId: '',
     replyBox: null,
+  }
+
+  public handleSend = (e: HTMLElement, v: string) => {
+    this.props.onSend(
+      e,
+      {
+        from: localStorage.getItem('userid'),
+        to: this.props.content._id,
+        value: v,
+      },
+    );
   }
 
   /**
@@ -104,7 +115,7 @@ class BaseCommentItem extends React.PureComponent<
           placeHolder={'回复 duan'}
           useravatar={this.props.content.whom.useravatar}
           avatarSize={'default'}
-          onSend={this.props.onSend}
+          onSend={this.handleSend}
         />
       </ItemReplyBox>
     );

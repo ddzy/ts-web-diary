@@ -25,7 +25,7 @@ export interface ICommentListItemProps {
 
   onSend: (
     inputEl: HTMLElement,
-    v: string,
+    v: any,
   ) => void;
 };
 interface ICommentListItemState { };
@@ -38,6 +38,19 @@ class CommentListItem extends React.PureComponent<
   ICommentListItemProps,
   ICommentListItemState
   > {
+
+  /**
+   * 处理完善回复信息 +++ commentId
+   */
+  public handleSendReply = (
+    el: HTMLElement,
+    v: any,
+  ): void => {
+    this.props.onSend(el, {
+      ...v,
+      commentId: this.props._id,
+    });
+  }
 
   /**
    * 初始化回复列表
@@ -58,7 +71,7 @@ class CommentListItem extends React.PureComponent<
               isReply={true}
               content={reply}
               {...this.props}
-              onSend={this.props.onSend}
+              onSend={this.handleSendReply}
             />
           </ReplyListItem>
         );
@@ -80,7 +93,7 @@ class CommentListItem extends React.PureComponent<
             isReply={false}
             content={content}
             {...this.props}
-            onSend={this.props.onSend}
+            onSend={this.handleSendReply}
           />
         </CommentContainer>
 

@@ -240,11 +240,38 @@ export function reduxHandleSendComment(
  * @param articleid 文章id
  * @param callback 回调函数
  */
+// export function reduxHandleSendReply(
+//   commentid: string,
+//   replyValue: string,
+//   articleid: string,
+//   callback: () => void,
+// ) {
+//   return (dispatch: ThunkDispatch<any, any, any>) => {
+//     query({
+//       method: 'POST',
+//       url: '/api/details/reply',
+//       jsonp: false,
+//       data: {
+//         commentid,
+//         replyValue,
+//         articleid,
+//         userid: localStorage.getItem('userid'),
+//       },
+//     }).then((res) => {
+//       dispatch(saveReplysList(res));
+//       callback();
+//     });
+//   };
+// }
+
+
+
+/**
+ * !!!! 重构 sendReply
+ */
 export function reduxHandleSendReply(
-  commentid: string,
-  replyValue: string,
-  articleid: string,
-  callback: () => void,
+  v: any,
+  callback?: () => void,
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
     query({
@@ -252,14 +279,11 @@ export function reduxHandleSendReply(
       url: '/api/details/reply',
       jsonp: false,
       data: {
-        commentid,
-        replyValue,
-        articleid,
-        userid: localStorage.getItem('userid'),
+        ...v,
+        userId: localStorage.getItem('userid'),
       },
     }).then((res) => {
-      dispatch(saveReplysList(res));
-      callback();
+      console.log(res);
     });
   };
 }

@@ -5,7 +5,7 @@ import {
   Posts,
   changeId,
   Comments,
-  Replys,
+  // Replys,
   Collections,
 } from '../model/model';
 import {
@@ -252,68 +252,91 @@ detailsController.post('/comment', async (ctx, next) => {
 /**
  * 文章详情 => 发表回复
  */
-detailsController.post('/reply', async (ctx, next) => {
+// detailsController.post('/reply', async (ctx, next) => {
 
-  const {
-    commentid,
-    replyValue,
-    articleid,
-    userid,
-  }: any = ctx.request.body;
+//   const {
+//     commentid,
+//     replyValue,
+//     articleid,
+//     userid,
+//   }: any = ctx.request.body;
 
-  // 存储回复信息
-  const result = await Replys
-    .create({
-      comment: changeId(commentid),
-      article: changeId(articleid),
-      whom: changeId(userid),
-      replyValue,
-      create_time: new Date().getTime(),
-    });
+//   // 存储回复信息
+//   const result = await Replys
+//     .create({
+//       comment: changeId(commentid),
+//       article: changeId(articleid),
+//       whom: changeId(userid),
+//       replyValue,
+//       create_time: new Date().getTime(),
+//     });
 
-  // 同步到Comments
-  await Comments
-    .findByIdAndUpdate(
-      changeId(commentid),
-      { '$push': { replys: result, } },
-      { new: true },
-    )
-    .populate({
-      path: 'replys',
-    });
+//   // 同步到Comments
+//   await Comments
+//     .findByIdAndUpdate(
+//       changeId(commentid),
+//       { '$push': { replys: result, } },
+//       { new: true },
+//     )
+//     .populate({
+//       path: 'replys',
+//     });
 
-  // 获取回复信息
-  const replyInfo = await Replys
-    .findById(
-      changeId(result._id),
-      { '__v': 0 },
-      { lean: true },
-    )
-    // .populate({
-    //   path: 'comment',
-    //   select: ['_id', 'commentValue'],
-    // })
-    .populate({
-      path: 'whom',
-      select: ['_id', 'username', 'useravatar'],
-    });
+//   // 获取回复信息
+//   const replyInfo = await Replys
+//     .findById(
+//       changeId(result._id),
+//       { '__v': 0 },
+//       { lean: true },
+//     )
+//     // .populate({
+//     //   path: 'comment',
+//     //   select: ['_id', 'commentValue'],
+//     // })
+//     .populate({
+//       path: 'whom',
+//       select: ['_id', 'username', 'useravatar'],
+//     });
 
+
+//   ctx.body = {
+//     code: 0,
+//     message: 'Success!',
+//     reply: {
+//       ...replyInfo,
+//       whom: {
+//         ...replyInfo.whom,
+//         useravatar: formatPath(
+//           replyInfo.whom.useravatar,
+//         ),
+//       },
+//     },
+//   };
+
+// });
+
+
+/**
+ * !!! 重构 发表回复
+ */
+detailsController.post('/reply', async (ctx) => {
+  // const {
+  //   commentId,
+  //   value,
+  //   from,
+  //   to,
+  //   articleId,
+  //   userId,
+  // }: any = await ctx.request.body;
 
   ctx.body = {
     code: 0,
     message: 'Success!',
-    reply: {
-      ...replyInfo,
-      whom: {
-        ...replyInfo.whom,
-        useravatar: formatPath(
-          replyInfo.whom.useravatar,
-        ),
-      },
+    data: {
+      ...ctx.request.body,
     },
   };
-
-});
+})
 
 
 

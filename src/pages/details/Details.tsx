@@ -47,9 +47,7 @@ export interface IDetailsProps {
     callback?: () => void,
   ) => void;
   reduxHandleSendReply: (
-    commentid: string,
-    commentValue: string,
-    articleid: string,
+    v: any,
     callback?: () => void,
   ) => void;
   reduxHandleFixedControlBarStar: (
@@ -237,12 +235,14 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
    */
   public handleSendReply = (
     inputEl: HTMLElement,
-    v: string,
+    v: any,
   ): void => {
-    console.log({
-      inputEl,
-      v,
-    });
+    this.props.reduxHandleSendReply(
+      {
+        ...v,
+        articleId: this.props.match.params.id,
+      },
+    );
   }
 
   public render(): JSX.Element {

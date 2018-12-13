@@ -28,7 +28,7 @@ export interface IDetailsLeftCommentProps {
   ) => void;
   onSendReply: (
     inputEl: HTMLElement,
-    v: string,
+    v: any,
   ) => void;
 };
 interface IDetailLeftCommentState {

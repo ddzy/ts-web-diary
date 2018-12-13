@@ -31,7 +31,7 @@ export interface IDetailsMainProps {
   ) => void;
   onSendReply: (
     inputEl: HTMLElement,
-    v: string,
+    v: any,
 ) => void;
 };
 interface IDetailsMainState {};
