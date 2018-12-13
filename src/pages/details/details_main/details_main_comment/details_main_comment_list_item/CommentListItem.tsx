@@ -23,7 +23,10 @@ export interface ICommentListItemProps {
 
   replys: any[];          // 回复信息列表
 
-  onSend: (v: string) => void;
+  onSend: (
+    inputEl: HTMLElement,
+    v: string,
+  ) => void;
 };
 interface ICommentListItemState { };
 

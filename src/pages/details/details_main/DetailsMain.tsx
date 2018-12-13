@@ -25,8 +25,14 @@ export interface IDetailsMainProps {
   img: string;
   useravatar: string;
 
-  onSendComment: (v: string) => void;
-  onSendReply: (v: string) => void;
+  onSendComment: (
+    inputEl: HTMLElement,
+    v: string,
+  ) => void;
+  onSendReply: (
+    inputEl: HTMLElement,
+    v: string,
+) => void;
 };
 interface IDetailsMainState {};
 

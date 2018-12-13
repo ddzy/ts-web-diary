@@ -60,7 +60,10 @@ export interface ICommentListItemProps {
   // ! 自定义回复模态框样式
   baseInputContainerStyle?: React.CSSProperties;
   baseInputStyle?: React.CSSProperties;
-  onSend: (v: string) => void;
+  onSend: (
+    inputEl: HTMLElement,
+    v: string,
+  ) => void;
 };
 interface ICommentListItemState {
   replyBoxId: string;

@@ -30,9 +30,13 @@ export interface IBaseCommentInputProps {
   placeHolder?: string;
   containerStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
-  onSend: (v: string) => void;
+  onSend: (
+    inputEl: HTMLElement,
+    v: string,
+  ) => void;
 };
 interface IBaseCommentInputState {
+  inputEl: HTMLElement;
   html: string;
 };
 
@@ -47,6 +51,7 @@ class BaseCommentInput extends React.PureComponent<
 
   public readonly state = {
     html: '',
+    inputEl: document.createElement('div'),
   };
 
   /**
@@ -58,6 +63,12 @@ class BaseCommentInput extends React.PureComponent<
         key={i}
       >{emoji}</EmojiItem>
     ));
+  }
+
+  public handleGetRef(el: any): void {
+    if (el && el.htmlEl) {
+      this.setState({ inputEl: el.htmlEl });
+    }
   }
 
   public handleChange: React.ChangeEventHandler = (
@@ -84,7 +95,10 @@ class BaseCommentInput extends React.PureComponent<
   }
 
   public handleSend: React.MouseEventHandler<HTMLElement> = (): void => {
-    this.props.onSend(this.state.html);
+    this.props.onSend(
+      this.state.inputEl,
+      this.state.html
+    );
   }
 
   public render(): JSX.Element {
@@ -109,6 +123,9 @@ class BaseCommentInput extends React.PureComponent<
               <Col span={22}>
                 <InputTopText>
                   <ContentEditable
+                    ref={(el) => {
+                      this.handleGetRef(el)
+                    }}
                     style={this.props.inputStyle ? this.props.inputStyle : {}}
                     data-placeholder={this.props.placeHolder}
                     className="yyg-contenteditable"

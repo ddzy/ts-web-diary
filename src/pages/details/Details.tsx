@@ -14,9 +14,9 @@ import DetailsMain from './details_main/DetailsMain';
 import DetailsRight from './details_action/DetailsAction';
 import DetailsControl from './details_control/DetailsControl';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
-import { 
-  getOneArticleInfo, 
-  reduxHandleSendComment, 
+import {
+  getOneArticleInfo,
+  reduxHandleSendComment,
   reduxHandleSendReply,
   reduxHandleFixedControlBarStar,
   reduxHandleCreateCollection,
@@ -181,7 +181,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
           }
         );
   }
-  
+
   /**
    * 处理 确认添加至收藏夹
    * @param collectionId 收藏夹id
@@ -207,15 +207,33 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   /**
    * 处理评论提交
    */
-  public handleSendComment = (v: string): void => {
-    console.log(v);
+  public handleSendComment = (
+    inputEl: HTMLElement,
+    v: string,
+  ): void => {
+    const { id } = this.props.match.params;
+
+    this.props.reduxHandleSendComment(id, v, () => {
+      inputEl.textContent = '';
+      inputEl.focus();
+      notification.success({
+        message: '提示',
+        description: `评论发表成功`,
+      });
+    });
   }
 
   /**
    * 处理回复提交
    */
-  public handleSendReply = (v: string): void => {
-    console.log(v);
+  public handleSendReply = (
+    inputEl: HTMLElement,
+    v: string,
+  ): void => {
+    console.log({
+      inputEl,
+      v,
+    });
   }
 
   public render(): JSX.Element {
@@ -227,7 +245,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
             <Row>
               <Col span={18}>
                 {/* 左边内容区域 */}
-                <DetailsMain 
+                <DetailsMain
                   {...this.props.DetailsReducer.detailsInfo}
                   {...this.props.AuthRouteReducer}
                   onSendComment={this.handleSendComment}
@@ -236,7 +254,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               </Col>
               <Col span={6}>
                 {/* 右边侧边栏区域 */}
-                <DetailsRight 
+                <DetailsRight
                   {...this.props.DetailsReducer.detailsInfo}
                 />
               </Col>
@@ -248,7 +266,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         <DetailsControl
           collections={this.props.DetailsReducer.detailsInfo.collections}
 
-          isLiked={this.props.DetailsReducer.detailsInfo.isLiked} 
+          isLiked={this.props.DetailsReducer.detailsInfo.isLiked}
           onControlBarStar={this.handleControlBarStar}
 
           onCollectionsInputChange={this.handleCollectionsInputChange}

@@ -22,8 +22,14 @@ export interface IDetailsLeftCommentProps {
 
   comments: any[];
 
-  onSendComment: (v: string) => void;
-  onSendReply: (v: string) => void;
+  onSendComment: (
+    inputEl: HTMLElement,
+    v: string,
+  ) => void;
+  onSendReply: (
+    inputEl: HTMLElement,
+    v: string,
+  ) => void;
 };
 interface IDetailLeftCommentState {
   // 控制提交评论区域显隐
