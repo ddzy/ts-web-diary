@@ -131,6 +131,16 @@ const CommentsSchema: mongoose.Schema = new Schema({
 });
 
 const ReplySchema: mongoose.Schema = new Schema({
+  // ??? New key
+  from: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  to: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+
   whom: {           // 回复人
     type: Schema.Types.ObjectId,
     ref: 'User',

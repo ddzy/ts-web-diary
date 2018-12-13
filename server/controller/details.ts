@@ -5,7 +5,7 @@ import {
   Posts,
   changeId,
   Comments,
-  // Replys,
+  Replys,
   Collections,
 } from '../model/model';
 import {
@@ -115,27 +115,27 @@ detailsController.get('/', async (ctx, next) => {
     && updateCommentsList.comments.length
     && updateCommentsList.comments.length !== 0
     ? updateCommentsList.comments.map((item: any) => {
-        return {
-          ...item,
-          whom: {
-            ...item.whom,
-            useravatar: formatPath(
-              item.whom.useravatar,
-            )
-          },
-          replys: item.replys.map((reply: any) => {
-            return {
-              ...reply,
-              whom: {
-                ...reply.whom,
-                useravatar: formatPath(
-                  reply.whom.useravatar,
-                ),
-              },
-            };
-          }),
-        };
-      })
+      return {
+        ...item,
+        whom: {
+          ...item.whom,
+          useravatar: formatPath(
+            item.whom.useravatar,
+          )
+        },
+        replys: item.replys.map((reply: any) => {
+          return {
+            ...reply,
+            whom: {
+              ...reply.whom,
+              useravatar: formatPath(
+                reply.whom.useravatar,
+              ),
+            },
+          };
+        }),
+      };
+    })
     : [];
 
 
@@ -317,23 +317,68 @@ detailsController.post('/comment', async (ctx, next) => {
 
 
 /**
- * !!! 重构 发表回复
+ * !!! 重构 文章详情 -> 发表回复
  */
 detailsController.post('/reply', async (ctx) => {
-  // const {
-  //   commentId,
-  //   value,
-  //   from,
-  //   to,
-  //   articleId,
-  //   userId,
-  // }: any = await ctx.request.body;
+  const {
+    commentId,
+    value,
+    from,
+    to,
+    articleId,
+    userId,
+  }: any = await ctx.request.body;
+
+  // 存储回复信息
+  const result = await Replys
+    .create({
+      comment: changeId(commentId),
+      article: changeId(articleId),
+      whom: changeId(userId),
+      from: changeId(from),
+      to: changeId(to),
+      replyValue: value,
+      create_time: new Date().getTime(),
+    });
+
+  // 同步到Comments
+  await Comments
+    .findByIdAndUpdate(
+      changeId(commentId),
+      { '$push': { replys: result, } },
+      { new: true },
+    )
+    .populate({
+      path: 'replys',
+    });
+
+  // 获取&&返回回复信息
+  const replyInfo = await Replys
+    .findById(
+      changeId(result._id),
+      { '__v': 0 },
+      { lean: true },
+    )
+    .populate({
+      path: 'whom',
+      select: ['_id', 'username', 'useravatar'],
+    })
+    .populate({
+      path: 'from',
+      select: ['_id', 'username', 'useravatar'],
+    })
+    .populate({
+      path: 'to',
+      select: ['_id', 'username', 'useravatar'],
+    });
+
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
-      ...ctx.request.body,
+      replyInfo,
+      result,
     },
   };
 })
@@ -364,8 +409,8 @@ detailsController.get('/star', async (ctx, next) => {
         stared: liked === 'true'
           ? getArticle.stared.concat(userid)
           : getArticle.stared.filter((item: any) => {
-              return item !== userid;
-            }),
+            return item !== userid;
+          }),
       },
       { new: true, lean: true },
     );
@@ -394,7 +439,7 @@ detailsController.get('/collection/create', async (ctx, next) => {
       create_time: new Date().toLocaleString(),
     })
 
-  if(!isCollectionNameExist) {
+  if (!isCollectionNameExist) {
     const setToCollections = await Collections
       .create({
         name: collection,
@@ -428,7 +473,7 @@ detailsController.get('/collection/create', async (ctx, next) => {
         _id: setToCollections._id,
       },
     };
-  }else {
+  } else {
     ctx.body = {
       code: 1,
       message: '该收藏夹已经存在!',
@@ -456,7 +501,7 @@ detailsController.post('/collection/save', async (ctx, next) => {
       {
         '$addToSet': { articles: articleId },
       },
-      { lean: true, new: true,},
+      { lean: true, new: true, },
     )
     .populate({
       path: 'articles',

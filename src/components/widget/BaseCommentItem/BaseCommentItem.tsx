@@ -89,7 +89,7 @@ class BaseCommentItem extends React.PureComponent<
       e,
       {
         from: localStorage.getItem('userid'),
-        to: this.props.content._id,
+        to: this.props.content.whom._id,
         value: v,
       },
     );
