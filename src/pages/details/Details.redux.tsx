@@ -235,39 +235,8 @@ export function reduxHandleSendComment(
 
 /**
  * 发表回复
- * @param commentid 回复id
- * @param replyValue 回复内容
- * @param articleid 文章id
+ * @param v 回复相关信息
  * @param callback 回调函数
- */
-// export function reduxHandleSendReply(
-//   commentid: string,
-//   replyValue: string,
-//   articleid: string,
-//   callback: () => void,
-// ) {
-//   return (dispatch: ThunkDispatch<any, any, any>) => {
-//     query({
-//       method: 'POST',
-//       url: '/api/details/reply',
-//       jsonp: false,
-//       data: {
-//         commentid,
-//         replyValue,
-//         articleid,
-//         userid: localStorage.getItem('userid'),
-//       },
-//     }).then((res) => {
-//       dispatch(saveReplysList(res));
-//       callback();
-//     });
-//   };
-// }
-
-
-
-/**
- * !!!! 重构 sendReply
  */
 export function reduxHandleSendReply(
   v: any,
@@ -283,7 +252,8 @@ export function reduxHandleSendReply(
         userId: localStorage.getItem('userid'),
       },
     }).then((res) => {
-      console.log(res);
+      dispatch(saveReplysList(res));
+      callback && callback();
     });
   };
 }
@@ -301,7 +271,7 @@ export function reduxHandleFixedControlBarStar(
   liked: boolean,
   callback?: () => void,
 ) {
-  return (dispatch: ThunkDispatch<any, any, any>): void => {
+  return (): void => {
     query({
       method: 'GET',
       url: '/api/details/star',
