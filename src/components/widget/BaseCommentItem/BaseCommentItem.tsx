@@ -112,7 +112,11 @@ class BaseCommentItem extends React.PureComponent<
         <BaseCommentInput
           containerStyle={this.props.baseInputContainerStyle ? this.props.baseInputContainerStyle : {}}
           inputStyle={this.props.baseInputStyle ? this.props.baseInputStyle : {}}
-          placeHolder={'回复 duan'}
+          placeHolder={`回复 ${
+            this.props.content.whom
+              ? this.props.content.whom.username
+              : 'undefined'
+          }`}
           useravatar={this.props.content.whom.useravatar}
           avatarSize={'default'}
           onSend={this.handleSend}
