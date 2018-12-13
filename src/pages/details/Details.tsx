@@ -213,14 +213,23 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   ): void => {
     const { id } = this.props.match.params;
 
-    this.props.reduxHandleSendComment(id, v, () => {
-      inputEl.textContent = '';
-      inputEl.focus();
-      notification.success({
-        message: '提示',
-        description: `评论发表成功`,
+    if (v) {
+      // TODO 敏感词过滤
+
+      this.props.reduxHandleSendComment(id, v, () => {
+        inputEl.textContent = '';
+        inputEl.focus();
+        notification.success({
+          message: '提示',
+          description: `评论发表成功`,
+        });
       });
-    });
+    } else {
+      notification.error({
+        message: '错误',
+        description: '评论不能为空!',
+      });
+    }
   }
 
   /**
