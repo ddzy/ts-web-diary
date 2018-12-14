@@ -10,7 +10,8 @@
 - [x] details_title主题图片完善
 - [x] 后台ts重构
 - [x] 完善回复提交的各种信息
-- [ ] 重构comments表的whom字段
+- [x] 重构comments表的whom字段
+- [ ] new article to test...
 - [ ] redis缓存
 - [ ] sendReply分页
 - [ ] header知乎_滑动效果
