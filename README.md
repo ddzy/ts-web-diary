@@ -10,7 +10,7 @@
 - [x] details_title主题图片完善
 - [x] 后台ts重构
 - [x] 完善回复提交的各种信息
-- [ ] whom字段和from字段合并
+- [ ] 重构comments表的whom字段
 - [ ] redis缓存
 - [ ] sendReply分页
 - [ ] header知乎_滑动效果
