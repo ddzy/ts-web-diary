@@ -98,6 +98,9 @@ detailsController.get('/', async (ctx, next) => {
       }, {
         path: 'whom',
         select: ['_id', 'username', 'useravatar'],
+      }, {
+        path: 'from',
+        select: ['_id', 'username', 'useravatar'],
       }],
       options: {
         sort: { create_time: -1 },
@@ -200,6 +203,8 @@ detailsController.post('/comment', async (ctx, next) => {
       whom: userid,
       article: articleid,
       commentValue,
+      value: commentValue,
+      from: userid,
       create_time: new Date().getTime(),
     });
 
@@ -220,14 +225,16 @@ detailsController.post('/comment', async (ctx, next) => {
 
   const commentInfo = await Comments
     .findById(result._id, { '__v': 0 })
-    .populate({
+    .populate([{
       path: 'article',
       select: ['_id'],
-    })
-    .populate({
+    }, {
       path: 'whom',
       select: ['_id', 'useravatar', 'username'],
-    })
+    }, {
+      path: 'from',
+      select: ['_id', 'useravatar', 'username'],
+    }]);
 
   ctx.body = {
     code: 0,
@@ -269,6 +276,7 @@ detailsController.post('/reply', async (ctx) => {
       from: changeId(from),
       to: changeId(to),
       replyValue: value,
+      value,
       create_time: new Date().getTime(),
     });
 

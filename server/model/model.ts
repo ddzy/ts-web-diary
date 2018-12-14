@@ -109,6 +109,15 @@ const PostsSchema: mongoose.Schema = new Schema({
 });
 
 const CommentsSchema: mongoose.Schema = new Schema({
+  // !!! 重构
+  from: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  value: {
+    type: String,
+  },
+
   whom: {                         // 评论人
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -131,7 +140,7 @@ const CommentsSchema: mongoose.Schema = new Schema({
 });
 
 const ReplySchema: mongoose.Schema = new Schema({
-  // ??? New key
+  // !!! 重构
   from: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -139,6 +148,9 @@ const ReplySchema: mongoose.Schema = new Schema({
   to: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+  },
+  value: {
+    type: String,
   },
 
   whom: {           // 回复人

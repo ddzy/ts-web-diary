@@ -17,10 +17,16 @@ export interface ICommentListItemProps {
     username: string,
     useravatar: string,
   };
+  // !!! 重构
+  from: {
+    _id: string,
+    username: string,
+    useravatar: string,
+  },
   article: string;        // 当前文章id
   commentValue: string;   // 评论内容
+  value: string
   create_time: number;    // 评论时间
-
   replys: any[];          // 回复信息列表
 
   onSend: (
