@@ -26,21 +26,13 @@ import BaseCommentInput from '../BaseCommentInput/BaseCommentInput';
 
 
 export interface ICommentListItemProps {
-  isReply: boolean;       // 是否为回复内容
-
-  // !!! 重构 !!!
+  // ??? 回复 or 评论 ???
+  isReply: boolean;
   content: {
-    _id: string;            // 评论|回复id
-    whom: {                 // 评论|回复人信息
-      _id: string,
-      username: string,
-      useravatar: string,
-    };
-    article: string;        // 当前文章id
-    create_time: number;    // 评论时间
-
-    // !! 重构 distinguish comment&reply
-    from?: {
+    _id: string;
+    value: string;
+    create_time: number;
+    from: {
       _id: string,
       username: string,
       useravatar: string,
@@ -50,14 +42,10 @@ export interface ICommentListItemProps {
       username: string,
       useravatar: string,
     };
-    commentValue?: string;   // 评论内容
-    replyValue?: string;
-    children?: any;
-    comment?: string;
-    star?: number;
+    star: number;
   },
 
-  // ! 自定义回复模态框样式
+  // ??? 自定义回复模态框样式 ???
   baseInputContainerStyle?: React.CSSProperties;
   baseInputStyle?: React.CSSProperties;
   onSend: (
@@ -84,12 +72,15 @@ class BaseCommentItem extends React.PureComponent<
     replyBox: null,
   }
 
-  public handleSend = (e: HTMLElement, v: string) => {
+  public handleSend = (
+    e: HTMLElement,
+    v: string,
+  ): void => {
     this.props.onSend(
       e,
       {
         from: localStorage.getItem('userid'),
-        to: this.props.content.whom._id,
+        to: this.props.content.from._id,
         value: v,
       },
     );
@@ -113,19 +104,16 @@ class BaseCommentItem extends React.PureComponent<
           containerStyle={this.props.baseInputContainerStyle ? this.props.baseInputContainerStyle : {}}
           inputStyle={this.props.baseInputStyle ? this.props.baseInputStyle : {}}
           placeHolder={`回复 ${
-            this.props.content.whom
-              ? this.props.content.whom.username
+            this.props.content.from
+              ? this.props.content.from.username
               : 'undefined'
           }`}
-          useravatar={this.props.content.whom.useravatar}
+          useravatar={this.props.content.from.useravatar}
           avatarSize={'default'}
           onSend={this.handleSend}
         />
       </ItemReplyBox>
     );
-
-    // 点击active样式
-
 
     oTargetId === commentId
       && this.setState((prevState) => {
@@ -142,11 +130,10 @@ class BaseCommentItem extends React.PureComponent<
   public render(): JSX.Element {
     return (
       <React.Fragment>
-
         {/* 用户信息框 */}
         <ItemTopBox>
           <Avatar
-            src={this.props.content.whom.useravatar}
+            src={this.props.content.from.useravatar}
             icon="user"
             size="default"
             shape="circle"
@@ -157,18 +144,14 @@ class BaseCommentItem extends React.PureComponent<
             style={{
               color: '#999',
             }}
-          >{this.props.content.whom.username}</span>
+          >{this.props.content.from.username}</span>
         </ItemTopBox>
 
         {/* 内容框 */}
         <ItemMiddleBox>
           <MiddleCommentReplyRange isReply={this.props.isReply}>
             <MiddleCommentReplyFrom>
-              {
-                this.props.content.from
-                  ? this.props.content.from.username
-                  : 'undefined'
-              }(作者)回复
+              回复&nbsp;
             </MiddleCommentReplyFrom>
             <MiddleCommentReplyTo>
               <a>{
@@ -180,7 +163,7 @@ class BaseCommentItem extends React.PureComponent<
           </MiddleCommentReplyRange>
           <MiddleCommentText
             dangerouslySetInnerHTML={{
-              __html: this.props.content.commentValue || this.props.content.replyValue || '',
+              __html: this.props.content.value || this.props.content.value || '',
             }}
           />
         </ItemMiddleBox>
