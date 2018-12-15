@@ -17,5 +17,7 @@
 - [ ] redis缓存
 - [ ] sendReply分页
 - [ ] header知乎_滑动效果
+- [ ] 文章description字段
+- [ ] 评论回复点赞
 - [ ] header组件动态路由
 ## updating, ing, ing...
