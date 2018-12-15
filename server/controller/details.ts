@@ -83,9 +83,6 @@ detailsController.get('/', async (ctx, next) => {
       populate: [{
         path: 'replys',
         populate: [{
-          path: 'whom',
-          select: ['username', 'useravatar', '_id'],
-        }, {
           path: 'from',
           select: ['username', 'useravatar', '_id'],
         }, {
@@ -95,12 +92,6 @@ detailsController.get('/', async (ctx, next) => {
         options: {
           sort: { create_time: -1 },
         },
-      }, {
-        path: 'whom',
-        select: ['_id', 'username', 'useravatar'],
-      }, {
-        path: 'from',
-        select: ['_id', 'username', 'useravatar'],
       }],
       options: {
         sort: { create_time: -1 },
@@ -118,19 +109,19 @@ detailsController.get('/', async (ctx, next) => {
     ? updateCommentsList.comments.map((item: any) => {
       return {
         ...item,
-        whom: {
-          ...item.whom,
+        from: {
+          ...item.from,
           useravatar: formatPath(
-            item.whom.useravatar,
+            item.from.useravatar,
           )
         },
         replys: item.replys.map((reply: any) => {
           return {
             ...reply,
-            whom: {
-              ...reply.whom,
+            from: {
+              ...reply.from,
               useravatar: formatPath(
-                reply.whom.useravatar,
+                reply.from.useravatar,
               ),
             },
           };
@@ -200,7 +191,6 @@ detailsController.post('/comment', async (ctx, next) => {
   // 存储评论
   const result = await Comments
     .create({
-      whom: userid,
       article: articleid,
       commentValue,
       value: commentValue,
@@ -229,9 +219,6 @@ detailsController.post('/comment', async (ctx, next) => {
       path: 'article',
       select: ['_id'],
     }, {
-      path: 'whom',
-      select: ['_id', 'useravatar', 'username'],
-    }, {
       path: 'from',
       select: ['_id', 'useravatar', 'username'],
     }]);
@@ -241,10 +228,10 @@ detailsController.post('/comment', async (ctx, next) => {
     message: 'Success!',
     comment: {
       ...commentInfo._doc,
-      whom: {
-        ...commentInfo._doc.whom._doc,
+      from: {
+        ...commentInfo._doc.from._doc,
         useravatar: formatPath(
-          commentInfo._doc.whom._doc.useravatar,
+          commentInfo._doc.from._doc.useravatar,
         ),
       },
     },
@@ -264,7 +251,6 @@ detailsController.post('/reply', async (ctx) => {
     from,
     to,
     articleId,
-    userId,
   }: any = await ctx.request.body;
 
   // 存储回复信息
@@ -272,7 +258,6 @@ detailsController.post('/reply', async (ctx) => {
     .create({
       comment: changeId(commentId),
       article: changeId(articleId),
-      whom: changeId(userId),
       from: changeId(from),
       to: changeId(to),
       replyValue: value,
@@ -298,18 +283,16 @@ detailsController.post('/reply', async (ctx) => {
       { '__v': 0 },
       { lean: true },
     )
-    .populate({
-      path: 'whom',
-      select: ['_id', 'username', 'useravatar'],
-    })
-    .populate({
-      path: 'from',
-      select: ['_id', 'username', 'useravatar'],
-    })
-    .populate({
-      path: 'to',
-      select: ['_id', 'username', 'useravatar'],
-    });
+    .populate([
+      {
+        path: 'from',
+        select: ['_id', 'username', 'useravatar'],
+      },
+      {
+        path: 'to',
+        select: ['_id', 'username', 'useravatar'],
+      }
+    ])
 
 
   ctx.body = {
@@ -317,12 +300,6 @@ detailsController.post('/reply', async (ctx) => {
     message: 'Success!',
     reply: {
       ...replyInfo,
-      whom: {
-        ...replyInfo.whom,
-        useravatar: formatPath(
-          replyInfo.whom.useravatar,
-        ),
-      },
       from: {
         ...replyInfo.from,
         useravatar: formatPath(
