@@ -14,4 +14,5 @@ export const ReplyList = styled.ul`
 `;
 export const ReplyListItem = styled.li`
   padding: 1rem;
+  border-bottom: 1px solid #f1f1f1;
 `;
