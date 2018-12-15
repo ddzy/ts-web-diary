@@ -212,7 +212,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
     if (value) {
       // TODO 敏感词过滤
-
       this.props.reduxHandleSendComment({
         value,
         articleId: id || '',
@@ -228,10 +227,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     } else {
       notification.error({
         message: '错误',
-        description: '评论不能为空!',
+        description: '评论内容不能为空!',
       });
     }
-
   }
 
   /**
@@ -241,12 +239,29 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     inputEl: HTMLElement,
     v: any,
   ): void => {
-    this.props.reduxHandleSendReply(
-      {
-        ...v,
-        articleId: this.props.match.params.id,
-      },
-    );
+    const { id } = this.props.match.params;
+
+    if (v.value) {
+      this.props.reduxHandleSendReply(
+        {
+          ...v,
+          articleId: id,
+        },
+        () => {
+          inputEl.textContent = '';
+          inputEl.focus();
+          notification.success({
+            message: '提示',
+            description: `回复发表成功`,
+          });
+        },
+      );
+    } else {
+      notification.error({
+        message: '错误',
+        description: '回复信息不能为空!',
+      });
+    }
   }
 
   public render(): JSX.Element {
