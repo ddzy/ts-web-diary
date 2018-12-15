@@ -13,7 +13,7 @@
 - [x] 重构comments表的whom字段
 - [x] new article to test...
 - [x] 回复输入框头像保持不变, 回复条目border样式
-- [ ] block自动focus, node自动清空, 非空判断
+- [x] block自动focus, node自动清空, 非空判断
 - [ ] redis缓存
 - [ ] sendReply分页
 - [ ] header知乎_滑动效果
