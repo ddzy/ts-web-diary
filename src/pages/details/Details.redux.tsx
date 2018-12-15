@@ -210,8 +210,7 @@ export function getOneArticleInfo(
  * @param callback 回调函数
  */
 export function reduxHandleSendComment(
-  articleid: string,
-  commentValue: string,
+  v: any,
   callback?: () => void,
 ) {
   return (dispatch: ThunkDispatch<any, any, any>) => {
@@ -220,9 +219,8 @@ export function reduxHandleSendComment(
       url: '/api/details/comment',
       jsonp: false,
       data: {
-        userid: localStorage.getItem('userid') || '',
-        articleid,
-        commentValue,
+        userId: localStorage.getItem('userid') || '',
+        ...v,
       },
     })
       .then((res) => {

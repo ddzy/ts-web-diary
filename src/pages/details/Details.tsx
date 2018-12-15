@@ -42,8 +42,7 @@ export interface IDetailsProps {
     callback: () => void,
   ) => void;
   reduxHandleSendComment: (
-    articleid: string,
-    commentValue: string,
+    v: any,
     callback?: () => void,
   ) => void;
   reduxHandleSendReply: (
@@ -207,14 +206,18 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
    */
   public handleSendComment = (
     inputEl: HTMLElement,
-    v: string,
+    value: string,
   ): void => {
     const { id } = this.props.match.params;
 
-    if (v) {
+    if (value) {
       // TODO 敏感词过滤
 
-      this.props.reduxHandleSendComment(id, v, () => {
+      this.props.reduxHandleSendComment({
+        value,
+        articleId: id || '',
+        from: localStorage.getItem('userid') || '',
+      }, () => {
         inputEl.textContent = '';
         inputEl.focus();
         notification.success({
@@ -228,6 +231,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         description: '评论不能为空!',
       });
     }
+
   }
 
   /**

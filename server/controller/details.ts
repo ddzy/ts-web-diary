@@ -92,6 +92,9 @@ detailsController.get('/', async (ctx, next) => {
         options: {
           sort: { create_time: -1 },
         },
+      }, {
+          path: 'from',
+        select: ['_id', 'username', 'useravatar'],
       }],
       options: {
         sort: { create_time: -1 },
@@ -183,25 +186,24 @@ detailsController.get('/', async (ctx, next) => {
 detailsController.post('/comment', async (ctx, next) => {
 
   const {
-    userid,
-    articleid,
-    commentValue,
+    from,
+    articleId,
+    value,
   }: any = ctx.request.body;
 
   // 存储评论
   const result = await Comments
     .create({
-      article: articleid,
-      commentValue,
-      value: commentValue,
-      from: userid,
+      article: articleId,
+      value,
+      from,
       create_time: new Date().getTime(),
     });
 
   // 同步到Posts
   await Posts
     .findByIdAndUpdate(
-      changeId(articleid),
+      changeId(articleId),
       { '$push': { comments: result } },
       { new: true },
     )

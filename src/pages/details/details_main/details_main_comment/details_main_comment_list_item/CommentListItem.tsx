@@ -81,6 +81,7 @@ class CommentListItem extends React.PureComponent<
 
   public render(): JSX.Element {
     const content = this.props;
+
     return (
       <CommentShowListItem>
         {/* 评论展示 */}
