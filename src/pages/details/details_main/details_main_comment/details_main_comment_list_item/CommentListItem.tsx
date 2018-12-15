@@ -11,6 +11,8 @@ import BaseCommentItem from 'src/components/widget/BaseCommentItem/BaseCommentIt
 
 
 export interface ICommentListItemProps {
+  // ??? 当前主用户 回复输入框统一头像 ???
+  currentMainUserAvatar: string;
   _id: string;
   from: {
     _id: string,
@@ -67,6 +69,7 @@ class CommentListItem extends React.PureComponent<
               baseInputContainerStyle={{
                 backgroundColor: '#fff',
               }}
+              currentMainUserAvatar={this.props.currentMainUserAvatar}
               isReply={true}
               content={reply}
               {...this.props}
@@ -94,6 +97,7 @@ class CommentListItem extends React.PureComponent<
             content={content}
             {...this.props}
             onSend={this.handleSendReply}
+            currentMainUserAvatar={this.props.currentMainUserAvatar}
           />
         </CommentContainer>
 

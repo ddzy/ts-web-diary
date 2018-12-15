@@ -26,6 +26,8 @@ import BaseCommentInput from '../BaseCommentInput/BaseCommentInput';
 
 
 export interface ICommentListItemProps {
+  // ??? 当前主用户 回复输入框统一头像 ???
+  currentMainUserAvatar: string;
   // ??? 回复 or 评论 ???
   isReply: boolean;
   content: {
@@ -108,7 +110,7 @@ class BaseCommentItem extends React.PureComponent<
               ? this.props.content.from.username
               : 'undefined'
           }`}
-          useravatar={this.props.content.from.useravatar}
+          useravatar={this.props.currentMainUserAvatar}
           avatarSize={'default'}
           onSend={this.handleSend}
         />

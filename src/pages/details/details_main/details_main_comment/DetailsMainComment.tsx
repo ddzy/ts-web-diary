@@ -18,6 +18,7 @@ import BaseCommentInput from '../../../../components/widget/BaseCommentInput/Bas
 import CommentListItem from './details_main_comment_list_item/CommentListItem';
 
 export interface IDetailsLeftCommentProps {
+  // ??? 当前用户头像 ???
   useravatar: string;
 
   comments: any[];
@@ -93,6 +94,7 @@ class DetailsLeftComment extends React.PureComponent<
           <React.Fragment key={item._id}>
             <CommentListItem
               {...item}
+              currentMainUserAvatar={this.props.useravatar}
               onSend={this.props.onSendReply}
             />
             <Divider />
