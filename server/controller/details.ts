@@ -25,7 +25,7 @@ detailsController.get('/', async (ctx, next) => {
   const setWatch = await Posts
     .findById(changeId(articleid));
 
-  // 阅读量加一
+  // ** 阅读量加一
   const result = await Posts
     .findByIdAndUpdate(
       changeId(articleid),
@@ -34,29 +34,24 @@ detailsController.get('/', async (ctx, next) => {
     )
     .populate('author', '_id username useravatar');
 
-
-  // 统计作者文章总数
+  // ** 统计作者文章总数
   const articleCount = (await User
     .findById(changeId(userid))
     .populate('articles'))
     .articles
     .length;
 
-
-
   const watchArr = await Posts
     .find({ author: result.author._id })
     .populate('author', 'username');
 
-
-  // 统计作者文章总阅读数量
+  // ** 统计作者文章总阅读数量
   const watchCount = await watchArr
     .reduce((total, current) => {
       return total + current.watch;
     }, 0);
 
-
-  // 统计最新文章
+  // ** 统计最新文章
   const getArticles = await Posts
     .find({})
     .sort({ create_time: '-1' })
@@ -70,8 +65,7 @@ detailsController.get('/', async (ctx, next) => {
       };
     });
 
-
-  // 获取评论信息
+  // ** 获取评论信息
   const updateCommentsList = await Posts
     .findById(
       changeId(articleid),
@@ -104,8 +98,7 @@ detailsController.get('/', async (ctx, next) => {
       select: ['_id', 'username', 'useravatar']
     }])
 
-
-  // 格式化图片路径
+  // ** 格式化图片路径
   const setComments = updateCommentsList.comments
     && updateCommentsList.comments.length
     && updateCommentsList.comments.length !== 0
@@ -133,8 +126,7 @@ detailsController.get('/', async (ctx, next) => {
     })
     : [];
 
-
-  // 获取用户收藏夹名称
+  // ** 获取用户收藏夹名称
   const getCollectionsName = await User
     .findById(
       changeId(userid),
@@ -149,7 +141,6 @@ detailsController.get('/', async (ctx, next) => {
       path: 'collections',
       select: ['_id', 'name'],
     })
-
 
   ctx.body = {
     code: 0,
@@ -191,7 +182,7 @@ detailsController.post('/comment', async (ctx, next) => {
     value,
   }: any = ctx.request.body;
 
-  // 存储评论
+  // ** 存储评论
   const result = await Comments
     .create({
       article: articleId,
@@ -200,7 +191,7 @@ detailsController.post('/comment', async (ctx, next) => {
       create_time: new Date().getTime(),
     });
 
-  // 同步到Posts
+  // ** 同步到Posts
   await Posts
     .findByIdAndUpdate(
       changeId(articleId),
@@ -213,7 +204,6 @@ detailsController.post('/comment', async (ctx, next) => {
         path: 'replys',
       },
     })
-
 
   const commentInfo = await Comments
     .findById(result._id, { '__v': 0 })
@@ -255,7 +245,7 @@ detailsController.post('/reply', async (ctx) => {
     articleId,
   }: any = await ctx.request.body;
 
-  // 存储回复信息
+  // ** 存储回复信息
   const result = await Replys
     .create({
       comment: changeId(commentId),
@@ -267,7 +257,7 @@ detailsController.post('/reply', async (ctx) => {
       create_time: new Date().getTime(),
     });
 
-  // 同步到Comments
+  // ** 同步到Comments
   await Comments
     .findByIdAndUpdate(
       changeId(commentId),
@@ -278,7 +268,7 @@ detailsController.post('/reply', async (ctx) => {
       path: 'replys',
     });
 
-  // 获取&&返回回复信息
+  // ** 获取&&返回回复信息
   const replyInfo = await Replys
     .findById(
       changeId(result._id),
@@ -295,7 +285,6 @@ detailsController.post('/reply', async (ctx) => {
         select: ['_id', 'username', 'useravatar'],
       }
     ])
-
 
   ctx.body = {
     code: 0,
@@ -367,7 +356,7 @@ detailsController.get('/collection/create', async (ctx, next) => {
 
   const { userid, collection } = ctx.request.query;
 
-  // 收藏夹是否存在
+  // ** 收藏夹是否存在
   const isCollectionNameExist = await Collections
     .findOne({
       name: collection,
@@ -380,7 +369,7 @@ detailsController.get('/collection/create', async (ctx, next) => {
         name: collection,
       })
 
-    // 同步至 User
+    // ** 同步至 User
     await User
       .findByIdAndUpdate(
         changeId(userid),
@@ -414,8 +403,6 @@ detailsController.get('/collection/create', async (ctx, next) => {
       message: '该收藏夹已经存在!',
     };
   }
-
-
 });
 
 
