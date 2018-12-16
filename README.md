@@ -17,6 +17,7 @@
 - [ ] redis缓存
 - [ ] sendReply分页
 - [ ] header知乎_滑动效果, 搜索框
+- [ ] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
 - [x] header组件提取, style划分
 - [ ] hooks重构所有class组件
 - [ ] 文章description字段
