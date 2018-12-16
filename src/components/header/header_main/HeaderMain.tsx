@@ -26,16 +26,11 @@ class HeaderMain extends React.PureComponent<
   > {
 
   public readonly state: IHeaderMainState = {};
-  public innerWrapperRef: any = React.createRef();
-
-  public componentDidMount(): void {
-    console.log(this.innerWrapperRef.current.localName);
-  }
 
   public render(): JSX.Element {
     return (
       <MainContainer
-        ref={this.innerWrapperRef}
+        id="header-main-container"
       >
         <MainInner>
           <HeaderMainLogo />

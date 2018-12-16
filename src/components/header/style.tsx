@@ -2,10 +2,7 @@ import styled from 'styled-components';
 
 
 export const HeaderWrapper = styled.div`
-/*   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100; */
+  overflow: hidden;
   width: 100%;
   // background-color: hsla(0,0%,100%,.4);
   background-color: #fff;
