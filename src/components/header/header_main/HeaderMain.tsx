@@ -8,6 +8,7 @@ import {
 import HeaderMainLogo from './header_main_logo/HeaderMainLogo';
 import HeaderMainNav from './header_main_nav/HeaderMainNav';
 import HeaderMainAction from './header_main_action/HeaderMainAction';
+import HeaderMainSearch from './header_main_search/HeaderMainSearch';
 
 
 export interface IHeaderMainProps {
@@ -41,9 +42,7 @@ class HeaderMain extends React.PureComponent<
         </MainInner>
         <MainOuter>
           <HeaderMainLogo />
-          <div style={{ flex: 5 }}>
-            搜索框
-          </div>
+          <HeaderMainSearch />
           <div style={{ flex: 3 }}>
             头像框
           </div>
