@@ -28,27 +28,21 @@ interface IHeaderMainNavState {
 };
 
 
-const HeaderMainNav: React.SFC<IHeaderMainNavProps> = (
-  props: IHeaderMainNavProps,
-): JSX.Element => {
+class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMainNavState> {
 
-  const [
-    state,
-    setState,
-  ] = React.useState<IHeaderMainNavState>({
+  public readonly state = {
     navList: [
       { path: '/home', value: '首页', children: null },
       { path: '/article', value: '文章', children: null },
     ],
-  });
+  }
 
-  React.useEffect(handleDealNavList);
+  public componentDidMount(): void {
+    this.handleDealNavList();
+  }
 
-  /**
-   * 处理动态添加导航路由
-   */
-  function handleDealNavList(): void {
-    const { pathname } = props.location;
+  public handleDealNavList = (): void => {
+    const { pathname } = this.props.location;
 
     const result: any = headerNavConfig.filter((item: any) => {
       return item.path === pathname;
@@ -66,25 +60,28 @@ const HeaderMainNav: React.SFC<IHeaderMainNavProps> = (
         children: null,
       });
 
-    setState((prevState) => {
+    this.setState((prevState) => {
       return {
         navList: prevState.navList.concat(result),
       };
-    });
+    }, () => {
+      // 默认选中菜单栏
+      const oUl = document.getElementById('header-navbar');
+      const oLi = oUl && oUl.querySelectorAll('li');
 
-    // 默认选中菜单栏
-    const oUl = document.getElementById('header-navbar');
-    const oLi = oUl && oUl.querySelectorAll('li');
-
-    oLi && Array.from(oLi).forEach((item) => {
-      // item.getAttribute('data-pane') === pathname
-      pathname.includes(item.getAttribute('data-pane') || '')
-        && item.classList.add('header-active');
+      oLi && Array.from(oLi).forEach((item) => {
+        // item.getAttribute('data-pane') === pathname
+        pathname.includes(item.getAttribute('data-pane') || '')
+          && item.classList.add('header-active');
+      });
     });
   }
 
-  function handleInitNavList (): JSX.Element[] {
-    return state.navList.map((item: any) => {
+  /**
+   * 处理初始化菜单栏
+   */
+  public handleInitHeaderNavList = (): JSX.Element[] => {
+    return this.state.navList.map((item) => {
       return (
         <MainNavItem
           key={item.path}
@@ -96,13 +93,15 @@ const HeaderMainNav: React.SFC<IHeaderMainNavProps> = (
     });
   }
 
-  return (
-    <MainNavContainer>
-      <MainNavList id="header-navbar">
-        {handleInitNavList()}
-      </MainNavList>
-    </MainNavContainer>
-  );
+  public render(): JSX.Element {
+    return (
+      <MainNavContainer>
+        <MainNavList id="header-navbar">
+          {this.handleInitHeaderNavList()}
+        </MainNavList>
+      </MainNavContainer>
+    );
+  }
 }
 
 
