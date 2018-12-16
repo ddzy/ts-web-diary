@@ -16,7 +16,9 @@
 - [x] block自动focus, node自动清空, 非空判断
 - [ ] redis缓存
 - [ ] sendReply分页
-- [ ] header知乎_滑动效果, 搜索框
+- [x] header知乎_滑动效果, 搜索框
+- [ ] 解决firefox兼容, 完善搜索框, 搜索功能
+- [ ] main组件重构, 提取到article组件
 - [ ] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
 - [ ] 合并component下main组件, 重构home页
 - [x] header组件提取, style划分
