@@ -16,8 +16,8 @@
 - [x] block自动focus, node自动清空, 非空判断
 - [ ] redis缓存
 - [ ] sendReply分页
-- [ ] header知乎_滑动效果
-- [ ] header组件提取, style划分
+- [ ] header知乎_滑动效果, 搜索框
+- [x] header组件提取, style划分
 - [ ] hooks重构所有class组件
 - [ ] 文章description字段
 - [ ] 评论回复点赞
