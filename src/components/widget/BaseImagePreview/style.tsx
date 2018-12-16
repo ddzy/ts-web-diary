@@ -40,8 +40,8 @@ export const PreviewMainContent = styled.div``;
 
 export const PreviewLink = styled.a``;
 
-export const PreviewImage = styled<any>('img').attrs({
-  src: (props: any) => (props.src ? props.src : undefined),
-})`
-  cursor: zoom-out;
-`;
+export const PreviewImage = styled<any>('img').attrs((props) => {
+  return {
+    src: props.src ? props.src : undefined,
+  };
+})``;
