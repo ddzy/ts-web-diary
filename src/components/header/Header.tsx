@@ -10,8 +10,8 @@ import {
 } from 'antd';
 
 import headerNavConfig from '../../config/headerNav.config';
-import { 
-  HeaderWrapper, 
+import {
+  HeaderWrapper,
   HeaderMain,
   MainLogo,
   MainLogoContent,
@@ -31,7 +31,7 @@ import {
 
 
 export interface IHeaderProps extends RouteComponentProps<any> {
-  AuthRouteReducer: { 
+  AuthRouteReducer: {
     isAuth: boolean;
     username: string;
     useravatar: string;
@@ -52,20 +52,24 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
   }
 
   public componentDidMount(): void {
+    this.handleDealNavList();
+  }
+
+  public handleDealNavList = (): void => {
     const { pathname } = this.props.location;
 
     const result = headerNavConfig.filter((item: any) => {
       return item.path === pathname;
     });
 
-    /\/details\/\w*/.test(pathname) 
+    /\/details\/\w*/.test(pathname)
       && result.push({
         path: '/details', value: '详情', children: null
       });
 
     /\/collection\/\w*/.test(pathname)
       && result.push({
-        path: '/collection', 
+        path: '/collection',
         value: '收藏',
         children: null,
       });
@@ -83,10 +87,8 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
         // item.getAttribute('data-pane') === pathname
         pathname.includes(item.getAttribute('data-pane') || '')
           && item.classList.add('header-active');
-      }); 
-    }); 
-
-    
+      });
+    });
   }
 
   /**
@@ -95,11 +97,11 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
   public initHeaderNavList = (): JSX.Element[] => {
     return this.state.navList.map((item) => {
       return (
-        <MainNavItem 
+        <MainNavItem
           key={item.path}
           data-pane={item.path}
         >
-            <Link to={item.path}>{item.value}</Link>
+          <Link to={item.path}>{item.value}</Link>
         </MainNavItem>
       );
     });
@@ -174,21 +176,21 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
         offsetTop={1}
       >
         <HeaderWrapper>
-        <HeaderMain>
-          <MainLogo>
-            <MainLogoContent>
-              <a href="https://github.com/ddzy">ddzy</a>
-            </MainLogoContent>
-          </MainLogo>
-          <MainNav>
-            <MainNavList id="header-navbar">
-              {this.initHeaderNavList()}
-            </MainNavList>
-          </MainNav>
-          <MainQuick>
-            {
-              this.props.AuthRouteReducer.isAuth
-                ? (
+          <HeaderMain>
+            <MainLogo>
+              <MainLogoContent>
+                <a href="https://github.com/ddzy">ddzy</a>
+              </MainLogoContent>
+            </MainLogo>
+            <MainNav>
+              <MainNavList id="header-navbar">
+                {this.initHeaderNavList()}
+              </MainNavList>
+            </MainNav>
+            <MainQuick>
+              {
+                this.props.AuthRouteReducer.isAuth
+                  ? (
                     // 头像
                     <QuickMeCenter>
                       <Popover
@@ -203,7 +205,7 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
                       </Popover>
                     </QuickMeCenter>
                   )
-                : (
+                  : (
                     <React.Fragment>
                       <QuickLogin>
                         <Link to="/login">登录</Link>
@@ -213,24 +215,24 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
                       </QuickRegister>
                     </React.Fragment>
                   )
-            }
-            <QuickWrite>
-              <Button 
-                htmlType="button"
-                type="primary"
-                icon="edit"
-                onClick={this.handleToWrite}
-              >写文章</Button>
-            </QuickWrite>
-          </MainQuick>
-        </HeaderMain>
-      </HeaderWrapper>
+              }
+              <QuickWrite>
+                <Button
+                  htmlType="button"
+                  type="primary"
+                  icon="edit"
+                  onClick={this.handleToWrite}
+                >写文章</Button>
+              </QuickWrite>
+            </MainQuick>
+          </HeaderMain>
+        </HeaderWrapper>
       </Affix>
     );
-  } 
+  }
 }
-    
-    
+
+
 function mapStateToProps(state: any) {
   return {
     AuthRouteReducer: state.AuthRouteReducer,
