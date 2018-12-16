@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import {
   Button,
-  Avatar,
-  Popover,
   Modal,
   Affix,
 } from 'antd';
@@ -12,22 +10,13 @@ import {
 import headerNavConfig from '../../config/headerNav.config';
 import {
   HeaderWrapper,
-  HeaderMain,
-  MainLogo,
-  MainLogoContent,
-  MainNav,
-  MainNavList,
   MainNavItem,
-  MainQuick,
-  QuickLogin,
-  QuickRegister,
-  QuickMeCenter,
-  QuickWrite,
   PopoverContent,
   PopoverContentList,
   PopoverListItem,
   PopoverItemText,
 } from './style';
+import HeaderMain from './header_main/HeaderMain';
 
 
 export interface IHeaderProps extends RouteComponentProps<any> {
@@ -176,56 +165,9 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
         offsetTop={1}
       >
         <HeaderWrapper>
-          <HeaderMain>
-            <MainLogo>
-              <MainLogoContent>
-                <a href="https://github.com/ddzy">ddzy</a>
-              </MainLogoContent>
-            </MainLogo>
-            <MainNav>
-              <MainNavList id="header-navbar">
-                {this.initHeaderNavList()}
-              </MainNavList>
-            </MainNav>
-            <MainQuick>
-              {
-                this.props.AuthRouteReducer.isAuth
-                  ? (
-                    // 头像
-                    <QuickMeCenter>
-                      <Popover
-                        content={this.initPopoverContent()}
-                        placement="bottom"
-                      >
-                        <Avatar
-                          icon="user"
-                          shape="square"
-                          src={this.props.AuthRouteReducer.useravatar}
-                        />
-                      </Popover>
-                    </QuickMeCenter>
-                  )
-                  : (
-                    <React.Fragment>
-                      <QuickLogin>
-                        <Link to="/login">登录</Link>
-                      </QuickLogin>
-                      <QuickRegister>
-                        <Link to="/register">注册</Link>
-                      </QuickRegister>
-                    </React.Fragment>
-                  )
-              }
-              <QuickWrite>
-                <Button
-                  htmlType="button"
-                  type="primary"
-                  icon="edit"
-                  onClick={this.handleToWrite}
-                >写文章</Button>
-              </QuickWrite>
-            </MainQuick>
-          </HeaderMain>
+          <HeaderMain
+            authInfo={{...this.props.AuthRouteReducer}}
+          />
         </HeaderWrapper>
       </Affix>
     );
