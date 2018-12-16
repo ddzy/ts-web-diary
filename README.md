@@ -17,7 +17,7 @@
 - [ ] redis缓存
 - [ ] sendReply分页
 - [x] header知乎_滑动效果, 搜索框
-- [ ] 解决firefox兼容, 完善搜索框, 搜索功能
+- [ ] 解决firefox兼容, 新增搜索组件, 聊天室组件, 通知组件, 完善搜索框, 搜索功能
 - [ ] main组件重构, 提取到article组件
 - [ ] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
 - [ ] 合并component下main组件, 重构home页
