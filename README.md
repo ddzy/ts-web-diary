@@ -18,6 +18,7 @@
 - [ ] sendReply分页
 - [ ] header知乎_滑动效果, 搜索框
 - [ ] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
+- [ ] 合并component下main组件, 重构home页
 - [x] header组件提取, style划分
 - [ ] hooks重构所有class组件
 - [ ] 文章description字段
