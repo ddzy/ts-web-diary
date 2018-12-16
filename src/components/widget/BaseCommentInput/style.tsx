@@ -9,7 +9,7 @@ export const CommentInputBox = styled.div`
   padding: 0 3rem;
 `;
 
-export const CommentInputMain = styled<ICommentInputMainProps, 'div'>('div')`
+export const CommentInputMain = styled('div')<ICommentInputMainProps>`
   padding: ${((props) => {
     return props.containerStyle.padding
       ? props.containerStyle.padding

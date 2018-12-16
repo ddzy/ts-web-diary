@@ -40,7 +40,7 @@ export const LeftInfoListItem = styled.li`
 export const LeftImgBox = styled.div`
   padding-right: 2.5rem;
 `;
-export const LeftImgInner = styled<ILeftImgInnerProps, 'div'>('div')`
+export const LeftImgInner = styled('div')<ILeftImgInnerProps>`
   max-width: 40.625rem;
   max-height: 22.9375rem;
   min-height: ${(props) => props.imgUrl ? '20rem' : 0};

@@ -12,12 +12,3 @@ export const DetailsContent = styled.div`
   margin: 0 auto;
   padding-top: 1.25rem;
 `;
-
-
-
-
-
-
-
-
-

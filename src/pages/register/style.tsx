@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 
-export interface IStyleProps {
+export interface IRegisterWrapperProps {
   bg_url?: string;
 };
 
 
-export const RegisterWrapper = styled<IStyleProps, 'div'>('div')`
+export const RegisterWrapper = styled('div')<IRegisterWrapperProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +15,7 @@ export const RegisterWrapper = styled<IStyleProps, 'div'>('div')`
   background-size: cover;
 `;
 
-export const RegisterContent = styled<IStyleProps, 'div'>('div')`
+export const RegisterContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,15 +23,13 @@ export const RegisterContent = styled<IStyleProps, 'div'>('div')`
   height: 500px;
 `;
 
-export const FormWrapper = styled<IStyleProps, 'div'>('div')`
+export const FormWrapper = styled.div`
   width: 400px;
 `;
 
-export const FormTitle = styled<IStyleProps, 'h1'>('h1')`
+export const FormTitle = styled.h1`
   color: #999;
   font-size: 24px;
 `;
 
-export const FormFriendLink = styled<IStyleProps, 'div'>('div')`
-  
-`;
+export const FormFriendLink = styled.div``;

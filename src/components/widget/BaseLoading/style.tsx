@@ -13,7 +13,7 @@ export const LOADING = keyframes`
 `;
 //
 
-export const LoadingWrapper = styled<ILoadingWrapperProps, 'div'>('div')`
+export const LoadingWrapper = styled('div')<ILoadingWrapperProps>`
   display: ${(props) => props.visible ? 'block' : 'none'};
   position: fixed;
   left: 0;

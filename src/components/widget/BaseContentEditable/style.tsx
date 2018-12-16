@@ -9,7 +9,7 @@ export const ContentEditableWrapper = styled.div`
 
 `;
 
-export const ContentEditableInput = styled<IContentEditableInputProps, 'div'>('div')`
+export const ContentEditableInput = styled('div')<IContentEditableInputProps>`
   width: 12.5rem;
   min-height: 1.5625rem;
   padding: 0.5625rem 0.75rem 0.4375rem;

@@ -20,7 +20,7 @@ export const MiddleCommentText = styled.blockquote`
 `;
 
 // 评论回复判别
-export const MiddleCommentReplyRange = styled.div`
+export const MiddleCommentReplyRange = styled('div')<IMiddleCommentReplyRangeProps>`
   display: ${(props: IMiddleCommentReplyRangeProps) => props.isReply ? 'inline-block' : 'none'};
   font-size: .8rem;
 `;

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 
-export interface IStyleProps {
+export interface ILoginWrapperProps {
   bg_url?: string;
 };
 
 
-export const LoginWrapper = styled<IStyleProps, 'div'>('div')`
+export const LoginWrapper = styled('div')<ILoginWrapperProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,7 @@ export const LoginWrapper = styled<IStyleProps, 'div'>('div')`
   background-image: url(${props => props.bg_url});
 `;
 
-export const LoginContent = styled<IStyleProps, 'div'>('div')`
+export const LoginContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,15 +22,15 @@ export const LoginContent = styled<IStyleProps, 'div'>('div')`
   height: 500px;
 `;
 
-export const FormWrapper = styled<IStyleProps, 'div'>('div')`
+export const FormWrapper = styled.div`
   width: 400px;
 `;
 
-export const FormTitle = styled<IStyleProps, 'h1'>('h1')`
+export const FormTitle = styled.h1`
   color: #999;
   font-size: 24px;
 `;
 
-export const FormFriendLink = styled<IStyleProps, 'div'>('div')`
-  
+export const FormFriendLink = styled.div`
+
 `;

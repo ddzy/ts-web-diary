@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 
-export interface IStyleProps {
+export interface INotFoundWrapperProps {
   bg_img?: string;
 };
 
 
-export const NotFoundWrapper = styled<IStyleProps, 'div'>('div')`
+export const NotFoundWrapper = styled('div')<INotFoundWrapperProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,15 +14,15 @@ export const NotFoundWrapper = styled<IStyleProps, 'div'>('div')`
   background-image: url(${(props) => props.bg_img});
 `;
 
-export const NotFoundContent = styled<IStyleProps, 'div'>('div')`
+export const NotFoundContent = styled.div`
 
 `;
 
-export const NotFoundTitle = styled<IStyleProps, 'p'>('p')`
+export const NotFoundTitle = styled.p`
   font-size: 1.625rem;
   color: #999;
 `;
 
-export const NotFoundRedirect = styled<IStyleProps, 'p'>('p')`
+export const NotFoundRedirect = styled.p`
   font-size: 1.25rem;
 `;

@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 
 
-export interface IStyleProps {};
-
-
-export const HomeWrapper = styled<IStyleProps, 'div'>('div')`
+export const HomeWrapper = styled.div`
   height: 100%;
 `;

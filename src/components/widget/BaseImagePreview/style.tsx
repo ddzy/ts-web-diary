@@ -14,7 +14,7 @@ export interface IPreviewImageProps {
 };
 
 
-export const ImagePreviewContainer = styled<IImagePreviewContainerProps, 'div'>('div')`
+export const ImagePreviewContainer = styled('div')<IImagePreviewContainerProps>`
   position: fixed;
   left: 0;
   top: 0;
@@ -40,8 +40,8 @@ export const PreviewMainContent = styled.div``;
 
 export const PreviewLink = styled.a``;
 
-export const PreviewImage = styled<IPreviewImageProps, 'img'>('img').attrs({
-  src: (props: IPreviewImageProps) => (props.src ? props.src : undefined),
+export const PreviewImage = styled<any>('img').attrs({
+  src: (props: any) => (props.src ? props.src : undefined),
 })`
   cursor: zoom-out;
 `;

@@ -44,7 +44,7 @@ export const InputTopText = styled.div`
 
 `;
 
-export const InputBottom = styled<IInputBottonProps, 'div'>('div')`
+export const InputBottom = styled('div')<IInputBottonProps>`
   display: ${(props) => (
     props.isShowSendBtnBox ? 'block' : 'none'
   )};

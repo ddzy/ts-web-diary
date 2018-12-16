@@ -31,7 +31,7 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
     throw new Error(e);
   }
 
-  public _findOneParent = () => {
+  public _findOneParent = (): any => {
     const parent = this.props.parentNodeWithAutoFocus;
     let finalNode = null;
 
@@ -52,18 +52,14 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
   ) => {
     const sel: Selection = window.getSelection();
     const range: Range = document.createRange();
-  
+
     callback && callback();
 
     range.setStart(ref, ref.childNodes.length);
     range.setEnd(ref, ref.childNodes.length);
-    
+
     sel.removeAllRanges();
     sel.addRange(range);
-  }
-
-  public handleSetRef = (ref: React.Ref<HTMLDivElement>) => {
-    this.ref = ref;
   }
 
   public handleBlur = () => {
@@ -97,7 +93,7 @@ export class BaseContentEditable extends React.PureComponent<IProps, IState> {
           style={this.props.style || {}}
           placeholder={this.props.placeholder}
           dangerouslySetInnerHTML={{ __html: this.props.html }}
-          innerRef={this.handleSetRef}
+          ref={this.ref}
           onBlur={this.handleBlur}
           onKeyUp={this.handleChange}
         />

@@ -36,7 +36,7 @@ const BaseLoading: React.SFC<IBaseLoadingProps> = (
       result.push(<MainContentItem
         key={i}
         style={{
-          animation: `${LOADING} 1.5s ${0.3 * (i - 1)}s infinite`,
+          animation: `${LOADING.getName()} 1.5s ${0.3 * (i - 1)}s infinite`,
         }}
       />);
     }
