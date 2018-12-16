@@ -9,6 +9,7 @@ import HeaderMainLogo from './header_main_logo/HeaderMainLogo';
 import HeaderMainNav from './header_main_nav/HeaderMainNav';
 import HeaderMainAction from './header_main_action/HeaderMainAction';
 import HeaderMainSearch from './header_main_search/HeaderMainSearch';
+import HeaderMainNotification from './header_main_notification/HeaderMainNotification';
 
 
 export interface IHeaderMainProps {
@@ -43,8 +44,9 @@ class HeaderMain extends React.PureComponent<
         <MainOuter>
           <HeaderMainLogo />
           <HeaderMainSearch />
-          <div style={{ flex: 3 }}>
-            头像框
+          <HeaderMainNotification />
+          <div style={{ flex: 2 }}>
+            聊天室
           </div>
         </MainOuter>
       </MainContainer>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // Logo
 export const MainLogoContainer = styled.div`
-  flex: 1;
+  flex: 2;
 `;
 
 export const MainLogoContent = styled.div`
