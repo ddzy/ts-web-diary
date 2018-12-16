@@ -82,6 +82,7 @@
     "@types/react": "^16.7.13",
     "@types/react-dom": "^16.0.11",
     "@types/redux-devtools-extension": "^2.13.2",
+    "@types/styled-components": "^4.1.4",
     "react-app-rewire-less": "^2.1.2",
     "react-app-rewired": "^1.5.2",
     "redux-devtools-extension": "^2.13.5",
