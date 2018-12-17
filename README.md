@@ -1,6 +1,6 @@
 ## 实时发布文章的交流平台
 ## Tip
-> 最近更新于 18/12/16
+> 最近更新于 18/12/17
 ## Todo
 - [x] 自定义配置BaseCommentInput_style
 - [x] 动态添加回复按钮click样式
@@ -18,6 +18,7 @@
 - [ ] sendReply分页
 - [x] header知乎_滑动效果, 搜索框
 - [ ] 解决firefox兼容, 新增搜索组件, 聊天室组件, 通知组件, 完善搜索框, 搜索功能
+- [ ] 异步组件加载, 减少首屏时间
 - [ ] main组件重构, 提取到article组件
 - [ ] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
 - [ ] 合并component下main组件, 重构home页
