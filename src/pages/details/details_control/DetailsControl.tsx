@@ -7,6 +7,7 @@ import {
 } from 'antd';
 
 import {
+  GlobalStyleSet,
   FixedControlContainer,
   FixedControlContent,
   FixedControlList,
@@ -51,94 +52,99 @@ class DetailsControl extends React.PureComponent<
 
   public render(): JSX.Element {
     return (
-      <FixedControlContainer>
-        <FixedControlContent>
-          <FixedControlList>
-            {/* 点赞 */}
-            <Tooltip title="赞一个" placement="right">
-              <FixedControlListItem>
-                <Icon
-                  className={`
+      <React.Fragment>
+        <FixedControlContainer>
+          <FixedControlContent>
+            <FixedControlList>
+              {/* 点赞 */}
+              <Tooltip title="赞一个" placement="right">
+                <FixedControlListItem>
+                  <Icon
+                    className={`
                     fixed-control-bar-star
                     ${
-                    this.props.isLiked
-                    && 'fixed-control-bar-star-active'
-                    }
+                      this.props.isLiked
+                      && 'fixed-control-bar-star-active'
+                      }
                   `}
-                  type="star"
-                  theme="filled"
-                  onClick={this.props.onControlBarStar}
-                />
-              </FixedControlListItem>
-            </Tooltip>
-            {/* 评论 */}
-            <Tooltip title="去评论" placement="right">
-              <FixedControlListItem>
-                <Anchor>
-                  <Anchor.Link
-                    title={
-                      <Icon
-                        className="fixed-control-bar-message"
-                        type="message"
-                        theme="filled"
+                    type="star"
+                    theme="filled"
+                    onClick={this.props.onControlBarStar}
+                  />
+                </FixedControlListItem>
+              </Tooltip>
+              {/* 评论 */}
+              <Tooltip title="去评论" placement="right">
+                <FixedControlListItem>
+                  <Anchor>
+                    <Anchor.Link
+                      title={
+                        <Icon
+                          className="fixed-control-bar-message"
+                          type="message"
+                          theme="filled"
+                        />
+                      }
+                      href="#left-comment-container"
+                    />
+                  </Anchor>
+                </FixedControlListItem>
+              </Tooltip>
+              {/* 收藏 */}
+              <Tooltip title="收藏" placement="right">
+                <FixedControlListItem>
+                  <Popover
+                    trigger="click"
+                    placement="right"
+                    title="我的收藏夹"
+                    content={
+                      <DetailsControlCollections
+                        collections={this.props.collections}
+
+                        collectionInputValue={this.props.collectionInputValue}
+                        onCollectionsInputChange={this.props.onCollectionsInputChange}
+                        onSendCollection={this.props.onSendCollection}
+
+                        onSaveToCollection={this.props.onSaveToCollection}
                       />
                     }
-                    href="#left-comment-container"
-                  />
-                </Anchor>
-              </FixedControlListItem>
-            </Tooltip>
-            {/* 收藏 */}
-            <Tooltip title="收藏" placement="right">
-              <FixedControlListItem>
-                <Popover
-                  trigger="click"
-                  placement="right"
-                  title="我的收藏夹"
-                  content={
-                    <DetailsControlCollections
-                      collections={this.props.collections}
-
-                      collectionInputValue={this.props.collectionInputValue}
-                      onCollectionsInputChange={this.props.onCollectionsInputChange}
-                      onSendCollection={this.props.onSendCollection}
-
-                      onSaveToCollection={this.props.onSaveToCollection}
+                  >
+                    <Icon
+                      className="fixed-control-bar-collection"
+                      type="heart"
+                      theme="filled"
                     />
-                  }
-                >
-                  <Icon
-                    className="fixed-control-bar-collection"
-                    type="heart"
-                    theme="filled"
-                  />
-                </Popover>
+                  </Popover>
+                </FixedControlListItem>
+              </Tooltip>
+              <FixedControlListItem>
+                分享
+            </FixedControlListItem>
+              <FixedControlListItem>
+                <Icon
+                  type="qq"
+                  theme="outlined"
+                />
               </FixedControlListItem>
-            </Tooltip>
-            <FixedControlListItem>
-              分享
-            </FixedControlListItem>
-            <FixedControlListItem>
-              <Icon
-                type="qq"
-                theme="outlined"
-              />
-            </FixedControlListItem>
-            <FixedControlListItem>
-              <Icon
-                type="twitter"
-                theme="outlined"
-              />
-            </FixedControlListItem>
-            <FixedControlListItem>
-              <Icon
-                type="weibo-circle"
-                theme="outlined"
-              />
-            </FixedControlListItem>
-          </FixedControlList>
-        </FixedControlContent>
-      </FixedControlContainer>
+              <FixedControlListItem>
+                <Icon
+                  type="twitter"
+                  theme="outlined"
+                />
+              </FixedControlListItem>
+              <FixedControlListItem>
+                <Icon
+                  type="weibo-circle"
+                  theme="outlined"
+                />
+              </FixedControlListItem>
+            </FixedControlList>
+          </FixedControlContent>
+        </FixedControlContainer>
+
+        {/* Global Style Set */}
+        <GlobalStyleSet />
+      </React.Fragment>
     );
   }
 

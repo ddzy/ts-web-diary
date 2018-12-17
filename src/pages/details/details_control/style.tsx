@@ -1,7 +1,26 @@
-import styled from 'styled-components';
+import styled, {
+  createGlobalStyle,
+} from 'styled-components';
+
+// ** Global Style **
+export const GlobalStyleSet = createGlobalStyle`
+  .fixed-control-bar-star,
+  .fixed-control-bar-collection {
+    cursor: pointer;
+    transition: color .3s ease;
+  }
+  .fixed-control-bar-star:hover,
+  .fixed-control-bar-collection:hover {
+    color: #40a9ff;
+  }
+  .fixed-control-bar-star-active,
+  .fixed-control-bar-collection-active {
+    color: #1890ff;
+  }
+`;
 
 
-//// 文章详情页 => 左侧固钉控制栏
+// ** 文章详情页 => 左侧固钉控制栏 **
 export const FixedControlContainer = styled.div`
   position: fixed;
   top: 7.1875rem;

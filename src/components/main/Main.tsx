@@ -6,6 +6,7 @@ import MainCarousel from './main_carousel/MainCarousel';
 import MainArtical from './main_artical/MainArtical';
 import { reduxHandleStar } from '../../pages/article/Article.redux';
 import {
+  GlobalStyleSet,
   MainWrapper,
   MainContent,
   ContentWrapper,
@@ -131,27 +132,32 @@ class Main extends React.PureComponent<IMainProps, IMainState> {
 
   public render(): JSX.Element {
     return (
-      <MainWrapper
-        ref={this.oWrapperRef}
-      >
-        <MainContent>
-          <ContentWrapper>
-            {/* 轮播区域 */}
-            {
-              !this.props.showTab && <MainCarousel />
-            }
+      <React.Fragment>
+        <MainWrapper
+          ref={this.oWrapperRef}
+        >
+          <MainContent>
+            <ContentWrapper>
+              {/* 轮播区域 */}
+              {
+                !this.props.showTab && <MainCarousel />
+              }
 
-            {/* 文章区域 */}
-            <MainArtical
-              showTab={this.props.showTab}
-              articleList={this.props.articleList}
-              onChangeStar={this.handleChangeStar}
-              onLoadMore={this.props.onLoadMore}
-              hasMore={this.props.hasMore}
-            />
-          </ContentWrapper>
-        </MainContent>
-      </MainWrapper>
+              {/* 文章区域 */}
+              <MainArtical
+                showTab={this.props.showTab}
+                articleList={this.props.articleList}
+                onChangeStar={this.handleChangeStar}
+                onLoadMore={this.props.onLoadMore}
+                hasMore={this.props.hasMore}
+              />
+            </ContentWrapper>
+          </MainContent>
+        </MainWrapper>
+
+        {/* Global Style Set */}
+        <GlobalStyleSet />
+      </React.Fragment>
     );
   }
 

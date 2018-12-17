@@ -1,4 +1,14 @@
-import styled from 'styled-components';
+import styled, {
+  createGlobalStyle,
+} from 'styled-components';
+
+
+// ** Global Style **
+export const GlobalStyleSet = createGlobalStyle`
+  .star-active {
+    color: #1890ff !important;
+  }
+`;
 
 
 // 文章列表

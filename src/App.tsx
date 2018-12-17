@@ -2,7 +2,7 @@ import * as React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import './global.css';
+import GlobalStyle from './GlobalStyle';
 
 
 export interface IAppProps extends RouteComponentProps<any> {
@@ -13,9 +13,9 @@ const App: React.SFC<IAppProps> = (
   props: IAppProps,
 ): JSX.Element => {
   return (
-    <TransitionGroup 
-        className="transition-router" 
-        // style={{ height: '100%' }} 
+    <React.Fragment>
+      <TransitionGroup
+        className="transition-router"
       >
         <CSSTransition
           key={props.location.pathname}
@@ -25,6 +25,9 @@ const App: React.SFC<IAppProps> = (
           {props.children}
         </CSSTransition>
       </TransitionGroup>
+
+      <GlobalStyle />
+    </React.Fragment>
   );
 }
 

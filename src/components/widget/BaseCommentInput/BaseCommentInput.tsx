@@ -8,6 +8,7 @@ import {
   Popover,
 } from 'antd';
 import {
+  GlobalStyleSet,
   CommentInputBox,
   CommentInputMain,
   InputTop,
@@ -103,99 +104,102 @@ class BaseCommentInput extends React.PureComponent<
 
   public render(): JSX.Element {
     return (
-      <CommentInputBox>
-        <CommentInputMain
-          containerStyle={this.props.containerStyle ? this.props.containerStyle : {}}
-        >
-          <InputTop>
-            <Row>
-              <Col span={2}>
-                <InputTopAvatar>
-                  <Avatar
-                    src={this.props.useravatar}
-                    shape="circle"
-                    icon="user"
-                    size={this.props.avatarSize}
-                    alt="useravatar"
-                  />
-                </InputTopAvatar>
-              </Col>
-              <Col span={22}>
-                <InputTopText>
-                  <ContentEditable
-                    ref={(el) => {
-                      this.handleGetRef(el)
-                    }}
-                    style={this.props.inputStyle ? this.props.inputStyle : {}}
-                    data-placeholder={this.props.placeHolder}
-                    className="yyg-contenteditable"
-                    html={this.state.html}
-                    onChange={this.handleChange}
-                  />
-                </InputTopText>
-              </Col>
-            </Row>
-          </InputTop>
-          <InputBottom>
-          <Row>
-            <Col span={12}>
-              <Popover
-                trigger="click"
-                placement="left"
-                content={
-                  <EmojiWrapper>
-                    <Emojify
-                      style={{
-                        width: '20',
-                        height: '20px',
-                        margin: '4px',
+      <React.Fragment>
+        <CommentInputBox>
+          <CommentInputMain
+            containerStyle={this.props.containerStyle ? this.props.containerStyle : {}}
+          >
+            <InputTop>
+              <Row>
+                <Col span={2}>
+                  <InputTopAvatar>
+                    <Avatar
+                      src={this.props.useravatar}
+                      shape="circle"
+                      icon="user"
+                      size={this.props.avatarSize}
+                      alt="useravatar"
+                    />
+                  </InputTopAvatar>
+                </Col>
+                <Col span={22}>
+                  <InputTopText>
+                    <ContentEditable
+                      ref={(el) => {
+                        this.handleGetRef(el)
                       }}
-                      onClick={this.handleReplyEmojiChange}
+                      style={this.props.inputStyle ? this.props.inputStyle : {}}
+                      data-placeholder={this.props.placeHolder}
+                      className="yyg-contenteditable"
+                      html={this.state.html}
+                      onChange={this.handleChange}
+                    />
+                  </InputTopText>
+                </Col>
+              </Row>
+            </InputTop>
+            <InputBottom>
+              <Row>
+                <Col span={12}>
+                  <Popover
+                    trigger="click"
+                    placement="left"
+                    content={
+                      <EmojiWrapper>
+                        <Emojify
+                          style={{
+                            width: '20',
+                            height: '20px',
+                            margin: '4px',
+                          }}
+                          onClick={this.handleReplyEmojiChange}
+                        >
+                          {this.initEmoji()}
+                        </Emojify>
+                      </EmojiWrapper>
+                    }
+                  >
+                    <div
+                      style={{
+                        width: '50px',
+                        marginLeft: '16%',
+                        cursor: 'pointer',
+                      }}
                     >
-                      {this.initEmoji()}
-                    </Emojify>
-                  </EmojiWrapper>
-                }
-              >
-                <div
-                  style={{
-                    width: '50px',
-                    marginLeft: '16%',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Icon
-                    type="smile"
-                    theme="twoTone"
+                      <Icon
+                        type="smile"
+                        theme="twoTone"
+                        style={{
+                          fontSize: '18px',
+                          display: 'inline-block',
+                          verticalAlign: 'middle',
+                        }}
+                      />
+                      <span style={{
+                        color: '#1890ff',
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                      }}>表情</span>
+                    </div>
+                  </Popover>
+                </Col>
+                <Col span={12}>
+                  <Button
+                    className="same-show-action-box"
+                    htmlType="button"
+                    type="primary"
                     style={{
-                      fontSize: '18px',
-                      display: 'inline-block',
-                      verticalAlign: 'middle',
+                      float: 'right',
                     }}
-                  />
-                  <span style={{
-                    color: '#1890ff',
-                    display: 'inline-block',
-                    verticalAlign: 'middle',
-                  }}>表情</span>
-                </div>
-              </Popover>
-            </Col>
-            <Col span={12}>
-              <Button
-                className="same-show-action-box"
-                htmlType="button"
-                type="primary"
-                style={{
-                  float: 'right',
-                }}
-                onClick={this.handleSend}
-              >发表</Button>
-            </Col>
-          </Row>
-        </InputBottom>
-        </CommentInputMain>
-      </CommentInputBox>
+                    onClick={this.handleSend}
+                  >发表</Button>
+                </Col>
+              </Row>
+            </InputBottom>
+          </CommentInputMain>
+        </CommentInputBox>
+        <GlobalStyleSet />
+      </React.Fragment>
     );
   }
 }

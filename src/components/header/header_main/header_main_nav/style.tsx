@@ -1,4 +1,17 @@
-import styled from 'styled-components';
+import styled, {
+  createGlobalStyle,
+} from 'styled-components';
+
+
+// ** Global Style **
+export const GlobalStyleSet = createGlobalStyle`
+  .header-active {
+    background-color: #1890ff;
+  }
+  .header-active a {
+    color: #fff;
+  }
+`;
 
 
 export const MainNavContainer = styled.div`

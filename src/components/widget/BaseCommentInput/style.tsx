@@ -1,8 +1,37 @@
-import styled from 'styled-components';
+import styled, {
+  createGlobalStyle,
+} from 'styled-components';
 
 export interface ICommentInputMainProps {
   containerStyle: React.CSSProperties;
 };
+
+
+// ** Global Style **
+export const GlobalStyleSet = createGlobalStyle`
+  .yyg-contenteditable {
+    height: 100%;
+    padding: 0.5rem 0.6667rem 0.3889rem;
+    background-color: #f8f9f9;
+    border: 1px solid #ccc;
+    border-radius: 0.3333rem;
+    outline: none;
+    transition: border .15s ease-in,
+                background-color .15s ease-in;
+  }
+  .yyg-contenteditable:hover {
+    background-color: #f8f8f8;
+    border-color: #8590a6;
+  }
+  .yyg-contenteditable:focus {
+    border: 1px solid #1890ff;
+    background-color: #fff;
+  }
+  .yyg-contenteditable:empty::before {
+    content: attr(data-placeholder);
+    color: #ccc;
+  }
+`;
 
 
 export const CommentInputBox = styled.div`

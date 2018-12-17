@@ -9,6 +9,7 @@ import {
 } from 'history';
 
 import {
+  GlobalStyleSet,
   MainNavContainer,
   MainNavItem,
   MainNavList,
@@ -95,11 +96,16 @@ class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMain
 
   public render(): JSX.Element {
     return (
-      <MainNavContainer>
-        <MainNavList id="header-navbar">
-          {this.handleInitHeaderNavList()}
-        </MainNavList>
-      </MainNavContainer>
+      <React.Fragment>
+        <MainNavContainer>
+          <MainNavList id="header-navbar">
+            {this.handleInitHeaderNavList()}
+          </MainNavList>
+        </MainNavContainer>
+
+        {/* Global Style Set */}
+        <GlobalStyleSet />
+      </React.Fragment>
     );
   }
 }
