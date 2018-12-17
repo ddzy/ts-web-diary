@@ -23,13 +23,13 @@ export const HeaderMainNotification: React.SFC<IHeaderMainNotificationProps> = (
         <MainNotificationMainListItem>
           <Icon
             type="notification"
-            theme="outlined"
+            theme="filled"
           />
         </MainNotificationMainListItem>
         <MainNotificationMainListItem>
           <Icon
             type="message"
-            theme="outlined"
+            theme="filled"
           />
         </MainNotificationMainListItem>
       </MainNotificationMainlist>

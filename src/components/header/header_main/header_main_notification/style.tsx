@@ -11,6 +11,7 @@ export const MainNotificationMainlist = styled.ul`
 `;
 export const MainNotificationMainListItem = styled.li`
   flex: 1;
+  color: #8590a6;
   svg {
     width: 1.3rem;
     height: 1.3rem;
