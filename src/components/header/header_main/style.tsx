@@ -7,7 +7,7 @@ export const MainContainer = styled.div`
   margin: 0 auto;
   line-height: 3.125rem;
   text-align: center;
-  transition: transform .3s ease-in;
+  transition: transform .3s ease;
 `;
 
 export const MainInner = styled.div`
