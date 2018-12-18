@@ -40,6 +40,7 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
     setState,
   ] = React.useState({
     isInputEmpty: false,
+    popoverTitle: '',
   });
   const emitChangeDebounced = debounce(emitChange, 400);
 
@@ -89,7 +90,10 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
   function emitChange(
     e: any,
   ): void {
-    setState({ isInputEmpty: false });
+    setState({
+      isInputEmpty: false,
+      popoverTitle: '搜索到的文章',
+    });
     props.onSearch(e);
   }
 
@@ -100,7 +104,10 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
     const v: string = e.target.value;
 
     if (!v) {
-      setState({ isInputEmpty: true });
+      setState({
+        isInputEmpty: true,
+        popoverTitle: '热门标签',
+      });
     }
   }
 
@@ -109,7 +116,7 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
       <SearchMain>
         <SearchMainInput>
           <Popover
-            title={`大家都在搜`}
+            title={state.popoverTitle}
             placement="bottom"
             trigger="focus"
             content={
