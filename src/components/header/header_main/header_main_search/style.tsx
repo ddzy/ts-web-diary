@@ -11,6 +11,7 @@ export const SearchMainInput = styled.div``;
 
 export const PopContentBox = styled.div`
   min-width: 18.75rem;
+  max-width: 20rem;
 `;
 export const PopContentList = styled.ul``;
 export const PopContentListItem = styled.li`
@@ -22,4 +23,8 @@ export const PopContentListItem = styled.li`
     background-color: #f6f6f6;
     color: #1890ff;
   }
+`;
+export const PopContentListSpan = styled.span`
+  display: inline-block;
+  margin: .3rem;
 `;

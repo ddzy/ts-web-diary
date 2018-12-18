@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   Popover,
   Input,
+  Tag,
 } from 'antd';
 import {
   debounce,
@@ -14,7 +15,11 @@ import {
   PopContentBox,
   PopContentList,
   PopContentListItem,
+  PopContentListSpan,
 } from './style';
+import {
+  MERGED_ARTICLE_TAG,
+} from '../../../../constants/constants';
 
 
 export interface IHeaderMainSearchProps {
@@ -41,19 +46,36 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
   /**
    * 处理初始化popcontent
    */
-  function handleInitPopContent(): any {
+  function handleInitPopContent(): JSX.Element {
     // ??? 输入框为空 -> 热门标签
     // ??? 输入框不为空 -> 搜索结果
     const { isInputEmpty } = state;
 
+    const emptyContent: JSX.Element = (
+      <React.Fragment>
+        {Object.keys(MERGED_ARTICLE_TAG).map((key: string, i: number) => (
+          <PopContentListSpan key={i}>
+            <Tag
+              color={MERGED_ARTICLE_TAG[key]}
+            >{key}</Tag>
+          </PopContentListSpan>
+        ))}
+      </React.Fragment>
+    );
+    const unEmptyContent: JSX.Element = (
+      <PopContentList>
+        {props.searchedArticles.map((hot: any, i: number) => (
+          <PopContentListItem
+            key={i}
+            data-id={hot._id}
+          >{hot.title}</PopContentListItem>
+        ))}
+      </PopContentList>
+    );
+
     return isInputEmpty
-      ? <PopContentListItem>热门标签</PopContentListItem>
-      : props.searchedArticles.map((hot: any, i: number) => (
-        <PopContentListItem
-          key={i}
-          data-id={hot._id}
-        >{hot.title}</PopContentListItem>
-      ))
+      ? emptyContent
+      : unEmptyContent;
   }
 
   /**
@@ -92,9 +114,7 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
             trigger="focus"
             content={
               <PopContentBox>
-                <PopContentList>
-                  {handleInitPopContent()}
-                </PopContentList>
+                {handleInitPopContent()}
               </PopContentBox>
             }
           >
