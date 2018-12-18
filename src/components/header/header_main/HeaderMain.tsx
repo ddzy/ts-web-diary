@@ -19,6 +19,11 @@ export interface IHeaderMainProps {
     useravatar: string;
     username: string;
   };
+
+  // ** header_main_search **
+  onSearch: (
+    e: any,
+  ) => void;
 };
 interface IHeaderMainState {};
 
@@ -44,7 +49,9 @@ class HeaderMain extends React.PureComponent<
         </MainInner>
         <MainOuter>
           <HeaderMainLogo />
-          <HeaderMainSearch />
+          <HeaderMainSearch
+            onSearch={this.props.onSearch}
+          />
           <HeaderMainNotification />
           <HeaderMainChat />
         </MainOuter>

@@ -3,6 +3,9 @@ import {
   Popover,
   Input,
 } from 'antd';
+import {
+  debounce,
+} from 'lodash';
 
 import {
   SearchWrapper,
@@ -14,12 +17,18 @@ import {
 } from './style';
 
 
-export interface IHeaderMainSearchProps { };
+export interface IHeaderMainSearchProps {
+  onSearch: (
+    e: any,
+  ) => void;
+};
 
 
 const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
   props: IHeaderMainSearchProps,
 ): JSX.Element => {
+
+  const emitChangeDebounced = debounce(emitChange, 400);
 
   /**
    * 处理初始化热搜popover-content
@@ -38,6 +47,20 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
         key={i}
       >{hot}🎉</PopContentListItem>
     ));
+  }
+
+  /**
+   * 处理搜索框输入
+   */
+  function handleChange(e: React.ChangeEvent): void {
+    e.persist();
+    emitChangeDebounced(e);
+  }
+
+  function emitChange(
+    e: any,
+  ): void {
+    props.onSearch(e);
   }
 
   return (
@@ -60,6 +83,7 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
               size="large"
               placeholder={`搜索您想要的文章...`}
               enterButton
+              onChange={handleChange}
             />
           </Popover>
         </SearchMainInput>

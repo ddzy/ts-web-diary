@@ -9,7 +9,7 @@ const articleController: Router = new Router();
 /**
  * 文章页 获取文章
  */
-articleController.get('/list', async (ctx, next) => {
+articleController.get('/list', async (ctx) => {
 
   const {
     page,
@@ -35,7 +35,7 @@ articleController.get('/list', async (ctx, next) => {
 /**
  * 文章页 处理点赞
  */
-articleController.get('/star', async (ctx, next) => {
+articleController.get('/star', async (ctx) => {
 
   const {
     // userid,
@@ -64,6 +64,20 @@ articleController.get('/star', async (ctx, next) => {
     message: 'Success!',
     star: result.star,
     author: result.author.username,
+  };
+});
+
+
+/**
+ * 文章页 处理搜索文章
+ */
+articleController.get('/search/input/list', async (ctx) => {
+  const query = await ctx.request.query;
+
+  ctx.body = {
+    code: 0,
+    mesage: 'Success!',
+    data: query,
   };
 });
 
