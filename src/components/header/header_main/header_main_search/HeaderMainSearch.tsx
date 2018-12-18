@@ -1,5 +1,8 @@
 import * as React from 'react';
 import {
+  Link,
+} from 'react-router-dom';
+import {
   Popover,
   Input,
   Tag,
@@ -68,8 +71,9 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
         {props.searchedArticles.map((hot: any, i: number) => (
           <PopContentListItem
             key={i}
-            data-id={hot._id}
-          >{hot.title}</PopContentListItem>
+          >
+            <Link to={`/details/${hot._id}`}>{hot.title}🎉🎉🎉</Link>
+          </PopContentListItem>
         ))}
       </PopContentList>
     );
