@@ -14,14 +14,6 @@ import DetailsMain from './details_main/DetailsMain';
 import DetailsRight from './details_action/DetailsAction';
 import DetailsControl from './details_control/DetailsControl';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
-import {
-  getOneArticleInfo,
-  reduxHandleSendComment,
-  reduxHandleSendReply,
-  reduxHandleFixedControlBarStar,
-  reduxHandleCreateCollection,
-  reduxHandleSaveToCollection,
-} from './Details.redux';
 import { getWindowWH } from '../../utils/utils';
 import {
   DetailsWrapper,
@@ -33,6 +25,8 @@ import {
   serviceHandleFixedControlBarStar,
   serviceHandleCreateCollection,
   serviceHandleSaveToCollection,
+  serviceHandleSendComment,
+  serviceHandleSendReply,
 } from './Details.service';
 
 
@@ -41,35 +35,7 @@ export interface IDetailsProps {
   history: History;
   match: match<any>;
 
-  DetailsReducer: { detailsInfo: any };
   AuthRouteReducer: { useravatar: string, };
-
-  getOneArticleInfo: (
-    articleid: string,
-    callback: () => void,
-  ) => void;
-  reduxHandleSendComment: (
-    v: any,
-    callback?: () => void,
-  ) => void;
-  reduxHandleSendReply: (
-    v: any,
-    callback?: () => void,
-  ) => void;
-  reduxHandleFixedControlBarStar: (
-    articleid: string,
-    liked: boolean,
-    callback?: () => void,
-  ) => void;
-  reduxHandleCreateCollection: (
-    collectionName: string,
-    callback?: () => void,
-  ) => void;
-  reduxHandleSaveToCollection: (
-    articleId: string,
-    collectionId: string,
-    callback?: () => void,
-  ) => void;
 };
 interface IDetailsState {
   visible: boolean;       // loading显示隐藏
@@ -80,7 +46,6 @@ interface IDetailsState {
     value: string | '',           // 收藏弹出层输入框
   };
 
-  // !!! 重构
   detailsInfo: IDetailsInfoOptions;
 };
 
@@ -157,22 +122,22 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   ): void => {
     e.currentTarget.classList
       .contains('fixed-control-bar-star-active')
-        ? serviceHandleFixedControlBarStar(
-            this.props.match.params.id,
-            false,
-            () => {
-              message.info('取消了赞!');
-            },
-          )
-        : serviceHandleFixedControlBarStar(
-            this.props.match.params.id,
-            true,
-            () => {
-              message.success(`
+      ? serviceHandleFixedControlBarStar(
+        this.props.match.params.id,
+        false,
+        () => {
+          message.info('取消了赞!');
+        },
+      )
+      : serviceHandleFixedControlBarStar(
+        this.props.match.params.id,
+        true,
+        () => {
+          message.success(`
                 你赞了 ${this.state.detailsInfo.author} 的文章
               `);
-            },
-          );
+        },
+      );
 
     e.currentTarget.classList
       .toggle('fixed-control-bar-star-active');
@@ -241,12 +206,12 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
             },
           };
         }, () => {
-            notification.success({
-              message: '提示',
-              description: `成功添加到 ${
-                this.state.detailsInfo.collectionName
+          notification.success({
+            message: '提示',
+            description: `成功添加到 ${
+              this.state.detailsInfo.collectionName
               }`,
-            });
+          });
         });
       }
     );
@@ -263,16 +228,30 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
     if (value) {
       // TODO 敏感词过滤
-      this.props.reduxHandleSendComment({
+      serviceHandleSendComment({
         value,
         articleId: id || '',
         from: localStorage.getItem('userid') || '',
-      }, () => {
-        inputEl.textContent = '';
-        inputEl.focus();
-        notification.success({
-          message: '提示',
-          description: `评论发表成功`,
+      }, (data) => {
+
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            detailsInfo: {
+              ...prevState.detailsInfo,
+              comments: [
+                data.comment,
+                ...prevState.detailsInfo.comments,
+              ]
+            },
+          };
+        }, () => {
+          inputEl.textContent = '';
+          inputEl.focus();
+          notification.success({
+            message: '提示',
+            description: `评论发表成功`,
+          });
         });
       });
     } else {
@@ -293,17 +272,38 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     const { id } = this.props.match.params;
 
     if (v.value) {
-      this.props.reduxHandleSendReply(
+      serviceHandleSendReply(
         {
           ...v,
           articleId: id,
         },
-        () => {
-          inputEl.textContent = '';
-          inputEl.focus();
-          notification.success({
-            message: '提示',
-            description: `回复发表成功`,
+        (data) => {
+          this.setState((prevState) => ({
+            ...prevState,
+            detailsInfo: {
+              ...prevState.detailsInfo,
+              comments: prevState.detailsInfo.comments.map((item) => {
+                if (
+                  item._id === data.reply.comment
+                ) {
+                  return {
+                    ...item,
+                    replys: [
+                      data.reply,
+                      ...item.replys,
+                    ],
+                  };
+                }
+                return item;
+              }),
+            },
+          }), () => {
+            inputEl.textContent = '';
+            inputEl.focus();
+            notification.success({
+              message: '提示',
+              description: `回复发表成功`,
+            });
           });
         },
       );
@@ -345,7 +345,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         <DetailsControl
           collections={this.state.detailsInfo.collections}
 
-          isLiked={this.props.DetailsReducer.detailsInfo.isLiked}
+          isLiked={this.state.detailsInfo.isLiked}
           onControlBarStar={this.handleControlBarStar}
 
           onCollectionsInputChange={this.handleCollectionsInputChange}
@@ -366,22 +366,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
 function mapStateToProps(state: any) {
   return {
-    DetailsReducer: state.DetailsReducer,
     AuthRouteReducer: state.AuthRouteReducer,
-  };
-}
-function mapDispatchToProps() {
-  return {
-    getOneArticleInfo,
-    reduxHandleSendComment,
-    reduxHandleSendReply,
-    reduxHandleFixedControlBarStar,
-    reduxHandleCreateCollection,
-    reduxHandleSaveToCollection,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps(),
 )(Details) as React.ComponentClass<any>;
