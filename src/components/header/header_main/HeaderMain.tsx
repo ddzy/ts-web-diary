@@ -21,6 +21,7 @@ export interface IHeaderMainProps {
   };
 
   // ** header_main_search **
+  searchedArticles: any;
   onSearch: (
     e: any,
   ) => void;
@@ -50,6 +51,7 @@ class HeaderMain extends React.PureComponent<
         <MainOuter>
           <HeaderMainLogo />
           <HeaderMainSearch
+            searchedArticles={this.props.searchedArticles}
             onSearch={this.props.onSearch}
           />
           <HeaderMainNotification />

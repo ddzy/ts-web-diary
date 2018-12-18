@@ -18,6 +18,7 @@ import {
 
 
 export interface IHeaderMainSearchProps {
+  searchedArticles: any;
   onSearch: (
     e: any,
   ) => void;
@@ -34,18 +35,11 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
    * 处理初始化热搜popover-content
    */
   function handleInitPopContent(): JSX.Element[] {
-    const hotSearchArr: string[] = [
-      'Eruda 一个被人遗忘的调试神器',
-      '结合 Google quicklink，react 项目实现页面秒开',
-      'React 实战：设计模式和最佳实践',
-      '你（可能）不知道的web api',
-      '关于依赖注入（typescript）',
-    ];
-
-    return hotSearchArr.map((hot, i) => (
+    return props.searchedArticles.map((hot: any, i: number) => (
       <PopContentListItem
         key={i}
-      >{hot}🎉</PopContentListItem>
+        data-id={hot._id}
+      >{hot.title}</PopContentListItem>
     ));
   }
 

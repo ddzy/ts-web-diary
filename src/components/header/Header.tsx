@@ -9,8 +9,8 @@ import {
 } from './style';
 import HeaderMain from './header_main/HeaderMain';
 import {
-  reduxHandleGetUserSearchArticles,
-} from './Header.redux';
+  serviceHandleGetUserSearchArticles,
+} from './Header.service';
 
 
 export interface IHeaderProps {
@@ -19,10 +19,6 @@ export interface IHeaderProps {
     username: string;
     useravatar: string;
   };
-
-  reduxHandleGetUserSearchArticles: (
-    v: string,
-  ) => void;
 };
 
 
@@ -30,12 +26,24 @@ const Header: React.SFC<IHeaderProps> = (
   props: IHeaderProps,
 ): JSX.Element => {
 
+  const [
+    searchedArticles,
+    setSearchedArticles,
+  ] = React.useState({
+    searchedArticles: [],
+  });
+
   /**
    * 处理搜索
    */
   function handleSearch(e: any): void {
-    props.reduxHandleGetUserSearchArticles(
+    serviceHandleGetUserSearchArticles(
       e.target.value,
+      (data) => {
+        setSearchedArticles({
+          searchedArticles: data,
+        });
+      }
     );
   }
 
@@ -46,6 +54,8 @@ const Header: React.SFC<IHeaderProps> = (
       <HeaderWrapper>
         <HeaderMain
           authInfo={{ ...props.AuthRouteReducer }}
+
+          searchedArticles={searchedArticles.searchedArticles}
           onSearch={handleSearch}
         />
       </HeaderWrapper>
@@ -57,16 +67,9 @@ const Header: React.SFC<IHeaderProps> = (
 function mapStateToProps(state: any) {
   return {
     AuthRouteReducer: state.AuthRouteReducer,
-    HeaderReducer: state.HeaderReducer,
-  };
-}
-function mapDispatchToProps() {
-  return {
-    reduxHandleGetUserSearchArticles,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps(),
 )(Header) as React.ComponentClass<any>;

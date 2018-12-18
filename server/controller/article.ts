@@ -72,12 +72,23 @@ articleController.get('/star', async (ctx) => {
  * 文章页 处理搜索文章
  */
 articleController.get('/search/input/list', async (ctx) => {
-  const query = await ctx.request.query;
+  const {
+    keyword,
+  } = await ctx.request.query;
+
+  // ** 查找文章 **
+  const result = await Posts
+    .find({
+      title: { $regex: keyword },
+    })
+    .sort({ create_time: -1 })
+    .limit(6)
+    .select(['_id', 'title'])
 
   ctx.body = {
     code: 0,
     mesage: 'Success!',
-    data: query,
+    data: result,
   };
 });
 
