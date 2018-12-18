@@ -13,10 +13,6 @@ export interface IMainArticalProps {
   showTab: boolean;
   articleList?: any[];
   hasMore?: boolean;
-
-  onChangeStar: (
-    e: React.MouseEvent,
-  ) => void;
   onLoadMore: (
     page: number,
     pageSize: number,
@@ -72,7 +68,6 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
         <span
           data-type={data.type}
           data-id={data.id}
-          onClick={this.handleChangeStar}
         >
           <Icon
             type={data.type}
@@ -82,14 +77,6 @@ class MainArtical extends React.Component<IMainArticalProps, IMainArticalState> 
         </span>
     );
   }
-
-
-  //// 处理点赞
-  public handleChangeStar: React.MouseEventHandler = (e: React.MouseEvent): void => {
-    this.props.onChangeStar(e);
-  }
-
-
 
   //// 加载更多
   public handleLoadMore = () => {

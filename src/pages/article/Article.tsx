@@ -1,65 +1,64 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import Header from '../../components/header/Header';
 import Main from '../../components/main/Main';
-import { 
-  getArticleList, 
-  handleArticleLoadMore,
-} from './Article.redux';
+
+import {
+  serviceHandleGetArticleList,
+  serviceHandleArticleLoadMore,
+} from './Article.service';
 
 
-export interface IArticleProps {
-  ArticleReducer: { 
-    article_list: object[], 
-    targetUser: string,
-    hasMore: boolean,
-  }
-  getArticleList: () => void;     // 处理首屏数据
-
-  handleArticleLoadMore: (        // 处理加载更多
-    page: number,
-    pageSize: number,
-    callback: () => void,
-  ) => void;
+export interface IArticleProps {};
+interface IArticleState {
+  article_list: object[];
+  hasMore: boolean;
 };
-interface IArticleState {};
 
 
 class Article extends React.Component<IArticleProps, IArticleState> {
 
-  public readonly state = {}
-
+  public readonly state = {
+    article_list: [],
+    hasMore: true,
+  }
 
   public componentDidMount(): void {
-    this.props.getArticleList();
+    serviceHandleGetArticleList((data) => {
+      this.setState({
+        article_list: data,
+      });
+    });
   }
 
-
-  //// 加载更多
+  /**
+   * 处理加载更多
+   */
   public handleLoadMore = (
-    page: number, 
+    page: number,
     pageSize: number,
-    callback: () => void,
   ) => {
-    this.props.handleArticleLoadMore(
+    serviceHandleArticleLoadMore(
       page,
       pageSize,
-      callback,
+      (data) => {
+        this.setState({
+          article_list: data.articleList,
+          hasMore: data.hasMore
+        });
+      }
     );
   }
-
 
   public render(): JSX.Element {
     return (
       <React.Fragment>
         <Header />
-        <Main 
+        <Main
           showTab={true}
-          articleList={this.props.ArticleReducer.article_list} 
-          targetUser={this.props.ArticleReducer.targetUser}
+          articleList={this.state.article_list}
           onLoadMore={this.handleLoadMore}
-          hasMore={this.props.ArticleReducer.hasMore}
+          hasMore={this.state.hasMore}
         />
       </React.Fragment>
     );
@@ -68,19 +67,4 @@ class Article extends React.Component<IArticleProps, IArticleState> {
 }
 
 
-function mapStateToProps(state: any) {
-  return {
-    ArticleReducer: state.ArticleReducer,
-  };
-}
-function mapDispatchToProps() {
-  return {
-    getArticleList,
-    handleArticleLoadMore,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps(),
-)(Article) as React.ComponentClass<any>;
+export default Article;
