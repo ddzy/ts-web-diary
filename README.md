@@ -21,6 +21,8 @@
 - [x] 完善搜索框, 搜索功能, 进入搜索详情
 - [ ] 提取全局index.d.ts (ObjectStatic, ActionStaticOption)
 - [ ] 重构所有无用的.redux.tsx ->.service.tsx
+- [ ] 单个文件夹单一接口定义文件
+- [ ] 所有组件state归类处理
 - [ ] 首页骨架屏
 - [ ] 首页滚动加载
 - [ ] 按钮节流
