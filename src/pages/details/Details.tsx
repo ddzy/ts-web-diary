@@ -27,6 +27,11 @@ import {
   DetailsWrapper,
   DetailsContent,
 } from './style';
+import {
+  IDetailsInfoOptions,
+  serviceHandleGetOneArticleInfo,
+  serviceHandleFixedControlBarStar,
+} from './Details.service';
 
 
 export interface IDetailsProps {
@@ -71,7 +76,10 @@ interface IDetailsState {
 
   collectionInputValue: {
     value: string | '',           // 收藏弹出层输入框
-  },
+  };
+
+  // !!! 重构
+  detailsInfo: IDetailsInfoOptions;
 };
 
 
@@ -87,22 +95,43 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     collectionInputValue: {
       value: '',
     },
-
     commentInputValue: '',
+
+    detailsInfo: {
+      author: '',
+      articleContent: '',
+      articleTitle: '',
+      articleCount: 0,
+      authorAvatar: '',
+      create_time: 0,
+      mode: '',
+      newArticle: [],
+      tag: '',
+      type: '',
+      watchCount: 0,
+      isLiked: false,
+      img: '',
+      comments: [],
+      collections: [],
+      collectionName: '',
+    },
   }
 
   public componentDidMount(): void {
-
     this.initLoadingWrapper();
 
-    this.props.getOneArticleInfo(
-      this.props.match.params.id,
-      () => {
-        this.setState({
+    serviceHandleGetOneArticleInfo(this.props.match.params.id, (data) => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
           visible: false,
-        });
-      },
-    );
+          detailsInfo: {
+            ...prevState.detailsInfo,
+            ...data.result,
+          },
+        };
+      });
+    });
   }
 
   /**
@@ -126,19 +155,19 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   ): void => {
     e.currentTarget.classList
       .contains('fixed-control-bar-star-active')
-        ? this.props.reduxHandleFixedControlBarStar(
+        ? serviceHandleFixedControlBarStar(
             this.props.match.params.id,
             false,
             () => {
               message.info('取消了赞!');
             },
           )
-        : this.props.reduxHandleFixedControlBarStar(
+        : serviceHandleFixedControlBarStar(
             this.props.match.params.id,
             true,
             () => {
               message.success(`
-                你赞了 ${this.props.DetailsReducer.detailsInfo.author} 的文章
+                你赞了 ${this.state.detailsInfo.author} 的文章
               `);
             },
           );
@@ -274,7 +303,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               <Col span={18}>
                 {/* 左边内容区域 */}
                 <DetailsMain
-                  {...this.props.DetailsReducer.detailsInfo}
+                  {...this.state.detailsInfo}
                   {...this.props.AuthRouteReducer}
                   onSendComment={this.handleSendComment}
                   onSendReply={this.handleSendReply}
@@ -283,7 +312,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               <Col span={6}>
                 {/* 右边侧边栏区域 */}
                 <DetailsRight
-                  {...this.props.DetailsReducer.detailsInfo}
+                  {...this.state.detailsInfo}
                 />
               </Col>
             </Row>
