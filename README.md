@@ -24,6 +24,7 @@
 - [ ] 首页骨架屏
 - [ ] 首页滚动加载
 - [ ] 按钮节流
+- [ ] 初始化只获取可见区域数据, 加快加载速度
 - [ ] 异步组件加载, 减少首屏时间
 - [ ] main组件重构, 提取到article组件
 - [x] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
