@@ -31,6 +31,8 @@ import {
   IDetailsInfoOptions,
   serviceHandleGetOneArticleInfo,
   serviceHandleFixedControlBarStar,
+  serviceHandleCreateCollection,
+  serviceHandleSaveToCollection,
 } from './Details.service';
 
 
@@ -200,12 +202,23 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     inputRef: any,
   ) => {
     this.state.collectionInputValue.value
-      && this.props.reduxHandleCreateCollection(
-          this.state.collectionInputValue.value,
-          () => {
-            inputRef.input.value = '';
-          }
-        );
+      && serviceHandleCreateCollection(
+        this.state.collectionInputValue.value,
+        (data) => {
+          this.setState((prevState) => {
+            return {
+              ...prevState,
+              detailsInfo: {
+                ...prevState.detailsInfo,
+                collections: prevState.detailsInfo.collections.concat(
+                  data.collection
+                ),
+              },
+            };
+          });
+          inputRef.input.value = '';
+        },
+      );
   }
 
   /**
@@ -215,17 +228,26 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   public handleSaveToCollection = (
     collectionId: string,
   ) => {
-    this.props.reduxHandleSaveToCollection(
+    serviceHandleSaveToCollection(
       this.props.match.params.id,
       collectionId,
-      () => {
-        this.props.DetailsReducer.detailsInfo.collectionName
-          && notification.success({
-            message: '提示',
-            description: `成功添加到 ${
-              this.props.DetailsReducer.detailsInfo.collectionName
-            }`,
-          })
+      (data) => {
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            detailsInfo: {
+              ...prevState.detailsInfo,
+              collectionName: data.collectionName,
+            },
+          };
+        }, () => {
+            notification.success({
+              message: '提示',
+              description: `成功添加到 ${
+                this.state.detailsInfo.collectionName
+              }`,
+            });
+        });
       }
     );
   }
@@ -321,7 +343,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
         {/* 左侧固钉控制栏 */}
         <DetailsControl
-          collections={this.props.DetailsReducer.detailsInfo.collections}
+          collections={this.state.detailsInfo.collections}
 
           isLiked={this.props.DetailsReducer.detailsInfo.isLiked}
           onControlBarStar={this.handleControlBarStar}
