@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { match } from 'react-router';
-import { connect } from 'react-redux';
 import { notification } from 'antd';
 
 import Header from '../../components/header/Header';
@@ -16,35 +15,19 @@ import {
 } from './style';
 import collection_bg from '../../static/images/bg_img.png';
 import CollectionShowItem from './collection_show/CollectionShowItem';
-import { 
-  reduxHandleGetCollectionInfo,
-  reduxHandleDeleteCollectionArticle,
-} from './Collection.redux';
+
+import {
+  serviceHandleGetCollectionInfo,
+  serviceHandleDeleteCollectionArticle,
+} from './Collection.service';
 
 
 export interface ICollectionProps {
   match: match<any>;
-
-  // 收藏夹信息
-  CollectionReducer: {
-    collectionInfo: any,
-  },
-
-  // 获取收藏夹信息
-  reduxHandleGetCollectionInfo: (
-    collectionId: string,
-    callback?: () => void,
-  ) => void;
-
-  // 删除收藏夹文章
-  reduxHandleDeleteCollectionArticle: (
-    articleId: string,
-    collectionId: string,
-    callback?: () => void,
-  ) => void;
 };
-interface ICollectionState {};
-
+interface ICollectionState {
+  collectionInfo: any;
+};
 
 
 /**
@@ -55,13 +38,16 @@ class Collection extends React.PureComponent<
   ICollectionState
 > {
 
-  public readonly state = {}
-
+  public readonly state = {
+    collectionInfo: {
+      name: '',
+      articles: [],
+    },
+  };
 
   public componentDidMount(): void {
     this.handleGetCollectionInfo();
   }
-
 
   /**
    * 处理 获取单个收藏夹信息
@@ -69,26 +55,31 @@ class Collection extends React.PureComponent<
   public handleGetCollectionInfo = () => {
     const { id } = this.props.match.params;
 
-    this.props.reduxHandleGetCollectionInfo(
-      id,
-    );
+    serviceHandleGetCollectionInfo(id, (data) => {
+      this.setState((prevState) => {
+        return {
+          collectionInfo: {
+            ...prevState.collectionInfo,
+            ...data.collectionInfo,
+          },
+        };
+      });
+    });
   }
-
 
   /**
    * 处理 初始化单个收藏夹 文章列表
    */
   public handleInitShowItem = () => {
     return (
-      <CollectionShowItem 
-        {...this.props.CollectionReducer.collectionInfo}
+      <CollectionShowItem
+        {...this.state.collectionInfo}
         onDeleteCollectionArticle={
           this.handleDeleteCollectionArticle
         }
       />
     );
   }
-
 
   /**
    * 处理 删除单个文章
@@ -97,28 +88,38 @@ class Collection extends React.PureComponent<
     e: React.MouseEvent,
     articleId: string,
   ) => {
-    this.props.reduxHandleDeleteCollectionArticle(
+    serviceHandleDeleteCollectionArticle(
       articleId,
       this.props.match.params.id,
-      () => {
-        notification.success({
-          message: '提示',
-          description: '成功移除此文章!',
+      (data) => {
+        this.setState((prevState) => {
+          return {
+            collectionInfo: {
+              ...prevState.collectionInfo,
+              articles: prevState.collectionInfo.articles
+                .filter((item: any) => {
+                  return item._id !== data.result.articleId;
+                }),
+            },
+          };
+        }, () => {
+            notification.success({
+              message: '提示',
+              description: '成功移除此文章!',
+            });
         });
       },
     );
   }
 
-
   public render(): JSX.Element {
     return (
       <React.Fragment>
         <Header />
-
         <CollectionContainer>
           <CollectionMain>
             <MainHeaderWrapper>
-              <MainHeaderContent 
+              <MainHeaderContent
                 bg_img_url={collection_bg}
               />
             </MainHeaderWrapper>
@@ -126,7 +127,7 @@ class Collection extends React.PureComponent<
             <MainContentWrapper>
               <MainContentTipBox>
                 <MainContentTipText>
-                {this.props.CollectionReducer.collectionInfo.name}
+                  {this.state.collectionInfo.name}
                 </MainContentTipText>
               </MainContentTipBox>
 
@@ -143,20 +144,4 @@ class Collection extends React.PureComponent<
 }
 
 
-
-function mapStateToProps(state: any) {
-  return {
-    CollectionReducer: state.CollectionReducer,
-  };
-}
-function mapDispatchToProps() {
-  return {
-    reduxHandleGetCollectionInfo,
-    reduxHandleDeleteCollectionArticle,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps(),
-)(Collection) as React.ComponentClass<any>;
+export default Collection;
