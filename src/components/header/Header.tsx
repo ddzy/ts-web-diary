@@ -27,21 +27,23 @@ const Header: React.SFC<IHeaderProps> = (
 ): JSX.Element => {
 
   const [
-    searchedArticles,
-    setSearchedArticles,
+    searchState,
+    setSearchState,
   ] = React.useState({
     searchedArticles: [],
+    hotTags: {},
   });
 
   /**
-   * 处理搜索
+   * 处理搜索框change
    */
   function handleSearch(e: any): void {
     serviceHandleGetUserSearchArticles(
       e.target.value,
       (data) => {
-        setSearchedArticles({
+        setSearchState({
           searchedArticles: data,
+          hotTags: {},
         });
       }
     );
@@ -55,7 +57,8 @@ const Header: React.SFC<IHeaderProps> = (
         <HeaderMain
           authInfo={{ ...props.AuthRouteReducer }}
 
-          searchedArticles={searchedArticles.searchedArticles}
+          searchedArticles={searchState.searchedArticles}
+          hotTags={searchState.hotTags}
           onSearch={handleSearch}
         />
       </HeaderWrapper>

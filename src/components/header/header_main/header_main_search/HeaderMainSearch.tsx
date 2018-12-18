@@ -19,6 +19,7 @@ import {
 
 export interface IHeaderMainSearchProps {
   searchedArticles: any;
+  hotTags: object;
   onSearch: (
     e: any,
   ) => void;
@@ -29,18 +30,30 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
   props: IHeaderMainSearchProps,
 ): JSX.Element => {
 
+  const [
+    state,
+    setState,
+  ] = React.useState({
+    isInputEmpty: false,
+  });
   const emitChangeDebounced = debounce(emitChange, 400);
 
   /**
-   * 处理初始化热搜popover-content
+   * 处理初始化popcontent
    */
-  function handleInitPopContent(): JSX.Element[] {
-    return props.searchedArticles.map((hot: any, i: number) => (
-      <PopContentListItem
-        key={i}
-        data-id={hot._id}
-      >{hot.title}</PopContentListItem>
-    ));
+  function handleInitPopContent(): any {
+    // ??? 输入框为空 -> 热门标签
+    // ??? 输入框不为空 -> 搜索结果
+    const { isInputEmpty } = state;
+
+    return isInputEmpty
+      ? <PopContentListItem>热门标签</PopContentListItem>
+      : props.searchedArticles.map((hot: any, i: number) => (
+        <PopContentListItem
+          key={i}
+          data-id={hot._id}
+        >{hot.title}</PopContentListItem>
+      ))
   }
 
   /**
@@ -54,7 +67,19 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
   function emitChange(
     e: any,
   ): void {
+    setState({ isInputEmpty: false });
     props.onSearch(e);
+  }
+
+  /**
+   * 处理是否显示热门标签
+   */
+  function handleFocus(e: any): void {
+    const v: string = e.target.value;
+
+    if (!v) {
+      setState({ isInputEmpty: true });
+    }
   }
 
   return (
@@ -62,7 +87,7 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
       <SearchMain>
         <SearchMainInput>
           <Popover
-            title={`文章热搜榜`}
+            title={`大家都在搜`}
             placement="bottom"
             trigger="focus"
             content={
@@ -78,6 +103,7 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
               placeholder={`搜索您想要的文章...`}
               enterButton
               onChange={handleChange}
+              onFocus={handleFocus}
             />
           </Popover>
         </SearchMainInput>
