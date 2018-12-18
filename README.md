@@ -18,7 +18,7 @@
 - [ ] sendReply分页
 - [x] header知乎_滑动效果, 搜索框
 - [x] 解决firefox兼容, 新增搜索组件, 聊天室组件, 通知组件
-- [ ] 完善搜索框, 搜索功能, 进入搜索详情
+- [x] 完善搜索框, 搜索功能, 进入搜索详情
 - [ ] 提取全局index.d.ts (ObjectStatic, ActionStaticOption)
 - [ ] 重构所有无用的.redux.tsx ->.service.tsx
 - [ ] 首页骨架屏
