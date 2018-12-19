@@ -1,8 +1,24 @@
 import * as React from 'react';
-import { Form, Icon, Input, Button, Radio, message } from 'antd';
-import { Link } from 'react-router-dom';
-import { FormComponentProps } from 'antd/lib/form';
-import { connect } from 'react-redux';
+import {
+  Form,
+  Icon,
+  Input,
+  Button,
+  Radio,
+  message,
+} from 'antd';
+import {
+  Link,
+} from 'react-router-dom';
+import {
+  FormComponentProps,
+} from 'antd/lib/form';
+import {
+  connect,
+} from 'react-redux';
+import {
+  History,
+} from 'history';
 
 import bg_img from '../../static/images/bg_img.png';
 import {
@@ -12,38 +28,51 @@ import {
   FormTitle,
   FormFriendLink,
 } from './style';
-import { reduxHandleRegister } from './Register.redux';
-import { History } from 'history';
+import {
+  IStaticOptions,
+  serviceHandleRegister,
+} from './Register.service';
 
 
 export interface IRegisterProps extends FormComponentProps {
   history: History;
-
-  reduxHandleRegister: (
-    data: any,
-    callback: () => void,
-  ) => void;
-  RegisterReducer: { isAuth: boolean, message: string };
 };
-interface IRegisterState {};
+interface IRegisterState {
+  serviceState: IStaticOptions;
+};
 
 
 
 class Login extends React.PureComponent<IRegisterProps, IRegisterState> {
 
-  public readonly state = {}
+  public readonly state = {
+    serviceState: {
+      isAuth: false,
+      message: '',
+    },
+  }
 
   public handleSubmit: React.FormEventHandler = (e: React.FormEvent): void => {
     e.preventDefault();
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.reduxHandleRegister(values, () => {
-          // 提示信息
-          message.info(this.props.RegisterReducer.message, () => {
-            // 跳转登录
-            this.props.RegisterReducer.isAuth
-              && this.props.history.push('/login');
+        serviceHandleRegister(values, (data) => {
+          this.setState((prevState) => {
+            return {
+              ...prevState,
+              serviceState: {
+                ...prevState.serviceState,
+                message: data.message,
+                isAuth: data.code === 0,
+              },
+            };
+          }, () => {
+            // 提示信息
+              message.info(this.state.serviceState.message, () => {
+                // 跳转至登录
+                this.state.serviceState.isAuth && this.props.history.push('/login');
+              });
           });
         });
       }
@@ -131,13 +160,7 @@ function mapStateToProps(state: any) {
     RegisterReducer: state.RegisterReducer,
   };
 }
-function mapDispatchToProps() {
-  return {
-    reduxHandleRegister,
-  };
-}
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps(),
 )(Form.create()(Login)) as React.ComponentClass<any>;
