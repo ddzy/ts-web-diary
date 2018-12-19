@@ -28,12 +28,23 @@ export const ARTICLE_TAG_PICKER: string[] = [
 /**
  * 文章大方向的分类
  */
-export const ARTICLE_TYPE_PICKER = [
+export const ARTICLE_TYPE_PICKER: string[] = [
   'Android', '前端',
   'iOS', '后端',
   '设计', '产品',
   '工具资源', '阅读',
   '人工智能', '运维'
+];
+
+/**
+ * 对应文章大方向分类 -> 英文标识
+ */
+export const ARTICLE_TYPE_WITH_ENGLISH_PICKER: string[] = [
+  'android', 'frontend',
+  'ios', 'backend',
+  'design', 'product',
+  'tool', 'read',
+  'ai', 'devops',
 ];
 
 /**

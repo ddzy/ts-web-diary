@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 import Header from '../../components/header/Header';
-import Main from '../../components/main/Main';
-
+import ArticleMain from './article_main/ArticleMain';
 import {
   IStaticOptions,
   serviceHandleGetArticleList,
@@ -68,12 +67,18 @@ class Article extends React.Component<IArticleProps, IArticleState> {
     return (
       <React.Fragment>
         <Header />
-        <Main
+        {/* <Main
           showTab={true}
           articleList={this.state.serviceState.article_list}
           onLoadMore={this.handleLoadMore}
           hasMore={this.state.hasMore}
-        />
+        /> */}
+
+        {/* -------------------------------------- */}
+        {/* 重构 */}
+        {/* -------------------------------------- */}
+        <ArticleMain />
+
       </React.Fragment>
     );
   }
