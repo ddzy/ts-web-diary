@@ -17,15 +17,6 @@ export function serviceHandleLogin(
 ) {
   query({ url: '/api/login', method: 'POST', data, jsonp: false })
     .then((res) => {
-      // if (res.code === 0) {
-      //   dispatch(authSuccess(res));
-      //   localStorage.setItem('token', res.token);
-      //   localStorage.setItem('userid', res.userid);
-      //   callback();
-      // } else {
-      //   dispatch(authFailed(res));
-      //   callback();
-      // }
       callback && callback(res);
     })
     .catch((err) => {
