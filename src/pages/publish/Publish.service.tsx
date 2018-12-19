@@ -1,7 +1,7 @@
 import { query } from "src/services/request";
 
 export interface IStaticOptions {
-  tipMessage: string;
+  message: string;
 };
 
 /**

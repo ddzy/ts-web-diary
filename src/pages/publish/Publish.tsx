@@ -6,6 +6,7 @@ import { History } from 'history';
 import Header from '../../components/header/Header';
 import Write from '../../components/write/Write';
 import {
+  IStaticOptions,
   serviceHandleSendArticle,
 } from './Publish.service';
 
@@ -15,7 +16,7 @@ export interface IPublishProps {
   AuthRouteReducer: { isAuth: boolean, username: string };
 };
 interface IPublishState {
-  tipMessage: string;
+  serviceState: IStaticOptions;
 };
 
 
@@ -25,7 +26,9 @@ interface IPublishState {
 class Publish extends React.PureComponent<IPublishProps, IPublishState> {
 
   public readonly state = {
-    tipMessage: '',
+    serviceState: {
+      message: '',
+    },
   }
 
   public componentDidMount(): void {
@@ -60,17 +63,19 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
     data: any,
   ): void => {
     serviceHandleSendArticle(data, (v) => {
-      this.setState({
-        tipMessage: v.message,
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          serviceState: {
+            ...prevState.serviceState,
+            message: data.message,
+          },
+        };
       }, () => {
           notification.success({
             message: '提示',
-            description: this.state.tipMessage,
+            description: this.state.serviceState.message,
           });
-
-          setTimeout(() => {
-            this.props.history.push('/article');
-          }, 1000);
       });
     });
   }
@@ -99,8 +104,3 @@ function mapStateToProps(state: any) {
 export default connect(
   mapStateToProps,
 )(Publish) as React.ComponentClass<any>;
-
-
-
-
-
