@@ -20,7 +20,7 @@ import {
   DetailsContent,
 } from './style';
 import {
-  IDetailsInfoOptions,
+  IStaticOptions,
   serviceHandleGetOneArticleInfo,
   serviceHandleFixedControlBarStar,
   serviceHandleCreateCollection,
@@ -38,15 +38,17 @@ export interface IDetailsProps {
   AuthRouteReducer: { useravatar: string, };
 };
 interface IDetailsState {
-  visible: boolean;       // loading显示隐藏
-  loadingWrapperWidth: number;      // loading宽
-  loadingWrapperHeight: number;   // loading高
+  // ** loading组件相关props **
+  visible: boolean;
+  loadingWrapperWidth: number;
+  loadingWrapperHeight: number;
 
+  // ** 固定栏相关props **
   collectionInputValue: {
-    value: string | '',           // 收藏弹出层输入框
+    value: string | '',
   };
 
-  detailsInfo: IDetailsInfoOptions;
+  serviceState: IStaticOptions;
 };
 
 
@@ -64,7 +66,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     },
     commentInputValue: '',
 
-    detailsInfo: {
+    serviceState: {
       author: '',
       articleContent: '',
       articleTitle: '',
@@ -76,11 +78,11 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       tag: '',
       type: '',
       watchCount: 0,
-      isLiked: false,
       img: '',
-      comments: [],
-      collections: [],
-      collectionName: '',
+      isLiked: false,     // 是否点过赞
+      comments: [],      // 评论信息
+      collections: [],   // 我的收藏夹列表
+      collectionName: '',   // 添加至的收藏夹名称
     },
   }
 
@@ -92,8 +94,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         return {
           ...prevState,
           visible: false,
-          detailsInfo: {
-            ...prevState.detailsInfo,
+          serviceState: {
+            ...prevState.serviceState,
             ...data.result,
           },
         };
@@ -134,7 +136,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         true,
         () => {
           message.success(`
-                你赞了 ${this.state.detailsInfo.author} 的文章
+                你赞了 ${this.state.serviceState.author} 的文章
               `);
         },
       );
@@ -173,9 +175,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
           this.setState((prevState) => {
             return {
               ...prevState,
-              detailsInfo: {
-                ...prevState.detailsInfo,
-                collections: prevState.detailsInfo.collections.concat(
+              serviceState: {
+                ...prevState.serviceState,
+                collections: prevState.serviceState.collections.concat(
                   data.collection
                 ),
               },
@@ -200,8 +202,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         this.setState((prevState) => {
           return {
             ...prevState,
-            detailsInfo: {
-              ...prevState.detailsInfo,
+            serviceState: {
+              ...prevState.serviceState,
               collectionName: data.collectionName,
             },
           };
@@ -209,7 +211,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
           notification.success({
             message: '提示',
             description: `成功添加到 ${
-              this.state.detailsInfo.collectionName
+              this.state.serviceState.collectionName
               }`,
           });
         });
@@ -237,11 +239,11 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         this.setState((prevState) => {
           return {
             ...prevState,
-            detailsInfo: {
-              ...prevState.detailsInfo,
+            serviceState: {
+              ...prevState.serviceState,
               comments: [
                 data.comment,
-                ...prevState.detailsInfo.comments,
+                ...prevState.serviceState.comments,
               ]
             },
           };
@@ -280,9 +282,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         (data) => {
           this.setState((prevState) => ({
             ...prevState,
-            detailsInfo: {
-              ...prevState.detailsInfo,
-              comments: prevState.detailsInfo.comments.map((item) => {
+            serviceState: {
+              ...prevState.serviceState,
+              comments: prevState.serviceState.comments.map((item) => {
                 if (
                   item._id === data.reply.comment
                 ) {
@@ -325,7 +327,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               <Col span={18}>
                 {/* 左边内容区域 */}
                 <DetailsMain
-                  {...this.state.detailsInfo}
+                  {...this.state.serviceState}
                   {...this.props.AuthRouteReducer}
                   onSendComment={this.handleSendComment}
                   onSendReply={this.handleSendReply}
@@ -334,7 +336,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               <Col span={6}>
                 {/* 右边侧边栏区域 */}
                 <DetailsRight
-                  {...this.state.detailsInfo}
+                  {...this.state.serviceState}
                 />
               </Col>
             </Row>
@@ -343,9 +345,9 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
         {/* 左侧固钉控制栏 */}
         <DetailsControl
-          collections={this.state.detailsInfo.collections}
+          collections={this.state.serviceState.collections}
 
-          isLiked={this.state.detailsInfo.isLiked}
+          isLiked={this.state.serviceState.isLiked}
           onControlBarStar={this.handleControlBarStar}
 
           onCollectionsInputChange={this.handleCollectionsInputChange}

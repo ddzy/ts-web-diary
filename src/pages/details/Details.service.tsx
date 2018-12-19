@@ -1,7 +1,7 @@
 import { query } from "src/services/request";
 
 
-export interface IDetailsInfoOptions {
+export interface IStaticOptions {
   author: string,
   articleContent: string,
   articleTitle: string,

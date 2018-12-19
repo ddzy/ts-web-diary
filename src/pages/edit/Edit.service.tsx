@@ -1,5 +1,9 @@
 import { query } from "src/services/request";
 
+export interface IStaticOptions {
+  articleInfo: any;
+};
+
 
 /**
  * 获取编辑文章信息
