@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { 
-  Form, 
-  Icon, 
-  Input, 
-  Button, 
+import {
+  Form,
+  Icon,
+  Input,
+  Button,
   message,
-  Divider, 
+  Divider,
 } from 'antd';
 import { Link, match } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { FormComponentProps } from 'antd/lib/form';
 import { History } from 'history';
 
@@ -20,45 +19,75 @@ import {
   FormTitle,
   FormFriendLink,
 } from './style';
-import { reduxHandleLogin, IInitialState } from './Login.redux';
+import {
+  IStaticOptions,
+  serviceHandleLogin,
+} from './Login.service';
 
 
-export interface ILoginProps extends FormComponentProps  {
+export interface ILoginProps extends FormComponentProps {
   history: History;
   location: Location;
   match: match<any>;
-
-  reduxHandleLogin: (
-    data: IInitialState,
-    callback: () => void,
-  ) => void;
-  LoginReducer: IInitialState;
 };
-interface ILoginState {};
-
+interface ILoginState {
+  serviceState: IStaticOptions;
+};
 
 
 class Login extends React.PureComponent<ILoginProps, ILoginState> {
 
-  public readonly state = {}
+  public readonly state = {
+    serviceState: {
+      userid: '',
+      username: '',
+      message: '',
+    },
+  }
 
   public handleSubmit: React.FormEventHandler = (e: React.FormEvent): void => {
     e.preventDefault();
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.reduxHandleLogin(values, () => {
-          // 提示框
-          if (this.props.LoginReducer.userid) {
-            this.props.history.push('/home');
-            message.info(
-              (<React.Fragment>
-                欢迎进入
-                <span style={{ color: '#1890ff' }}>
-                  --Gayhub
-                </span>
-              </React.Fragment>)
-            );
+        serviceHandleLogin(values, (data) => {
+          if (data.code === 0) {
+            this.setState((prevState) => {
+              return {
+                ...prevState,
+                serviceState: {
+                  ...prevState.serviceState,
+                  ...data,
+                },
+              };
+            }, () => {
+              // ** 存储token **
+              localStorage.setItem('token', data.token);
+              localStorage.setItem('userid', data.userid);
+
+              // ** 页面跳转,提示信息 **
+              this.props.history.push('/home');
+              message.info(
+                <React.Fragment>
+                  欢迎进入
+                  <span style={{ color: '#1890ff' }}>
+                    --Gayhub
+                  </span>
+                </React.Fragment>
+              );
+            });
+          } else {
+            this.setState((prevState) => {
+              return {
+                ...prevState,
+                serviceState: {
+                  ...prevState.serviceState,
+                  ...data,
+                },
+              };
+            }, () => {
+                message.error(this.state.serviceState.message);
+            });
           }
         });
       }
@@ -132,18 +161,4 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
 }
 
 
-function mapStateToProps(state: any) {
-  return {
-    LoginReducer: state.LoginReducer,
-  };
-}
-function mapDispatchToProps() {
-  return {
-    reduxHandleLogin,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps(),
-)(Form.create()(Login)) as React.ComponentClass<any>;
+export default Form.create()(Login);
