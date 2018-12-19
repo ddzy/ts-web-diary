@@ -16,12 +16,13 @@ export const COLOR_PICKER: string[] = [
  * 文章具体内容标签
  */
 export const ARTICLE_TAG_PICKER: string[] = [
-  'react', 'vue', 'angular', 'typescript',
-  'canvas', 'HTTP', 'ES6', 'PornHub',
+  'React', 'Vue', 'Angular', 'TypeScript',
+  'Canvas', 'HTTP', 'ES6', 'PornHub',
   'Python', 'Nginx', 'Java', 'C++',
   'Go', 'OS', 'Redis', 'NodeJS',
   '架构', '运营', '安全', 'MongoDB',
   'Mysql', '面试', 'C#', '云计算',
+  '浏览器', 'JavaScript',
 ];
 
 /**
