@@ -9,7 +9,7 @@ export const COLOR_PICKER: string[] = [
   'blue', 'geekblue', 'purple', 'pink',
   '#d50', '#09c', 'yellow', 'darkred',
   'yellowgreen', 'aqua', 'aquamarine', 'skyblue',
-  '#84bf96', '#fedcbd', '#2a5caa', '#b7ba6b',
+  '#84bf96', '#fedcbd', '#2a5caa', '#b7ba6b', 'darkkhaki', '#1890ff',
 ];
 
 /**
