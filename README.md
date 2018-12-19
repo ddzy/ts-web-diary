@@ -20,7 +20,7 @@
 - [ ] redis缓存
 - [ ] sendReply分页
 - [ ] 重构个人中心||添加个人信息||个人信息修改||个人文章分类管理
-- [ ] 提取全局index.d.ts (ObjectStatic, ActionStaticOption)
+- [x] 提取全局index.d.ts (ObjectStatic, ActionStaticOption)
 - [x] 重构所有无用的.redux.tsx ->.service.tsx
 - [ ] 单个文件夹单一接口定义文件
 - [ ] 所有组件state归类处理
