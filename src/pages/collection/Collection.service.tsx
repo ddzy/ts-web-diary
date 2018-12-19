@@ -1,5 +1,13 @@
 import { query } from "src/services/request";
 
+export interface IStaticOptions {
+  collectionInfo: {
+    name: string;
+    articles: any[];
+    [key: string]: any;
+  };
+};
+
 
 /**
  * 获取收藏夹信息

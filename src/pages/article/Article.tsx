@@ -4,6 +4,7 @@ import Header from '../../components/header/Header';
 import Main from '../../components/main/Main';
 
 import {
+  IStaticOptions,
   serviceHandleGetArticleList,
   serviceHandleArticleLoadMore,
 } from './Article.service';
@@ -11,7 +12,7 @@ import {
 
 export interface IArticleProps {};
 interface IArticleState {
-  article_list: object[];
+  serviceState: IStaticOptions;
   hasMore: boolean;
 };
 
@@ -19,14 +20,22 @@ interface IArticleState {
 class Article extends React.Component<IArticleProps, IArticleState> {
 
   public readonly state = {
-    article_list: [],
+    serviceState: {
+      article_list: [],
+    },
     hasMore: true,
   }
 
   public componentDidMount(): void {
     serviceHandleGetArticleList((data) => {
-      this.setState({
-        article_list: data,
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          serviceState: {
+            ...prevState.serviceState,
+            article_list: data,
+          },
+        };
       });
     });
   }
@@ -42,9 +51,14 @@ class Article extends React.Component<IArticleProps, IArticleState> {
       page,
       pageSize,
       (data) => {
-        this.setState({
-          article_list: data.articleList,
-          hasMore: data.hasMore
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            serviceState: {
+              ...prevState.serviceState,
+              ...data,
+            },
+          };
         });
       }
     );
@@ -56,7 +70,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
         <Header />
         <Main
           showTab={true}
-          articleList={this.state.article_list}
+          articleList={this.state.serviceState.article_list}
           onLoadMore={this.handleLoadMore}
           hasMore={this.state.hasMore}
         />

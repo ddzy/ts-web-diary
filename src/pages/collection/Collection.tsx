@@ -17,6 +17,7 @@ import collection_bg from '../../static/images/bg_img.png';
 import CollectionShowItem from './collection_show/CollectionShowItem';
 
 import {
+  IStaticOptions,
   serviceHandleGetCollectionInfo,
   serviceHandleDeleteCollectionArticle,
 } from './Collection.service';
@@ -26,7 +27,7 @@ export interface ICollectionProps {
   match: match<any>;
 };
 interface ICollectionState {
-  collectionInfo: any;
+  serviceState: IStaticOptions;
 };
 
 
@@ -36,12 +37,14 @@ interface ICollectionState {
 class Collection extends React.PureComponent<
   ICollectionProps,
   ICollectionState
-> {
+  > {
 
   public readonly state = {
-    collectionInfo: {
-      name: '',
-      articles: [],
+    serviceState: {
+      collectionInfo: {
+        name: '',
+        articles: [],
+      },
     },
   };
 
@@ -58,9 +61,13 @@ class Collection extends React.PureComponent<
     serviceHandleGetCollectionInfo(id, (data) => {
       this.setState((prevState) => {
         return {
-          collectionInfo: {
-            ...prevState.collectionInfo,
-            ...data.collectionInfo,
+          ...prevState,
+          serviceState: {
+            ...prevState.serviceState,
+            collectionInfo: {
+              ...prevState.serviceState,
+              ...data,
+            },
           },
         };
       });
@@ -73,7 +80,7 @@ class Collection extends React.PureComponent<
   public handleInitShowItem = () => {
     return (
       <CollectionShowItem
-        {...this.state.collectionInfo}
+        {...this.state.serviceState.collectionInfo}
         onDeleteCollectionArticle={
           this.handleDeleteCollectionArticle
         }
@@ -94,12 +101,16 @@ class Collection extends React.PureComponent<
       (data) => {
         this.setState((prevState) => {
           return {
-            collectionInfo: {
-              ...prevState.collectionInfo,
-              articles: prevState.collectionInfo.articles
+            ...prevState,
+            serviceState: {
+              ...prevState.serviceState,
+              collectionInfo: {
+                ...prevState.serviceState.collectionInfo,
+                articles: prevState.serviceState.collectionInfo.articles
                 .filter((item: any) => {
                   return item._id !== data.result.articleId;
                 }),
+              },
             },
           };
         }, () => {
@@ -127,7 +138,7 @@ class Collection extends React.PureComponent<
             <MainContentWrapper>
               <MainContentTipBox>
                 <MainContentTipText>
-                  {this.state.collectionInfo.name}
+                  {this.state.serviceState.collectionInfo.name}
                 </MainContentTipText>
               </MainContentTipBox>
 

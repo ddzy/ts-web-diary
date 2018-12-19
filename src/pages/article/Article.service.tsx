@@ -1,5 +1,8 @@
 import { query } from "src/services/request";
 
+export interface IStaticOptions {
+  article_list: object[];
+};
 
 /**
  * 处理获取文章页 首屏数据
