@@ -5,27 +5,28 @@ import { History } from 'history';
 
 import Header from '../../components/header/Header';
 import Write from '../../components/write/Write';
-import { reduxHandleSendArticle } from './Publish.redux';
+import {
+  serviceHandleSendArticle,
+} from './Publish.service';
 
 
 export interface IPublishProps {
   history: History;
-
   AuthRouteReducer: { isAuth: boolean, username: string };
-  PublishReducer: { message: string, articleid: string };
-
-  reduxHandleSendArticle: (
-    data: any, 
-    callback: () => void
-  ) => void;
 };
-interface IPublishState {};
+interface IPublishState {
+  tipMessage: string;
+};
 
 
 /**
  * 发表文章
  */
 class Publish extends React.PureComponent<IPublishProps, IPublishState> {
+
+  public readonly state = {
+    tipMessage: '',
+  }
 
   public componentDidMount(): void {
     this.handleShowTipModal();
@@ -58,14 +59,19 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
   public handleSendArticle = (
     data: any,
   ): void => {
-    this.props.reduxHandleSendArticle(data, () => {
-      notification.success({
-        message: '提示',
-        description: this.props.PublishReducer.message,
-      })
-      setTimeout(() => {
-        this.props.history.push('/article');
-      }, 1000);
+    serviceHandleSendArticle(data, (v) => {
+      this.setState({
+        tipMessage: v.message,
+      }, () => {
+          notification.success({
+            message: '提示',
+            description: this.state.tipMessage,
+          });
+
+          setTimeout(() => {
+            this.props.history.push('/article');
+          }, 1000);
+      });
     });
   }
 
@@ -74,7 +80,7 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
       <React.Fragment>
         <Header />
         <Write
-          username={this.props.AuthRouteReducer.username}  
+          username={this.props.AuthRouteReducer.username}
           onSendArticle={this.handleSendArticle}
         />
       </React.Fragment>
@@ -85,19 +91,13 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
 
 function mapStateToProps(state: any) {
   return {
-    PublishReducer: state.PublishReducer,
     AuthRouteReducer: state.AuthRouteReducer,
   };
 }
-function mapDispatchToProps() {
-  return {
-    reduxHandleSendArticle,
-  };
-}
+
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps(),
 )(Publish) as React.ComponentClass<any>;
 
 
