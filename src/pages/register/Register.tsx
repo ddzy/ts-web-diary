@@ -42,7 +42,6 @@ interface IRegisterState {
 };
 
 
-
 class Login extends React.PureComponent<IRegisterProps, IRegisterState> {
 
   public readonly state = {
