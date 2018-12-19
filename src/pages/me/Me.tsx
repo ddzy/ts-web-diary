@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { notification } from 'antd';
+import { History } from 'history';
 
 import {
   MeWrapper,
@@ -9,50 +10,28 @@ import {
 import Header from '../../components/header/Header';
 import MeInfo from './me_info/MeInfo';
 import MeArticle from './me_dashboard/MeDashboard';
-import { 
-  getMyArticleList, 
-  deleteMyArticle,
-  reduxHandleGetMyArticle,
-  reduxHandleGetMyCollection,
-  reduxHandleDeleteMyCollection,
-} from './Me.redux';
-import { History } from 'history';
+import {
+  IStaticOptions,
+  serviceHandleGetMyArticleList,
+  serviceHandleDeleteMyArticle,
+  serviceHandleGetMyArticle,
+  serviceHandleDeleteMyCollection,
+  serviceHandleGetMyCollection,
+} from './Me.service';
 
 
 export interface IMeProps {
   history: History;
 
-  AuthRouteReducer: { 
-    username: string, 
+  AuthRouteReducer: {
+    username: string,
     usergender: string,
-    useravatar: string, 
+    useravatar: string,
   };
-  MeReducer: {
-    my_article_list: any[];   // 我的文章列表
-    delete_article_title: string;   // 删除的文章标题
-    my_collection_list: any[];      // 我的收藏列表
-  },
-
-  getMyArticleList: () => void;   // 获取文章列表
-  deleteMyArticle: (              // 删除我的文章
-    id: string,
-    callback: (title: string) => void,
-  ) => void;
-  reduxHandleGetMyArticle: (      // 我的文章 分类管理
-    type: string,
-  ) => void;           
-  
-  reduxHandleGetMyCollection: (     // 获取我的收藏夹 
-    callback?: () => void,
-  ) => void; 
-  
-  reduxHandleDeleteMyCollection: (    // 删除我的收藏夹
-    collectionId: string,
-    callback?: () => void,
-  ) => void;
 };
-interface IMeState {};
-
+interface IMeState {
+  articleInfo: IStaticOptions;
+};
 
 
 /**
@@ -60,25 +39,38 @@ interface IMeState {};
  */
 class Me extends React.Component<IMeProps, IMeState> {
 
-  public readonly state = {}
-
-  
-  public componentDidMount(): void {
-    this.props.getMyArticleList();
+  public readonly state = {
+    articleInfo: {
+      my_article_list: [],
+      delete_article_title: '',
+      my_collection_list: [],
+    },
   }
 
+  public componentDidMount(): void {
+    serviceHandleGetMyArticleList((data) => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          articleInfo: {
+            ...prevState.articleInfo,
+            my_article_list: data.myArticleList,
+          },
+        };
+      });
+    });
+  }
 
   /**
    * 处理 删除成功提示
    */
   public handleDeleteSuccess = (): void => {
-    this.props.MeReducer.delete_article_title
+    this.state.articleInfo.delete_article_title
       && notification.success({
-          message: '成功删除文章',
-          description: this.props.MeReducer.delete_article_title,
-        });
+        message: '成功删除文章',
+        description: this.state.articleInfo.delete_article_title,
+      });
   }
-
 
   /**
    * 处理 删除我的文章
@@ -87,11 +79,21 @@ class Me extends React.Component<IMeProps, IMeState> {
     e: React.MouseEvent,
     id: string,
   ): void => {
-    this.props.deleteMyArticle(id, () => {
-      this.handleDeleteSuccess();
+    serviceHandleDeleteMyArticle(id, (data) => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          articleInfo: {
+            ...prevState.articleInfo,
+            delete_article_title: data.title,
+            my_article_list: data.myArticleList,
+          },
+        };
+      }, () => {
+          this.handleDeleteSuccess();
+      });
     });
   }
-
 
   /**
    * 处理 编辑我的文章
@@ -110,9 +112,21 @@ class Me extends React.Component<IMeProps, IMeState> {
   public handleMyArticleTabChange = (
     type: string,
   ): void => {
-    this.props.reduxHandleGetMyArticle(
-      type,
-    );
+    // this.props.reduxHandleGetMyArticle(
+    //   type,
+    // );
+
+    serviceHandleGetMyArticle(type, (data) => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          articleInfo: {
+            ...prevState.articleInfo,
+            my_article_list: data.myArticleList,
+          },
+        };
+      });
+    });
   }
 
 
@@ -123,8 +137,21 @@ class Me extends React.Component<IMeProps, IMeState> {
   public handleSupTabChange = (
     type: string,
   ): void => {
+    // type === '收藏'
+      // && this.props.reduxHandleGetMyCollection();
+
     type === '收藏'
-      && this.props.reduxHandleGetMyCollection();  
+      && serviceHandleGetMyCollection((data) => {
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            articleInfo: {
+              ...prevState.articleInfo,
+              my_collection_list: data.my_collection_list,
+            },
+          };
+        });
+      });
   }
 
 
@@ -148,15 +175,19 @@ class Me extends React.Component<IMeProps, IMeState> {
     e: React.MouseEvent,
     collectionId: string,
   ) => {
-    this.props.reduxHandleDeleteMyCollection(
-      collectionId,
-      () => {
-        notification.success({
-          message: '提示',
-          description: '成功移除该收藏夹!',
-        });
-      },
-    );
+    serviceHandleDeleteMyCollection(collectionId, (data) => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          articleInfo: {
+            ...prevState.articleInfo,
+            my_collection_list: prevState.articleInfo.my_collection_list.filter((item) => {
+              return item._id !== data.collectionId;
+            }),
+          },
+        };
+      });
+    });
   }
 
 
@@ -168,13 +199,13 @@ class Me extends React.Component<IMeProps, IMeState> {
         <MeWrapper>
           <MeContent>
             {/* 个人信息 */}
-            <MeInfo 
+            <MeInfo
               {...this.props.AuthRouteReducer}
             />
 
             {/* 个人文章 */}
-            <MeArticle 
-              {...this.props.MeReducer}
+            <MeArticle
+              {...this.state.articleInfo}
               onArticleDelete={this.handleArticleDelete}
               onArticleEdit={this.handleArticleEdit}
               onMyArticleTabChange={this.handleMyArticleTabChange}
@@ -203,17 +234,6 @@ function mapStateToProps(state: any) {
   };
 }
 
-function mapDispatchToProps() {
-  return {
-    getMyArticleList,
-    deleteMyArticle,
-    reduxHandleGetMyArticle,
-    reduxHandleGetMyCollection,
-    reduxHandleDeleteMyCollection,
-  };
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps(),
 )(Me) as React.ComponentClass<any>;
