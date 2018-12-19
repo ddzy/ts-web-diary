@@ -30,7 +30,7 @@ export interface IMeProps {
   };
 };
 interface IMeState {
-  articleInfo: IStaticOptions;
+  serviceState: IStaticOptions;
 };
 
 
@@ -40,7 +40,7 @@ interface IMeState {
 class Me extends React.Component<IMeProps, IMeState> {
 
   public readonly state = {
-    articleInfo: {
+    serviceState: {
       my_article_list: [],
       delete_article_title: '',
       my_collection_list: [],
@@ -53,7 +53,7 @@ class Me extends React.Component<IMeProps, IMeState> {
         return {
           ...prevState,
           articleInfo: {
-            ...prevState.articleInfo,
+            ...prevState.serviceState,
             my_article_list: data.myArticleList,
           },
         };
@@ -65,10 +65,10 @@ class Me extends React.Component<IMeProps, IMeState> {
    * 处理 删除成功提示
    */
   public handleDeleteSuccess = (): void => {
-    this.state.articleInfo.delete_article_title
+    this.state.serviceState.delete_article_title
       && notification.success({
         message: '成功删除文章',
-        description: this.state.articleInfo.delete_article_title,
+        description: this.state.serviceState.delete_article_title,
       });
   }
 
@@ -84,7 +84,7 @@ class Me extends React.Component<IMeProps, IMeState> {
         return {
           ...prevState,
           articleInfo: {
-            ...prevState.articleInfo,
+            ...prevState.serviceState,
             delete_article_title: data.title,
             my_article_list: data.myArticleList,
           },
@@ -105,30 +105,24 @@ class Me extends React.Component<IMeProps, IMeState> {
     this.props.history.push(`/edit/${id}`);
   }
 
-
   /**
    * 处理 我的文章分类管理
    */
   public handleMyArticleTabChange = (
     type: string,
   ): void => {
-    // this.props.reduxHandleGetMyArticle(
-    //   type,
-    // );
-
     serviceHandleGetMyArticle(type, (data) => {
       this.setState((prevState) => {
         return {
           ...prevState,
           articleInfo: {
-            ...prevState.articleInfo,
+            ...prevState.serviceState,
             my_article_list: data.myArticleList,
           },
         };
       });
     });
   }
-
 
   /**
    * 处理 我的收藏分类管理
@@ -137,23 +131,19 @@ class Me extends React.Component<IMeProps, IMeState> {
   public handleSupTabChange = (
     type: string,
   ): void => {
-    // type === '收藏'
-      // && this.props.reduxHandleGetMyCollection();
-
     type === '收藏'
       && serviceHandleGetMyCollection((data) => {
         this.setState((prevState) => {
           return {
             ...prevState,
             articleInfo: {
-              ...prevState.articleInfo,
+              ...prevState.serviceState,
               my_collection_list: data.my_collection_list,
             },
           };
         });
       });
   }
-
 
   /**
    * 处理 点击我的收藏列表 进入收藏页
@@ -167,7 +157,6 @@ class Me extends React.Component<IMeProps, IMeState> {
     );
   }
 
-
   /**
    * 处理 删除我的收藏夹
    */
@@ -180,8 +169,8 @@ class Me extends React.Component<IMeProps, IMeState> {
         return {
           ...prevState,
           articleInfo: {
-            ...prevState.articleInfo,
-            my_collection_list: prevState.articleInfo.my_collection_list.filter((item) => {
+            ...prevState.serviceState,
+            my_collection_list: prevState.serviceState.my_collection_list.filter((item) => {
               return item._id !== data.collectionId;
             }),
           },
@@ -205,7 +194,7 @@ class Me extends React.Component<IMeProps, IMeState> {
 
             {/* 个人文章 */}
             <MeArticle
-              {...this.state.articleInfo}
+              {...this.state.serviceState}
               onArticleDelete={this.handleArticleDelete}
               onArticleEdit={this.handleArticleEdit}
               onMyArticleTabChange={this.handleMyArticleTabChange}

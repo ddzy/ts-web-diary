@@ -1,9 +1,12 @@
 import { query } from "src/services/request";
 
 export interface IStaticOptions {
-  my_article_list: any[];     // 我的文章列表
-  delete_article_title: string;   // 删除的文章标题
-  my_collection_list: any[],      // 我的收藏列表
+  // ** 我的文章列表 **
+  my_article_list: any[];
+  // ** 删除的文章标题 **
+  delete_article_title: string;
+  // ** 我的收藏夹列表 **
+  my_collection_list: any[],
 };
 
 
