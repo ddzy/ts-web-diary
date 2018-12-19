@@ -14,11 +14,12 @@
 - [x] new article to test...
 - [x] 回复输入框头像保持不变, 回复条目border样式
 - [x] block自动focus, node自动清空, 非空判断
-- [ ] redis缓存
-- [ ] sendReply分页
 - [x] header知乎_滑动效果, 搜索框
 - [x] 解决firefox兼容, 新增搜索组件, 聊天室组件, 通知组件
 - [x] 完善搜索框, 搜索功能, 进入搜索详情
+- [ ] redis缓存
+- [ ] sendReply分页
+- [ ] 重构个人中心||添加个人信息||个人信息修改||个人文章分类管理
 - [ ] 提取全局index.d.ts (ObjectStatic, ActionStaticOption)
 - [ ] 重构所有无用的.redux.tsx ->.service.tsx
 - [ ] 单个文件夹单一接口定义文件
