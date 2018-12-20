@@ -19,7 +19,8 @@ export const NavWrapper = styled.nav`
   width: 100%;
   height: 2.8125rem;
   line-height: 2.8125rem;
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: rgba(255, 255, 255, .9);
   text-align: center;
   box-shadow: 0 0.0625rem 0.3rem rgba(0,0,0,.1);
 `;

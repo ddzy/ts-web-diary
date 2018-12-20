@@ -1,5 +1,5 @@
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
 
-export interface IStyleProps {};
+export const ArticleWrapper = styled.div``;
 

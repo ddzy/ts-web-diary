@@ -5,8 +5,11 @@ import ArticleMain from './article_main/ArticleMain';
 import {
   IStaticOptions,
   serviceHandleGetArticleList,
-  serviceHandleArticleLoadMore,
+  // serviceHandleArticleLoadMore,
 } from './Article.service';
+import {
+  ArticleWrapper,
+} from './style';
 
 
 export interface IArticleProps {};
@@ -17,6 +20,8 @@ interface IArticleState {
 
 
 class Article extends React.Component<IArticleProps, IArticleState> {
+
+  public readonly oMainWrapperRef: React.Ref<any> = React.createRef();
 
   public readonly state = {
     serviceState: {
@@ -37,35 +42,62 @@ class Article extends React.Component<IArticleProps, IArticleState> {
         };
       });
     });
+    this.handleArticleWrapperWheel();
+  }
+
+  public componentWillUnmount(): void {
+    this._aidedHandleArticleWrapperWheelEnd();
   }
 
   /**
-   * 处理加载更多
+   * 辅助函数, 处理mousewheel --- start
    */
-  public handleLoadMore = (
-    page: number,
-    pageSize: number,
-  ) => {
-    serviceHandleArticleLoadMore(
-      page,
-      pageSize,
-      (data) => {
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            serviceState: {
-              ...prevState.serviceState,
-              ...data,
-            },
-          };
-        });
-      }
+  public _aidedHandleArticleWrapperWheelStart = (
+    e: any,
+  ): void => {
+    const nWheelDeltaY = e.wheelDeltaY as number
+    const oHeaderContainer = document
+      .querySelector('#header-main-container') as HTMLDivElement;
+
+    // ** 处理header滚动 **
+    oHeaderContainer.style.cssText += `
+      transform: translateY(${
+        nWheelDeltaY < 0 ? '-100%' : 0
+      });
+    `;
+  }
+
+  /**
+   * 辅助函数, 处理mousewheel --- end
+   */
+  public _aidedHandleArticleWrapperWheelEnd = () => {
+    const oWrapperRef = this.oMainWrapperRef as any;
+    const oWrapperCurrent = oWrapperRef.current as HTMLDivElement;
+
+    oWrapperCurrent.removeEventListener(
+      'wheel',
+      this._aidedHandleArticleWrapperWheelStart,
+    );
+  }
+
+  /**
+   * 处理article页滚动
+   */
+  public handleArticleWrapperWheel = (): void => {
+    const oWrapperRef = this.oMainWrapperRef as any;
+    const oWrapperCurrent = oWrapperRef.current as HTMLDivElement;
+
+    oWrapperCurrent.addEventListener(
+      'wheel',
+      this._aidedHandleArticleWrapperWheelStart,
     );
   }
 
   public render(): JSX.Element {
     return (
-      <React.Fragment>
+      <ArticleWrapper
+        ref={this.oMainWrapperRef}
+      >
         <Header />
         {/* <Main
           showTab={true}
@@ -80,8 +112,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
         <ArticleMain
           articles={this.state.serviceState.article_list}
         />
-
-      </React.Fragment>
+      </ArticleWrapper>
     );
   }
 
