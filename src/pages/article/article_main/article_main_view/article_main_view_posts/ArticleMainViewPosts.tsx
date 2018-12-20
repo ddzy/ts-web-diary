@@ -24,7 +24,9 @@ interface IArticleMainViewPostsState { };
  */
 class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProps, IArticleMainViewPostsState> {
 
-  //// 初始化列表数据
+  /**
+   * 初始化列表数据
+   */
   public initListData = () => {
     const articleList = this.props.articles || [];
 
@@ -49,8 +51,9 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
       : [];
   }
 
-
-  //// 初始化信息栏
+  /**
+   * 初始化信息栏
+   */
   public initIconText = (
     data: { type: string, text: string, id?: string, tip: string }
   ) => {
@@ -69,7 +72,6 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
     );
   }
 
-
   public render(): JSX.Element {
     return (
       <React.Fragment>
@@ -77,13 +79,16 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
           <List
             itemLayout="vertical"
             size="large"
-            bordered={true}
             grid={{ gutter: 16 }}
             dataSource={this.initListData()}
             renderItem={(item: any) => (
               <List.Item
                 key={item.title}
-                style={{ marginTop: '25px', padding: '0 20px' }}
+                style={{
+                  marginTop: '1.5625rem',
+                  padding: '0 3rem',
+                  borderBottom: '1px solid #f7f7f7',
+                }}
                 actions={[
                   this.initIconText({
                     type: 'eye-o',
@@ -107,7 +112,10 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
                   })
                 ]}
                 extra={
-                  <div style={{ width: '120px', height: '120px' }}>
+                  <div style={{
+                    width: '7.5rem',
+                    height: '7.5rem',
+                  }}>
                     <img width={120} height={120}
                       alt="extra_logo" src={item.pic_url} />
                   </div>
@@ -118,7 +126,7 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
                     <Link
                       to={`/details/${item.id}`}
                       style={{
-                        fontSize: '20px',
+                        fontSize: '1.25rem',
                         fontWeight: 'bold'
                       }}
                     >{item.title}</Link>

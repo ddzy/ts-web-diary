@@ -74,6 +74,11 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   /*
     ??? 重置 antd 样式
   */
+  .ant-list-item {
+    &:hover {
+      background-color: rgba(0, 0, 0, .01);
+    }
+  }
   .ant-anchor-wrapper .ant-anchor {
     font-size: 1rem;
   }
