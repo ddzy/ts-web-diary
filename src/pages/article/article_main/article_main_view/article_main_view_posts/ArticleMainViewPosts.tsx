@@ -45,6 +45,7 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
             create_time: item.date || formatTime(item.create_time),
             star: item.star || 0,
             watch: item.watch || 0,
+            description: item.description,
           };
         })
 
@@ -88,6 +89,7 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
                   marginTop: '1.5625rem',
                   padding: '0 3rem',
                   borderBottom: '1px solid #f7f7f7',
+                  cursor: 'pointer',
                 }}
                 actions={[
                   this.initIconText({
@@ -131,7 +133,14 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
                       }}
                     >{item.title}</Link>
                   }
-                  description={item.description}
+                  description={
+                    <React.Fragment>
+                      {item.description}
+                      <Link
+                        to={`/details/${item.id}`}
+                      >...阅读全文⬇</Link>
+                    </React.Fragment>
+                  }
                 />
               </List.Item>
             )}

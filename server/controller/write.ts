@@ -12,7 +12,7 @@ const writeController: Router = new Router();
 
 
 // ** Define Interface **
-interface IRouteInsertProps {
+interface IRouteInsertPrdeltaOps {
   userid: string;
   articleid: string;
   editTitle: string;
@@ -54,26 +54,51 @@ writeController.get('/geteditinfo', async (ctx) => {
  * 写文章
  */
 writeController.post('/insert', async (ctx) => {
+  const body = ctx.request.body as IRouteInsertPrdeltaOps;
+  const {
+    userid,
+    editContentWithDelta,
+    extraContent,
+    editTitle,
+    article_title_image,
+  } = body;
 
-  const body = ctx.request.body as IRouteInsertProps;
+  // ** 提取description **
+  const deltaOps = editContentWithDelta.ops;
+  let descNum = getRandom(50, 70);
+  let filteredDesc: string = '';
 
-  const getUser = await User.findById(changeId(body.userid));
+  for (const v of deltaOps) {
+    if (typeof v.insert === 'string') {
+      if (v.insert.length >= descNum) {
+        filteredDesc = v.insert.slice(0, descNum);
+        descNum = v.insert.length - descNum;
+        break;
+      }
+      else {
+        filteredDesc += v.insert;
+        continue;
+      }
+    } else {
+      continue;
+    }
+  }
 
-  // 存储文章
+  // ** 存储文章 **
   const saveArticle = await Posts.create({
-    author: getUser._id,
-    title: body.editTitle,
-    description: body.editContent.slice(0, getRandom(5, 10)),
-    // content: body.editContent,
-    content: JSON.stringify(body.editContentWithDelta),
-    mode: body.extraContent.article_mode.value,
-    type: body.extraContent.article_type.value,
-    tag: body.extraContent.article_tag.value,
-    img: body.article_title_image,
+    // ??? BUG
+    author: userid,
+    title: editTitle,
+    description: filteredDesc,
+    content: JSON.stringify(editContentWithDelta),
+    mode: extraContent.article_mode.value,
+    type: extraContent.article_type.value,
+    tag: extraContent.article_tag.value,
+    img: article_title_image,
     create_time: new Date().getTime(),
   });
 
-  // 同步到User
+  // ** 同步到User **
   await User
     .findByIdAndUpdate(
       changeId(body.userid),
@@ -83,7 +108,7 @@ writeController.post('/insert', async (ctx) => {
 
   ctx.body = {
     code: 0,
-    userid: getUser._id,
+    userid,
     articleid: saveArticle._id,
     message: '发布文章成功!',
   };
@@ -95,7 +120,7 @@ writeController.post('/insert', async (ctx) => {
  */
 writeController.post('/update', async (ctx) => {
 
-  const body = ctx.request.body as IRouteInsertProps;
+  const body = ctx.request.body as IRouteInsertPrdeltaOps;
 
   const result = await Posts
     .findByIdAndUpdate(
