@@ -4,6 +4,7 @@ import {
   ViewWrapper,
   ViewContent,
 } from './style';
+import ArticleMainViewPosts from './article_main_view_posts/ArticleMainViewPosts';
 
 
 export interface IArticleMainViewProps { };
@@ -17,7 +18,8 @@ class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticl
       <React.Fragment>
         <ViewWrapper>
           <ViewContent>
-            <h2>ArticleMainView</h2>
+            {/* 文章展示 */}
+            <ArticleMainViewPosts />
           </ViewContent>
         </ViewWrapper>
       </React.Fragment>
