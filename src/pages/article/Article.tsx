@@ -77,7 +77,9 @@ class Article extends React.Component<IArticleProps, IArticleState> {
         {/* -------------------------------------- */}
         {/* 重构 */}
         {/* -------------------------------------- */}
-        <ArticleMain />
+        <ArticleMain
+          articles={this.state.serviceState.article_list}
+        />
 
       </React.Fragment>
     );

@@ -8,7 +8,9 @@ import {
 } from './style';
 
 
-export interface IArticleMainProps { };
+export interface IArticleMainProps {
+  articles: any[];
+};
 interface IArticleMainState { };
 
 
@@ -20,7 +22,9 @@ class ArticleMain extends React.PureComponent<IArticleMainProps, IArticleMainSta
         <MainWrapper>
           <MainContent>
             <ArticleMainNav />
-            <ArticleMainView />
+            <ArticleMainView
+              articles={this.props.articles}
+            />
           </MainContent>
         </MainWrapper>
       </React.Fragment>

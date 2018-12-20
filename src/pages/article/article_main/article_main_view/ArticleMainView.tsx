@@ -7,7 +7,9 @@ import {
 import ArticleMainViewPosts from './article_main_view_posts/ArticleMainViewPosts';
 
 
-export interface IArticleMainViewProps { };
+export interface IArticleMainViewProps {
+  articles: any[];
+};
 interface IArticleMainViewState { };
 
 
@@ -19,7 +21,9 @@ class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticl
         <ViewWrapper>
           <ViewContent>
             {/* 文章展示 */}
-            <ArticleMainViewPosts />
+            <ArticleMainViewPosts
+               articles={this.props.articles}
+            />
           </ViewContent>
         </ViewWrapper>
       </React.Fragment>
