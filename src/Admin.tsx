@@ -13,9 +13,6 @@ const Admin: React.SFC<IAdminProps> = (
     <div className="adminWrapper">
       <div
         className="admin-content"
-        style={{
-          position: 'relative',
-        }}
       >
         {props.children}
       </div>

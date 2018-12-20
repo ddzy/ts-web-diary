@@ -22,7 +22,7 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
         <PostsWrapper>
           <PostsContentList>
             <PostsContentItem>
-
+              ddd
             </PostsContentItem>
           </PostsContentList>
         </PostsWrapper>

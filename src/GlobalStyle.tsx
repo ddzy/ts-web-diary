@@ -64,6 +64,14 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   }
 
   /*
+
+  */
+  .admin-content {
+    position: relative;
+    background-color: #f4f5f5;
+  }
+
+  /*
     ??? 重置 antd 样式
   */
   .ant-anchor-wrapper .ant-anchor {
