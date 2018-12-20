@@ -15,7 +15,8 @@ const app: Koa = new Koa();
 
 app
   .use(koaCors({
-    maxAge: 60 * 60 * 24,
+    // maxAge: 60 * 60 * 24,
+    maxAge: 60 * 60 * 24 * 4,
   }))
   .use(bodyParser())
   .use(async (ctx, next) => {
