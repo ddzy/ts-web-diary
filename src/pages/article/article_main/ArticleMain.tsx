@@ -2,6 +2,10 @@ import * as React from 'react';
 
 import ArticleMainNav from './article_main_nav/ArticleMainNav';
 import ArticleMainView from './article_main_view/ArticleMainView';
+import {
+  MainWrapper,
+  MainContent,
+} from './style';
 
 
 export interface IArticleMainProps { };
@@ -13,8 +17,12 @@ class ArticleMain extends React.PureComponent<IArticleMainProps, IArticleMainSta
   public render(): JSX.Element {
     return (
       <React.Fragment>
-        <ArticleMainNav />
-        <ArticleMainView />
+        <MainWrapper>
+          <MainContent>
+            <ArticleMainNav />
+            <ArticleMainView />
+          </MainContent>
+        </MainWrapper>
       </React.Fragment>
     );
   }

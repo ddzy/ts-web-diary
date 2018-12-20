@@ -13,6 +13,8 @@ export const GlobalStyle = createGlobalStyle`
 
 
 export const NavWrapper = styled.nav`
+  position: fixed;
+  top: 3.75rem;
   width: 100%;
   height: 2.8125rem;
   line-height: 2.8125rem;

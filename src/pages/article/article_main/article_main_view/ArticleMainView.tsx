@@ -1,5 +1,10 @@
 import * as React from 'react';
 
+import {
+  ViewWrapper,
+  ViewContent,
+} from './style';
+
 
 export interface IArticleMainViewProps { };
 interface IArticleMainViewState { };
@@ -10,7 +15,11 @@ class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticl
   public render(): JSX.Element {
     return (
       <React.Fragment>
-        <h2>ArticleMainView</h2>
+        <ViewWrapper>
+          <ViewContent>
+            <h2>ArticleMainView</h2>
+          </ViewContent>
+        </ViewWrapper>
       </React.Fragment>
     );
   }
