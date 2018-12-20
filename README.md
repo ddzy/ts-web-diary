@@ -35,7 +35,7 @@
 - [x] header组件提取, style划分
 - [ ] 新建评论, 回复高亮显示
 - [ ] hooks重构所有class组件
-- [ ] 文章description字段
+- [x] 文章description字段
 - [ ] 评论回复点赞
 - [ ] header组件动态路由
 ## updating, ing, ing...
