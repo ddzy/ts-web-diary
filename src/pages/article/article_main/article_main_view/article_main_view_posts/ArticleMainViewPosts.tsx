@@ -5,9 +5,11 @@ import {
 import {
   Icon,
   List,
+  Skeleton,
 } from 'antd';
 
 import {
+  GlobalStyleSet,
   PostsWrapper,
 } from './style';
 import { formatTime } from 'src/utils/utils';
@@ -83,69 +85,79 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
             grid={{ gutter: 16 }}
             dataSource={this.initListData()}
             renderItem={(item: any) => (
-              <List.Item
+              <Skeleton
+                className="am-view-posts-loadlist"
                 key={item.title}
-                style={{
-                  marginTop: '1.5625rem',
-                  padding: '0 3rem',
-                  borderBottom: '1px solid #f7f7f7',
-                  cursor: 'pointer',
-                }}
-                actions={[
-                  this.initIconText({
-                    type: 'eye-o',
-                    text: '150',
-                    tip: '浏览量',
-                  }),
-                  this.initIconText({
-                    type: 'like-o',
-                    text: '156',
-                    tip: '点赞',
-                  }),
-                  this.initIconText({
-                    type: 'clock-circle-o',
-                    text: item.create_time,
-                    tip: '发布于',
-                  }),
-                  this.initIconText({
-                    type: 'info-circle',
-                    text: item.author_name,
-                    tip: '作者',
-                  })
-                ]}
-                extra={
-                  <div style={{
-                    width: '7.5rem',
-                    height: '7.5rem',
-                  }}>
-                    <img width={120} height={120}
-                      alt="extra_logo" src={item.pic_url} />
-                  </div>
-                }
+                loading={false}
+                active={true}
               >
-                <List.Item.Meta
-                  title={
-                    <Link
-                      to={`/details/${item.id}`}
-                      style={{
-                        fontSize: '1.25rem',
-                        fontWeight: 'bold'
-                      }}
-                    >{item.title}</Link>
+                <List.Item
+                  key={item.title}
+                  style={{
+                    marginTop: '1.5625rem',
+                    padding: '0 3rem',
+                    borderBottom: '1px solid #f7f7f7',
+                    cursor: 'pointer',
+                  }}
+                  actions={[
+                    this.initIconText({
+                      type: 'eye-o',
+                      text: '150',
+                      tip: '浏览量',
+                    }),
+                    this.initIconText({
+                      type: 'like-o',
+                      text: '156',
+                      tip: '点赞',
+                    }),
+                    this.initIconText({
+                      type: 'clock-circle-o',
+                      text: item.create_time,
+                      tip: '发布于',
+                    }),
+                    this.initIconText({
+                      type: 'info-circle',
+                      text: item.author_name,
+                      tip: '作者',
+                    })
+                  ]}
+                  extra={
+                    <div style={{
+                      width: '7.5rem',
+                      height: '7.5rem',
+                    }}>
+                      <img width={120} height={120}
+                        alt="extra_logo" src={item.pic_url} />
+                    </div>
                   }
-                  description={
-                    <React.Fragment>
-                      {item.description}
+                >
+                  <List.Item.Meta
+                    title={
                       <Link
                         to={`/details/${item.id}`}
-                      >...阅读全文⬇</Link>
-                    </React.Fragment>
-                  }
-                />
-              </List.Item>
+                        style={{
+                          fontSize: '1.25rem',
+                          fontWeight: 'bold'
+                        }}
+                      >{item.title}</Link>
+                    }
+                    description={
+                      <React.Fragment>
+                        {item.description}
+                        <Link
+                          to={`/details/${item.id}`}
+                        >...阅读全文⬇</Link>
+                      </React.Fragment>
+                    }
+                  />
+                </List.Item>
+              </Skeleton>
             )}
           />
         </PostsWrapper>
+
+        {/* Global Style Set */}
+        <GlobalStyleSet />
       </React.Fragment>
     );
   }
