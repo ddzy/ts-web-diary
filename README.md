@@ -38,6 +38,7 @@
 - [ ] 新建评论, 回复高亮显示
 - [ ] hooks重构所有class组件
 - [x] 文章description字段
+- [ ] Main创作组件, 内容非空判断
 - [ ] 评论回复点赞
 - [ ] header组件动态路由
 ## updating, ing, ing...
