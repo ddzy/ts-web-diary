@@ -10,6 +10,7 @@ import {
 
 export interface IArticleMainProps {
   articles: any[];
+  initialLoading: boolean;
   onGetArticleList: (
     type: string,
     page: number,
@@ -37,6 +38,7 @@ class ArticleMain extends React.PureComponent<IArticleMainProps, IArticleMainSta
             <ArticleMainView
               articles={this.props.articles}
               onLoadMore={this.props.onLoadMore}
+              initialLoading={this.props.initialLoading}
             />
           </MainContent>
         </MainWrapper>

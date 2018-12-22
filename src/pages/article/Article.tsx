@@ -18,6 +18,7 @@ export interface IArticleProps {
 interface IArticleState {
   serviceState: IStaticOptions;
   hasMore: boolean;
+  initialLoading: boolean;
 };
 
 
@@ -30,21 +31,10 @@ class Article extends React.Component<IArticleProps, IArticleState> {
       article_list: [],
     },
     hasMore: true,
+    initialLoading: true,
   }
 
   public componentDidMount(): void {
-    // serviceHandleGetArticleList((data) => {
-    //   this.setState((prevState) => {
-    //     return {
-    //       ...prevState,
-    //       serviceState: {
-    //         ...prevState.serviceState,
-    //         article_list: data,
-    //       },
-    //     };
-    //   });
-    // });
-
     const {
       pathname
     } = this.props.location;
@@ -120,6 +110,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
               ...prevState.serviceState,
               article_list: data,
             },
+            initialLoading: false,
           };
         });
       },
@@ -129,26 +120,6 @@ class Article extends React.Component<IArticleProps, IArticleState> {
   /**
    * 处理加载更多
    */
-  // public handleLoadMoreArticleList(
-  //   page: number,
-  //   pageSize: number,
-  //   callback?: (...args: any[]) => void,
-  // ): void {
-  //   serviceHandleGetArticleList(
-  //     { type: 'frontend', page, pageSize },
-  //     (data) => {
-  //       callback && callback();
-  //       this.setState((prevState) => {
-  //         return {
-  //           serviceState: {
-  //             ...prevState.serviceState,
-  //             article_list: prevState.serviceState.article_list.concat(data),
-  //           },
-  //         };
-  //       });
-  //     },
-  //   );
-  // }
   public handleLoadMoreArticleList = (
     page: number,
     pageSize: number,
@@ -192,6 +163,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
         {/* 重构 */}
         {/* -------------------------------------- */}
         <ArticleMain
+          initialLoading={this.state.initialLoading}
           articles={this.state.serviceState.article_list}
           onGetArticleList={this.handelGetArticleList}
           onLoadMore={this.handleLoadMoreArticleList}

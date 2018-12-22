@@ -6,7 +6,6 @@ export const GlobalStyleSet = createGlobalStyle`
   .am-view-posts-loadlist {
     margin-top: 1.5625rem;
     padding: 0 3rem;
-
   }
 `;
 

@@ -18,6 +18,7 @@ import { formatTime } from 'src/utils/utils';
 
 export interface IArticleMainViewPostsProps {
   articles: any[];
+  initialLoading: boolean;
   onLoadMore: (
     page: number,
     pageSize: number,
@@ -26,7 +27,7 @@ export interface IArticleMainViewPostsProps {
 };
 interface IArticleMainViewPostsState {
   hasMore: boolean;
-  loading: boolean;
+  loadMoreLoading: boolean;
 };
 
 
@@ -37,7 +38,8 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
 
   public readonly state = {
     hasMore: true,
-    loading: false,
+    // ** list列表初始化loading **
+    loadMoreLoading: false,
   };
 
   /**
@@ -95,13 +97,13 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
   public handleLoadMore = (
     page: number,
   ): void => {
-    this.setState({ loading: true, });
+    this.setState({ loadMoreLoading: true, });
 
     this.props.onLoadMore(page, 5, (data: any) => {
       const hasMore: boolean = data.hasMore;
       this.setState({
         hasMore,
-        loading: false,
+        loadMoreLoading: false,
       });
     });
   }
@@ -116,18 +118,17 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
             pageStart={1}
             initialLoad={false}
           >
-            <List
-              itemLayout="vertical"
-              size="large"
-              grid={{ gutter: 16 }}
-              dataSource={this.initListData()}
-              renderItem={(item: any) => (
-                <Skeleton
-                  className="am-view-posts-loadlist"
-                  key={item.title}
-                  loading={false}
-                  active={true}
-                >
+            <Skeleton
+              className="am-view-posts-loadlist"
+              loading={this.props.initialLoading}
+              active={true}
+            >
+              <List
+                itemLayout="vertical"
+                size="large"
+                grid={{ gutter: 16 }}
+                dataSource={this.initListData()}
+                renderItem={(item: any) => (
                   <List.Item
                     key={item.title}
                     style={{
@@ -188,18 +189,17 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
                       }
                     />
                   </List.Item>
-                </Skeleton>
-              )}
-            >
-              <Skeleton
-                className="am-view-posts-loadlist"
-                loading={this.state.loading}
-                active={true}
+                )}
               >
-                <div />
-              </Skeleton>
-            </List>
-
+                <Skeleton
+                  className="am-view-posts-loadlist"
+                  loading={this.state.loadMoreLoading}
+                  active={true}
+                >
+                  <div />
+                </Skeleton>
+              </List>
+            </Skeleton>
           </InfiniteScroll>
         </PostsWrapper>
 

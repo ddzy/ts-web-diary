@@ -9,6 +9,7 @@ import ArticleMainViewPosts from './article_main_view_posts/ArticleMainViewPosts
 
 export interface IArticleMainViewProps {
   articles: any[];
+  initialLoading: boolean;
   onLoadMore: (
     page: number,
     pageSize: number,
@@ -29,6 +30,7 @@ class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticl
             <ArticleMainViewPosts
               articles={this.props.articles}
               onLoadMore={this.props.onLoadMore}
+              initialLoading={this.props.initialLoading}
             />
           </ViewContent>
         </ViewWrapper>
