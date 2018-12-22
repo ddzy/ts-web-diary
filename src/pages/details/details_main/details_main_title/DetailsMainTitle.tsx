@@ -14,7 +14,11 @@ import {
   LeftImgBox,
   LeftImgInner,
 } from './style';
-import { MERGED_ARTICLE_TAG } from 'src/constants/constants';
+import {
+  ARTICLE_TYPE_PICKER,
+  MERGED_ARTICLE_TAG,
+  ARTICLE_TYPE_WITH_ENGLISH_PICKER,
+} from 'src/constants/constants';
 import { formatTime } from 'src/utils/utils';
 
 
@@ -68,7 +72,10 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
           </LeftInfoListItem>
           <Divider type="vertical" />
           <LeftInfoListItem>
-            {props.type}
+            {/* {props.type} */}
+            {
+              ARTICLE_TYPE_PICKER[ARTICLE_TYPE_WITH_ENGLISH_PICKER.indexOf(props.type)]
+            }
           </LeftInfoListItem>
           <Divider type="vertical" />
           <LeftInfoListItem>
