@@ -1,19 +1,20 @@
 import * as React from 'react';
-import { 
-  Row, 
-  Col, 
-  Card, 
-  Form, 
-  Radio, 
-  Tag, 
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Radio,
+  Tag,
   Input,
-  Icon, 
+  Icon,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
 import {
   ARTICLE_TAG_PICKER,
   ARTICLE_TYPE_PICKER,
+  ARTICLE_TYPE_WITH_ENGLISH_PICKER,
 } from '../../../constants/constants';
 import {
   WriteExtraWrapper,
@@ -68,7 +69,7 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
       this.props.form.setFieldsValue({
         article_tag: this.state.selectedTags,
       });
-    })  
+    })
   }
 
 
@@ -76,7 +77,7 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
     return ARTICLE_TYPE_PICKER.map((v: string, index: number) => (
       <Radio.Button
         key={index}
-        value={v}
+        value={ARTICLE_TYPE_WITH_ENGLISH_PICKER[index]}
       >{v}</Radio.Button>
     ));
   }
@@ -113,7 +114,7 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
                         <Radio.Button value="译文">译文</Radio.Button>
                         <Radio.Button value="教程">教程</Radio.Button>
                         <Radio.Button value="感悟">感悟</Radio.Button> */}
-                      
+
                         {/* 重构 */}
                         {articleType}
                       </Radio.Group>
@@ -121,9 +122,9 @@ class WriteExtraForm extends React.PureComponent<IWriteExtraProps, IWriteExtraSt
                 </Form.Item>
                 <Form.Item label="标签">
                   {getFieldDecorator('article_tag', {
-                    rules: [{ 
-                      required: true, 
-                      message: '至少选择一个标签' 
+                    rules: [{
+                      required: true,
+                      message: '至少选择一个标签'
                     }],
                   })(
                     <Input

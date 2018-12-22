@@ -12,12 +12,13 @@ const articleController: Router = new Router();
 articleController.get('/list', async (ctx) => {
 
   const {
+    type,
     page,
     pageSize,
   } = ctx.request.query;
 
   const articleList = await Posts
-    .find({})
+    .find({ type: { $regex: type } })
     .populate('author')
     .sort({ create_time: -1 })
     .skip((page - 1) * pageSize)
@@ -28,6 +29,7 @@ articleController.get('/list', async (ctx) => {
     message: 'Success!',
     articleList,
     hasMore: articleList.length !== 0,
+    info: { type, page, pageSize },
   };
 });
 

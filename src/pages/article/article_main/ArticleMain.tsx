@@ -10,6 +10,11 @@ import {
 
 export interface IArticleMainProps {
   articles: any[];
+  onGetArticleList: (
+    type: string,
+    page: number,
+    pageSize: number,
+  ) => void;
 };
 interface IArticleMainState { };
 
@@ -21,7 +26,9 @@ class ArticleMain extends React.PureComponent<IArticleMainProps, IArticleMainSta
       <React.Fragment>
         <MainWrapper>
           <MainContent>
-            <ArticleMainNav />
+            <ArticleMainNav
+              onGetArticleList={this.props.onGetArticleList}
+            />
             <ArticleMainView
               articles={this.props.articles}
             />

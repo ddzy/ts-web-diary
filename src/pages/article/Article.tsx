@@ -12,7 +12,9 @@ import {
 } from './style';
 
 
-export interface IArticleProps {};
+export interface IArticleProps {
+  location: Location;
+};
 interface IArticleState {
   serviceState: IStaticOptions;
   hasMore: boolean;
@@ -31,17 +33,24 @@ class Article extends React.Component<IArticleProps, IArticleState> {
   }
 
   public componentDidMount(): void {
-    serviceHandleGetArticleList((data) => {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          serviceState: {
-            ...prevState.serviceState,
-            article_list: data,
-          },
-        };
-      });
-    });
+    // serviceHandleGetArticleList((data) => {
+    //   this.setState((prevState) => {
+    //     return {
+    //       ...prevState,
+    //       serviceState: {
+    //         ...prevState.serviceState,
+    //         article_list: data,
+    //       },
+    //     };
+    //   });
+    // });
+
+    const {
+      pathname
+    } = this.props.location;
+    const type = pathname.replace('/article/', '');
+
+    this.handelGetArticleList(type, 1, 5);
     this.handleArticleWrapperWheel();
   }
 
@@ -62,7 +71,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
     // ** 处理header滚动 **
     oHeaderContainer.style.cssText += `
       transform: translateY(${
-        nWheelDeltaY < 0 ? '-100%' : 0
+      nWheelDeltaY < 0 ? '-100%' : 0
       });
     `;
   }
@@ -93,6 +102,30 @@ class Article extends React.Component<IArticleProps, IArticleState> {
     );
   }
 
+  /**
+   * 处理点击navitem, 获取相关文章
+   */
+  public handelGetArticleList = (
+    type: string,
+    page: number,
+    pageSize: number,
+  ): void => {
+    serviceHandleGetArticleList(
+      { type, page, pageSize },
+      (data) => {
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            serviceState: {
+              ...prevState.serviceState,
+              article_list: data,
+            },
+          };
+        });
+      },
+    );
+  }
+
   public render(): JSX.Element {
     return (
       <ArticleWrapper
@@ -111,6 +144,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
         {/* -------------------------------------- */}
         <ArticleMain
           articles={this.state.serviceState.article_list}
+          onGetArticleList={this.handelGetArticleList}
         />
       </ArticleWrapper>
     );

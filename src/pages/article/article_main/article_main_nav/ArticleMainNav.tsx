@@ -18,7 +18,13 @@ import {
 } from '../../../../constants/constants';
 
 
-export interface IArticleMainNavProps extends RouteComponentProps<IArticleMainNavProps> {};
+export interface IArticleMainNavProps extends RouteComponentProps<IArticleMainNavProps> {
+  onGetArticleList: (
+    type: string,
+    page: number,
+    pageSize: number,
+  ) => void;
+};
 
 
 const ArticleMainNav = React.memo<IArticleMainNavProps>((
@@ -34,7 +40,8 @@ const ArticleMainNav = React.memo<IArticleMainNavProps>((
     return ARTICLE_TYPE_PICKER.map((v: string, i: number) => (
       <NavContentListItem
         key={i}
-        data-type={v}
+        data-type={ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}
+        onClick={() => handleNavItemClick(ARTICLE_TYPE_WITH_ENGLISH_PICKER[i])}
       >
         <Link
           className={
@@ -48,6 +55,15 @@ const ArticleMainNav = React.memo<IArticleMainNavProps>((
         </Link>
       </NavContentListItem>
     ));
+  }
+
+  /**
+   * 处理导航点击
+   */
+  function handleNavItemClick(
+    type: string,
+  ): void {
+    props.onGetArticleList(type, 1, 5);
   }
 
   return (
