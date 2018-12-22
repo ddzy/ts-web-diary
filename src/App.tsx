@@ -9,7 +9,8 @@ export interface IAppProps extends RouteComponentProps<any> {
   children: React.ReactElement<HTMLElement>;
 };
 
-const App: React.SFC<IAppProps> = (
+
+const App = React.memo<IAppProps>((
   props: IAppProps,
 ): JSX.Element => {
   return (
@@ -18,7 +19,6 @@ const App: React.SFC<IAppProps> = (
         className="transition-router"
       >
         <CSSTransition
-          key={props.location.pathname}
           timeout={1000}
           classNames="left"
         >
@@ -29,7 +29,7 @@ const App: React.SFC<IAppProps> = (
       <GlobalStyle />
     </React.Fragment>
   );
-}
+});
 
 
 export default withRouter(App);
