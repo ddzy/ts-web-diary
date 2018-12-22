@@ -5,11 +5,11 @@ import ArticleMain from './article_main/ArticleMain';
 import {
   IStaticOptions,
   serviceHandleGetArticleList,
-  // serviceHandleArticleLoadMore,
 } from './Article.service';
 import {
   ArticleWrapper,
 } from './style';
+import { PAGE_SIZE } from 'src/constants/constants';
 
 
 export interface IArticleProps {
@@ -40,7 +40,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
     } = this.props.location;
     const type = pathname.replace('/article/', '');
 
-    this.handelGetArticleList(type, 1, 5);
+    this.handelGetArticleList(type, 1, PAGE_SIZE);
     this.handleArticleWrapperWheel();
   }
 

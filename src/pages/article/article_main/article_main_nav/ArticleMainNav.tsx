@@ -15,6 +15,7 @@ import {
 import {
   ARTICLE_TYPE_PICKER,
   ARTICLE_TYPE_WITH_ENGLISH_PICKER,
+  PAGE_SIZE,
 } from '../../../../constants/constants';
 
 
@@ -63,7 +64,7 @@ const ArticleMainNav = React.memo<IArticleMainNavProps>((
   function handleNavItemClick(
     type: string,
   ): void {
-    props.onGetArticleList(type, 1, 5);
+    props.onGetArticleList(type, 1, PAGE_SIZE);
   }
 
   return (

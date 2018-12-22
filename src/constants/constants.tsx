@@ -68,3 +68,7 @@ export const EMOJI_PICKER: string[] = [
   ':expressionless:', ':eyes:', ':call_me_hand:',
 ];
 
+/**
+ * 分页 每页条数
+ */
+export const PAGE_SIZE: number = 5;

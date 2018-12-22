@@ -14,6 +14,7 @@ import {
   PostsWrapper,
 } from './style';
 import { formatTime } from 'src/utils/utils';
+import { PAGE_SIZE } from 'src/constants/constants';
 
 
 export interface IArticleMainViewPostsProps {
@@ -99,7 +100,7 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
   ): void => {
     this.setState({ loadMoreLoading: true, });
 
-    this.props.onLoadMore(page, 5, (data: any) => {
+    this.props.onLoadMore(page, PAGE_SIZE, (data: any) => {
       const hasMore: boolean = data.hasMore;
       this.setState({
         hasMore,
