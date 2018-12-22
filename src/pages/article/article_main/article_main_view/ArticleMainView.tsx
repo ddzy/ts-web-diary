@@ -9,6 +9,11 @@ import ArticleMainViewPosts from './article_main_view_posts/ArticleMainViewPosts
 
 export interface IArticleMainViewProps {
   articles: any[];
+  onLoadMore: (
+    page: number,
+    pageSize: number,
+    callback?: (...args: any[]) => void,
+  ) => void;
 };
 interface IArticleMainViewState { };
 
@@ -22,7 +27,8 @@ class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticl
           <ViewContent>
             {/* 文章展示 */}
             <ArticleMainViewPosts
-               articles={this.props.articles}
+              articles={this.props.articles}
+              onLoadMore={this.props.onLoadMore}
             />
           </ViewContent>
         </ViewWrapper>

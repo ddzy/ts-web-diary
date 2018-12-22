@@ -24,7 +24,6 @@ export function serviceHandleGetArticleList(
     data: payload,
     jsonp: false,
   }).then((res) => {
-    console.log(res);
     callback && callback(res.articleList);
   });
 }

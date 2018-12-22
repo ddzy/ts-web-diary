@@ -7,6 +7,7 @@ import {
   List,
   Skeleton,
 } from 'antd';
+import * as InfiniteScroll from 'react-infinite-scroller';
 
 import {
   GlobalStyleSet,
@@ -17,14 +18,27 @@ import { formatTime } from 'src/utils/utils';
 
 export interface IArticleMainViewPostsProps {
   articles: any[];
+  onLoadMore: (
+    page: number,
+    pageSize: number,
+    callback?: (...args: any[]) => void,
+  ) => void;
 };
-interface IArticleMainViewPostsState { };
+interface IArticleMainViewPostsState {
+  hasMore: boolean;
+  loading: boolean;
+};
 
 
 /**
  * 文章展示
  */
 class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProps, IArticleMainViewPostsState> {
+
+  public readonly state = {
+    hasMore: true,
+    loading: false,
+  };
 
   /**
    * 初始化列表数据
@@ -75,85 +89,118 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
     );
   }
 
+  /**
+   * 处理加载更多
+   */
+  public handleLoadMore = (
+    page: number,
+  ): void => {
+    this.setState({ loading: true, });
+
+    this.props.onLoadMore(page, 5, (data: any) => {
+      const hasMore: boolean = data.hasMore;
+      this.setState({
+        hasMore,
+        loading: false,
+      });
+    });
+  }
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
         <PostsWrapper>
-          <List
-            itemLayout="vertical"
-            size="large"
-            grid={{ gutter: 16 }}
-            dataSource={this.initListData()}
-            renderItem={(item: any) => (
-              <Skeleton
-                className="am-view-posts-loadlist"
-                key={item.title}
-                loading={false}
-                active={true}
-              >
-                <List.Item
+          <InfiniteScroll
+            loadMore={this.handleLoadMore}
+            hasMore={this.state.hasMore}
+            pageStart={1}
+            initialLoad={false}
+          >
+            <List
+              itemLayout="vertical"
+              size="large"
+              grid={{ gutter: 16 }}
+              dataSource={this.initListData()}
+              renderItem={(item: any) => (
+                <Skeleton
+                  className="am-view-posts-loadlist"
                   key={item.title}
-                  style={{
-                    marginTop: '1.5625rem',
-                    padding: '0 3rem',
-                    borderBottom: '1px solid #f7f7f7',
-                    cursor: 'pointer',
-                  }}
-                  actions={[
-                    this.initIconText({
-                      type: 'eye-o',
-                      text: '150',
-                      tip: '浏览量',
-                    }),
-                    this.initIconText({
-                      type: 'like-o',
-                      text: '156',
-                      tip: '点赞',
-                    }),
-                    this.initIconText({
-                      type: 'clock-circle-o',
-                      text: item.create_time,
-                      tip: '发布于',
-                    }),
-                    this.initIconText({
-                      type: 'info-circle',
-                      text: item.author_name,
-                      tip: '作者',
-                    })
-                  ]}
-                  extra={
-                    <div style={{
-                      width: '7.5rem',
-                      height: '7.5rem',
-                    }}>
-                      <img width={120} height={120}
-                        alt="extra_logo" src={item.pic_url} />
-                    </div>
-                  }
+                  loading={false}
+                  active={true}
                 >
-                  <List.Item.Meta
-                    title={
-                      <Link
-                        to={`/details/${item.id}`}
-                        style={{
-                          fontSize: '1.25rem',
-                          fontWeight: 'bold'
-                        }}
-                      >{item.title}</Link>
+                  <List.Item
+                    key={item.title}
+                    style={{
+                      marginTop: '1.5625rem',
+                      padding: '0 3rem',
+                      borderBottom: '1px solid #f7f7f7',
+                      cursor: 'pointer',
+                    }}
+                    actions={[
+                      this.initIconText({
+                        type: 'eye-o',
+                        text: '150',
+                        tip: '浏览量',
+                      }),
+                      this.initIconText({
+                        type: 'like-o',
+                        text: '156',
+                        tip: '点赞',
+                      }),
+                      this.initIconText({
+                        type: 'clock-circle-o',
+                        text: item.create_time,
+                        tip: '发布于',
+                      }),
+                      this.initIconText({
+                        type: 'info-circle',
+                        text: item.author_name,
+                        tip: '作者',
+                      })
+                    ]}
+                    extra={
+                      <div style={{
+                        width: '7.5rem',
+                        height: '7.5rem',
+                      }}>
+                        <img width={120} height={120}
+                          alt="extra_logo" src={item.pic_url} />
+                      </div>
                     }
-                    description={
-                      <React.Fragment>
-                        {item.description}
+                  >
+                    <List.Item.Meta
+                      title={
                         <Link
                           to={`/details/${item.id}`}
-                        >...阅读全文⬇</Link>
-                      </React.Fragment>
-                    }
-                  />
-                </List.Item>
+                          style={{
+                            fontSize: '1.25rem',
+                            fontWeight: 'bold'
+                          }}
+                        >{item.title}</Link>
+                      }
+                      description={
+                        <React.Fragment>
+                          {item.description}
+                          <Link
+                            to={`/details/${item.id}`}
+                          >...阅读全文⬇</Link>
+                        </React.Fragment>
+                      }
+                    />
+                  </List.Item>
+                </Skeleton>
+              )}
+            >
+              <Skeleton
+                className="am-view-posts-loadlist"
+                loading={this.state.loading}
+                active={true}
+              >
+                <div />
               </Skeleton>
-            )}
-          />
+            </List>
+
+          </InfiniteScroll>
         </PostsWrapper>
 
         {/* Global Style Set */}

@@ -15,6 +15,11 @@ export interface IArticleMainProps {
     page: number,
     pageSize: number,
   ) => void;
+  onLoadMore: (
+    page: number,
+    pageSize: number,
+    callback?: (...args: any[]) => void,
+  ) => void,
 };
 interface IArticleMainState { };
 
@@ -31,6 +36,7 @@ class ArticleMain extends React.PureComponent<IArticleMainProps, IArticleMainSta
             />
             <ArticleMainView
               articles={this.props.articles}
+              onLoadMore={this.props.onLoadMore}
             />
           </MainContent>
         </MainWrapper>

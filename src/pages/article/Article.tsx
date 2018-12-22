@@ -126,6 +126,55 @@ class Article extends React.Component<IArticleProps, IArticleState> {
     );
   }
 
+  /**
+   * 处理加载更多
+   */
+  // public handleLoadMoreArticleList(
+  //   page: number,
+  //   pageSize: number,
+  //   callback?: (...args: any[]) => void,
+  // ): void {
+  //   serviceHandleGetArticleList(
+  //     { type: 'frontend', page, pageSize },
+  //     (data) => {
+  //       callback && callback();
+  //       this.setState((prevState) => {
+  //         return {
+  //           serviceState: {
+  //             ...prevState.serviceState,
+  //             article_list: prevState.serviceState.article_list.concat(data),
+  //           },
+  //         };
+  //       });
+  //     },
+  //   );
+  // }
+  public handleLoadMoreArticleList = (
+    page: number,
+    pageSize: number,
+    callback?: (...args: any[]) => void,
+  ): void => {
+    const {
+      pathname,
+    } = this.props.location;
+    const type: string = pathname.replace('/article/', '');
+
+    serviceHandleGetArticleList(
+      { type, page, pageSize },
+      (data) => {
+        callback && callback(data);
+        this.setState((prevState) => {
+          return {
+            serviceState: {
+              ...prevState.serviceState,
+              article_list: prevState.serviceState.article_list.concat(data),
+            },
+          };
+        });
+      },
+    );
+  }
+
   public render(): JSX.Element {
     return (
       <ArticleWrapper
@@ -145,6 +194,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
         <ArticleMain
           articles={this.state.serviceState.article_list}
           onGetArticleList={this.handelGetArticleList}
+          onLoadMore={this.handleLoadMoreArticleList}
         />
       </ArticleWrapper>
     );

@@ -29,7 +29,6 @@ articleController.get('/list', async (ctx) => {
     message: 'Success!',
     articleList,
     hasMore: articleList.length !== 0,
-    info: { type, page, pageSize },
   };
 });
 
