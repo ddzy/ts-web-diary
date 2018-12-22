@@ -40,7 +40,7 @@
 - [ ] hooks重构所有class组件
 - [x] 文章description字段
 - [ ] Main创作组件, 内容非空判断
-- [ ] react-transition-group挂载两次的问题
+- [x] react-transition-group挂载两次的问题
 - [ ] 评论回复点赞
 - [ ] header组件动态路由
 ## updating, ing, ing...
