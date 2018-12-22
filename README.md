@@ -26,7 +26,7 @@
 - [ ] 所有组件state归类处理
 - [x] 首页骨架屏
 - [x] Article路由, 滚动加载
-- [ ] 提取pageSize -> constant
+- [x] 提取pageSize -> constant
 - [ ] async重构callback
 - [ ] 按钮节流
 - [ ] 初始化只获取可见区域数据, 加快加载速度
