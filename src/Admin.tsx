@@ -10,7 +10,7 @@ const Admin: React.SFC<IAdminProps> = (
   props: IAdminProps,
 ): JSX.Element => {
   return (
-    <div className="adminWrapper">
+    <div className="admin-wrapper">
       <div
         className="admin-content"
       >

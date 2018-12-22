@@ -66,8 +66,15 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   /*
 
   */
+  .transition-router {
+    height: 100%;
+  }
+  .admin-wrapper {
+    height: 100%;
+  }
   .admin-content {
     position: relative;
+    height: 100%;
     background-color: #f4f5f5;
   }
 
