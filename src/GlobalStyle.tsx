@@ -100,25 +100,52 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   }
 
   /*
-    ??? 路由过渡效果 - 3
+    ??? 路由过渡效果 - 1
   */
-  .left-appear,
+  .onlyTransformScale-appear,
   .left-enter {
     opacity: 0.5;
     transform: scale(0) rotate(30deg);
   }
-  .left-appear-active,
-  .left-enter-active {
+  .onlyTransformScale-appear-active,
+  .onlyTransformScale-enter-active {
     opacity: 1;
     transform: scale(1) rotate(0);
     transition: transform 0.3s ease-in-out;
   }
-  .left-exit {
+  .onlyTransformScale-exit {
     transition: transform 0.2s ease-in-out;
     transform: scale(1.2) rotate(-30deg);
   }
-  .left-exit-active {
+  .onlyTransformScale-exit-active {
     transform: scale(0) rotate(0);
+  }
+
+  /*
+    ??? 路由过渡效果 - 2
+  */
+ .fadeTranslate-enter,
+ .fadeTranslate-appear {
+  opacity: 0;
+  transform: translate(0, -3vh);
+  }
+
+  .fadeTranslate-enter-active,
+  .fadeTranslate-appear-active {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition: opacity 500ms ease-in 500ms, transform 500ms ease-in-out 500ms;
+  }
+
+  .fadeTranslate-exit {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  .fadeTranslate-exit-active {
+    opacity: 0;
+    transform: translate(0, 3vh);
+    transition: opacity 300ms ease-in, transform 300ms ease-in-out;
   }
 
   /*

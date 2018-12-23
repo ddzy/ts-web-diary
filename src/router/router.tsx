@@ -5,6 +5,10 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
+import {
+  TransitionGroup,
+  CSSTransition,
+} from 'react-transition-group';
 
 import App from '../App';
 import Admin from '../Admin';
@@ -25,6 +29,7 @@ export interface IRouterConfigProps { };
 
 
 const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
+
   return (
     <Router>
       <App>
@@ -36,30 +41,43 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
             render={(props) => (
               <Admin location={props.location}>
                 <AuthRoute />
-                <Switch>
-                  <Route path="/home" exact component={Home} />
-                  <Route path="/publish" component={Publish} />
-                  <Route path="/article" render={() => (
-                    <Switch>
-                      <Route path="/article/android" component={Article} />
-                      <Route path="/article/frontend" component={Article} />
-                      <Route path="/article/ios" component={Article} />
-                      <Route path="/article/backend" component={Article} />
-                      <Route path="/article/design" component={Article} />
-                      <Route path="/article/product" component={Article} />
-                      <Route path="/article/tool" component={Article} />
-                      <Route path="/article/read" component={Article} />
-                      <Route path="/article/ai" component={Article} />
-                      <Route path="/article/devops" component={Article} />
-                      <Redirect to="/article/frontend" />
+                <TransitionGroup>
+                  <CSSTransition
+                    classNames='fadeTranslate'
+                    key={props.location.key}
+                    timeout={{
+                      enter: 1000,
+                      exit: 500,
+                    }}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <Switch location={props.location}>
+                      <Route path="/home" exact component={Home} />
+                      <Route path="/publish" component={Publish} />
+                      <Route path="/article" render={() => (
+                        <Switch>
+                          <Route path="/article/android" component={Article} />
+                          <Route path="/article/frontend" component={Article} />
+                          <Route path="/article/ios" component={Article} />
+                          <Route path="/article/backend" component={Article} />
+                          <Route path="/article/design" component={Article} />
+                          <Route path="/article/product" component={Article} />
+                          <Route path="/article/tool" component={Article} />
+                          <Route path="/article/read" component={Article} />
+                          <Route path="/article/ai" component={Article} />
+                          <Route path="/article/devops" component={Article} />
+                          <Redirect to="/article/frontend" />
+                        </Switch>
+                      )} />
+                      <Route path="/me" component={Me} />
+                      <Route path="/details/:id" component={Details} />
+                      <Route path="/edit/:id" component={Edit} />
+                      <Route path="/collection/:id" component={Collection} />
+                      <Route component={NotFound} />
                     </Switch>
-                  )} />
-                  <Route path="/me" component={Me} />
-                  <Route path="/details/:id" component={Details} />
-                  <Route path="/edit/:id" component={Edit} />
-                  <Route path="/collection/:id" component={Collection} />
-                  <Route component={NotFound} />
-                </Switch>
+                  </CSSTransition>
+                </TransitionGroup>
               </Admin>
             )}
           />
