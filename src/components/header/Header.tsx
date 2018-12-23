@@ -52,9 +52,7 @@ const Header: React.SFC<IHeaderProps> = (
   }
 
   return (
-    <Affix
-      offsetTop={1}
-    >
+    <Affix>
       <HeaderWrapper>
         <HeaderMain
           authInfo={{ ...props.AuthRouteReducer }}

@@ -17,14 +17,7 @@ const Admin = React.memo<IAdminProps>((
         className="admin-content"
       >
         <Header location={props.location} />
-        <div
-          style={{
-            width: '100%',
-            minHeight: '100%',
-            position: 'absolute',
-          }}>
-          {props.children}
-        </div>
+        {props.children}
       </div>
     </div>
   );
