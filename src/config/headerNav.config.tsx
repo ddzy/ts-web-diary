@@ -2,23 +2,18 @@
 /**
  * 头部导航 配置
  */
-const headerNavConfig: object[] = [
-  {
-    path: '/publish',
-    value: '创作',
-    children: null,
-  },
-  {
-    // path: new RegExp(`\/edit\/\w*`),
-    path: '/edit/',
-    value: '编辑',
-    children: null,
-  },
-  {
-    path: '/me',
-    value: '我的',
-    children: null,
-  },
+export interface IHeaderNavConfigStaticOptions {
+  path: string;
+  name: string;
+};
+
+
+const headerNavConfig: IHeaderNavConfigStaticOptions[] = [
+  { path: '/home', name: '首页' },
+  { path: '/article/frontend', name: '文章' },
+  { path: '/publish', name: '创作', },
+  { path: '/me', name: '我的' },
+  { path: '/commnity', name: '社区' },
 ];
 
 

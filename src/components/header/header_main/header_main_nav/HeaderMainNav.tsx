@@ -4,9 +4,6 @@ import {
   RouteComponentProps,
   Link,
 } from 'react-router-dom';
-import {
-  Location,
-} from 'history';
 
 import {
   GlobalStyleSet,
@@ -17,81 +14,47 @@ import {
 import headerNavConfig from '../../../../config/headerNav.config';
 
 
-export interface IHeaderMainNavProps extends RouteComponentProps<IHeaderMainNavProps> {
-  location: Location;
-};
-interface IHeaderMainNavState {
-  navList: Array<{
-    path: string,
-    value: string,
-    children: any,
-  }>;
-};
+export interface IHeaderMainNavProps extends RouteComponentProps<IHeaderMainNavProps> { };
+interface IHeaderMainNavState {};
 
 
 class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMainNavState> {
 
-  public readonly state = {
-    navList: [
-      { path: '/home', value: '首页', children: null },
-      { path: '/article', value: '文章', children: null },
-    ],
-  }
+  public readonly state: IHeaderMainNavState = {}
 
   public componentDidMount(): void {
-    this.handleDealNavList();
+    this.handleSetNavItemStyle();
   }
 
-  public handleDealNavList = (): void => {
-    const { pathname } = this.props.location;
+  public handleSetNavItemStyle = (): void => {
+    const {
+      pathname,
+    } = this.props.location;
 
-    const result: any = headerNavConfig.filter((item: any) => {
-      return item.path === pathname;
+    // 默认选中菜单栏
+    const oUl = document.getElementById('header-navbar');
+    const oLi = oUl && oUl.querySelectorAll('li');
+
+    oLi && Array.from(oLi).forEach((item) => {
+      pathname.includes(item.getAttribute('data-pane') || '')
+        && item.classList.add('header-active');
     });
 
-    /\/details\/\w*/.test(pathname)
-      && result.push({
-        path: '/details', value: '详情', children: null
-      });
-
-    /\/collection\/\w*/.test(pathname)
-      && result.push({
-        path: '/collection',
-        value: '收藏',
-        children: null,
-      });
-
-    this.setState((prevState) => {
-      return {
-        navList: prevState.navList.concat(result),
-      };
-    }, () => {
-      // 默认选中菜单栏
-      const oUl = document.getElementById('header-navbar');
-      const oLi = oUl && oUl.querySelectorAll('li');
-
-      oLi && Array.from(oLi).forEach((item) => {
-        // item.getAttribute('data-pane') === pathname
-        pathname.includes(item.getAttribute('data-pane') || '')
-          && item.classList.add('header-active');
-      });
-    });
   }
 
   /**
    * 处理初始化菜单栏
    */
   public handleInitHeaderNavList = (): JSX.Element[] => {
-    return this.state.navList.map((item) => {
-      return (
-        <MainNavItem
-          key={item.path}
-          data-pane={item.path}
-        >
-          <Link to={item.path}>{item.value}</Link>
-        </MainNavItem>
-      );
-    });
+    return headerNavConfig.map((item) => (
+      <MainNavItem
+        key={item.path}
+        data-pane={item.path}
+      >
+        <Link to={item.path}>{item.name}</Link>
+      </MainNavItem>
+
+    ));
   }
 
   public render(): JSX.Element {
