@@ -27,7 +27,8 @@
 - [x] 首页骨架屏
 - [x] Article路由, 滚动加载
 - [x] 提取pageSize -> constant
-- [ ] 动画优化处理, Heade组件提取至Admin, Header静态路由, routerConfig组件重构, relative, absolute解决跳动问题
+- [x] 动画优化处理, Heade组件提取至Admin, Header静态路由, routerConfig组件重构, relative, absolute解决跳动问题
+- [ ] Header默认样式, ArticleMainNav提取
 - [ ] async重构callback
 - [ ] 按钮节流
 - [ ] 初始化只获取可见区域数据, 加快加载速度
