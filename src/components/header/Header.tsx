@@ -14,6 +14,9 @@ import {
 
 
 export interface IHeaderProps {
+  // ** 路由参数 **
+  location: any;
+
   AuthRouteReducer: {
     isAuth: boolean;
     username: string;
@@ -25,7 +28,6 @@ export interface IHeaderProps {
 const Header: React.SFC<IHeaderProps> = (
   props: IHeaderProps,
 ): JSX.Element => {
-
   const [
     searchState,
     setSearchState,
@@ -60,6 +62,8 @@ const Header: React.SFC<IHeaderProps> = (
           searchedArticles={searchState.searchedArticles}
           hotTags={searchState.hotTags}
           onSearch={handleSearch}
+
+          location={props.location}
         />
       </HeaderWrapper>
     </Affix>

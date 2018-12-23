@@ -7,7 +7,6 @@ import {
   MeWrapper,
   MeContent,
 } from './style';
-import Header from '../../components/header/Header';
 import MeInfo from './me_info/MeInfo';
 import MeArticle from './me_dashboard/MeDashboard';
 import {
@@ -183,8 +182,6 @@ class Me extends React.Component<IMeProps, IMeState> {
   public render(): JSX.Element {
     return (
       <React.Fragment>
-        <Header />
-
         <MeWrapper>
           <MeContent>
             {/* 个人信息 */}

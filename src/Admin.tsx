@@ -1,24 +1,29 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+
+import Header from './components/header/Header';
 
 
-export interface IAdminProps extends RouteComponentProps<any> {
+export interface IAdminProps {
+  location: any;
   children: any;
 };
 
-const Admin: React.SFC<IAdminProps> = (
+const Admin = React.memo<IAdminProps>((
   props: IAdminProps,
-): JSX.Element => {
+) => {
   return (
     <div className="admin-wrapper">
       <div
         className="admin-content"
       >
-        {props.children}
+        <Header location={props.location} />
+        <div style={{ height: '100%', width: '100%', position: 'absolute' }}>
+          {props.children}
+        </div>
       </div>
     </div>
   );
-}
+});
 
 
-export default withRouter(Admin);
+export default Admin;

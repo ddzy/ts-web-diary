@@ -33,8 +33,8 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
           <Route path="/register" component={Register} />
           <Route
             path="/"
-            render={() => (
-              <Admin>
+            render={(props) => (
+              <Admin location={props.location}>
                 <AuthRoute />
                 <Switch>
                   <Route path="/home" exact component={Home} />

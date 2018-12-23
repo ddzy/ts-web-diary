@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Header from '../../components/header/Header';
 import Main from '../../components/main/Main';
 import { getHomeArticleList } from './Home.redux';
 
@@ -31,15 +30,14 @@ class Home extends React.PureComponent<IHomeProps, IHomeState> {
     console.log(page, pageSize);
   }
 
-  
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
-        <Header/>
-        <Main 
-          showTab={false} 
+        <Main
+          showTab={false}
           articleList={this.props.HomeReducer.articleList}
-          onLoadMore={this.handleLoadMore}  
+          onLoadMore={this.handleLoadMore}
         />
       </React.Fragment>
     );

@@ -9,7 +9,6 @@ import { History } from 'history';
 import { match } from 'react-router';
 import { connect } from 'react-redux';
 
-import Header from '../../components/header/Header';
 import DetailsMain from './details_main/DetailsMain';
 import DetailsRight from './details_action/DetailsAction';
 import DetailsControl from './details_control/DetailsControl';
@@ -320,7 +319,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   public render(): JSX.Element {
     return (
       <React.Fragment>
-        <Header />
         <DetailsWrapper>
           <DetailsContent>
             <Row>

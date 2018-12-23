@@ -2,7 +2,6 @@ import * as React from 'react';
 import { match } from 'react-router';
 import { notification } from 'antd';
 
-import Header from '../../components/header/Header';
 import {
   CollectionContainer,
   CollectionMain,
@@ -126,7 +125,6 @@ class Collection extends React.PureComponent<
   public render(): JSX.Element {
     return (
       <React.Fragment>
-        <Header />
         <CollectionContainer>
           <CollectionMain>
             <MainHeaderWrapper>

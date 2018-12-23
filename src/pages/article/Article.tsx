@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import Header from '../../components/header/Header';
 import ArticleMain from './article_main/ArticleMain';
 import {
   IStaticOptions,
@@ -151,7 +150,6 @@ class Article extends React.Component<IArticleProps, IArticleState> {
       <ArticleWrapper
         ref={this.oMainWrapperRef}
       >
-        <Header />
         {/* <Main
           showTab={true}
           articleList={this.state.serviceState.article_list}

@@ -20,6 +20,9 @@ export interface IHeaderMainProps {
     username: string;
   };
 
+  // ** header_main_nav **
+  location: any;
+
   // ** header_main_search **
   searchedArticles: any;
   hotTags: object;
@@ -44,7 +47,9 @@ class HeaderMain extends React.PureComponent<
       >
         <MainInner>
           <HeaderMainLogo />
-          <HeaderMainNav />
+          <HeaderMainNav
+            location={this.props.location}
+          />
           <HeaderMainAction
             authInfo={this.props.authInfo}
           />

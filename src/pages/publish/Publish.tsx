@@ -3,7 +3,6 @@ import {  Modal, notification } from 'antd';
 import { connect } from 'react-redux';
 import { History } from 'history';
 
-import Header from '../../components/header/Header';
 import Write from '../../components/write/Write';
 import {
   IStaticOptions,
@@ -85,7 +84,6 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
   public render(): JSX.Element {
     return (
       <React.Fragment>
-        <Header />
         <Write
           username={this.props.AuthRouteReducer.username}
           onSendArticle={this.handleSendArticle}

@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {
-  withRouter,
-  RouteComponentProps,
   Link,
 } from 'react-router-dom';
 
@@ -14,33 +12,39 @@ import {
 import headerNavConfig from '../../../../config/headerNav.config';
 
 
-export interface IHeaderMainNavProps extends RouteComponentProps<IHeaderMainNavProps> { };
+export interface IHeaderMainNavProps {
+  location: any;
+};
 interface IHeaderMainNavState {};
 
 
 class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMainNavState> {
 
-  public readonly state: IHeaderMainNavState = {}
+  public static getDerivedStateFromProps = (
+    nextProps: IHeaderMainNavProps
+  ) => {
+    HeaderMainNav._setNavItemStyle(nextProps.location.pathname);
 
-  public componentDidMount(): void {
-    this.handleSetNavItemStyle();
+    return null;
   }
 
-  public handleSetNavItemStyle = (): void => {
-    const {
-      pathname,
-    } = this.props.location;
-
-    // 默认选中菜单栏
+  /**
+   * 处理默认选中navItem项
+   */
+  public static _setNavItemStyle = (
+    pathname: string,
+  ): void => {
     const oUl = document.getElementById('header-navbar');
     const oLi = oUl && oUl.querySelectorAll('li');
 
     oLi && Array.from(oLi).forEach((item) => {
       pathname.includes(item.getAttribute('data-pane') || '')
-        && item.classList.add('header-active');
+        ? item.classList.add('header-active')
+        : item.classList.remove('header-active');
     });
-
   }
+
+  public readonly state: IHeaderMainNavState = {}
 
   /**
    * 处理初始化菜单栏
@@ -74,4 +78,4 @@ class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMain
 }
 
 
-export default withRouter(HeaderMainNav);
+export default HeaderMainNav;
