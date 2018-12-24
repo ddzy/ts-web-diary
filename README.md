@@ -31,6 +31,8 @@
 - [x] 修复页面过渡, 导航栏跳动bug
 - [x] HeaderNav默认样式
 - [ ] 解决```Can't perform a React state update on an unmounted component```错误
+- [ ] 更改Header滚动条件, 所有页面都可滚动
+- [ ] 添加Comment, Reply回复动画
 - [ ] Details固钉导致render两次.
 - [ ] async重构callback
 - [ ] 按钮节流
