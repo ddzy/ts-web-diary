@@ -29,7 +29,7 @@
 - [x] 提取pageSize -> constant
 - [x] 动画优化处理, Heade组件提取至Admin, Header静态路由, routerConfig组件重构, relative, absolute解决跳动问题
 - [x] 修复页面过渡, 导航栏跳动bug
-- [ ] HeaderNav默认样式
+- [x] HeaderNav默认样式
 - [ ] async重构callback
 - [ ] 按钮节流
 - [ ] 初始化只获取可见区域数据, 加快加载速度
