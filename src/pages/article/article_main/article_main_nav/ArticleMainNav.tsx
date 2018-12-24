@@ -4,6 +4,9 @@ import {
   Link,
   RouteComponentProps,
 } from 'react-router-dom';
+import {
+  Affix,
+} from 'antd';
 
 import {
   GlobalStyle,
@@ -69,13 +72,17 @@ const ArticleMainNav = React.memo<IArticleMainNavProps>((
 
   return (
     <React.Fragment>
-      <NavWrapper>
-        <NavContent>
-          <NavContentList>
-            {handleInitNavItem()}
-          </NavContentList>
-        </NavContent>
-      </NavWrapper>
+      <Affix
+        offsetTop={60}
+      >
+        <NavWrapper>
+          <NavContent>
+            <NavContentList>
+              {handleInitNavItem()}
+            </NavContentList>
+          </NavContent>
+        </NavWrapper>
+      </Affix>
 
       {/* Global Style */}
       <GlobalStyle />
