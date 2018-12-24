@@ -42,6 +42,7 @@ class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMain
         ? item.classList.add('header-active')
         : item.classList.remove('header-active');
     });
+
   }
 
   public readonly state: IHeaderMainNavState = {}
