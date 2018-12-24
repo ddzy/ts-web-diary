@@ -30,6 +30,8 @@
 - [x] 动画优化处理, Heade组件提取至Admin, Header静态路由, routerConfig组件重构, relative, absolute解决跳动问题
 - [x] 修复页面过渡, 导航栏跳动bug
 - [x] HeaderNav默认样式
+- [ ] 解决```Can't perform a React state update on an unmounted component```错误
+- [ ] Details固钉导致render两次.
 - [ ] async重构callback
 - [ ] 按钮节流
 - [ ] 初始化只获取可见区域数据, 加快加载速度
