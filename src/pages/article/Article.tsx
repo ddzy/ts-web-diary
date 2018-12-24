@@ -44,7 +44,14 @@ class Article extends React.Component<IArticleProps, IArticleState> {
   }
 
   public componentWillUnmount(): void {
-    this._aidedHandleArticleWrapperWheelEnd();
+    // this._aidedHandleArticleWrapperWheelEnd();
+    const oWrapperRef = this.oMainWrapperRef as any;
+    const oWrapperCurrent = oWrapperRef.current as HTMLDivElement;
+
+    oWrapperCurrent.removeEventListener(
+      'wheel',
+      this._aidedHandleArticleWrapperWheelStart,
+    );
   }
 
   /**
