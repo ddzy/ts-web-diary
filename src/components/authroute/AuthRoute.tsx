@@ -1,61 +1,53 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {
+  notification,
+} from 'antd';
+import {
+  connect,
+} from 'react-redux';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 import { History } from 'history';
 
-import { reduxHandleCheckAuth } from './AuthRoute.redux';
+import {
+  IInitialState,
+  reduxHandleCheckAuth,
+} from './AuthRoute.redux';
 
 
 
-export interface IAuthRouteProps extends RouteComponentProps<any> {
+export interface IAuthRouteProps extends RouteComponentProps<IAuthRouteProps> {
   history: History;
 
-  AuthRouteReducer: { isAuth: boolean };
+  AuthRouteReducer: IInitialState;
   reduxHandleCheckAuth: (callback: () => void) => void;
 };
-interface IAuthRouteState {};
 
 
-// 权限路由
-class AuthRoute extends React.Component<IAuthRouteProps, IAuthRouteState> {
+const AuthRoute = React.memo<IAuthRouteProps>((
+  props: IAuthRouteProps,
+): JSX.Element => {
+  React.useEffect(() => {
+    props.reduxHandleCheckAuth(() => {
+      const { isAuth } = props.AuthRouteReducer;
 
-  public readonly state = {}
-
-
-  public componentDidMount(): void {
-
-    // Home & Article & Details页 不需要权限
-    // 点赞 & 写文章 需要权限
-    const publicPath: any = [
-      '/home',
-      '/article',
-    ];
-
-    const regPath = /\/details\/\w*/;
-
-    this.props.reduxHandleCheckAuth(() => {
-      if(!this.props.AuthRouteReducer.isAuth) {
+      if (!isAuth) {
         localStorage.removeItem('userid');
-
-        if(!publicPath.includes(
-          this.props.location.pathname
-        ) && !(regPath.test(
-          this.props.location.pathname
-        ))) {
-          this.props.history.push('/login');
-        }
+        notification.error({
+          message: '错误',
+          description: '登录后再执行操作',
+        });
+        props.history.push('/login');
       }
     });
-  }
+  }, []);
 
-
-  public render(): JSX.Element {
-    return(
-      <React.Fragment />
-    );
-  }
-
-}
+  return (
+    <React.Fragment />
+  );
+});
 
 
 function mapStateToProps(state: any) {
