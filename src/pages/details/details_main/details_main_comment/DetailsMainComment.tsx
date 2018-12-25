@@ -17,7 +17,7 @@ import { EMOJI_PICKER } from '../../../../constants/constants';
 import BaseCommentInput from '../../../../components/widget/BaseCommentInput/BaseCommentInput';
 import CommentListItem from './details_main_comment_list_item/CommentListItem';
 
-export interface IDetailsLeftCommentProps {
+export interface IDetailsMainCommentProps {
   // ??? 当前用户头像 ???
   useravatar: string;
 
@@ -32,7 +32,7 @@ export interface IDetailsLeftCommentProps {
     v: any,
   ) => void;
 };
-interface IDetailLeftCommentState {
+interface IDetailMainCommentState {
   // 控制提交评论区域显隐
   isShowSendBtnBox: boolean;
   // 控制评论框emoji框显隐
@@ -43,9 +43,9 @@ interface IDetailLeftCommentState {
 /**
  * 评论区域
  */
-class DetailsLeftComment extends React.PureComponent<
-  IDetailsLeftCommentProps,
-  IDetailLeftCommentState
+class DetailsMainComment extends React.PureComponent<
+IDetailsMainCommentProps,
+IDetailMainCommentState
   > {
 
   public readonly state = {
@@ -149,4 +149,4 @@ class DetailsLeftComment extends React.PureComponent<
 
 }
 
-export default DetailsLeftComment;
+export default DetailsMainComment;

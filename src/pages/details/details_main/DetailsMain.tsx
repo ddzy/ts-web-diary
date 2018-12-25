@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { Divider } from 'antd';
-import * as hljs from 'highlight.js';
+// import * as hljs from 'highlight.js';
+import {
+  highlightBlock,
+} from 'highlight.js';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import 'highlight.js/styles/atom-one-light.css';
 
-import DetailsLeftComment from './details_main_comment/DetailsMainComment';
+import DetailsMainComment from './details_main_comment/DetailsMainComment';
 import DetailsMainRich from './details_main_rich/DetailsMainRich';
 import DetailsMainTitle from './details_main_title/DetailsMainTitle';
 import {
@@ -65,7 +68,7 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
     tempContPres.forEach((element) => {
       const elementTagname = element.localName as string;
       elementTagname === 'pre'
-        && hljs.highlightBlock(element);
+        && highlightBlock(element);
     });
 
     return tempCont
@@ -93,7 +96,7 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
 
         {/* 评论区 */}
         <React.Fragment>
-          <DetailsLeftComment
+          <DetailsMainComment
             useravatar={this.props.useravatar}
             comments={this.props.comments}
             onSendComment={this.props.onSendComment}
