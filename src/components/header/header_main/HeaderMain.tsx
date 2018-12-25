@@ -30,44 +30,37 @@ export interface IHeaderMainProps {
     e: any,
   ) => void;
 };
-interface IHeaderMainState {};
 
 
-class HeaderMain extends React.PureComponent<
-  IHeaderMainProps,
-  IHeaderMainState
-  > {
-
-  public readonly state: IHeaderMainState = {};
-
-  public render(): JSX.Element {
-    return (
-      <MainContainer
-        id="header-main-container"
-      >
-        <MainInner>
-          <HeaderMainLogo />
-          <HeaderMainNav
-            location={this.props.location}
-          />
-          <HeaderMainAction
-            authInfo={this.props.authInfo}
-          />
-        </MainInner>
-        <MainOuter>
-          <HeaderMainLogo />
-          <HeaderMainSearch
-            hotTags={this.props.hotTags}
-            searchedArticles={this.props.searchedArticles}
-            onSearch={this.props.onSearch}
-          />
-          <HeaderMainNotification />
-          <HeaderMainChat />
-        </MainOuter>
-      </MainContainer>
-    );
-  }
-}
+const HeaderMain = React.memo<IHeaderMainProps>((
+  props: IHeaderMainProps,
+): JSX.Element => {
+  return (
+    <MainContainer
+      id="header-main-container"
+    >
+      <MainInner>
+        <HeaderMainLogo />
+        <HeaderMainNav
+          location={props.location}
+        />
+        <HeaderMainAction
+          authInfo={props.authInfo}
+        />
+      </MainInner>
+      <MainOuter>
+        <HeaderMainLogo />
+        <HeaderMainSearch
+          hotTags={props.hotTags}
+          searchedArticles={props.searchedArticles}
+          onSearch={props.onSearch}
+        />
+        <HeaderMainNotification />
+        <HeaderMainChat />
+      </MainOuter>
+    </MainContainer>
+  );
+});
 
 
 export default HeaderMain;

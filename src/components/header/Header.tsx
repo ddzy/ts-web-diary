@@ -25,7 +25,7 @@ export interface IHeaderProps {
 };
 
 
-const Header: React.SFC<IHeaderProps> = (
+const Header = React.memo<IHeaderProps>((
   props: IHeaderProps,
 ): JSX.Element => {
   const [
@@ -66,7 +66,7 @@ const Header: React.SFC<IHeaderProps> = (
       </HeaderWrapper>
     </Affix>
   );
-}
+});
 
 
 function mapStateToProps(state: any) {
