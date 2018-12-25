@@ -58,31 +58,41 @@ export interface ICommentListItemProps {
 interface ICommentListItemState {
   replyBoxId: string;
   replyBox: any;
+  replyBtn: HTMLElement,
 };
 
 
 /**
  * 回复|评论展示 通用组件
  */
-class BaseCommentItem extends React.PureComponent<
-  ICommentListItemProps,
-  ICommentListItemState
-  > {
+const BaseCommentItem = React.memo<ICommentListItemProps>((
+  props: ICommentListItemProps,
+): JSX.Element => {
 
-  public readonly state = {
+  const [
+    state,
+    setState,
+  ] = React.useState<ICommentListItemState>({
     replyBoxId: '',
     replyBox: null,
-  }
+    replyBtn: document.createElement('div'),
+  });
 
-  public handleSend = (
+  React.useEffect(() => {
+    state.replyBtn.style.cssText += `${
+      state.replyBox ? 'color: #1890ff;' : 'color: #999;'
+    }`;
+  }, [state]);
+
+  function handleSend(
     e: HTMLElement,
     v: string,
-  ): void => {
-    this.props.onSend(
+  ): void {
+    props.onSend(
       e,
       {
         from: localStorage.getItem('userid'),
-        to: this.props.content.from._id,
+        to: props.content.from._id,
         value: v,
       },
     );
@@ -91,125 +101,117 @@ class BaseCommentItem extends React.PureComponent<
   /**
    * 处理切换回复模态框
    */
-  public handleToggleReplyBox: React.MouseEventHandler<HTMLElement> = (
+  function handleToggleReplyBox (
     e: React.MouseEvent<HTMLElement>,
-  ): void => {
+  ): void {
     const oTarget = e.currentTarget;
     const oTargetId = oTarget.getAttribute('data-id');
-    const commentId = this.props.content._id;
+    const commentId = props.content._id;
     const replyBox = (
       <ItemReplyBox
         className="item-reply-box"
-        data-id={this.props.content._id}
+        data-id={props.content._id}
       >
         <BaseCommentInput
-          containerStyle={this.props.baseInputContainerStyle ? this.props.baseInputContainerStyle : {}}
-          inputStyle={this.props.baseInputStyle ? this.props.baseInputStyle : {}}
+          containerStyle={props.baseInputContainerStyle ? props.baseInputContainerStyle : {}}
+          inputStyle={props.baseInputStyle ? props.baseInputStyle : {}}
           placeHolder={`回复 ${
-            this.props.content.from
-              ? this.props.content.from.username
+            props.content.from
+              ? props.content.from.username
               : 'undefined'
           }`}
-          useravatar={this.props.currentMainUserAvatar}
+          useravatar={props.currentMainUserAvatar}
           avatarSize={'default'}
-          onSend={this.handleSend}
+          onSend={handleSend}
         />
       </ItemReplyBox>
     );
 
-    oTargetId === commentId
-      && this.setState((prevState) => {
-        return {
-          replyBox: prevState.replyBox ? '' : replyBox,
-        };
-      }, () => {
-        oTarget.style.cssText += `${
-          this.state.replyBox ? 'color: #1890ff;' : 'color: #999;'
-          }`;
-      });
+    oTargetId === commentId && setState({
+      replyBox: state.replyBox ? '' : replyBox,
+      replyBoxId: state.replyBoxId,
+      replyBtn: oTarget,
+    });
   }
 
-  public render(): JSX.Element {
-    return (
-      <React.Fragment>
-        {/* 用户信息框 */}
-        <ItemTopBox>
-          <Avatar
-            src={this.props.content.from.useravatar}
-            icon="user"
-            size="default"
-            shape="circle"
-            alt="评论者"
-          />
-          <Divider type="vertical" />
-          <span
-            style={{
-              color: '#999',
-            }}
-          >{this.props.content.from.username}</span>
-        </ItemTopBox>
+  return (
+    <React.Fragment>
+      {/* 用户信息框 */}
+      <ItemTopBox>
+        <Avatar
+          src={props.content.from.useravatar}
+          icon="user"
+          size="default"
+          shape="circle"
+          alt="评论者"
+        />
+        <Divider type="vertical" />
+        <span
+          style={{
+            color: '#999',
+          }}
+        >{props.content.from.username}</span>
+      </ItemTopBox>
 
-        {/* 内容框 */}
-        <ItemMiddleBox>
-          <MiddleCommentReplyRange isReply={this.props.isReply}>
-            <MiddleCommentReplyFrom>
-              回复&nbsp;
-            </MiddleCommentReplyFrom>
-            <MiddleCommentReplyTo>
-              <a>{
-                this.props.content.to
-                  ? this.props.content.to.username
-                  : 'undefined'
-              }</a>:&nbsp;&nbsp;
-            </MiddleCommentReplyTo>
-          </MiddleCommentReplyRange>
-          <MiddleCommentText
-            dangerouslySetInnerHTML={{
-              __html: this.props.content.value || this.props.content.value || '',
-            }}
-          />
-        </ItemMiddleBox>
+      {/* 内容框 */}
+      <ItemMiddleBox>
+        <MiddleCommentReplyRange isReply={props.isReply}>
+          <MiddleCommentReplyFrom>
+            回复&nbsp;
+          </MiddleCommentReplyFrom>
+          <MiddleCommentReplyTo>
+            <a>{
+              props.content.to
+                ? props.content.to.username
+                : 'undefined'
+            }</a>:&nbsp;&nbsp;
+          </MiddleCommentReplyTo>
+        </MiddleCommentReplyRange>
+        <MiddleCommentText
+          dangerouslySetInnerHTML={{
+            __html: props.content.value || props.content.value || '',
+          }}
+        />
+      </ItemMiddleBox>
 
-        {/* 控制栏 */}
-        <ItemBottomBox>
+      {/* 控制栏 */}
+      <ItemBottomBox>
 
-          <Row>
-            <Col span={12}>
-              <ItemBottomTimeBox>
-                {formatTime(this.props.content.create_time)}
-              </ItemBottomTimeBox>
-            </Col>
-            <Col span={12}>
-              <ItemBottonRightBox>
-                <ItemBottomLikeBox
-                  data-id={this.props.content._id}
-                >
-                  <Icon type="like-o" />
-                  <span>999</span>
-                  <Divider type="vertical" />
-                </ItemBottomLikeBox>
+        <Row>
+          <Col span={12}>
+            <ItemBottomTimeBox>
+              {formatTime(props.content.create_time)}
+            </ItemBottomTimeBox>
+          </Col>
+          <Col span={12}>
+            <ItemBottonRightBox>
+              <ItemBottomLikeBox
+                data-id={props.content._id}
+              >
+                <Icon type="like-o" />
+                <span>999</span>
+                <Divider type="vertical" />
+              </ItemBottomLikeBox>
 
-                <ItemBottomReplyBox
-                  data-id={this.props.content._id}
-                  onClick={this.handleToggleReplyBox}
-                >
-                  <Icon
-                    type="message"
-                  />
-                  <span>回复</span>
-                </ItemBottomReplyBox>
-              </ItemBottonRightBox>
-            </Col>
-          </Row>
-        </ItemBottomBox>
+              <ItemBottomReplyBox
+                data-id={props.content._id}
+                onClick={handleToggleReplyBox}
+              >
+                <Icon
+                  type="message"
+                />
+                <span>回复</span>
+              </ItemBottomReplyBox>
+            </ItemBottonRightBox>
+          </Col>
+        </Row>
+      </ItemBottomBox>
 
-        {/* 评论输入通用组件 */}
-        {this.state.replyBox}
-      </React.Fragment>
-    );
-  }
-
-}
+      {/* 评论输入通用组件 */}
+      {state.replyBox}
+    </React.Fragment>
+  );
+});
 
 
 export default BaseCommentItem;
