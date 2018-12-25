@@ -30,10 +30,10 @@
 - [x] 动画优化处理, Heade组件提取至Admin, Header静态路由, routerConfig组件重构, relative, absolute解决跳动问题
 - [x] 修复页面过渡, 导航栏跳动bug
 - [x] HeaderNav默认样式
-- [ ] 解决```Can't perform a React state update on an unmounted component```错误
+- [x] 解决```Can't perform a React state update on an unmounted component```错误
 - [ ] Article下padding, 骨架屏加载动画看不到
 - [ ] 更改Header滚动条件, 所有页面都可滚动
-- [ ] 添加Comment, Reply回复动画
+- [ ] 添加Comment, Reply回复动画, 回复高亮显示
 - [ ] Details固钉导致render两次.
 - [ ] async重构callback
 - [ ] 按钮节流
