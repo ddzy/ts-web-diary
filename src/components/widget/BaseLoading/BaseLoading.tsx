@@ -17,7 +17,7 @@ export interface IBaseLoadingProps {
 };
 
 
-const BaseLoading: React.SFC<IBaseLoadingProps> = (
+const BaseLoading = React.memo<IBaseLoadingProps>((
   {
     visible,
     width,
@@ -44,7 +44,6 @@ const BaseLoading: React.SFC<IBaseLoadingProps> = (
     return result;
   }
 
-
   return (
     <LoadingWrapper
       visible={visible}
@@ -58,7 +57,7 @@ const BaseLoading: React.SFC<IBaseLoadingProps> = (
       </LoadingMain>
     </LoadingWrapper>
   );
-}
+});
 
 
 export default BaseLoading;

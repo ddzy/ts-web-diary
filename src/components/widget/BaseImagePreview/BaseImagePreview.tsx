@@ -21,7 +21,7 @@ export interface IBaseImagePreviewProps {
 /**
  * 图片预览组件
  */
-const BaseImagePreview: React.SFC<IBaseImagePreviewProps> = (
+const BaseImagePreview = React.memo<IBaseImagePreviewProps>((
   props: IBaseImagePreviewProps,
 ): JSX.Element => {
   return (
@@ -40,7 +40,7 @@ const BaseImagePreview: React.SFC<IBaseImagePreviewProps> = (
       </ImagePreviewMain>
     </ImagePreviewContainer>
   );
-}
+});
 
 
 export default BaseImagePreview;
