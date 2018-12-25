@@ -157,7 +157,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
           {},
         );
 
-        $qiniu.subscribe(() => {              
+        $qiniu.subscribe(() => {
           const processedImgUrl: string = qiniu.pipeline([
             {
               fop: 'watermark',
@@ -165,14 +165,14 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
               text: `gayhub@${username}`,
               dissolve: 99,
               gravity: 'SouthEast',
-              fontsize: 14,
+              fontsize: 18,
               font: '微软雅黑',
               dx: 10,
               dy: 10,
-              fill: '#1890ff',
+              fill: '#fff',
             }, {
               fop: 'imageView2',
-              mode: 3,           
+              mode: 3,
               w: 600,
               h: 600,
               q: 100,
@@ -181,13 +181,13 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
           ], key, domain);
           const finalProcessedImgUrl: string = `http://${processedImgUrl}`;
           const finalOriginImgUrl: string = `http://${domain}/${key}`;
-          
+
           // 插入editor
           editor.insertEmbed(
             editorSelRange.index,
             'image',
-            { 
-              src: finalProcessedImgUrl, 
+            {
+              src: finalProcessedImgUrl,
               'data-src': finalOriginImgUrl,
               alt: key,
             },
@@ -199,7 +199,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
             editorSelRange.index + 1,
             1,
           );
-          
+
           // 光标位置调整
           editor.setSelection(
             editorSelRange.index + 1,

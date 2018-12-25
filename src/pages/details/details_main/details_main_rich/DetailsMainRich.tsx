@@ -22,11 +22,11 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
   React.useEffect(handleArticleImagePreview);
 
   // !处理富文本图片预览
-  function handleArticleImagePreview(): void {
+  function handleArticleImagePreview(): (() => void) {
     const oArticleEle = document
       .querySelector('#article-detail-content') as HTMLDivElement;
 
-    oArticleEle.addEventListener('click', (e) => {
+    function aidedClick(e: MouseEvent): void {
       const oTarget = e.target as HTMLElement;
 
       if (oTarget.localName === 'img') {
@@ -40,7 +40,13 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
           });
         }
       }
-    });
+    }
+
+    oArticleEle.addEventListener('click', aidedClick);
+
+    return () => {
+      oArticleEle.removeEventListener('click', aidedClick);
+    };
   }
 
   // !处理图片预览容器点击
