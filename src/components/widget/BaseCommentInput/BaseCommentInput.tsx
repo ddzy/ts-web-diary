@@ -45,20 +45,21 @@ interface IBaseCommentInputState {
 /**
  * 评论|回复输入框 通用组件
  */
-class BaseCommentInput extends React.PureComponent<
-  IBaseCommentInputProps,
-  IBaseCommentInputState
-  >{
-
-  public readonly state = {
+const BaseCommentInput = React.memo<IBaseCommentInputProps>((
+  props: IBaseCommentInputProps,
+): JSX.Element => {
+  const [
+    state,
+    setState,
+  ] = React.useState<IBaseCommentInputState>({
     html: '',
     inputEl: document.createElement('div'),
-  };
+  });
 
   /**
    * 初始化表情
    */
-  public initEmoji = (): JSX.Element[] => {
+  function initEmoji(): JSX.Element[] {
     return EMOJI_PICKER.map((emoji: string, i: number) => (
       <EmojiItem
         key={i}
@@ -66,143 +67,146 @@ class BaseCommentInput extends React.PureComponent<
     ));
   }
 
-  public handleGetRef(el: any): void {
-    if (el && el.htmlEl) {
-      this.setState({ inputEl: el.htmlEl });
+  function handleGetRef(el: any): void {
+    if (el && el.htmlEl && !state.inputEl) {
+      setState({
+        html: state.html,
+        inputEl: el.htmlEl,
+      });
     }
   }
 
-  public handleChange: React.ChangeEventHandler = (
+  function handleChange(
     e: React.ChangeEvent,
-  ): void => {
+  ): void {
     const target = e.currentTarget;
     const html = target.innerHTML as string;
 
-    this.setState({
+    setState({
       html,
+      inputEl: state.inputEl,
     });
   }
 
-  public handleReplyEmojiChange = (
+  function handleReplyEmojiChange(
     e: React.MouseEvent,
-  ): void => {
+  ): void {
     const target = e.currentTarget as HTMLElement;
     const tTitle = target.getAttribute('title') as string;
     const emoji = emojify(tTitle, { output: 'unicode' });
 
-    this.setState((prevState) => ({
-      html: `${prevState.html}${emoji}`,
-    }));
+    setState({
+      html: `${state.html}${emoji}`,
+      inputEl: state.inputEl,
+    });
   }
 
-  public handleSend: React.MouseEventHandler<HTMLElement> = (): void => {
-    this.props.onSend(
-      this.state.inputEl,
-      this.state.html
+  function handleSend(): void {
+    props.onSend(
+      state.inputEl,
+      state.html
     );
   }
 
-  public render(): JSX.Element {
-    return (
-      <React.Fragment>
-        <CommentInputBox>
-          <CommentInputMain
-            containerStyle={this.props.containerStyle ? this.props.containerStyle : {}}
-          >
-            <InputTop>
-              <Row>
-                <Col span={2}>
-                  <InputTopAvatar>
-                    <Avatar
-                      src={this.props.useravatar}
-                      shape="circle"
-                      icon="user"
-                      size={this.props.avatarSize}
-                      alt="useravatar"
-                    />
-                  </InputTopAvatar>
-                </Col>
-                <Col span={22}>
-                  <InputTopText>
-                    <ContentEditable
-                      ref={(el) => {
-                        this.handleGetRef(el)
-                      }}
-                      style={this.props.inputStyle ? this.props.inputStyle : {}}
-                      data-placeholder={this.props.placeHolder}
-                      className="yyg-contenteditable"
-                      html={this.state.html}
-                      onChange={this.handleChange}
-                    />
-                  </InputTopText>
-                </Col>
-              </Row>
-            </InputTop>
-            <InputBottom>
-              <Row>
-                <Col span={12}>
-                  <Popover
-                    trigger="click"
-                    placement="left"
-                    content={
-                      <EmojiWrapper>
-                        <Emojify
-                          style={{
-                            width: '20',
-                            height: '20px',
-                            margin: '4px',
-                          }}
-                          onClick={this.handleReplyEmojiChange}
-                        >
-                          {this.initEmoji()}
-                        </Emojify>
-                      </EmojiWrapper>
-                    }
-                  >
-                    <div
-                      style={{
-                        width: '50px',
-                        marginLeft: '16%',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Icon
-                        type="smile"
-                        theme="twoTone"
+  return (
+    <React.Fragment>
+      <CommentInputBox>
+        <CommentInputMain
+          containerStyle={props.containerStyle ? props.containerStyle : {}}
+        >
+          <InputTop>
+            <Row>
+              <Col span={2}>
+                <InputTopAvatar>
+                  <Avatar
+                    src={props.useravatar}
+                    shape="circle"
+                    icon="user"
+                    size={props.avatarSize}
+                    alt="useravatar"
+                  />
+                </InputTopAvatar>
+              </Col>
+              <Col span={22}>
+                <InputTopText>
+                  <ContentEditable
+                    ref={(el) => {
+                      handleGetRef(el)
+                    }}
+                    style={props.inputStyle ? props.inputStyle : {}}
+                    data-placeholder={props.placeHolder}
+                    className="yyg-contenteditable"
+                    html={state.html}
+                    onChange={handleChange}
+                  />
+                </InputTopText>
+              </Col>
+            </Row>
+          </InputTop>
+          <InputBottom>
+            <Row>
+              <Col span={12}>
+                <Popover
+                  trigger="click"
+                  placement="left"
+                  content={
+                    <EmojiWrapper>
+                      <Emojify
                         style={{
-                          fontSize: '18px',
-                          display: 'inline-block',
-                          verticalAlign: 'middle',
+                          width: '20',
+                          height: '20px',
+                          margin: '4px',
                         }}
-                      />
-                      <span style={{
-                        color: '#1890ff',
+                        onClick={handleReplyEmojiChange}
+                      >
+                        {initEmoji()}
+                      </Emojify>
+                    </EmojiWrapper>
+                  }
+                >
+                  <div
+                    style={{
+                      width: '50px',
+                      marginLeft: '16%',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Icon
+                      type="smile"
+                      theme="twoTone"
+                      style={{
+                        fontSize: '18px',
                         display: 'inline-block',
                         verticalAlign: 'middle',
-                      }}>表情</span>
-                    </div>
-                  </Popover>
-                </Col>
-                <Col span={12}>
-                  <Button
-                    className="same-show-action-box"
-                    htmlType="button"
-                    type="primary"
-                    style={{
-                      float: 'right',
-                    }}
-                    onClick={this.handleSend}
-                  >发表</Button>
-                </Col>
-              </Row>
-            </InputBottom>
-          </CommentInputMain>
-        </CommentInputBox>
-        <GlobalStyleSet />
-      </React.Fragment>
-    );
-  }
-}
+                      }}
+                    />
+                    <span style={{
+                      color: '#1890ff',
+                      display: 'inline-block',
+                      verticalAlign: 'middle',
+                    }}>表情</span>
+                  </div>
+                </Popover>
+              </Col>
+              <Col span={12}>
+                <Button
+                  className="same-show-action-box"
+                  htmlType="button"
+                  type="primary"
+                  style={{
+                    float: 'right',
+                  }}
+                  onClick={handleSend}
+                >发表</Button>
+              </Col>
+            </Row>
+          </InputBottom>
+        </CommentInputMain>
+      </CommentInputBox>
+      <GlobalStyleSet />
+    </React.Fragment>
+  );
+});
 
 
 export default BaseCommentInput;
