@@ -169,7 +169,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
               font: '微软雅黑',
               dx: 10,
               dy: 10,
-              fill: '#fff',
+              fill: '#ffffff',
             }, {
               fop: 'imageView2',
               mode: 3,
