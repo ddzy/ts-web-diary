@@ -31,6 +31,7 @@
 - [x] 修复页面过渡, 导航栏跳动bug
 - [x] HeaderNav默认样式
 - [x] 解决```Can't perform a React state update on an unmounted component```错误
+- [ ] 解决上传图片实时预览报400的问题
 - [ ] imgpreview组件容器动画
 - [ ] Article下padding, 骨架屏加载动画看不到
 - [ ] 更改Header滚动条件, 所有页面都可滚动
