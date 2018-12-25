@@ -57,18 +57,34 @@ IDetailMainCommentState
     this.handleToggleComment();
   }
 
+  public componentWillUnmount(): void {
+    document
+      .body
+      .removeEventListener(
+        'click',
+        this.aidedHandleToggleComment,
+      );
+  }
+
   /**
    * 处理切换commentBox
    */
   public handleToggleComment = (): void => {
-    document.body.addEventListener('click', (
-      e: MouseEvent
-    ) => {
-      const oTarget = e.target as HTMLElement;
-      const hasClass = oTarget.classList.contains('same-show-action-box') as boolean;
+    document.body.addEventListener('click', this.aidedHandleToggleComment);
+  }
 
-      this.setState({ isShowSendBtnBox: hasClass });
-    }, false);
+  /**
+   * 处理切换commentBox - 辅助函数
+   */
+  public aidedHandleToggleComment = (e: MouseEvent) => {
+    const oTarget = e
+      .target as HTMLElement;
+    const hasClass = oTarget
+      .classList
+      .contains('same-show-action-box') as boolean;
+
+    this
+      .setState({ isShowSendBtnBox: hasClass });
   }
 
   /**
