@@ -34,10 +34,9 @@ export interface IHeaderMainSearchProps {
 };
 
 
-const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
+const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
   props: IHeaderMainSearchProps,
 ): JSX.Element => {
-
   const [
     state,
     setState,
@@ -141,6 +140,6 @@ const HeaderMainSearch: React.SFC<IHeaderMainSearchProps> = (
       </SearchMain>
     </SearchWrapper>
   );
-}
+});
 
 export default HeaderMainSearch;

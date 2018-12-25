@@ -13,10 +13,9 @@ import {
 export interface IHeaderMainNotificationProps { };
 
 
-export const HeaderMainNotification: React.SFC<IHeaderMainNotificationProps> = (
+export const HeaderMainNotification = React.memo((
   props: IHeaderMainNotificationProps,
 ): JSX.Element => {
-
   return (
     <MainNotificationWrapper>
       <MainNotificationMainlist>
@@ -35,6 +34,6 @@ export const HeaderMainNotification: React.SFC<IHeaderMainNotificationProps> = (
       </MainNotificationMainlist>
     </MainNotificationWrapper>
   );
-}
+});
 
 export default HeaderMainNotification;

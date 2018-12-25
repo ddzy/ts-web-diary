@@ -34,10 +34,9 @@ export interface IHeaderMainActionProps extends RouteComponentProps<IHeaderMainA
 };
 
 
-const HeaderMainAction: React.SFC<IHeaderMainActionProps> = (
+const HeaderMainAction = React.memo<IHeaderMainActionProps>((
   props: IHeaderMainActionProps,
 ): JSX.Element => {
-
   /**
    * 处理初始化气泡框内容
    */
@@ -144,7 +143,7 @@ const HeaderMainAction: React.SFC<IHeaderMainActionProps> = (
       </ActionWrite>
     </ActionContainer>
   );
-}
+});
 
 
 export default withRouter(HeaderMainAction);

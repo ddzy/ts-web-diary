@@ -9,7 +9,9 @@ import {
 export interface IHeaderMainLogoProps { };
 
 
-const HeaderMainLogo: React.SFC<IHeaderMainLogoProps> = (): JSX.Element => {
+const HeaderMainLogo = React.memo((
+  props: IHeaderMainLogoProps,
+): JSX.Element => {
   return (
     <MainLogoContainer>
       <MainLogoContent>
@@ -17,7 +19,7 @@ const HeaderMainLogo: React.SFC<IHeaderMainLogoProps> = (): JSX.Element => {
       </MainLogoContent>
     </MainLogoContainer>
   );
-}
+});
 
 
 export default HeaderMainLogo;
