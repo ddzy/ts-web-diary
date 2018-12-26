@@ -37,7 +37,6 @@ export function serviceHandleGetMyArticleList(
  */
 export function serviceHandleDeleteMyArticle(
   articleid: string,
-  // callback: (title: string) => void,
   callback?: (data: any) => void,
 ) {
   query({
@@ -49,10 +48,6 @@ export function serviceHandleDeleteMyArticle(
     },
     jsonp: false,
   }).then((res) => {
-    // dispatch(saveDeleteTitle(res));
-    // dispatch(saveMyArticleList(res));
-    // callback(res.title);
-
     callback && callback(res);
   });
 }

@@ -51,13 +51,6 @@ const Collection = React.memo<ICollectionProps>((
   React.useEffect(() => {
     handleGetCollectionInfo();
   }, [])
-  React.useEffect(() => {
-    notification.success({
-      message: '成功',
-      description: '成功移除该文章!',
-    });
-  }, [state]);
-
 
   /**
    * 处理 获取单个收藏夹信息
@@ -66,17 +59,15 @@ const Collection = React.memo<ICollectionProps>((
     const { id } = props.match.params;
 
     serviceHandleGetCollectionInfo(id, (data) => {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          serviceState: {
-            ...prevState.serviceState,
-            collectionInfo: {
-              ...prevState.serviceState,
-              ...data,
-            },
+      setState({
+        ...state,
+        serviceState: {
+          ...state.serviceState,
+          collectionInfo: {
+            ...state.serviceState.collectionInfo,
+            ...data.collectionInfo,
           },
-        };
+        },
       });
     });
   }
@@ -106,27 +97,6 @@ const Collection = React.memo<ICollectionProps>((
       articleId,
       props.match.params.id,
       (data) => {
-        // setState((prevState) => {
-        //   return {
-        //     ...prevState,
-        //     serviceState: {
-        //       ...prevState.serviceState,
-        //       collectionInfo: {
-        //         ...prevState.serviceState.collectionInfo,
-        //         articles: prevState.serviceState.collectionInfo.articles
-        //         .filter((item: any) => {
-        //           return item._id !== data.result.articleId;
-        //         }),
-        //       },
-        //     },
-        //   };
-        // }, () => {
-        //     notification.success({
-        //       message: '提示',
-        //       description: '成功移除此文章!',
-        //     });
-        // });
-
         setState({
           ...state,
           serviceState: {
@@ -136,6 +106,11 @@ const Collection = React.memo<ICollectionProps>((
               articles: state.serviceState.collectionInfo.articles.filter((item: any) => item._id !== data.result.articleId),
             },
           },
+        });
+
+        notification.success({
+          message: '成功',
+          description: '成功移除该文章!',
         });
       },
     );

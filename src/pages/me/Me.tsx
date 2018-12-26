@@ -82,7 +82,7 @@ class Me extends React.Component<IMeProps, IMeState> {
       this.setState((prevState) => {
         return {
           ...prevState,
-          articleInfo: {
+          serviceState: {
             ...prevState.serviceState,
             delete_article_title: data.title,
             my_article_list: data.myArticleList,
@@ -114,7 +114,7 @@ class Me extends React.Component<IMeProps, IMeState> {
       this.setState((prevState) => {
         return {
           ...prevState,
-          articleInfo: {
+          serviceState: {
             ...prevState.serviceState,
             my_article_list: data.myArticleList,
           },
@@ -135,7 +135,7 @@ class Me extends React.Component<IMeProps, IMeState> {
         this.setState((prevState) => {
           return {
             ...prevState,
-            articleInfo: {
+            serviceState: {
               ...prevState.serviceState,
               my_collection_list: data.my_collection_list,
             },
@@ -167,7 +167,7 @@ class Me extends React.Component<IMeProps, IMeState> {
       this.setState((prevState) => {
         return {
           ...prevState,
-          articleInfo: {
+          serviceState: {
             ...prevState.serviceState,
             my_collection_list: prevState.serviceState.my_collection_list.filter((item) => {
               return item._id !== data.collectionId;
