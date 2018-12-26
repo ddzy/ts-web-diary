@@ -33,32 +33,40 @@ interface ICollectionState {
 /**
  * 收藏页
  */
-class Collection extends React.PureComponent<
-  ICollectionProps,
-  ICollectionState
-  > {
-
-  public readonly state = {
+const Collection = React.memo<ICollectionProps>((
+  props: ICollectionProps,
+): JSX.Element => {
+  const [
+    state,
+    setState,
+  ] = React.useState<ICollectionState>({
     serviceState: {
       collectionInfo: {
         name: '',
         articles: [],
       },
     },
-  };
+  });
 
-  public componentDidMount(): void {
-    this.handleGetCollectionInfo();
-  }
+  React.useEffect(() => {
+    handleGetCollectionInfo();
+  }, [])
+  React.useEffect(() => {
+    notification.success({
+      message: '成功',
+      description: '成功移除该文章!',
+    });
+  }, [state]);
+
 
   /**
    * 处理 获取单个收藏夹信息
    */
-  public handleGetCollectionInfo = () => {
-    const { id } = this.props.match.params;
+  function handleGetCollectionInfo(): void {
+    const { id } = props.match.params;
 
     serviceHandleGetCollectionInfo(id, (data) => {
-      this.setState((prevState) => {
+      setState((prevState) => {
         return {
           ...prevState,
           serviceState: {
@@ -76,12 +84,12 @@ class Collection extends React.PureComponent<
   /**
    * 处理 初始化单个收藏夹 文章列表
    */
-  public handleInitShowItem = () => {
+  function handleInitShowItem(): JSX.Element {
     return (
       <CollectionShowItem
-        {...this.state.serviceState.collectionInfo}
+        {...state.serviceState.collectionInfo}
         onDeleteCollectionArticle={
-          this.handleDeleteCollectionArticle
+          handleDeleteCollectionArticle
         }
       />
     );
@@ -90,67 +98,75 @@ class Collection extends React.PureComponent<
   /**
    * 处理 删除单个文章
    */
-  public handleDeleteCollectionArticle = (
+  function handleDeleteCollectionArticle(
     e: React.MouseEvent,
     articleId: string,
-  ) => {
+  ): void {
     serviceHandleDeleteCollectionArticle(
       articleId,
-      this.props.match.params.id,
+      props.match.params.id,
       (data) => {
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            serviceState: {
-              ...prevState.serviceState,
-              collectionInfo: {
-                ...prevState.serviceState.collectionInfo,
-                articles: prevState.serviceState.collectionInfo.articles
-                .filter((item: any) => {
-                  return item._id !== data.result.articleId;
-                }),
-              },
+        // setState((prevState) => {
+        //   return {
+        //     ...prevState,
+        //     serviceState: {
+        //       ...prevState.serviceState,
+        //       collectionInfo: {
+        //         ...prevState.serviceState.collectionInfo,
+        //         articles: prevState.serviceState.collectionInfo.articles
+        //         .filter((item: any) => {
+        //           return item._id !== data.result.articleId;
+        //         }),
+        //       },
+        //     },
+        //   };
+        // }, () => {
+        //     notification.success({
+        //       message: '提示',
+        //       description: '成功移除此文章!',
+        //     });
+        // });
+
+        setState({
+          ...state,
+          serviceState: {
+            ...state.serviceState,
+            collectionInfo: {
+              ...state.serviceState.collectionInfo,
+              articles: state.serviceState.collectionInfo.articles.filter((item: any) => item._id !== data.result.articleId),
             },
-          };
-        }, () => {
-            notification.success({
-              message: '提示',
-              description: '成功移除此文章!',
-            });
+          },
         });
       },
     );
   }
 
-  public render(): JSX.Element {
-    return (
-      <React.Fragment>
-        <CollectionContainer>
-          <CollectionMain>
-            <MainHeaderWrapper>
-              <MainHeaderContent
-                bg_img_url={collection_bg}
-              />
-            </MainHeaderWrapper>
+  return (
+    <React.Fragment>
+      <CollectionContainer>
+        <CollectionMain>
+          <MainHeaderWrapper>
+            <MainHeaderContent
+              bg_img_url={collection_bg}
+            />
+          </MainHeaderWrapper>
 
-            <MainContentWrapper>
-              <MainContentTipBox>
-                <MainContentTipText>
-                  {this.state.serviceState.collectionInfo.name}
-                </MainContentTipText>
-              </MainContentTipBox>
+          <MainContentWrapper>
+            <MainContentTipBox>
+              <MainContentTipText>
+                {state.serviceState.collectionInfo.name}
+              </MainContentTipText>
+            </MainContentTipBox>
 
-              <MainContentShowBox>
-                {this.handleInitShowItem()}
-              </MainContentShowBox>
-            </MainContentWrapper>
-          </CollectionMain>
-        </CollectionContainer>
-      </React.Fragment>
-    );
-  }
-
-}
+            <MainContentShowBox>
+              {handleInitShowItem()}
+            </MainContentShowBox>
+          </MainContentWrapper>
+        </CollectionMain>
+      </CollectionContainer>
+    </React.Fragment>
+  );
+});
 
 
 export default Collection;

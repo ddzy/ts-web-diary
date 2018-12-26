@@ -8,7 +8,7 @@ import {
   MeContent,
 } from './style';
 import MeInfo from './me_info/MeInfo';
-import MeArticle from './me_dashboard/MeDashboard';
+import MeDashboard from './me_dashboard/MeDashboard';
 import {
   IStaticOptions,
   serviceHandleGetMyArticleList,
@@ -190,7 +190,7 @@ class Me extends React.Component<IMeProps, IMeState> {
             />
 
             {/* 个人文章 */}
-            <MeArticle
+            <MeDashboard
               {...this.state.serviceState}
               onArticleDelete={this.handleArticleDelete}
               onArticleEdit={this.handleArticleEdit}
@@ -199,7 +199,6 @@ class Me extends React.Component<IMeProps, IMeState> {
               onSupTabChange={this.handleSupTabChange}
 
               onCollectionItemClick={this.handleCollectionItemClick}
-
               onCollectionItemDelete={
                 this.handleCollectionItemDelete
               }
@@ -216,7 +215,6 @@ class Me extends React.Component<IMeProps, IMeState> {
 function mapStateToProps(state: any) {
   return {
     AuthRouteReducer: state.AuthRouteReducer,
-    MeReducer: state.MeReducer,
   };
 }
 
