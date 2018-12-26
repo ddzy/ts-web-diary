@@ -93,7 +93,7 @@
   },
   "proxy": {
     "/api": {
-      "target": "http://localhost:6666",
+      "target": "http://localhost:8888",
       "changeOrigin": true
     }
   }
