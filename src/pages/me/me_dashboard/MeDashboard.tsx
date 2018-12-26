@@ -52,31 +52,30 @@ export interface IMeDashboardProps {
     callback?: () => void,
   ) => void;
 };
+interface IMeDashboardState { };
 
 
 /**
  * 个人文章
  */
-const MeDashboard = React.memo<IMeDashboardProps>((
-  props: IMeDashboardProps,
-): JSX.Element => {
+class MeDashboard extends React.Component<IMeDashboardProps, IMeDashboardState> {
   /**
    * 初始化文章列表
    */
-  function initArticleList(
+  public initArticleList = (
     type: string,
-  ): any {
-    return isArray(props.my_article_list)
-      && props.my_article_list.length !== 0
-      ? props.my_article_list.map((item) => {
+  ): any => {
+    return isArray(this.props.my_article_list)
+      && this.props.my_article_list.length !== 0
+      ? this.props.my_article_list.map((item) => {
         return item.type === type
           ? (
             <MeArticleList
               key={item._id}
               id={item._id}
               {...item}
-              onArticleDelete={props.onArticleDelete}
-              onArticleEdit={props.onArticleEdit}
+              onArticleDelete={this.props.onArticleDelete}
+              onArticleEdit={this.props.onArticleEdit}
             />
           )
           : null;
@@ -99,10 +98,10 @@ const MeDashboard = React.memo<IMeDashboardProps>((
   /**
    * 初始化收藏列表
    */
-  function initCollectionList() {
-    return isArray(props.my_collection_list)
-      && props.my_collection_list.length !== 0
-      ? props.my_collection_list.map((item) => {
+  public initCollectionList = () => {
+    return isArray(this.props.my_collection_list)
+      && this.props.my_collection_list.length !== 0
+      ? this.props.my_collection_list.map((item) => {
         return (
           <Col span={10} key={item._id}>
             <MyCollectionList
@@ -110,9 +109,9 @@ const MeDashboard = React.memo<IMeDashboardProps>((
               name={item.name}
               create_time={item.create_time}
 
-              onCollectionItemClick={props.onCollectionItemClick}
+              onCollectionItemClick={this.props.onCollectionItemClick}
 
-              onCollectionItemDelete={props.onCollectionItemDelete}
+              onCollectionItemDelete={this.props.onCollectionItemDelete}
             />
           </Col>
         );
@@ -132,75 +131,79 @@ const MeDashboard = React.memo<IMeDashboardProps>((
       );
   }
 
-  return (
-    <MeArticleContainer>
-      <Row>
-        <Col>
-          <Card>
-            <Tabs
-              type="card"
-              tabBarGutter={10}
-              onChange={props.onSupTabChange}
-            >
-              <Tabs.TabPane
-                tab="文章"
-                key="文章"
-                className="card-parent"
+  public render(): JSX.Element {
+    return (
+      <MeArticleContainer>
+        <Row>
+          <Col>
+            <Card>
+              <Tabs
+                type="card"
+                tabBarGutter={10}
+                onChange={this.props.onSupTabChange}
               >
-                {/* 个人文章分类 */}
-                <Tabs
-                  type="line"
-                  tabBarGutter={5}
-                  size="small"
-                  tabPosition='left'
-                  onChange={props.onMyArticleTabChange}
+                <Tabs.TabPane
+                  tab="文章"
+                  key="文章"
+                  className="card-parent"
                 >
-                  <Tabs.TabPane
-                    tab="随笔"
-                    key="随笔"
-                    className="card-child-one"
+                  {/* 个人文章分类 */}
+                  <Tabs
+                    type="line"
+                    tabBarGutter={5}
+                    size="small"
+                    tabPosition='left'
+                    onChange={this.props.onMyArticleTabChange}
                   >
-                    {initArticleList('随笔')}
-                  </Tabs.TabPane>
-                  <Tabs.TabPane
-                    tab="译文"
-                    key="译文"
-                    className="card-child-two"
-                  >
-                    {initArticleList('译文')}
-                  </Tabs.TabPane>
-                  <Tabs.TabPane
-                    tab="教程"
-                    key="教程"
-                    className="card-child-three"
-                  >
-                    {initArticleList('教程')}
-                  </Tabs.TabPane>
-                  <Tabs.TabPane
-                    tab="感悟"
-                    key="感悟"
-                    className="card-child-four"
-                  >
-                    {initArticleList('感悟')}
-                  </Tabs.TabPane>
-                </Tabs>
+                    <Tabs.TabPane
+                      tab="随笔"
+                      key="随笔"
+                      className="card-child-one"
+                    >
+                      {this.initArticleList('随笔')}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane
+                      tab="译文"
+                      key="译文"
+                      className="card-child-two"
+                    >
+                      {this.initArticleList('译文')}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane
+                      tab="教程"
+                      key="教程"
+                      className="card-child-three"
+                    >
+                      {this.initArticleList('教程')}
+                    </Tabs.TabPane>
+                    <Tabs.TabPane
+                      tab="感悟"
+                      key="感悟"
+                      className="card-child-four"
+                    >
+                      {this.initArticleList('感悟')}
+                    </Tabs.TabPane>
+                  </Tabs>
 
-              </Tabs.TabPane>
-
-              <Tabs.TabPane tab="收藏" key="收藏">
-                <Row>
-                  {initCollectionList()}
-                </Row>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="开发中" key="开发中">
-                开发中
                 </Tabs.TabPane>
-            </Tabs>
-          </Card>
-        </Col>
-      </Row>
-    </MeArticleContainer>
-  );
-});
 
-export default MeDashboard;
+                <Tabs.TabPane tab="收藏" key="收藏">
+                  <Row>
+                    {this.initCollectionList()}
+                  </Row>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="开发中" key="开发中">
+                  开发中
+                </Tabs.TabPane>
+              </Tabs>
+            </Card>
+          </Col>
+        </Row>
+      </MeArticleContainer>
+    );
+  }
+
+}
+
+
+export default MeDashboard as React.ComponentClass<any>;

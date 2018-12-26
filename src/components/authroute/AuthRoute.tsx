@@ -18,7 +18,7 @@ import {
 
 
 
-export interface IAuthRouteProps extends RouteComponentProps<IAuthRouteProps> {
+export interface IAuthRouteProps extends RouteComponentProps<any> {
   history: History;
 
   AuthRouteReducer: IInitialState;

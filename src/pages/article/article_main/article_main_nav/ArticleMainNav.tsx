@@ -22,7 +22,7 @@ import {
 } from '../../../../constants/constants';
 
 
-export interface IArticleMainNavProps extends RouteComponentProps<IArticleMainNavProps> {
+export interface IArticleMainNavProps extends RouteComponentProps<any> {
   onGetArticleList: (
     type: string,
     page: number,

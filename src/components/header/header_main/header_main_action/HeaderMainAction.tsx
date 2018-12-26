@@ -24,7 +24,7 @@ import {
   PopoverListItem,
 } from './style';
 
-export interface IHeaderMainActionProps extends RouteComponentProps<IHeaderMainActionProps> {
+export interface IHeaderMainActionProps extends RouteComponentProps<any> {
   history: History;
   authInfo: {
     isAuth: boolean;
