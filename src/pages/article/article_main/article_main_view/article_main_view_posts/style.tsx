@@ -13,6 +13,7 @@ export const GlobalStyleSet = createGlobalStyle`
 export const PostsWrapper = styled.div`
   width: 46.25rem;
   padding-top: .5rem;
+  padding-bottom: 4rem;
   background-color: #fff;
 `;
 export const PostsContentList = styled.ul``;
