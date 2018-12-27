@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Loadable from 'react-loadable';
 import {
   BrowserRouter as Router,
   Route,
@@ -9,21 +10,7 @@ import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
-import * as Loadable from 'react-loadable';
 
-// import App from '../App';
-// import Admin from '../Admin';
-// import Login from '../pages/login/Login';
-// import Home from '../pages/home/Home';
-// import Register from '../pages/register/Register';
-// import NotFound from '../pages/404/NotFound';
-// import Article from '../pages/article/Article';
-// import Publish from '../pages/publish/Publish';
-// import Me from '../pages/me/Me';
-// import AuthRoute from '../components/authroute/AuthRoute';
-// import Details from '../pages/details/Details';
-// import Edit from '../pages/edit/Edit';
-// import Collection from '../pages/collection/Collection';
 
 const LoadableApp = Loadable({
   loader: () => import('../App'),
