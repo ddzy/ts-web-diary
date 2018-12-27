@@ -17,7 +17,7 @@ import { formatTime } from 'src/utils/utils';
 import { PAGE_SIZE } from 'src/constants/constants';
 
 
-export interface IArticleMainViewPostsProps {
+export interface IHomeMainViewPostsProps {
   articles: any[];
   initialLoading: boolean;
   onLoadMore: (
@@ -26,7 +26,7 @@ export interface IArticleMainViewPostsProps {
     callback?: (...args: any[]) => void,
   ) => void;
 };
-interface IArticleMainViewPostsState {
+interface IHomeMainViewPostsState {
   hasMore: boolean;
   loadMoreLoading: boolean;
 };
@@ -35,7 +35,7 @@ interface IArticleMainViewPostsState {
 /**
  * 文章展示
  */
-class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProps, IArticleMainViewPostsState> {
+class HomeMainViewPosts extends React.PureComponent<IHomeMainViewPostsProps, IHomeMainViewPostsState> {
 
   public readonly state = {
     hasMore: true,
@@ -213,4 +213,4 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewPostsProp
 }
 
 
-export default ArticleMainViewPosts;
+export default HomeMainViewPosts;

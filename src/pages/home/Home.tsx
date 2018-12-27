@@ -1,63 +1,114 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
-import Main from '../../components/main/Main';
-import { getHomeArticleList } from './Home.redux';
+import HomeMain from './home_main/HomeMain';
+import {
+  IStaticOptions,
+  serviceHandleGetArticleList,
+} from './Home.service';
+import {
+  HomeWrapper,
+} from './style';
+import { PAGE_SIZE } from 'src/constants/constants';
 
 
-export interface IHomeProps {
-  HomeReducer: { articleList: any[] };
-  getHomeArticleList: () => void;
+export interface IArticleProps {
+  location: Location;
 };
-interface IHomeState {};
+interface IArticleState {
+  serviceState: IStaticOptions;
+  hasMore: boolean;
+  initialLoading: boolean;
+};
 
 
-/**
- * 首页
- */
-class Home extends React.PureComponent<IHomeProps, IHomeState> {
+class Article extends React.Component<IArticleProps, IArticleState> {
 
-  public readonly state = {};
-
+  public readonly state = {
+    serviceState: {
+      article_list: [],
+    },
+    hasMore: true,
+    initialLoading: true,
+  }
 
   public componentDidMount(): void {
-    this.props.getHomeArticleList();
+    const {
+      pathname
+    } = this.props.location;
+    const type = pathname.replace('/home/', '');
+
+    this.handelGetArticleList(type, 1, PAGE_SIZE);
   }
 
-
-  //// 加载更多
-  public handleLoadMore = (page: number, pageSize: number) => {
-    console.log(page, pageSize);
+  /**
+   * 处理点击navitem, 获取相关文章
+   */
+  public handelGetArticleList = (
+    type: string,
+    page: number,
+    pageSize: number,
+  ): void => {
+    serviceHandleGetArticleList(
+      { type, page, pageSize },
+      (data) => {
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            serviceState: {
+              ...prevState.serviceState,
+              article_list: data,
+            },
+            initialLoading: false,
+          };
+        });
+      },
+    );
   }
 
+  /**
+   * 处理加载更多
+   */
+  public handleLoadMoreArticleList = (
+    page: number,
+    pageSize: number,
+    callback?: (...args: any[]) => void,
+  ): void => {
+    const {
+      pathname,
+    } = this.props.location;
+    const type: string = pathname.replace('/home/', '');
+
+    serviceHandleGetArticleList(
+      { type, page, pageSize },
+      (data) => {
+        callback && callback(data);
+        this.setState((prevState) => {
+          return {
+            serviceState: {
+              ...prevState.serviceState,
+              article_list: prevState.serviceState.article_list.concat(data),
+            },
+          };
+        });
+      },
+    );
+  }
 
   public render(): JSX.Element {
     return (
-      <React.Fragment>
-        <Main
-          showTab={false}
-          articleList={this.props.HomeReducer.articleList}
-          onLoadMore={this.handleLoadMore}
+      <HomeWrapper
+      >
+        <HomeMain
+          initialLoading={this.state.initialLoading}
+          articles={this.state.serviceState.article_list}
+          onGetArticleList={this.handelGetArticleList}
+          onLoadMore={this.handleLoadMoreArticleList}
         />
-      </React.Fragment>
+      </HomeWrapper>
     );
   }
 
 }
 
 
-function mapStateToProps(state: any) {
-  return {
-    HomeReducer: state.HomeReducer,
-  };
-}
-function mapDispatchToProps() {
-  return {
-    getHomeArticleList,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps(),
-)(Home);
+export default Article;

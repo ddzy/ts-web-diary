@@ -36,10 +36,6 @@ const LoadableNotFound = Loadable({
   loader: () => import('../pages/404/NotFound'),
   loading: () => null,
 });
-const LoadableArticle = Loadable({
-  loader: () => import('../pages/article/Article'),
-  loading: () => null,
-});
 const LoadablePublish = Loadable({
   loader: () => import('../pages/publish/Publish'),
   loading: () => null,
@@ -94,23 +90,22 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                     unmountOnExit
                   >
                     <Switch location={props.location}>
-                      <Route path="/home" exact component={LoadableHome} />
-                      <Route path="/publish" component={LoadablePublish} />
-                      <Route path="/article" render={() => (
+                      <Route path="/home" render={() => (
                         <Switch>
-                          <Route path="/article/android" component={LoadableArticle} />
-                          <Route path="/article/frontend" component={LoadableArticle} />
-                          <Route path="/article/ios" component={LoadableArticle} />
-                          <Route path="/article/backend" component={LoadableArticle} />
-                          <Route path="/article/design" component={LoadableArticle} />
-                          <Route path="/article/product" component={LoadableArticle} />
-                          <Route path="/article/tool" component={LoadableArticle} />
-                          <Route path="/article/read" component={LoadableArticle} />
-                          <Route path="/article/ai" component={LoadableArticle} />
-                          <Route path="/article/devops" component={LoadableArticle} />
-                          <Redirect to="/article/frontend" />
+                          <Route path="/home/android" component={LoadableHome} />
+                          <Route path="/home/frontend" exact component={LoadableHome} />
+                          <Route path="/home/ios" component={LoadableHome} />
+                          <Route path="/home/backend" component={LoadableHome} />
+                          <Route path="/home/design" component={LoadableHome} />
+                          <Route path="/home/product" component={LoadableHome} />
+                          <Route path="/home/tool" component={LoadableHome} />
+                          <Route path="/home/read" component={LoadableHome} />
+                          <Route path="/home/ai" component={LoadableHome} />
+                          <Route path="/home/devops" component={LoadableHome} />
+                          <Redirect to="/home/frontend" />
                         </Switch>
                       )} />
+                      <Route path="/publish" component={LoadablePublish} />
                       <Route path="/me" component={LoadableMe} />
                       <Route path="/details/:id" component={LoadableDetails} />
                       <Route path="/edit/:id" component={LoadableEdit} />

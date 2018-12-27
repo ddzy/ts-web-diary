@@ -4,10 +4,11 @@ import {
   ViewWrapper,
   ViewContent,
 } from './style';
-import ArticleMainViewPosts from './article_main_view_posts/ArticleMainViewPosts';
+import HomeMainViewPosts from './home_main_view_posts/HomeMainViewPosts';
+import HomeMainViewExtra from './home_main_view_extra/HomeMainViewExtra';
 
 
-export interface IArticleMainViewProps {
+export interface IHomeMainViewProps {
   articles: any[];
   initialLoading: boolean;
   onLoadMore: (
@@ -16,10 +17,10 @@ export interface IArticleMainViewProps {
     callback?: (...args: any[]) => void,
   ) => void;
 };
-interface IArticleMainViewState { };
+interface IHomeMainViewState { };
 
 
-class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticleMainViewState> {
+class HomeMainView extends React.PureComponent<IHomeMainViewProps, IHomeMainViewState> {
 
   public render(): JSX.Element {
     return (
@@ -27,11 +28,13 @@ class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticl
         <ViewWrapper>
           <ViewContent>
             {/* 文章展示 */}
-            <ArticleMainViewPosts
+            <HomeMainViewPosts
               articles={this.props.articles}
               onLoadMore={this.props.onLoadMore}
               initialLoading={this.props.initialLoading}
             />
+            {/* 额外信息 */}
+            <HomeMainViewExtra />
           </ViewContent>
         </ViewWrapper>
       </React.Fragment>
@@ -41,4 +44,4 @@ class ArticleMainView extends React.PureComponent<IArticleMainViewProps, IArticl
 }
 
 
-export default ArticleMainView;
+export default HomeMainView;

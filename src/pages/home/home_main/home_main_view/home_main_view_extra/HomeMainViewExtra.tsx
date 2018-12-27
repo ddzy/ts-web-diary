@@ -5,14 +5,14 @@ import {
 } from './style';
 
 
-export interface IArticleMainViewExtraProps { };
-interface IArticleMainViewExtraState { };
+export interface IHomeMainViewExtraProps { };
+interface IHomeMainViewExtraState { };
 
 
 /**
  * 文章展示
  */
-class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewExtraProps, IArticleMainViewExtraState> {
+class HomeMainViewPosts extends React.PureComponent<IHomeMainViewExtraProps, IHomeMainViewExtraState> {
 
   public render(): JSX.Element {
     return (
@@ -25,4 +25,4 @@ class ArticleMainViewPosts extends React.PureComponent<IArticleMainViewExtraProp
 }
 
 
-export default ArticleMainViewPosts;
+export default HomeMainViewPosts;

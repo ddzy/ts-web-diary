@@ -22,7 +22,7 @@ import {
 } from '../../../../constants/constants';
 
 
-export interface IArticleMainNavProps extends RouteComponentProps<any> {
+export interface IHomeMainNavProps extends RouteComponentProps<any> {
   onGetArticleList: (
     type: string,
     page: number,
@@ -31,8 +31,8 @@ export interface IArticleMainNavProps extends RouteComponentProps<any> {
 };
 
 
-const ArticleMainNav = React.memo<IArticleMainNavProps>((
-  props: IArticleMainNavProps,
+const HomeMainNav = React.memo<IHomeMainNavProps>((
+  props: IHomeMainNavProps,
 ) => {
 
   /**
@@ -49,11 +49,11 @@ const ArticleMainNav = React.memo<IArticleMainNavProps>((
       >
         <Link
           className={
-            `/article/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}` === pathName
+            `/home/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}` === pathName
               ? 'article-nav-item-active'
               : 'article-nav-item-default'
           }
-          to={`/article/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}`}
+          to={`/home/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}`}
         >
           {v}
         </Link>
@@ -92,4 +92,4 @@ const ArticleMainNav = React.memo<IArticleMainNavProps>((
 });
 
 
-export default withRouter(ArticleMainNav);
+export default withRouter(HomeMainNav);

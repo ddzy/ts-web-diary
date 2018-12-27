@@ -1,14 +1,14 @@
 import * as React from 'react';
 
-import ArticleMainNav from './article_main_nav/ArticleMainNav';
-import ArticleMainView from './article_main_view/ArticleMainView';
+import HomeMainNav from './home_main_nav/HomeMainNav';
+import HomeMainView from './home_main_view/HomeMainView';
 import {
   MainWrapper,
   MainContent,
 } from './style';
 
 
-export interface IArticleMainProps {
+export interface IHomeMainProps {
   articles: any[];
   initialLoading: boolean;
   onGetArticleList: (
@@ -22,20 +22,20 @@ export interface IArticleMainProps {
     callback?: (...args: any[]) => void,
   ) => void,
 };
-interface IArticleMainState { };
+interface IHomeMainState { };
 
 
-class ArticleMain extends React.PureComponent<IArticleMainProps, IArticleMainState> {
+class HomeMain extends React.PureComponent<IHomeMainProps, IHomeMainState> {
 
   public render(): JSX.Element {
     return (
       <React.Fragment>
         <MainWrapper>
           <MainContent>
-            <ArticleMainNav
+            <HomeMainNav
               onGetArticleList={this.props.onGetArticleList}
             />
-            <ArticleMainView
+            <HomeMainView
               articles={this.props.articles}
               onLoadMore={this.props.onLoadMore}
               initialLoading={this.props.initialLoading}
@@ -49,4 +49,4 @@ class ArticleMain extends React.PureComponent<IArticleMainProps, IArticleMainSta
 }
 
 
-export default ArticleMain;
+export default HomeMain;
