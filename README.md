@@ -48,7 +48,8 @@
 - [ ] 移动端简单适配(```掘金```)
 - [ ] 合并component下main组件, 重构home页
 - [x] header组件提取, style划分
-- [ ] Article迁移 -> Home
+- [x] Article迁移 -> Home
+- [ ] NAVconfig更改配置项
 - [ ] 新建评论, 回复高亮显示
 - [ ] hooks重构所有class组件
 - [x] 文章description字段
