@@ -17,6 +17,7 @@
 - [x] header知乎_滑动效果, 搜索框
 - [x] 解决firefox兼容, 新增搜索组件, 聊天室组件, 通知组件
 - [x] 完善搜索框, 搜索功能, 进入搜索详情
+- [ ] 登录注册完善
 - [ ] redis缓存
 - [ ] sendReply分页
 - [ ] 重构个人中心||添加个人信息||个人信息修改||个人文章分类管理
@@ -32,17 +33,14 @@
 - [x] HeaderNav默认样式
 - [x] 解决```Can't perform a React state update on an unmounted component```错误
 - [x] 解决上传图片实时预览报400的问题
-- [ ] Article页滚动节流, 所有按钮节流处理
+- [ ] 所有按钮节流处理
 - [x] 按需加载组件
-- [ ] imgpreview组件容器动画
-- [ ] Article下padding, 骨架屏加载动画看不到
+- [x] Article下padding, 骨架屏加载动画看不到
 - [x] 更改Header滚动条件, 所有页面都可滚动
 - [ ] 添加Comment, Reply回复动画, 回复高亮显示
 - [ ] Details固钉导致render两次.
 - [ ] async重构callback
-- [ ] 按钮节流
 - [ ] 初始化只获取可见区域数据, 加快加载速度
-- [ ] 异步组件加载, 减少首屏时间
 - [ ] main组件重构, 提取到article组件
 - [x] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
 - [ ] 移动端简单适配(```掘金```)
