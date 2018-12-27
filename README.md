@@ -38,7 +38,8 @@
 - [x] Article下padding, 骨架屏加载动画看不到
 - [x] 更改Header滚动条件, 所有页面都可滚动
 - [ ] 添加Comment, Reply回复动画, 回复高亮显示
-- [ ] Details固钉导致render两次.
+- [x] Details固钉导致render两次.
+- [ ] Details评论hover评论人信息
 - [ ] async重构callback
 - [ ] 初始化只获取可见区域数据, 加快加载速度
 - [ ] main组件重构, 提取到article组件
@@ -53,5 +54,4 @@
 - [ ] 新增Tag页, 完善搜索功能(tag+article)
 - [x] react-transition-group挂载两次的问题
 - [ ] 评论回复点赞
-- [ ] header组件动态路由
 ## updating, ing, ing...
