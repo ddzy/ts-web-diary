@@ -1,5 +1,15 @@
-import styled from 'styled-components';
+import styled, {
+  createGlobalStyle,
+} from 'styled-components';
 
+export const GlobalStyle = createGlobalStyle`
+  .header-main-container-scrolled {
+    transform: translateY(-100%) !important;
+  }
+  /* .header-main-container-noscroll {
+    transform: translateY(0);
+  } */
+`;
 
 export const MainContainer = styled.div`
   width: 75rem;
@@ -8,6 +18,7 @@ export const MainContainer = styled.div`
   line-height: 3.75rem;
   text-align: center;
   transition: transform .3s ease;
+  transform: translateY(0);
 `;
 
 export const MainInner = styled.div`
