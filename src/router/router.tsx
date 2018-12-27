@@ -9,20 +9,74 @@ import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
+import * as Loadable from 'react-loadable';
 
-import App from '../App';
-import Admin from '../Admin';
-import Login from '../pages/login/Login';
-import Home from '../pages/home/Home';
-import Register from '../pages/register/Register';
-import NotFound from '../pages/404/NotFound';
-import Article from '../pages/article/Article';
-import Publish from '../pages/publish/Publish';
-import Me from '../pages/me/Me';
-import AuthRoute from '../components/authroute/AuthRoute';
-import Details from '../pages/details/Details';
-import Edit from '../pages/edit/Edit';
-import Collection from '../pages/collection/Collection';
+// import App from '../App';
+// import Admin from '../Admin';
+// import Login from '../pages/login/Login';
+// import Home from '../pages/home/Home';
+// import Register from '../pages/register/Register';
+// import NotFound from '../pages/404/NotFound';
+// import Article from '../pages/article/Article';
+// import Publish from '../pages/publish/Publish';
+// import Me from '../pages/me/Me';
+// import AuthRoute from '../components/authroute/AuthRoute';
+// import Details from '../pages/details/Details';
+// import Edit from '../pages/edit/Edit';
+// import Collection from '../pages/collection/Collection';
+
+const LoadableApp = Loadable({
+  loader: () => import('../App'),
+  loading: () => null,
+});
+const LoadableAdmin = Loadable({
+  loader: () => import('../Admin'),
+  loading: () => null,
+});
+const LoadableLogin = Loadable({
+  loader: () => import('../pages/login/Login'),
+  loading: () => null,
+});
+const LoadableHome = Loadable({
+  loader: () => import('../pages/home/Home'),
+  loading: () => null,
+});
+const LoadableRegister = Loadable({
+  loader: () => import('../pages/register/Register'),
+  loading: () => null,
+});
+const LoadableNotFound = Loadable({
+  loader: () => import('../pages/404/NotFound'),
+  loading: () => null,
+});
+const LoadableArticle = Loadable({
+  loader: () => import('../pages/article/Article'),
+  loading: () => null,
+});
+const LoadablePublish = Loadable({
+  loader: () => import('../pages/publish/Publish'),
+  loading: () => null,
+});
+const LoadableMe = Loadable({
+  loader: () => import('../pages/me/Me'),
+  loading: () => null,
+});
+const LoadableAuthRoute = Loadable({
+  loader: () => import('../components/authroute/AuthRoute'),
+  loading: () => null,
+});
+const LoadableDetails = Loadable({
+  loader: () => import('../pages/details/Details'),
+  loading: () => null,
+});
+const LoadableEdit = Loadable({
+  loader: () => import('../pages/edit/Edit'),
+  loading: () => null,
+});
+const LoadableCollection = Loadable({
+  loader: () => import('../pages/collection/Collection'),
+  loading: () => null,
+});
 
 
 export interface IRouterConfigProps { };
@@ -32,15 +86,15 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
 
   return (
     <Router>
-      <App>
+      <LoadableApp>
         <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
+          <Route path="/login" component={LoadableLogin} />
+          <Route path="/register" component={LoadableRegister} />
           <Route
             path="/"
             render={(props) => (
-              <Admin location={props.location}>
-                <AuthRoute />
+              <LoadableAdmin location={props.location}>
+                <LoadableAuthRoute />
                 <TransitionGroup>
                   <CSSTransition
                     classNames='fadeTranslate'
@@ -53,37 +107,36 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                     unmountOnExit
                   >
                     <Switch location={props.location}>
-                      <Route path="/home" exact component={Home} />
-                      <Route path="/publish" component={Publish} />
+                      <Route path="/home" exact component={LoadableHome} />
+                      <Route path="/publish" component={LoadablePublish} />
                       <Route path="/article" render={() => (
                         <Switch>
-                          <Route path="/article/android" component={Article} />
-                          <Route path="/article/frontend" component={Article} />
-                          <Route path="/article/ios" component={Article} />
-                          <Route path="/article/backend" component={Article} />
-                          <Route path="/article/design" component={Article} />
-                          <Route path="/article/product" component={Article} />
-                          <Route path="/article/tool" component={Article} />
-                          <Route path="/article/read" component={Article} />
-                          <Route path="/article/ai" component={Article} />
-                          <Route path="/article/devops" component={Article} />
+                          <Route path="/article/android" component={LoadableArticle} />
+                          <Route path="/article/frontend" component={LoadableArticle} />
+                          <Route path="/article/ios" component={LoadableArticle} />
+                          <Route path="/article/backend" component={LoadableArticle} />
+                          <Route path="/article/design" component={LoadableArticle} />
+                          <Route path="/article/product" component={LoadableArticle} />
+                          <Route path="/article/tool" component={LoadableArticle} />
+                          <Route path="/article/read" component={LoadableArticle} />
+                          <Route path="/article/ai" component={LoadableArticle} />
+                          <Route path="/article/devops" component={LoadableArticle} />
                           <Redirect to="/article/frontend" />
                         </Switch>
                       )} />
-                      <Route path="/me" component={Me} />
-                      <Route path="/details/:id" component={Details} />
-                      <Route path="/edit/:id" component={Edit} />
-                      <Route path="/collection/:id" component={Collection} />
-                      <Route component={NotFound} />
+                      <Route path="/me" component={LoadableMe} />
+                      <Route path="/details/:id" component={LoadableDetails} />
+                      <Route path="/edit/:id" component={LoadableEdit} />
+                      <Route path="/collection/:id" component={LoadableCollection} />
+                      <Route component={LoadableNotFound} />
                     </Switch>
                   </CSSTransition>
                 </TransitionGroup>
-              </Admin>
+              </LoadableAdmin>
             )}
           />
         </Switch>
-      </App>
-
+      </LoadableApp>
     </Router>
   );
 });
