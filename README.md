@@ -36,7 +36,7 @@
 - [x] 按需加载组件
 - [ ] imgpreview组件容器动画
 - [ ] Article下padding, 骨架屏加载动画看不到
-- [ ] 更改Header滚动条件, 所有页面都可滚动
+- [x] 更改Header滚动条件, 所有页面都可滚动
 - [ ] 添加Comment, Reply回复动画, 回复高亮显示
 - [ ] Details固钉导致render两次.
 - [ ] async重构callback
