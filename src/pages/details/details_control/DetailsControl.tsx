@@ -50,6 +50,15 @@ class DetailsControl extends React.PureComponent<
 
   public readonly state = {}
 
+  /**
+   * 解决二次渲染问题
+   */
+  public handleAnchorClick: React.MouseEventHandler<HTMLElement> = (
+    e: React.MouseEvent,
+  ): void => {
+    e.preventDefault();
+  }
+
   public render(): JSX.Element {
     return (
       <React.Fragment>
@@ -76,7 +85,7 @@ class DetailsControl extends React.PureComponent<
               {/* 评论 */}
               <Tooltip title="去评论" placement="right">
                 <FixedControlListItem>
-                  <Anchor>
+                  <Anchor onClick={this.handleAnchorClick}>
                     <Anchor.Link
                       title={
                         <Icon
