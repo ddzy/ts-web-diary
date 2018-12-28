@@ -34,7 +34,7 @@
 - [x] 解决```Can't perform a React state update on an unmounted component```错误
 - [x] 解决上传图片实时预览报400的问题
 - [ ] 所有按钮节流处理
-- [ ] Details props处理, 减少props传递路径
+- [x] Details props处理, 减少props传递路径
 - [x] 按需加载组件
 - [x] Article下padding, 骨架屏加载动画看不到
 - [x] 更改Header滚动条件, 所有页面都可滚动
