@@ -28,6 +28,8 @@ export interface IDetailsMainProps {
   img: string;
   useravatar: string;
 
+  visible: boolean;
+
   onSendComment: (
     inputEl: HTMLElement,
     v: string,
@@ -89,6 +91,7 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
         {/* 富文本展示区 */}
         <React.Fragment>
           <DetailsMainRich
+            {...this.props}
             html={this.initArticleContent()}
           />
           <Divider />

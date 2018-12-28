@@ -10,10 +10,8 @@ import { match } from 'react-router';
 import { connect } from 'react-redux';
 
 import DetailsMain from './details_main/DetailsMain';
-import DetailsRight from './details_action/DetailsAction';
+import DetailsAction from './details_action/DetailsAction';
 import DetailsControl from './details_control/DetailsControl';
-import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
-import { getWindowWH } from '../../utils/utils';
 import {
   DetailsWrapper,
   DetailsContent,
@@ -39,8 +37,6 @@ export interface IDetailsProps {
 interface IDetailsState {
   // ** loading组件相关props **
   visible: boolean;
-  loadingWrapperWidth: number;
-  loadingWrapperHeight: number;
 
   // ** 固定栏相关props **
   collectionInputValue: {
@@ -106,12 +102,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
    * 处理loading状态
    */
   public initLoadingWrapper = (): void => {
-    const { winWidth, winHeight } = getWindowWH();
-
     this.setState({
       visible: true,
-      loadingWrapperWidth: winWidth,
-      loadingWrapperHeight: winHeight,
     });
   }
 
@@ -325,6 +317,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               <Col span={18}>
                 {/* 左边内容区域 */}
                 <DetailsMain
+                  {...this.state}
                   {...this.state.serviceState}
                   {...this.props.AuthRouteReducer}
                   onSendComment={this.handleSendComment}
@@ -333,7 +326,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               </Col>
               <Col span={6}>
                 {/* 右边侧边栏区域 */}
-                <DetailsRight
+                <DetailsAction
+                  {...this.state}
                   {...this.state.serviceState}
                 />
               </Col>
@@ -354,9 +348,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
           onSaveToCollection={this.handleSaveToCollection}
         />
-
-        {/* Loading */}
-        <BaseLoading visible={this.state.visible} />
       </React.Fragment>
     );
   }

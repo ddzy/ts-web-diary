@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   Divider,
   Tag,
+  Skeleton,
 } from 'antd';
 
 import {
@@ -23,6 +24,8 @@ import { formatTime } from 'src/utils/utils';
 
 
 export interface IDetailsMainTitleProps {
+  visible: boolean;
+
   articleTitle: string;
   mode: string;
   author: string;
@@ -53,45 +56,50 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
 
   return (
     <LeftTitleContainer>
-      {/* 标题 */}
-      <LeftTitleBox>
-        <LeftTitle>
-          {props.articleTitle}
-        </LeftTitle>
-      </LeftTitleBox>
+      <Skeleton
+        loading={props.visible}
+        active={true}
+      >
+        {/* 标题 */}
+        <LeftTitleBox>
+          <LeftTitle>
+            {props.articleTitle}
+          </LeftTitle>
+        </LeftTitleBox>
 
-      {/* 信息栏 */}
-      <LeftInfoBox>
-        <LeftInfoList>
-          <LeftInfoListItem>
-            {props.mode}
-          </LeftInfoListItem>
-          <Divider type="vertical" />
-          <LeftInfoListItem>
-            {props.author}
-          </LeftInfoListItem>
-          <Divider type="vertical" />
-          <LeftInfoListItem>
-            {/* {props.type} */}
-            {
-              ARTICLE_TYPE_PICKER[ARTICLE_TYPE_WITH_ENGLISH_PICKER.indexOf(props.type)]
-            }
-          </LeftInfoListItem>
-          <Divider type="vertical" />
-          <LeftInfoListItem>
-            {initArticleTag()}
-          </LeftInfoListItem>
-          <Divider type="vertical" />
-          <LeftInfoListItem>
-            {formatTime(props.create_time)}
-          </LeftInfoListItem>
-        </LeftInfoList>
-      </LeftInfoBox>
-      <LeftImgBox>
-        <LeftImgInner
-          imgUrl={props.img}
-        />
-      </LeftImgBox>
+        {/* 信息栏 */}
+        <LeftInfoBox>
+          <LeftInfoList>
+            <LeftInfoListItem>
+              {props.mode}
+            </LeftInfoListItem>
+            <Divider type="vertical" />
+            <LeftInfoListItem>
+              {props.author}
+            </LeftInfoListItem>
+            <Divider type="vertical" />
+            <LeftInfoListItem>
+              {/* {props.type} */}
+              {
+                ARTICLE_TYPE_PICKER[ARTICLE_TYPE_WITH_ENGLISH_PICKER.indexOf(props.type)]
+              }
+            </LeftInfoListItem>
+            <Divider type="vertical" />
+            <LeftInfoListItem>
+              {initArticleTag()}
+            </LeftInfoListItem>
+            <Divider type="vertical" />
+            <LeftInfoListItem>
+              {formatTime(props.create_time)}
+            </LeftInfoListItem>
+          </LeftInfoList>
+        </LeftInfoBox>
+        <LeftImgBox>
+          <LeftImgInner
+            imgUrl={props.img}
+          />
+        </LeftImgBox>
+      </Skeleton>
     </LeftTitleContainer>
   );
 }

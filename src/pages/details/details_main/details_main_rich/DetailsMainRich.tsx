@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {
+  Skeleton,
+} from 'antd';
 
 import {
   LeftContentContainer,
@@ -8,6 +11,7 @@ import BaseImagePreview from 'src/components/widget/BaseImagePreview/BaseImagePr
 
 
 export interface IDetailsMainRichProps {
+  visible: boolean;
   html: string;
 };
 
@@ -19,7 +23,7 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
     previewImgUrl: '',
   });
 
-  React.useEffect(handleArticleImagePreview);
+  React.useEffect(handleArticleImagePreview, []);
 
   // !处理富文本图片预览
   function handleArticleImagePreview(): (() => void) {
@@ -59,21 +63,29 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
 
   return (
     <LeftContentContainer>
-
-      {/* 内容区 */}
-      <LeftContent
-        id="article-detail-content"
-        dangerouslySetInnerHTML={{
-          __html: props.html
+      <Skeleton
+        loading={props.visible}
+        active={true}
+        paragraph={{
+          rows: 5,
         }}
-      />
+      >
 
-      {/* 图片预览 */}
-      <BaseImagePreview
-        visible={articleImgPreviewInfo.previewBoxVisible}
-        currentUrl={articleImgPreviewInfo.previewImgUrl}
-        onImagePreviewContainerClick={handleImagePreviewContainerClick}
-      />
+        {/* 内容区 */}
+        <LeftContent
+          id="article-detail-content"
+          dangerouslySetInnerHTML={{
+            __html: props.html
+          }}
+        />
+
+        {/* 图片预览 */}
+        <BaseImagePreview
+          visible={articleImgPreviewInfo.previewBoxVisible}
+          currentUrl={articleImgPreviewInfo.previewImgUrl}
+          onImagePreviewContainerClick={handleImagePreviewContainerClick}
+        />
+      </Skeleton>
     </LeftContentContainer>
   );
 });
