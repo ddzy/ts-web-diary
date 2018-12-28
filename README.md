@@ -46,10 +46,10 @@
 - [ ] main组件重构, 提取到article组件
 - [x] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
 - [ ] 移动端简单适配(```掘金```)
-- [ ] 合并component下main组件, 重构home页
+- [x] 合并component下main组件, 重构home页
 - [x] header组件提取, style划分
 - [x] Article迁移 -> Home
-- [ ] NAVconfig更改配置项
+- [x] NAVconfig更改配置项
 - [ ] 新建评论, 回复高亮显示
 - [ ] hooks重构所有class组件
 - [x] 文章description字段
