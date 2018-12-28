@@ -17,7 +17,7 @@ const LoadableApp = Loadable({
   loading: () => null,
 });
 const LoadableAdmin = Loadable({
-  loader: () => import('../Admin'),
+  loader: () => import('../pages/admin/Admin'),
   loading: () => null,
 });
 const LoadableLogin = Loadable({

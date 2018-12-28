@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { Location } from 'history';
 
-import Header from './components/header/Header';
+import Header from '../../components/header/Header';
+import {
+  AdminWrapper,
+  AdminContent,
+} from './style';
+import BgImg from '../../static/images/admin_bg_img.png';
 
 
 export interface IAdminProps {
@@ -59,14 +64,14 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
 
   public render(): JSX.Element {
     return (
-      <div className="admin-wrapper">
-        <div
-          className="admin-content"
+      <AdminWrapper>
+        <AdminContent
+          bgImg={BgImg}
         >
           <Header location={this.props.location} />
           {this.props.children}
-        </div>
-      </div>
+        </AdminContent>
+      </AdminWrapper>
     );
   }
 }

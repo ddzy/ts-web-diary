@@ -11,7 +11,6 @@ import {
 } from './style';
 
 
-
 export interface INotFoundProps {
   history: History;
 };

@@ -64,23 +64,6 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   }
 
   /*
-
-  */
-  .transition-router {
-    min-height: 100%;
-    height: 100%;
-  }
-  .admin-wrapper {
-    min-height: 100%;
-    height: 100%;
-  }
-  .admin-content {
-    position: relative;
-    min-height: 100%;
-    background-color: #f4f5f5;
-  }
-
-  /*
     ??? 重置 antd 样式
   */
   .ant-list-item {
