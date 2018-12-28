@@ -35,6 +35,8 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
   props: IHomeMainNavProps,
 ) => {
 
+  const oldPathname = props.location.pathname;
+
   /**
    * 处理初始化导航列表项
    */
@@ -67,7 +69,10 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
   function handleNavItemClick(
     type: string,
   ): void {
-    props.onGetArticleList(type, 1, PAGE_SIZE);
+    const newPathname = props.location.pathname;
+
+    newPathname !== oldPathname
+      && props.onGetArticleList(type, 1, PAGE_SIZE);
   }
 
   return (
