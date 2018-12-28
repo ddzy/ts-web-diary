@@ -43,7 +43,6 @@
 - [x] 解决点击统一Link, 组件只渲染一次的问题
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
-- [ ] async重构callback
 - [ ] 初始化只获取可见区域数据, 加快加载速度
 - [ ] main组件重构, 提取到article组件
 - [x] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
