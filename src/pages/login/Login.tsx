@@ -66,7 +66,7 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
               localStorage.setItem('userid', data.userid);
 
               // ** 页面跳转,提示信息 **
-              this.props.history.push('/home');
+              this.props.history.push('/home/frontend');
               message.info(
                 <React.Fragment>
                   欢迎进入

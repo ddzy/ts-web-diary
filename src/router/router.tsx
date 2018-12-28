@@ -92,17 +92,17 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                     <Switch location={props.location}>
                       <Route path="/home" render={() => (
                         <Switch>
-                          <Route path="/home/android" component={LoadableHome} />
-                          <Route path="/home/frontend" exact component={LoadableHome} />
-                          <Route path="/home/ios" component={LoadableHome} />
-                          <Route path="/home/backend" component={LoadableHome} />
-                          <Route path="/home/design" component={LoadableHome} />
-                          <Route path="/home/product" component={LoadableHome} />
-                          <Route path="/home/tool" component={LoadableHome} />
-                          <Route path="/home/read" component={LoadableHome} />
-                          <Route path="/home/ai" component={LoadableHome} />
-                          <Route path="/home/devops" component={LoadableHome} />
-                          <Redirect to="/home/frontend" />
+                          <Route exact path="/home/android" component={LoadableHome} />
+                          <Route exact path="/home/frontend" component={LoadableHome} />
+                          <Route exact path="/home/ios" component={LoadableHome} />
+                          <Route exact path="/home/backend" component={LoadableHome} />
+                          <Route exact path="/home/design" component={LoadableHome} />
+                          <Route exact path="/home/product" component={LoadableHome} />
+                          <Route exact path="/home/tool" component={LoadableHome} />
+                          <Route exact path="/home/read" component={LoadableHome} />
+                          <Route exact path="/home/ai" component={LoadableHome} />
+                          <Route exact path="/home/devops" component={LoadableHome} />
+                          <Redirect exact to="/home/frontend" />
                         </Switch>
                       )} />
                       <Route path="/publish" component={LoadablePublish} />
