@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import GlobalStyle from './GlobalStyle';
@@ -15,17 +14,7 @@ const App = React.memo<IAppProps>((
 ): JSX.Element => {
   return (
     <React.Fragment>
-      <TransitionGroup
-        className="transition-router"
-      >
-        <CSSTransition
-          timeout={1000}
-          classNames="left"
-        >
-          {props.children}
-        </CSSTransition>
-      </TransitionGroup>
-
+      {props.children}
       <GlobalStyle />
     </React.Fragment>
   );
