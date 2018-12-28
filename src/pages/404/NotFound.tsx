@@ -20,53 +20,48 @@ interface INotFoundState {
 };
 
 
-class NotFound extends React.PureComponent<INotFoundProps, INotFoundState> {
-
-  public timer: any = 0
-
-  public readonly state = {
+const NotFound = React.memo<INotFoundProps>((
+  props: INotFoundProps,
+): JSX.Element => {
+  const [
+    state,
+    setState,
+  ] = React.useState<INotFoundState>({
     time: 5,
-  }
+  });
+  let timer = 0;
 
+  React.useEffect(() => {
+    function aidedTick(): void {
+      state.time <= 1
+        ? props.history.push('/home/frontend')
+        : setState({
+            time: state.time - 1,
+        });
+    }
 
-  public componentDidMount(): void {
-    this.timer = setInterval(this.handleTick, 1000);
-  }
+    timer = window.setInterval(aidedTick, 1000);
 
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, [state]);
 
-  public componentWillUnmount(): void {
-    clearInterval(this.timer);
-  }
+  return (
+    <NotFoundWrapper
+      bg_img={bgImg}
+    >
+      <NotFoundContent>
+        <NotFoundTitle>页面开发中...</NotFoundTitle>
+        <NotFoundRedirect>
+          <Link to="/home">
+            {state.time}秒后回到首页
+          </Link>
+        </NotFoundRedirect>
+      </NotFoundContent>
+    </NotFoundWrapper>
+  );
+});
 
-
-  public handleTick = (): void => {
-    this.state.time <= 1
-      ? this.props.history.push('/home')
-      : this.setState((prevState) => {
-          return {
-            time: prevState.time - 1,
-          };
-        }); 
-  }
-
-  
-  public render(): JSX.Element {
-    return (
-      <NotFoundWrapper
-        bg_img={bgImg}
-      >
-        <NotFoundContent>
-          <NotFoundTitle>页面开发中...</NotFoundTitle>
-          <NotFoundRedirect>
-            <Link to="/home">
-              {this.state.time}秒后回到首页  
-            </Link>
-          </NotFoundRedirect>
-        </NotFoundContent>
-      </NotFoundWrapper>
-    );
-  }
-
-}
 
 export default NotFound;
