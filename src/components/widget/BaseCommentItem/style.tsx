@@ -6,9 +6,22 @@ export interface IMiddleCommentReplyRangeProps {
 
 
 // 每条评论
-export const ItemTopBox = styled.div`
+export const ItemTopBox = styled.div``;
 
+// 评论者信息popover框
+export const PopoverTitleContainer = styled.div``;
+export const PopoverTitleMain = styled.div`
+  display: flex;
 `;
+export const TitleMainAvatar = styled.div``;
+export const TitleMainName = styled.div`
+  line-height: 4rem;
+  margin-left: 0.625rem;
+  font-size: 1.125rem;
+`;
+export const PopoverContentContainer = styled.div``;
+export const PopoverContentMain = styled.div``;
+
 
 export const ItemMiddleBox = styled.div`
   padding: 0 3.1rem;

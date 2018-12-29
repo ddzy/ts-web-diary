@@ -5,10 +5,17 @@ import {
   Icon,
   Row,
   Col,
+  Popover,
 } from 'antd';
 
 import {
   ItemTopBox,
+  PopoverTitleMain,
+  PopoverTitleContainer,
+  TitleMainAvatar,
+  TitleMainName,
+  PopoverContentContainer,
+  PopoverContentMain,
   ItemMiddleBox,
   MiddleCommentText,
   MiddleCommentReplyRange,
@@ -134,17 +141,63 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
     });
   }
 
+  /**
+   * 初始化处理头像框 popover title
+   */
+  function handleInitAvatarPopoverTitle(): JSX.Element {
+    return (
+      <PopoverTitleContainer>
+        <PopoverTitleMain>
+          <TitleMainAvatar>
+            <Avatar
+              src={props.content.from.useravatar}
+              icon="user"
+              shape="square"
+              alt="评论者"
+              style={{
+                width: '4.375rem',
+                height: '4.375rem',
+                transform: 'translateY(-1.25rem)',
+              }}
+            />
+          </TitleMainAvatar>
+          <TitleMainName>{
+            props.content.from.username
+          }</TitleMainName>
+        </PopoverTitleMain>
+      </PopoverTitleContainer>
+    );
+  }
+
+  /**
+   * 初始化处理头像框 popover content
+   */
+  function handleInitAvatarPopoverContent(): JSX.Element {
+    return (
+      <PopoverContentContainer>
+        <PopoverContentMain>
+          内容框
+        </PopoverContentMain>
+      </PopoverContentContainer>
+    );
+  }
+
   return (
     <React.Fragment>
       {/* 用户信息框 */}
       <ItemTopBox>
-        <Avatar
-          src={props.content.from.useravatar}
-          icon="user"
-          size="default"
-          shape="circle"
-          alt="评论者"
-        />
+        <Popover
+          title={handleInitAvatarPopoverTitle()}
+          content={handleInitAvatarPopoverContent()}
+        >
+          <Avatar
+            src={props.content.from.useravatar}
+            icon="user"
+            size="default"
+            shape="circle"
+            alt="评论者"
+          />
+        </Popover>
         <Divider type="vertical" />
         <span
           style={{
