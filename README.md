@@ -42,6 +42,7 @@
 - [ ] 添加Comment, Reply回复动画, 回复高亮显示
 - [x] Details固钉导致render两次.
 - [x] 解决点击统一Link, 组件只渲染一次的问题
+- [ ] 后台查询优化
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
 - [ ] 初始化只获取可见区域数据, 加快加载速度
