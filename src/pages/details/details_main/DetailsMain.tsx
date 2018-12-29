@@ -42,21 +42,19 @@ export interface IDetailsMainProps {
     v: any,
 ) => void;
 };
-interface IDetailsMainState {};
 
 
 /**
  * 左侧文章信息区域
  */
-class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainState> {
-
-  public readonly state = {}
-
+const DetailsMain = React.memo<IDetailsMainProps>((
+  props: IDetailsMainProps,
+): JSX.Element => {
   /**
    * 初始化富文本editor内容
    */
-  public initArticleContent = (): string => {
-    const { articleContent } = this.props;
+  function initArticleContent(): string {
+    const { articleContent } = props;
     const parsedArticleContent = articleContent
       ? JSON.parse(articleContent)
       : { ops: [] };
@@ -80,40 +78,37 @@ class DetailsMain extends React.PureComponent<IDetailsMainProps, IDetailsMainSta
       .getElementsByClassName("ql-editor")[0].innerHTML;
   }
 
-  public render(): JSX.Element {
-    return (
-      <DetailsLeftWrapper>
-        {/* 标题文章信息展示区 */}
-        <React.Fragment>
-          <DetailsMainTitle
-            {...this.props}
-          />
-          <Divider />
-        </React.Fragment>
+  return (
+    <DetailsLeftWrapper>
+      {/* 标题文章信息展示区 */}
+      <React.Fragment>
+        <DetailsMainTitle
+          {...props}
+        />
+        <Divider />
+      </React.Fragment>
 
-        {/* 富文本展示区 */}
-        <React.Fragment>
-          <DetailsMainRich
-            {...this.props}
-            html={this.initArticleContent()}
-          />
-          <Divider />
-        </React.Fragment>
+      {/* 富文本展示区 */}
+      <React.Fragment>
+        <DetailsMainRich
+          {...props}
+          html={initArticleContent()}
+        />
+        <Divider />
+      </React.Fragment>
 
-        {/* 评论区 */}
-        <React.Fragment>
-          <DetailsMainComment
-            useravatar={this.props.useravatar}
-            comments={this.props.comments}
-            onSendComment={this.props.onSendComment}
-            onSendReply={this.props.onSendReply}
-          />
-        </React.Fragment>
-      </DetailsLeftWrapper>
-    );
-  }
-
-}
+      {/* 评论区 */}
+      <React.Fragment>
+        <DetailsMainComment
+          useravatar={props.useravatar}
+          comments={props.comments}
+          onSendComment={props.onSendComment}
+          onSendReply={props.onSendReply}
+        />
+      </React.Fragment>
+    </DetailsLeftWrapper>
+  );
+});
 
 
 export default DetailsMain;
