@@ -76,7 +76,7 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
             description: this.state.serviceState.message || '成功发布了文章!!!',
           });
 
-          this.props.history.push('/article');
+          this.props.history.push('/home/frontend');
       });
     });
   }
