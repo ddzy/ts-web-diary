@@ -23,12 +23,12 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
     previewImgUrl: '',
   });
 
-  React.useEffect(handleArticleImagePreview, []);
+  React.useEffect(handleArticleImagePreview);
 
-  // !处理富文本图片预览
+  // ** 处理富文本图片预览 **
   function handleArticleImagePreview(): (() => void) {
     const oArticleEle = document
-      .querySelector('#article-detail-content') as HTMLDivElement;
+      .querySelector('#article-detail-content') || document.createElement('div');
 
     function aidedClick(e: MouseEvent): void {
       const oTarget = e.target as HTMLElement;
@@ -36,7 +36,7 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
       if (oTarget.localName === 'img') {
         if (oTarget.hasAttribute('data-src')) {
           const sTargetUrl = oTarget
-            .getAttribute('data-src') as string;
+            .getAttribute('data-src') || '';
 
           setState({
             previewBoxVisible: true,
@@ -53,7 +53,7 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
     };
   }
 
-  // !处理图片预览容器点击
+  // ** 处理图片预览容器点击 **
   function handleImagePreviewContainerClick(): void {
     setState({
       previewBoxVisible: false,

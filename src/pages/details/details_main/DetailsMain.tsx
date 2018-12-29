@@ -14,6 +14,9 @@ import DetailsMainTitle from './details_main_title/DetailsMainTitle';
 import {
   DetailsLeftWrapper,
 } from './style';
+import QuillImageBlot from '../../../components/write/write_edit/QuillImageBlot';
+
+Quill.register(QuillImageBlot, true);
 
 
 export interface IDetailsMainProps {

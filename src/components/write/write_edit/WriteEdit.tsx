@@ -18,10 +18,6 @@ import {
   WriteEditWrapper,
 } from './style';
 import BaseLoading from 'src/components/widget/BaseLoading/BaseLoading';
-import QuillImageBlot from './QuillImageBlot';
-
-
-Quill.register(QuillImageBlot, true);
 
 
 export interface IWriteEditProps extends FormComponentProps {
