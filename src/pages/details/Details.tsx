@@ -54,8 +54,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
   public readonly state = {
     visible: false,
-    loadingWrapperWidth: 0,
-    loadingWrapperHeight: 0,
     collectionInputValue: {
       value: '',
     },
@@ -85,7 +83,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     this.initLoadingWrapper();
 
     serviceHandleGetOneArticleInfo(this.props.match.params.id, (data) => {
-      console.log(data);
       this.setState((prevState) => {
         return {
           ...prevState,

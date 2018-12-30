@@ -18,91 +18,57 @@ const detailsController: Router = new Router();
 /**
  * 文章详情 => 获取信息
  */
-detailsController.get('/', async (ctx, next) => {
+detailsController.get('/', async (ctx) => {
+  const {
+    articleid,
+    userid,
+  } = ctx.request.query;
 
-  const { articleid, userid } = ctx.request.query;
-
-  const setWatch = await Posts
-    .findById(changeId(articleid));
-
-  // ** 阅读量加一
-  const result = await Posts
+  const oldArticleInfo = await Posts
+    .findById(articleid);
+  const newArticleInfo = await Posts
     .findByIdAndUpdate(
-      changeId(articleid),
-      { watch: setWatch.watch + 1 },
-      { new: true },
-    )
-    .populate('author', '_id username useravatar');
-
-  // ** 统计作者文章总数
-  const articleCount = (await User
-    .findById(changeId(userid))
-    .populate('articles'))
-    .articles
-    .length;
-
-  const watchArr = await Posts
-    .find({ author: result.author._id })
-    .populate('author', 'username');
-
-  // ** 统计作者文章总阅读数量
-  const watchCount = await watchArr
-    .reduce((total, current) => {
-      return total + current.watch;
-    }, 0);
-
-  // ** 统计最新文章
-  const getArticles = await Posts
-    .find({})
-    .sort({ create_time: '-1' })
-    .limit(5);
-
-  const newArticle = await getArticles
-    .map((item) => {
-      return {
-        title: item.title,
-        id: item._id,
-      };
-    });
-
-  // ** 获取评论信息
-  const updateCommentsList = await Posts
-    .findById(
-      changeId(articleid),
-      { '__v': 0 },
-      { lean: true },
-    )
-    .populate([{
-      path: 'comments',
-      populate: [{
-        path: 'replys',
-        populate: [{
-          path: 'from',
-          select: ['username', 'useravatar', '_id'],
-        }, {
-          path: 'to',
-          select: ['username', 'useravatar', '_id'],
-        }],
-        options: {
-          sort: { create_time: -1 },
-        },
-      }, {
-          path: 'from',
-        select: ['_id', 'username', 'useravatar'],
-      }],
-      options: {
-        sort: { create_time: -1 },
+      articleid,
+      { watch: oldArticleInfo.watch + 1 },
+      {
+        new: true,
       },
-    }, {
-      path: 'author',
-      select: ['_id', 'username', 'useravatar']
-    }])
+    )
+    .populate([
+      {
+        path: 'author',
+        select: ['username', 'useravatar', 'articles'],
+      },
+      {
+        path: 'comments',
+        populate: [
+          {
+            path: 'replys',
+            populate: [
+              {
+                path: 'from',
+                select: ['username', 'useravatar'],
+              },
+              {
+                path: 'to',
+                select: ['username', 'useravatar'],
+              },
+            ],
+          },
+          {
+            path: 'from',
+            select: ['username', 'useravatar'],
+          },
+        ],
+      }
+    ])
+    .lean(true);
 
-  // ** 格式化图片路径
-  const setComments = updateCommentsList.comments
-    && updateCommentsList.comments.length
-    && updateCommentsList.comments.length !== 0
-    ? updateCommentsList.comments.map((item: any) => {
+  // ** 格式化图片路径 **
+  const formatedCommentsAvatarPathArr = newArticleInfo.comments
+    && newArticleInfo.comments.length
+    && newArticleInfo.comments.length !== 0
+    ? newArticleInfo.comments.map((item: any) => {
       return {
         ...item,
         from: {
@@ -126,45 +92,33 @@ detailsController.get('/', async (ctx, next) => {
     })
     : [];
 
-  // ** 获取用户收藏夹名称
-  const getCollectionsName = await User
-    .findById(
-      changeId(userid),
-      null,
-      {
-        select: {
-          collections: 'collections',
-        },
-      }
-    )
-    .populate({
-      path: 'collections',
-      select: ['_id', 'name'],
+  // ** 获取最新文章 **
+  const getNewArticles = await Posts
+    .find({}, null, {
+      select: ['title'],
     })
+    .sort({
+      create_time: '-1',
+    })
+    .limit(5);
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     result: {
-      img: setWatch.img,
-      author: updateCommentsList.author.username,
-      authorAvatar: formatPath(
-        updateCommentsList.author.useravatar
-      ),
-      watchCount,
-      articleCount,
-      newArticle,
-      articleTitle: updateCommentsList.title,
-      mode: updateCommentsList.mode,
-      type: updateCommentsList.type,
-      tag: updateCommentsList.tag,
-      create_time: updateCommentsList.create_time,
-      articleContent: updateCommentsList.content,
-      comments: setComments,
-      isLiked: updateCommentsList.stared
-        && updateCommentsList.stared.includes(userid),
-
-      collections: getCollectionsName.collections,
+      author: newArticleInfo.author.username,
+      authorAvatar: formatPath(newArticleInfo.author.useravatar),
+      img: newArticleInfo.img || '',
+      watchCount: newArticleInfo.watch,
+      articleCount: newArticleInfo.author.articles.length,
+      mode: newArticleInfo.mode,
+      type: newArticleInfo.type,
+      tag: newArticleInfo.tag,
+      create_time: newArticleInfo.create_time,
+      articleContent: newArticleInfo.content,
+      isLiked: newArticleInfo.stared && newArticleInfo.stared.includes(userid),
+      comments: formatedCommentsAvatarPathArr,
+      newArticle: getNewArticles,
     },
   };
 

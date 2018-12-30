@@ -51,9 +51,9 @@ class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionS
       : newArticle.map((item: any) => {
           return (
             <NewArticleListItem
-              key={item.id}
+              key={item._id}
             >
-              <Link to={`/details/${item.id}`}>{item.title}</Link>
+              <Link to={`/details/${item._id}`}>{item.title}</Link>
             </NewArticleListItem>
           );
         });
