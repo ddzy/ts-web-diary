@@ -116,6 +116,7 @@ detailsController.get('/', async (ctx) => {
       tag: newArticleInfo.tag,
       create_time: newArticleInfo.create_time,
       articleContent: newArticleInfo.content,
+      articleTitle: newArticleInfo.title,
       isLiked: newArticleInfo.stared && newArticleInfo.stared.includes(userid),
       comments: formatedCommentsAvatarPathArr,
       newArticle: getNewArticles,
