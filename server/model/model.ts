@@ -17,8 +17,11 @@ const Schema = mongoose.Schema;
  * User: 用户
  * Posts: 文章
  * Comments: 评论
- * Reply: 回复
+ * Replys: 回复
  * Collection: 收藏夹
+ * Attention: 关注的
+ * AttentionUsers: 关注的用户
+ * AttentionTopics: 关注的话题
  */
 const UserSchema: mongoose.Schema = new Schema({
   articles: [{
@@ -45,6 +48,10 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Collections',
   }],
+  attentions: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Attentions',
+  }],
 });
 
 const PostsSchema: mongoose.Schema = new Schema({
@@ -60,56 +67,56 @@ const PostsSchema: mongoose.Schema = new Schema({
     type: Number,
     default: new Date().getTime(),
   },
-  img: {      // 封面图片
+  // ** 封面图片 **
+  img: {
     type: String,
   },
-  update_time: {      // 更新时间
+  update_time: {
     type: Number,
   },
-  // 文章模式
+  // ** 文章模式 **
   mode: {
     type: String,
     require: true,
   },
-  // 文章类型
+  // ** 文章类型 **
   type: {
     type: String,
     require: true,
   },
-  // 文章标题
+  // ** 文章标题 **
   title: {
     type: String,
     require: true,
   },
-  // 文章描述
+  // ** 文章描述 **
   description: {
     type: String,
   },
   content: {
     type: String,
   },
-  // 文章标签
+  // ** 文章标签 **
   tag: {
     type: String,
   },
-  // 浏览量
+  // ** 浏览量 **
   watch: {
     type: Number,
     default: 0,
   },
-  // 点赞
+  // ** 点赞 **
   star: {
     type: Number,
     default: 0,
   },
-  // 点过赞的集合
+  // ** 点过赞的集合 **
   stared: [{
     type: String,
-  }]
+  }],
 });
 
 const CommentsSchema: mongoose.Schema = new Schema({
-  // !!! 重构
   from: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -118,10 +125,10 @@ const CommentsSchema: mongoose.Schema = new Schema({
     type: String,
   },
 
-  whom: {                         // 评论人
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  // whom: {                         // 评论人
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  // },
   article: {                        // 文章
     type: Schema.Types.ObjectId,
     ref: 'Post',
@@ -140,7 +147,6 @@ const CommentsSchema: mongoose.Schema = new Schema({
 });
 
 const ReplySchema: mongoose.Schema = new Schema({
-  // !!! 重构
   from: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -153,10 +159,10 @@ const ReplySchema: mongoose.Schema = new Schema({
     type: String,
   },
 
-  whom: {           // 回复人
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  // whom: {           // 回复人
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  // },
   article: {
     type: Schema.Types.ObjectId,
     ref: 'Post',
@@ -193,6 +199,27 @@ const CollectionsSchema: mongoose.Schema = new Schema({
   },
 });
 
+const AttentionSchema: mongoose.Schema = new Schema({
+  users: [{
+    type: Schema.Types.ObjectId,
+    ref: 'AttentionUsers',
+  }],
+  topics: [{
+    type: Schema.Types.ObjectId,
+    ref: 'AttentionTopics',
+  }],
+});
+
+const AttentionUsersSchema: mongoose.Schema = new Schema({
+  whom: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+});
+
+const AttentionTopicsSchema: mongoose.Schema = new Schema({
+
+});
 
 
 export const User: mongoose.Model<any> = mongoose
@@ -205,6 +232,13 @@ export const Replys: mongoose.Model<any> = mongoose
   .model('Replys', ReplySchema, 'Replys');
 export const Collections: mongoose.Model<any> = mongoose
   .model('Collections', CollectionsSchema, 'Collections');
+export const Attentions: mongoose.Model<any> = mongoose
+  .model('Attentions', AttentionSchema, 'Attentions');
+export const AttentionUsers: mongoose.Model<any> = mongoose
+  .model('AttentionUsers', AttentionUsersSchema, 'AttentionUsers');
+export const AttentionTopics: mongoose.Model<any> = mongoose
+  .model('AttentionTopics', AttentionTopicsSchema, 'AttentionTopics');
+
 
 /**
  * 转化为ObjectId
