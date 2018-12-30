@@ -48,10 +48,10 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Collections',
   }],
-  attentions: [{
+  attentions: {
     type: Schema.Types.ObjectId,
     ref: 'Attentions',
-  }],
+  },
 });
 
 const PostsSchema: mongoose.Schema = new Schema({
