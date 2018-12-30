@@ -17,24 +17,10 @@ import DetailsControlCollections from './details_control_collections/DetailsCont
 
 
 export interface IDetailsControlProps {
-  isLiked: boolean;             // 点赞状态
-  onControlBarStar: (           // 固定栏点赞
+  isLiked: boolean;
+  // ** 固钉栏点赞 **
+  onControlBarStar: (
     e: React.MouseEvent,
-  ) => void;
-
-  collectionInputValue: any,    // 固钉栏弹出层
-  onCollectionsInputChange: (
-    changedFields: any,
-  ) => void;
-  onSendCollection: (
-    e: React.MouseEvent,
-    inputRef: any,
-  ) => void;
-
-  collections: any[];            // 收藏夹列表
-
-  onSaveToCollection: (         // 确认添加至收藏夹
-    collectionId: string,
   ) => void;
 };
 
@@ -103,13 +89,6 @@ const DetailsControl = React.memo<IDetailsControlProps>((
                   title="我的收藏夹"
                   content={
                     <DetailsControlCollections
-                      collections={props.collections}
-
-                      collectionInputValue={props.collectionInputValue}
-                      onCollectionsInputChange={props.onCollectionsInputChange}
-                      onSendCollection={props.onSendCollection}
-
-                      onSaveToCollection={props.onSaveToCollection}
                     />
                   }
                 >

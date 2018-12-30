@@ -16,7 +16,6 @@ export interface IStaticOptions {
   img: string,
   isLiked: boolean,     // 是否点过赞
   comments: any[],      // 评论信息
-  collections: any[],   // 我的收藏夹列表
   collectionName: string,   // 添加至的收藏夹名称
 };
 

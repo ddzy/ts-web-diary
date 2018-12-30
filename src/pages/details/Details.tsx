@@ -20,8 +20,6 @@ import {
   IStaticOptions,
   serviceHandleGetOneArticleInfo,
   serviceHandleFixedControlBarStar,
-  serviceHandleCreateCollection,
-  serviceHandleSaveToCollection,
   serviceHandleSendComment,
   serviceHandleSendReply,
 } from './Details.service';
@@ -37,12 +35,6 @@ export interface IDetailsProps {
 interface IDetailsState {
   // ** loading组件相关props **
   visible: boolean;
-
-  // ** 固定栏相关props **
-  collectionInputValue: {
-    value: string | '',
-  };
-
   serviceState: IStaticOptions;
 };
 
@@ -54,9 +46,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
   public readonly state = {
     visible: false,
-    collectionInputValue: {
-      value: '',
-    },
     commentInputValue: '',
 
     serviceState: {
@@ -132,80 +121,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
     e.currentTarget.classList
       .toggle('fixed-control-bar-star-active');
-  }
-
-  /**
-   * 处理 添加收藏表单
-   * @param changedFields 值
-   */
-  public handleCollectionsInputChange = (
-    changedFields: any,
-  ) => {
-    this.setState({
-      collectionInputValue: {
-        value: changedFields.collection_input.value,
-      },
-    });
-  }
-
-  /**
-   * 处理 提交添加收藏表单
-   * @param e mouseEvent
-   * @param inputRef input输入框
-   */
-  public handleSendCollection = (
-    e: React.MouseEvent,
-    inputRef: any,
-  ) => {
-    this.state.collectionInputValue.value
-      && serviceHandleCreateCollection(
-        this.state.collectionInputValue.value,
-        (data) => {
-          this.setState((prevState) => {
-            return {
-              ...prevState,
-              serviceState: {
-                ...prevState.serviceState,
-                collections: prevState.serviceState.collections.concat(
-                  data.collection
-                ),
-              },
-            };
-          });
-          inputRef.input.value = '';
-        },
-      );
-  }
-
-  /**
-   * 处理 确认添加至收藏夹
-   * @param collectionId 收藏夹id
-   */
-  public handleSaveToCollection = (
-    collectionId: string,
-  ) => {
-    serviceHandleSaveToCollection(
-      this.props.match.params.id,
-      collectionId,
-      (data) => {
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            serviceState: {
-              ...prevState.serviceState,
-              collectionName: data.collectionName,
-            },
-          };
-        }, () => {
-          notification.success({
-            message: '提示',
-            description: `成功添加到 ${
-              this.state.serviceState.collectionName
-              }`,
-          });
-        });
-      }
-    );
   }
 
   /**
@@ -335,16 +250,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
         {/* 左侧固钉控制栏 */}
         <DetailsControl
-          collections={this.state.serviceState.collections}
-
           isLiked={this.state.serviceState.isLiked}
           onControlBarStar={this.handleControlBarStar}
-
-          onCollectionsInputChange={this.handleCollectionsInputChange}
-          onSendCollection={this.handleSendCollection}
-          collectionInputValue={this.state.collectionInputValue}
-
-          onSaveToCollection={this.handleSaveToCollection}
         />
       </React.Fragment>
     );
