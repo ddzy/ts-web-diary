@@ -61,7 +61,6 @@ export interface ICommentListItemProps {
       username: string,
       useravatar: string,
     };
-    star: number;
   },
 
   // ??? 自定义回复模态框样式 ???

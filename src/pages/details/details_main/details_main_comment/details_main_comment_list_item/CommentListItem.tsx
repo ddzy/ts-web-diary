@@ -22,7 +22,6 @@ export interface ICommentListItemProps {
   value: string
   create_time: number;
   replys: any[];
-  star: number;
 
   onSend: (
     inputEl: HTMLElement,

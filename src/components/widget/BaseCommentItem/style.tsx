@@ -6,7 +6,9 @@ export interface IMiddleCommentReplyRangeProps {
 
 
 // 每条评论
-export const ItemTopBox = styled.div``;
+export const ItemTopBox = styled.div`
+  cursor: pointer;
+`;
 
 // 评论者信息popover框
 export const PopoverTitleContainer = styled.div``;

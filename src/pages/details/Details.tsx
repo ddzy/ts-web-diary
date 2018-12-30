@@ -74,10 +74,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       type: '',
       watchCount: 0,
       img: '',
-      isLiked: false,     // 是否点过赞
-      comments: [],      // 评论信息
-      collections: [],   // 我的收藏夹列表
-      collectionName: '',   // 添加至的收藏夹名称
+      isLiked: false,
+      comments: [],
+      collections: [],
+      collectionName: '',
     },
   }
 
@@ -85,6 +85,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     this.initLoadingWrapper();
 
     serviceHandleGetOneArticleInfo(this.props.match.params.id, (data) => {
+      console.log(data);
       this.setState((prevState) => {
         return {
           ...prevState,
