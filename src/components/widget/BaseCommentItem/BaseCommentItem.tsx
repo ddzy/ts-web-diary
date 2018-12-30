@@ -6,6 +6,7 @@ import {
   Row,
   Col,
   Popover,
+  Button,
 } from 'antd';
 
 import {
@@ -16,6 +17,15 @@ import {
   TitleMainName,
   PopoverContentContainer,
   PopoverContentMain,
+  ContentMainArticleCountBox,
+  ContentMainArticleCountText,
+  ContentMainFocusedCountBox,
+  ContentMainFocusedCountText,
+  ContentMainLikedCountBox,
+  ContentMainLikedCountText,
+  ContentMainArticleCountTip,
+  ContentMainFocusedCountTip,
+  ContentMainLikedCountTip,
   ItemMiddleBox,
   MiddleCommentText,
   MiddleCommentReplyRange,
@@ -176,7 +186,52 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
     return (
       <PopoverContentContainer>
         <PopoverContentMain>
-          内容框
+          <Row>
+            <Col span={8}>
+              <ContentMainArticleCountBox>
+                <ContentMainArticleCountTip>
+                  文章
+                </ContentMainArticleCountTip>
+                <ContentMainArticleCountText>
+                  9
+                </ContentMainArticleCountText>
+              </ContentMainArticleCountBox>
+            </Col>
+            <Col span={8}>
+              <ContentMainLikedCountBox>
+                <ContentMainLikedCountTip>
+                  获赞
+                </ContentMainLikedCountTip>
+                <ContentMainLikedCountText>
+                  1002
+                </ContentMainLikedCountText>
+              </ContentMainLikedCountBox>
+            </Col>
+            <Col span={8}>
+              <ContentMainFocusedCountBox>
+                <ContentMainFocusedCountTip>
+                  关注者
+                </ContentMainFocusedCountTip>
+                <ContentMainFocusedCountText>
+                  150
+                </ContentMainFocusedCountText>
+              </ContentMainFocusedCountBox>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <Button
+                icon={'user-add'}
+                type="primary"
+              >关注他</Button>
+            </Col>
+            <Col span={12}>
+              <Button
+                icon={'message'}
+                type="ghost"
+              >发私信</Button>
+            </Col>
+          </Row>
         </PopoverContentMain>
       </PopoverContentContainer>
     );
