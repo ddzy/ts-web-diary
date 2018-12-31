@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   Icon,
-  Tooltip,
 } from 'antd';
 
 import {
@@ -13,14 +12,14 @@ import {
 } from './style';
 import DetailsControlCollection from './details_control_collection/DetailsControlCollection';
 import DetailsControlComment from './details_control_comment/DetailsControlComment';
+import DetailsControlStar from './details_control_star/DetailsControlStar';
 
 
 export interface IDetailsControlProps {
-  isLiked: boolean;
-  // ** 固钉栏点赞 **
-  onControlBarStar: (
-    e: React.MouseEvent,
-  ) => void;
+  controlStarAreaState: {
+    author: string;
+    isLiked: boolean;
+  };
 };
 
 
@@ -36,22 +35,11 @@ const DetailsControl = React.memo<IDetailsControlProps>((
         <FixedControlContent>
           <FixedControlList>
             {/* 点赞 */}
-            <Tooltip title="赞一个" placement="right">
-              <FixedControlListItem>
-                <Icon
-                  className={`
-                  fixed-control-bar-star
-                  ${
-                    props.isLiked
-                    && 'fixed-control-bar-star-active'
-                    }
-                `}
-                  type="star"
-                  theme="filled"
-                  onClick={props.onControlBarStar}
-                />
-              </FixedControlListItem>
-            </Tooltip>
+            <FixedControlListItem>
+              <DetailsControlStar
+                {...props.controlStarAreaState}
+              />
+            </FixedControlListItem>
             {/* 评论 */}
             <FixedControlListItem>
               <DetailsControlComment />

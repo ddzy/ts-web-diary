@@ -3,7 +3,6 @@ import {
   Row,
   Col,
   notification,
-  message,
 } from 'antd';
 import { History } from 'history';
 import { match } from 'react-router';
@@ -19,7 +18,6 @@ import {
 import {
   IStaticOptions,
   serviceHandleGetOneArticleInfo,
-  serviceHandleFixedControlBarStar,
   serviceHandleSendComment,
   serviceHandleSendReply,
 } from './Details.service';
@@ -92,35 +90,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     this.setState({
       visible: true,
     });
-  }
-
-  /**
-   * 处理固钉栏 点赞
-   */
-  public handleControlBarStar: React.MouseEventHandler = (
-    e: React.MouseEvent,
-  ): void => {
-    e.currentTarget.classList
-      .contains('fixed-control-bar-star-active')
-      ? serviceHandleFixedControlBarStar(
-        this.props.match.params.id,
-        false,
-        () => {
-          message.info('取消了赞!');
-        },
-      )
-      : serviceHandleFixedControlBarStar(
-        this.props.match.params.id,
-        true,
-        () => {
-          message.success(`
-                你赞了 ${this.state.serviceState.author} 的文章
-              `);
-        },
-      );
-
-    e.currentTarget.classList
-      .toggle('fixed-control-bar-star-active');
   }
 
   /**
@@ -250,8 +219,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
         {/* 左侧固钉控制栏 */}
         <DetailsControl
-          isLiked={this.state.serviceState.isLiked}
-          onControlBarStar={this.handleControlBarStar}
+          controlStarAreaState={{
+            isLiked: this.state.serviceState.isLiked,
+            author: this.state.serviceState.author,
+          }}
         />
       </React.Fragment>
     );
