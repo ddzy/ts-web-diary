@@ -5,17 +5,14 @@ import {
 
 import {
   LeftCommentContainer,
-  CommentWrapper,
   CommentShowBox,
   CommentShowList,
-  CommentTipBox,
-  TipText,
   EmojiItem,
 } from './style';
 import { isArray } from 'util';
 import { EMOJI_PICKER } from '../../../../constants/constants';
-import BaseCommentInput from '../../../../components/widget/BaseCommentInput/BaseCommentInput';
 import CommentListItem from './details_main_comment_list_item/CommentListItem';
+import DetailsMainCommentTitle from './details_main_comment_title/DetailsMainCommentTitle';
 
 export interface IDetailsMainCommentProps {
   // ??? 当前用户头像 ???
@@ -138,21 +135,11 @@ IDetailMainCommentState
       <LeftCommentContainer
         id="left-comment-container"
       >
-        <CommentWrapper id="comment-wrapper">
-          {/* 提示文字 */}
-          <CommentTipBox>
-            <TipText>
-              评论
-            </TipText>
-          </CommentTipBox>
-
-          {/* 重构输入框 */}
-          <BaseCommentInput
-            useravatar={this.props.useravatar}
-            onSend={this.props.onSendComment}
-          />
-        </CommentWrapper>
-
+        {/* 根评论输入框 */}
+        <DetailsMainCommentTitle
+          useravatar={this.props.useravatar}
+          onSendComment={this.props.onSendComment}
+        />
         {/* 根评论展示栏 */}
         <CommentShowBox>
           <CommentShowList>
