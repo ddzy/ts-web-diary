@@ -14,9 +14,8 @@ export interface IStaticOptions {
   type: string,
   watchCount: number,
   img: string,
-  isLiked: boolean,     // 是否点过赞
-  comments: any[],      // 评论信息
-  collectionName: string,   // 添加至的收藏夹名称
+  isLiked: boolean,
+  comments: any[],
 };
 
 
