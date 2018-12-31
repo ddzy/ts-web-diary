@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-export const CommentShowListItem = styled.li`
+export const ItemContainer = styled.li`
 `;
 export const CommentContainer = styled.div``;
 export const ReplyContainer = styled.div`

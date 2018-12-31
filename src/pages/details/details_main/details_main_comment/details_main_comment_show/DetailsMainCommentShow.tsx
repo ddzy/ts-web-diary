@@ -8,7 +8,7 @@ import {
   ShowList
 } from './style';
 import { isArray } from 'src/utils/utils';
-import CommentListItem from '../details_main_comment_list_item/CommentListItem';
+import DetailsMainCommentsShowItem from './details_main_comment_show_item/DetailsMainCommentShowItem';
 
 
 export interface IDetailsMainCommentShowProps {
@@ -36,7 +36,7 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
       ? comments.map((item) => {
         return (
           <React.Fragment key={item._id}>
-            <CommentListItem
+            <DetailsMainCommentsShowItem
               {...item}
               currentMainUserAvatar={props.useravatar}
               onSend={props.onSendReply}
