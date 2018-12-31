@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   Icon,
   Anchor,
-  Popover,
   Tooltip,
 } from 'antd';
 
@@ -81,25 +80,9 @@ const DetailsControl = React.memo<IDetailsControlProps>((
               </FixedControlListItem>
             </Tooltip>
             {/* 收藏 */}
-            <Tooltip title="收藏" placement="right">
-              <FixedControlListItem>
-                <Popover
-                  trigger="click"
-                  placement="right"
-                  title="我的收藏夹"
-                  content={
-                    <DetailsControlCollections
-                    />
-                  }
-                >
-                  <Icon
-                    className="fixed-control-bar-collection"
-                    type="heart"
-                    theme="filled"
-                  />
-                </Popover>
-              </FixedControlListItem>
-            </Tooltip>
+            <FixedControlListItem>
+              <DetailsControlCollections />
+            </FixedControlListItem>
             <FixedControlListItem>
               分享
           </FixedControlListItem>

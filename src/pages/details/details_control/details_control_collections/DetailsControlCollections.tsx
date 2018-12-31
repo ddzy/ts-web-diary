@@ -7,6 +7,9 @@ import {
   Col,
   Popconfirm,
   notification,
+  Tooltip,
+  Popover,
+  Icon,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import {
@@ -26,7 +29,7 @@ import {
 } from '../../Details.service';
 
 
-export interface IDetailsControlCollectionsProps extends FormComponentProps,RouteComponentProps<any> {};
+export interface IDetailsControlCollectionsProps extends FormComponentProps, RouteComponentProps<any> { };
 interface IDetailsControlCollectionsState {
   collectionName: string;
   collections: any[];
@@ -39,7 +42,7 @@ interface IDetailsControlCollectionsState {
 class DetailsControlCollections extends React.PureComponent<
   IDetailsControlCollectionsProps,
   IDetailsControlCollectionsState
-> {
+  > {
   public inputRef: any;
 
   public readonly state = {
@@ -84,7 +87,7 @@ class DetailsControlCollections extends React.PureComponent<
             )
           };
         }, () => {
-            this.inputRef.input.value = '';
+          this.inputRef.input.value = '';
         });
       });
     });
@@ -115,27 +118,32 @@ class DetailsControlCollections extends React.PureComponent<
     );
   }
 
-  public render(): JSX.Element {
-    const { getFieldDecorator } = this.props.form;
+  /**
+   * 处理初始化气泡框内容
+   */
+  public handleInitPopoverContent = (): JSX.Element => {
+    const {
+      getFieldDecorator,
+    } = this.props.form;
 
     return (
       <CollectionPopContentContainer>
         <CollectionsPopShowList>
           {
             this.state.collections.length !== 0
-              && this.state.collections.map((item: any) => {
-                return (
-                  <Popconfirm
-                    title="要添加到该收藏夹吗?"
-                    key={item._id}
-                    onConfirm={() => this.handleSaveToCollection(item._id)}
-                  >
-                    <CollectionsPopShowListItem>
-                      {item.name}
-                    </CollectionsPopShowListItem>
-                  </Popconfirm>
-                );
-              })
+            && this.state.collections.map((item: any) => {
+              return (
+                <Popconfirm
+                  title="要添加到该收藏夹吗?"
+                  key={item._id}
+                  onConfirm={() => this.handleSaveToCollection(item._id)}
+                >
+                  <CollectionsPopShowListItem>
+                    {item.name}
+                  </CollectionsPopShowListItem>
+                </Popconfirm>
+              );
+            })
           }
         </CollectionsPopShowList>
         <CollectionPopFormBox>
@@ -166,6 +174,25 @@ class DetailsControlCollections extends React.PureComponent<
           </Form>
         </CollectionPopFormBox>
       </CollectionPopContentContainer>
+    );
+  }
+
+  public render(): JSX.Element {
+    return (
+      <Tooltip title="收藏" placement="right">
+        <Popover
+          trigger="click"
+          placement="right"
+          title="我的收藏夹"
+          content={this.handleInitPopoverContent()}
+        >
+          <Icon
+            className="fixed-control-bar-collection"
+            type="heart"
+            theme="filled"
+          />
+        </Popover>
+      </Tooltip>
     );
   }
 }
