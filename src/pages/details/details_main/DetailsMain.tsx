@@ -59,7 +59,7 @@ const DetailsMain = React.memo<IDetailsMainProps>((
       ? JSON.parse(articleContent)
       : { ops: [] };
 
-    // delta-to-html暂时使用这种方式替代
+    // ** delta-to-html暂时使用这种方式替代 **
     const tempCont = document
       .createElement("div");
     (new Quill(tempCont))
@@ -67,7 +67,7 @@ const DetailsMain = React.memo<IDetailsMainProps>((
     const tempContPres = tempCont
       .querySelectorAll('pre') as NodeListOf<HTMLPreElement>;
 
-    // 代码高亮
+    // ** 代码高亮 **
     tempContPres.forEach((element) => {
       const elementTagname = element.localName as string;
       elementTagname === 'pre'

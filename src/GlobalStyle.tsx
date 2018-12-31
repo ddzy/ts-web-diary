@@ -71,8 +71,12 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
       background-color: rgba(0, 0, 0, .01);
     }
   }
-  .ant-anchor-wrapper .ant-anchor {
+  .ant-anchor-wrapper, .ant-anchor {
     font-size: 1rem;
+    background-color: transparent !important;
+    overflow: hidden !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
   }
   .ant-anchor .ant-anchor-link {
     padding: 0;

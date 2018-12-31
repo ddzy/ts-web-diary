@@ -5,7 +5,8 @@ import styled from 'styled-components';
 export const DetailsWrapper = styled.div``;
 
 export const DetailsContent = styled.div`
-  width: 62.5rem;
+  /* width: 62.5rem; */
+  width: 75rem;
   margin: 0 auto;
   padding-top: 1.25rem;
 `;

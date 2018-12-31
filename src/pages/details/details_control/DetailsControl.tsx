@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Icon,
+  Anchor,
 } from 'antd';
 
 import {
@@ -31,47 +32,49 @@ const DetailsControl = React.memo<IDetailsControlProps>((
 ): JSX.Element => {
   return (
     <React.Fragment>
-      <FixedControlContainer>
-        <FixedControlContent>
-          <FixedControlList>
-            {/* 点赞 */}
-            <FixedControlListItem>
-              <DetailsControlStar
-                {...props.controlStarAreaState}
-              />
-            </FixedControlListItem>
-            {/* 评论 */}
-            <FixedControlListItem>
-              <DetailsControlComment />
-            </FixedControlListItem>
-            {/* 收藏 */}
-            <FixedControlListItem>
-              <DetailsControlCollection />
-            </FixedControlListItem>
-            <FixedControlListItem>
-              分享
-          </FixedControlListItem>
-            <FixedControlListItem>
-              <Icon
-                type="qq"
-                theme="outlined"
-              />
-            </FixedControlListItem>
-            <FixedControlListItem>
-              <Icon
-                type="twitter"
-                theme="outlined"
-              />
-            </FixedControlListItem>
-            <FixedControlListItem>
-              <Icon
-                type="weibo-circle"
-                theme="outlined"
-              />
-            </FixedControlListItem>
-          </FixedControlList>
-        </FixedControlContent>
-      </FixedControlContainer>
+      <Anchor offsetTop={70}>
+        <FixedControlContainer>
+          <FixedControlContent>
+            <FixedControlList>
+              {/* 点赞 */}
+              <FixedControlListItem>
+                <DetailsControlStar
+                  {...props.controlStarAreaState}
+                />
+              </FixedControlListItem>
+              {/* 评论 */}
+              <FixedControlListItem>
+                <DetailsControlComment />
+              </FixedControlListItem>
+              {/* 收藏 */}
+              <FixedControlListItem>
+                <DetailsControlCollection />
+              </FixedControlListItem>
+              <FixedControlListItem>
+                分享
+              </FixedControlListItem>
+              <FixedControlListItem>
+                <Icon
+                  type="qq"
+                  theme="outlined"
+                />
+              </FixedControlListItem>
+              <FixedControlListItem>
+                <Icon
+                  type="twitter"
+                  theme="outlined"
+                />
+              </FixedControlListItem>
+              <FixedControlListItem>
+                <Icon
+                  type="weibo-circle"
+                  theme="outlined"
+                />
+              </FixedControlListItem>
+            </FixedControlList>
+          </FixedControlContent>
+        </FixedControlContainer>
+      </Anchor>
 
       {/* Global Style Set */}
       <GlobalStyleSet />

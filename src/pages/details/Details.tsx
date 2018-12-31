@@ -195,8 +195,17 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       <React.Fragment>
         <DetailsWrapper>
           <DetailsContent>
-            <Row>
-              <Col span={18}>
+            <Row gutter={16}>
+              <Col span={2}>
+                {/* 左侧固钉控制栏 */}
+                <DetailsControl
+                  controlStarAreaState={{
+                    isLiked: this.state.serviceState.isLiked,
+                    author: this.state.serviceState.author,
+                  }}
+                />
+              </Col>
+              <Col span={15}>
                 {/* 左边内容区域 */}
                 <DetailsMain
                   {...this.state}
@@ -206,24 +215,18 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                   onSendReply={this.handleSendReply}
                 />
               </Col>
-              <Col span={6}>
+              <Col span={5}>
                 {/* 右边侧边栏区域 */}
                 <DetailsAction
                   {...this.state}
                   {...this.state.serviceState}
                 />
               </Col>
+
             </Row>
           </DetailsContent>
         </DetailsWrapper>
 
-        {/* 左侧固钉控制栏 */}
-        <DetailsControl
-          controlStarAreaState={{
-            isLiked: this.state.serviceState.isLiked,
-            author: this.state.serviceState.author,
-          }}
-        />
       </React.Fragment>
     );
   }

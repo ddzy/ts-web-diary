@@ -22,9 +22,6 @@ export const GlobalStyleSet = createGlobalStyle`
 
 // ** 文章详情页 => 左侧固钉控制栏 **
 export const FixedControlContainer = styled.div`
-  position: fixed;
-  top: 7.1875rem;
-  left: 7rem;
   width: 2.5rem;
   background-color: #fff;
   font-size: 1.25rem;
