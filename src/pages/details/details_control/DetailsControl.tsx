@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   Icon,
-  Anchor,
   Tooltip,
 } from 'antd';
 
@@ -12,7 +11,8 @@ import {
   FixedControlList,
   FixedControlListItem,
 } from './style';
-import DetailsControlCollections from './details_control_collections/DetailsControlCollections';
+import DetailsControlCollection from './details_control_collection/DetailsControlCollection';
+import DetailsControlComment from './details_control_comment/DetailsControlComment';
 
 
 export interface IDetailsControlProps {
@@ -30,16 +30,6 @@ export interface IDetailsControlProps {
 const DetailsControl = React.memo<IDetailsControlProps>((
   props: IDetailsControlProps,
 ): JSX.Element => {
-
-  /**
-   * 解决二次渲染问题
-   */
-  function handleAnchorClick(
-    e: React.MouseEvent,
-  ): void {
-    e.preventDefault();
-  }
-
   return (
     <React.Fragment>
       <FixedControlContainer>
@@ -63,25 +53,12 @@ const DetailsControl = React.memo<IDetailsControlProps>((
               </FixedControlListItem>
             </Tooltip>
             {/* 评论 */}
-            <Tooltip title="去评论" placement="right">
-              <FixedControlListItem>
-                <Anchor onClick={handleAnchorClick}>
-                  <Anchor.Link
-                    title={
-                      <Icon
-                        className="fixed-control-bar-message"
-                        type="message"
-                        theme="filled"
-                      />
-                    }
-                    href="#left-comment-container"
-                  />
-                </Anchor>
-              </FixedControlListItem>
-            </Tooltip>
+            <FixedControlListItem>
+              <DetailsControlComment />
+            </FixedControlListItem>
             {/* 收藏 */}
             <FixedControlListItem>
-              <DetailsControlCollections />
+              <DetailsControlCollection />
             </FixedControlListItem>
             <FixedControlListItem>
               分享

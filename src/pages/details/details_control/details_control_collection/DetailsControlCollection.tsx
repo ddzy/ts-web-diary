@@ -29,8 +29,8 @@ import {
 } from '../../Details.service';
 
 
-export interface IDetailsControlCollectionsProps extends FormComponentProps, RouteComponentProps<any> { };
-interface IDetailsControlCollectionsState {
+export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps<any> { };
+interface IDetailsControlCollectionState {
   collectionName: string;
   collections: any[];
 };
@@ -39,9 +39,9 @@ interface IDetailsControlCollectionsState {
 /**
  * 收藏 弹出层
  */
-class DetailsControlCollections extends React.PureComponent<
-  IDetailsControlCollectionsProps,
-  IDetailsControlCollectionsState
+class DetailsControlCollection extends React.PureComponent<
+IDetailsControlCollectionProps,
+IDetailsControlCollectionState
   > {
   public inputRef: any;
 
@@ -198,4 +198,4 @@ class DetailsControlCollections extends React.PureComponent<
 }
 
 
-export default withRouter(Form.create()(DetailsControlCollections));
+export default withRouter(Form.create()(DetailsControlCollection));
