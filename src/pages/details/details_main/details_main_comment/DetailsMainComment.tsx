@@ -22,40 +22,33 @@ export interface IDetailsMainCommentProps {
     v: any,
   ) => void;
 };
-interface IDetailMainCommentState {};
 
 
 /**
  * 评论区域
  */
-class DetailsMainComment extends React.PureComponent<
-IDetailsMainCommentProps,
-IDetailMainCommentState
-  > {
+const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
+  props: IDetailsMainCommentProps,
+): JSX.Element => {
+  return (
+    <LeftCommentContainer
+      id="left-comment-container"
+    >
+      {/* 根评论输入框 */}
+      <DetailsMainCommentTitle
+        useravatar={props.useravatar}
+        onSendComment={props.onSendComment}
+      />
 
-  public readonly state = {}
-
-  public render(): JSX.Element {
-    return (
-      <LeftCommentContainer
-        id="left-comment-container"
-      >
-        {/* 根评论输入框 */}
-        <DetailsMainCommentTitle
-          useravatar={this.props.useravatar}
-          onSendComment={this.props.onSendComment}
-        />
-
-        {/* 根评论展示栏 */}
-        <DetailsMainCommentShow
-          comments={this.props.comments}
-          useravatar={this.props.useravatar}
-          onSendReply={this.props.onSendReply}
-        />
-      </LeftCommentContainer>
-    );
-  }
-}
+      {/* 根评论展示栏 */}
+      <DetailsMainCommentShow
+        comments={props.comments}
+        useravatar={props.useravatar}
+        onSendReply={props.onSendReply}
+      />
+    </LeftCommentContainer>
+  );
+});
 
 
 export default DetailsMainComment;
