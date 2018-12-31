@@ -1,18 +1,11 @@
 import * as React from 'react';
-import {
-  Divider,
-} from 'antd';
 
 import {
   LeftCommentContainer,
-  CommentShowBox,
-  CommentShowList,
-  EmojiItem,
 } from './style';
-import { isArray } from 'util';
-import { EMOJI_PICKER } from '../../../../constants/constants';
-import CommentListItem from './details_main_comment_list_item/CommentListItem';
 import DetailsMainCommentTitle from './details_main_comment_title/DetailsMainCommentTitle';
+import DetailsMainCommentShow from './details_main_comment_show/DetailsMainCommentShow';
+
 
 export interface IDetailsMainCommentProps {
   // ??? 当前用户头像 ???
@@ -29,12 +22,7 @@ export interface IDetailsMainCommentProps {
     v: any,
   ) => void;
 };
-interface IDetailMainCommentState {
-  // 控制提交评论区域显隐
-  isShowSendBtnBox: boolean;
-  // 控制评论框emoji框显隐
-  isShowCommentEmojiBox: boolean;
-};
+interface IDetailMainCommentState {};
 
 
 /**
@@ -45,90 +33,7 @@ IDetailsMainCommentProps,
 IDetailMainCommentState
   > {
 
-  public readonly state = {
-    isShowSendBtnBox: false,
-    isShowCommentEmojiBox: false,
-  }
-
-  public componentDidMount(): void {
-    this.handleToggleComment();
-  }
-
-  public componentWillUnmount(): void {
-    document
-      .body
-      .removeEventListener(
-        'click',
-        this.aidedHandleToggleComment,
-      );
-  }
-
-  /**
-   * 处理切换commentBox
-   */
-  public handleToggleComment = (): void => {
-    document.body.addEventListener('click', this.aidedHandleToggleComment);
-  }
-
-  /**
-   * 处理切换commentBox - 辅助函数
-   */
-  public aidedHandleToggleComment = (e: MouseEvent) => {
-    const oTarget = e
-      .target as HTMLElement;
-    const hasClass = oTarget
-      .classList
-      .contains('same-show-action-box') as boolean;
-
-    this
-      .setState({ isShowSendBtnBox: hasClass });
-  }
-
-  /**
-   * 处理切换评论框 emoji显隐
-   */
-  public handleToggleCommentEmoji = () => {
-    this.setState(() => ({
-      isShowCommentEmojiBox: true,
-      isShowSendBtnBox: true,
-    }));
-  }
-
-  /**
-   * 初始化评论列表
-   */
-  public initCommentListItem = (): JSX.Element[] | [] => {
-    const comments = this.props.comments;
-
-    return isArray(comments)
-      && comments.length !== 0
-      ? comments.map((item) => {
-        return (
-          <React.Fragment key={item._id}>
-            <CommentListItem
-              {...item}
-              currentMainUserAvatar={this.props.useravatar}
-              onSend={this.props.onSendReply}
-            />
-            <Divider />
-          </React.Fragment>
-        );
-      })
-      : [];
-  }
-
-  /**
-   * 初始化评论表情框内容
-   */
-  public initCommentEmoji = () => {
-    return EMOJI_PICKER.map((emoji: string, i: number) => {
-      return (
-        <EmojiItem
-          key={i}
-        >{emoji}</EmojiItem>
-      );
-    });
-  }
+  public readonly state = {}
 
   public render(): JSX.Element {
     return (
@@ -140,16 +45,17 @@ IDetailMainCommentState
           useravatar={this.props.useravatar}
           onSendComment={this.props.onSendComment}
         />
+
         {/* 根评论展示栏 */}
-        <CommentShowBox>
-          <CommentShowList>
-            {this.initCommentListItem()}
-          </CommentShowList>
-        </CommentShowBox>
+        <DetailsMainCommentShow
+          comments={this.props.comments}
+          useravatar={this.props.useravatar}
+          onSendReply={this.props.onSendReply}
+        />
       </LeftCommentContainer>
     );
   }
-
 }
+
 
 export default DetailsMainComment;
