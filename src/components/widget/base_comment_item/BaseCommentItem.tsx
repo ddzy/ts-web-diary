@@ -7,11 +7,6 @@ import {
 } from 'antd';
 
 import {
-  ItemMiddleBox,
-  MiddleCommentText,
-  MiddleCommentReplyRange,
-  MiddleCommentReplyFrom,
-  MiddleCommentReplyTo,
   ItemBottomBox,
   ItemBottonRightBox,
   ItemBottomLikeBox,
@@ -22,12 +17,13 @@ import {
 import { formatTime } from '../../../utils/utils';
 import BaseCommentInput from '../base_comment_input/BaseCommentInput';
 import BaseCommentItemTitle from './base_comment_item_title/BaseCommentItemTitle';
+import BaseCommentItemContent from './base_comment_item_content/BaseCommentItemContent';
 
 
 export interface ICommentListItemProps {
-  // ??? 当前主用户 回复输入框统一头像 ???
+  // ** 当前主用户 回复输入框统一头像 **
   currentMainUserAvatar: string;
-  // ??? 回复 or 评论 ???
+  // ** 评论回复判别 **
   isReply: boolean;
   content: {
     _id: string;
@@ -45,7 +41,7 @@ export interface ICommentListItemProps {
     };
   },
 
-  // ??? 自定义回复模态框样式 ???
+  // ** 自定义回复模态框样式 **
   baseInputContainerStyle?: React.CSSProperties;
   baseInputStyle?: React.CSSProperties;
   onSend: (
@@ -140,25 +136,10 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
       />
 
       {/* 内容框 */}
-      <ItemMiddleBox>
-        <MiddleCommentReplyRange isReply={props.isReply}>
-          <MiddleCommentReplyFrom>
-            回复&nbsp;
-          </MiddleCommentReplyFrom>
-          <MiddleCommentReplyTo>
-            <a>{
-              props.content.to
-                ? props.content.to.username
-                : 'undefined'
-            }</a>:&nbsp;&nbsp;
-          </MiddleCommentReplyTo>
-        </MiddleCommentReplyRange>
-        <MiddleCommentText
-          dangerouslySetInnerHTML={{
-            __html: props.content.value || props.content.value || '',
-          }}
-        />
-      </ItemMiddleBox>
+      <BaseCommentItemContent
+        isReply={props.isReply}
+        {...props.content}
+      />
 
       {/* 控制栏 */}
       <ItemBottomBox>
