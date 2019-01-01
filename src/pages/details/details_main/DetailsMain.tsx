@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Divider } from 'antd';
-// import * as hljs from 'highlight.js';
 import {
   highlightBlock,
 } from 'highlight.js';
@@ -32,15 +31,6 @@ export interface IDetailsMainProps {
   useravatar: string;
 
   visible: boolean;
-
-  onSendComment: (
-    inputEl: HTMLElement,
-    v: string,
-  ) => void;
-  onSendReply: (
-    inputEl: HTMLElement,
-    v: any,
-) => void;
 };
 
 
@@ -102,8 +92,6 @@ const DetailsMain = React.memo<IDetailsMainProps>((
         <DetailsMainComment
           useravatar={props.useravatar}
           comments={props.comments}
-          onSendComment={props.onSendComment}
-          onSendReply={props.onSendReply}
         />
       </React.Fragment>
     </DetailsLeftWrapper>

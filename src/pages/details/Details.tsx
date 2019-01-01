@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   Row,
   Col,
-  notification,
 } from 'antd';
 import { History } from 'history';
 import { match } from 'react-router';
@@ -18,8 +17,6 @@ import {
 import {
   IStaticOptions,
   serviceHandleGetOneArticleInfo,
-  serviceHandleSendComment,
-  serviceHandleSendReply,
 } from './Details.service';
 
 
@@ -44,7 +41,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
   public readonly state = {
     visible: false,
-    commentInputValue: '',
 
     serviceState: {
       author: '',
@@ -67,7 +63,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   }
 
   public componentDidMount(): void {
-    this.initLoadingWrapper();
+    this.handleInitLoading();
 
     serviceHandleGetOneArticleInfo(this.props.match.params.id, (data) => {
       this.setState((prevState) => {
@@ -86,108 +82,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   /**
    * 处理loading状态
    */
-  public initLoadingWrapper = (): void => {
+  public handleInitLoading = (): void => {
     this.setState({
       visible: true,
     });
-  }
-
-  /**
-   * 处理评论提交
-   */
-  public handleSendComment = (
-    inputEl: HTMLElement,
-    value: string,
-  ): void => {
-    const { id } = this.props.match.params;
-
-    if (value) {
-      // TODO 敏感词过滤
-      serviceHandleSendComment({
-        value,
-        articleId: id || '',
-        from: localStorage.getItem('userid') || '',
-      }, (data) => {
-
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            serviceState: {
-              ...prevState.serviceState,
-              comments: [
-                data.comment,
-                ...prevState.serviceState.comments,
-              ]
-            },
-          };
-        }, () => {
-          inputEl.textContent = '';
-          inputEl.focus();
-          notification.success({
-            message: '提示',
-            description: `评论发表成功`,
-          });
-        });
-      });
-    } else {
-      notification.error({
-        message: '错误',
-        description: '评论内容不能为空!',
-      });
-    }
-  }
-
-  /**
-   * 处理回复提交
-   */
-  public handleSendReply = (
-    inputEl: HTMLElement,
-    v: any,
-  ): void => {
-    const { id } = this.props.match.params;
-
-    if (v.value) {
-      serviceHandleSendReply(
-        {
-          ...v,
-          articleId: id,
-        },
-        (data) => {
-          this.setState((prevState) => ({
-            ...prevState,
-            serviceState: {
-              ...prevState.serviceState,
-              comments: prevState.serviceState.comments.map((item) => {
-                if (
-                  item._id === data.reply.comment
-                ) {
-                  return {
-                    ...item,
-                    replys: [
-                      data.reply,
-                      ...item.replys,
-                    ],
-                  };
-                }
-                return item;
-              }),
-            },
-          }), () => {
-            inputEl.textContent = '';
-            inputEl.focus();
-            notification.success({
-              message: '提示',
-              description: `回复发表成功`,
-            });
-          });
-        },
-      );
-    } else {
-      notification.error({
-        message: '错误',
-        description: '回复信息不能为空!',
-      });
-    }
   }
 
   public render(): JSX.Element {
@@ -211,8 +109,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                   {...this.state}
                   {...this.state.serviceState}
                   {...this.props.AuthRouteReducer}
-                  onSendComment={this.handleSendComment}
-                  onSendReply={this.handleSendReply}
                 />
               </Col>
               <Col span={5}>
