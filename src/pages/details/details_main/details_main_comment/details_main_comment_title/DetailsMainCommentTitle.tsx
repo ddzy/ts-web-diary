@@ -30,7 +30,7 @@ const DetailsMainCommentTitle = React.memo<IDetailsMainCommentTitleProps>((
         </TitleTipText>
       </TitleTipBox>
 
-      {/* 重构输入框 */}
+      {/* 输入框 */}
       <TitleInputBox>
         <BaseCommentInput
           useravatar={props.useravatar}

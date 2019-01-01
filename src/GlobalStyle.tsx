@@ -136,6 +136,29 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   }
 
   /*
+    ??? 路由过渡效果 - 3
+  */
+  .fadeTranslateZ-enter {
+    opacity: 0.01;
+    transform: scale(0.9) translateY(50%);
+  }
+  .fadeTranslateZ-enter-active {
+    opacity: 1;
+    transform: scale(1) translateY(0%);
+    transition: all .3s ease-out;
+  }
+  .fadeTranslateZ-exit {
+    opacity: 1;
+    transform: scale(1) translateY(0%);
+  }
+  .fadeTranslateZ-exit-active {
+    opacity: 0.01;
+    transform: scale(0.9) translateY(50%);
+    transition: all .3s ease-out;
+  }
+
+
+  /*
     ??? 重置react-quill样式
   */
   .ql-editor {

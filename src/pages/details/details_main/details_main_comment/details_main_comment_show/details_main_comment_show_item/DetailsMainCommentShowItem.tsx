@@ -10,6 +10,10 @@ import {
 import {
   BaseCommentItem,
 } from 'src/components/widget/base_comment_item/BaseCommentItem';
+import {
+  TransitionGroup,
+  CSSTransition,
+} from 'react-transition-group';
 
 
 export interface IDetailsMainCommentShowItemProps {
@@ -58,20 +62,24 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
     if (Array.isArray(replys) && replys.length !== 0) {
       return replys.map((reply, index) => {
         return (
-          <ReplyListItem
+          <CSSTransition
             key={index}
+            classNames="fadeTranslateZ"
+            timeout={2000}
           >
-            <BaseCommentItem
-              baseInputContainerStyle={{
-                backgroundColor: '#fff',
-              }}
-              currentMainUserAvatar={props.currentMainUserAvatar}
-              isReply={true}
-              content={reply}
-              {...props}
-              onSend={handleSendReply}
-            />
-          </ReplyListItem>
+            <ReplyListItem>
+              <BaseCommentItem
+                baseInputContainerStyle={{
+                  backgroundColor: '#fff',
+                }}
+                currentMainUserAvatar={props.currentMainUserAvatar}
+                isReply={true}
+                content={reply}
+                {...props}
+                onSend={handleSendReply}
+              />
+            </ReplyListItem>
+          </CSSTransition>
         );
       });
     }
@@ -97,7 +105,9 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
       {/* 单个评论项 回复展示 */}
       <ReplyContainer>
         <ReplyList>
-          {initReplyList()}
+          <TransitionGroup>
+            {initReplyList()}
+          </TransitionGroup>
         </ReplyList>
       </ReplyContainer>
     </ItemContainer>

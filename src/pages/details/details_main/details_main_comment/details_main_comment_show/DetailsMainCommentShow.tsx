@@ -2,6 +2,10 @@ import * as React from 'react';
 import {
   Divider,
 } from 'antd';
+import {
+  TransitionGroup,
+  CSSTransition,
+} from 'react-transition-group';
 
 import {
   ShowContainer,
@@ -35,14 +39,20 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
       && comments.length !== 0
       ? comments.map((item) => {
         return (
-          <React.Fragment key={item._id}>
-            <DetailsMainCommentsShowItem
-              {...item}
-              currentMainUserAvatar={props.useravatar}
-              onSend={props.onSendReply}
-            />
-            <Divider />
-          </React.Fragment>
+          <CSSTransition
+            key={item._id}
+            classNames="fadeTranslateZ"
+            timeout={1500}
+          >
+            <React.Fragment>
+              <DetailsMainCommentsShowItem
+                {...item}
+                currentMainUserAvatar={props.useravatar}
+                onSend={props.onSendReply}
+              />
+              <Divider />
+            </React.Fragment>
+          </CSSTransition>
         );
       })
       : [];
@@ -51,7 +61,10 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
   return (
     <ShowContainer>
       <ShowList>
-        {initCommentListItem()}
+        {/* {initCommentListItem()} */}
+        <TransitionGroup>
+          {initCommentListItem()}
+        </TransitionGroup>
       </ShowList>
     </ShowContainer>
   );
