@@ -42,7 +42,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   }, [props.comments]);
 
   /**
-   * 处理回复提交
+   * 处理评论提交
    */
   function handleSendComment(
     inputEl: HTMLElement,
@@ -60,7 +60,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
         setState({
           comments: [
             data.comment,
-            state.comments,
+            ...state.comments,
           ]
         });
 
