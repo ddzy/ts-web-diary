@@ -46,6 +46,7 @@
 - [x] 后台查询优化
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
+- [ ] BaseCommentItem组件提取
 - [ ] 添加关注功能
 - [ ] 初始化只获取可见区域数据, 加快加载速度
 - [ ] main组件重构, 提取到article组件
