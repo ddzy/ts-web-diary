@@ -1,31 +1,12 @@
 import * as React from 'react';
 import {
-  Avatar,
   Divider,
   Icon,
   Row,
   Col,
-  Popover,
-  Button,
 } from 'antd';
 
 import {
-  ItemTopBox,
-  PopoverTitleMain,
-  PopoverTitleContainer,
-  TitleMainAvatar,
-  TitleMainName,
-  PopoverContentContainer,
-  PopoverContentMain,
-  ContentMainArticleCountBox,
-  ContentMainArticleCountText,
-  ContentMainFocusedCountBox,
-  ContentMainFocusedCountText,
-  ContentMainLikedCountBox,
-  ContentMainLikedCountText,
-  ContentMainArticleCountTip,
-  ContentMainFocusedCountTip,
-  ContentMainLikedCountTip,
   ItemMiddleBox,
   MiddleCommentText,
   MiddleCommentReplyRange,
@@ -40,6 +21,7 @@ import {
 } from './style';
 import { formatTime } from '../../../utils/utils';
 import BaseCommentInput from '../base_comment_input/BaseCommentInput';
+import BaseCommentItemTitle from './base_comment_item_title/BaseCommentItemTitle';
 
 
 export interface ICommentListItemProps {
@@ -150,115 +132,12 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
     });
   }
 
-  /**
-   * 初始化处理头像框 popover title
-   */
-  function handleInitAvatarPopoverTitle(): JSX.Element {
-    return (
-      <PopoverTitleContainer>
-        <PopoverTitleMain>
-          <TitleMainAvatar>
-            <Avatar
-              src={props.content.from.useravatar}
-              icon="user"
-              shape="square"
-              alt="评论者"
-              style={{
-                width: '4.375rem',
-                height: '4.375rem',
-                transform: 'translateY(-1.25rem)',
-              }}
-            />
-          </TitleMainAvatar>
-          <TitleMainName>{
-            props.content.from.username
-          }</TitleMainName>
-        </PopoverTitleMain>
-      </PopoverTitleContainer>
-    );
-  }
-
-  /**
-   * 初始化处理头像框 popover content
-   */
-  function handleInitAvatarPopoverContent(): JSX.Element {
-    return (
-      <PopoverContentContainer>
-        <PopoverContentMain>
-          <Row>
-            <Col span={8}>
-              <ContentMainArticleCountBox>
-                <ContentMainArticleCountTip>
-                  文章
-                </ContentMainArticleCountTip>
-                <ContentMainArticleCountText>
-                  9
-                </ContentMainArticleCountText>
-              </ContentMainArticleCountBox>
-            </Col>
-            <Col span={8}>
-              <ContentMainLikedCountBox>
-                <ContentMainLikedCountTip>
-                  获赞
-                </ContentMainLikedCountTip>
-                <ContentMainLikedCountText>
-                  1002
-                </ContentMainLikedCountText>
-              </ContentMainLikedCountBox>
-            </Col>
-            <Col span={8}>
-              <ContentMainFocusedCountBox>
-                <ContentMainFocusedCountTip>
-                  关注者
-                </ContentMainFocusedCountTip>
-                <ContentMainFocusedCountText>
-                  150
-                </ContentMainFocusedCountText>
-              </ContentMainFocusedCountBox>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <Button
-                icon={'user-add'}
-                type="primary"
-              >关注他</Button>
-            </Col>
-            <Col span={12}>
-              <Button
-                icon={'message'}
-                type="ghost"
-              >发私信</Button>
-            </Col>
-          </Row>
-        </PopoverContentMain>
-      </PopoverContentContainer>
-    );
-  }
-
   return (
     <React.Fragment>
       {/* 用户信息框 */}
-      <ItemTopBox>
-        <Popover
-          title={handleInitAvatarPopoverTitle()}
-          content={handleInitAvatarPopoverContent()}
-        >
-          <Avatar
-            src={props.content.from.useravatar}
-            icon="user"
-            size="default"
-            shape="circle"
-            alt="评论者"
-          />
-        </Popover>
-        <Divider type="vertical" />
-        <span
-          style={{
-            color: '#999',
-          }}
-        >{props.content.from.username}</span>
-      </ItemTopBox>
+      <BaseCommentItemTitle
+        {...props.content}
+      />
 
       {/* 内容框 */}
       <ItemMiddleBox>
