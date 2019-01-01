@@ -58,7 +58,7 @@
 - [x] header组件提取, style划分
 - [x] Article迁移 -> Home
 - [x] NAVconfig更改配置项
-- [ ] 新建评论, 回复高亮显示
+- [x] 新建评论, 回复高亮显示
 - [ ] hooks重构所有class组件
 - [x] 文章description字段
 - [ ] Main创作组件, 内容非空判断
