@@ -7,7 +7,9 @@ import {
   ReplyList,
   ReplyListItem,
 } from './style';
-import BaseCommentItem from 'src/components/widget/base_comment_item/BaseCommentItem';
+import {
+  BaseCommentItem,
+} from 'src/components/widget/base_comment_item/BaseCommentItem';
 
 
 export interface IDetailsMainCommentShowItemProps {

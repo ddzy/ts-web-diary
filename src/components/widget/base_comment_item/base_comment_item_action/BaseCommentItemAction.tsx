@@ -14,37 +14,12 @@ import {
   ActionTimeIconBox,
 } from './style';
 import { formatTime } from 'src/utils/utils';
+import {
+  ICommentListItemProps,
+} from '../BaseCommentItem';
 
 
-export interface IBaseCommentItemActionProps {
-  // ** 当前主用户 回复输入框统一头像 **
-  currentMainUserAvatar: string;
-  // ** 评论回复判别 **
-  isReply: boolean;
-  content: {
-    _id: string;
-    value: string;
-    create_time: number;
-    from: {
-      _id: string,
-      username: string,
-      useravatar: string,
-    };
-    to?: {
-      _id: string,
-      username: string,
-      useravatar: string,
-    };
-  },
-
-  // ** 自定义回复模态框样式 **
-  baseInputContainerStyle?: React.CSSProperties;
-  baseInputStyle?: React.CSSProperties;
-  onSend: (
-    inputEl: HTMLElement,
-    v: any,
-  ) => void;
-
+export interface IBaseCommentItemActionProps extends ICommentListItemProps {
   // ** 处理切换replyBox **
   onToggleReplyBox: (
     e: React.MouseEvent<HTMLElement>,

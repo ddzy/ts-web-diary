@@ -4,33 +4,12 @@ import {
   ReplyContainer,
 } from './style';
 import BaseCommentInput from '../../base_comment_input/BaseCommentInput';
+import {
+  ICommentListItemProps,
+} from '../BaseCommentItem';
 
 
-export interface IBaseCommentItemReplyProps {
-  // ** 当前主用户 回复输入框统一头像 **
-  currentMainUserAvatar: string;
-  content: {
-    _id: string;
-    value: string;
-    create_time: number;
-    from: {
-      _id: string,
-      username: string,
-      useravatar: string,
-    };
-    to?: {
-      _id: string,
-      username: string,
-      useravatar: string,
-    };
-  },
-
-  baseInputContainerStyle?: React.CSSProperties;
-  baseInputStyle?: React.CSSProperties;
-  onSend: (
-    inputEl: HTMLElement,
-    v: any,
-  ) => void;
+export interface IBaseCommentItemReplyProps extends ICommentListItemProps {
 };
 
 

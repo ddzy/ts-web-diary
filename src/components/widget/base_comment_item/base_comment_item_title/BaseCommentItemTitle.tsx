@@ -26,15 +26,12 @@ import {
   ContentMainLikedCountText,
   ContentMainLikedCountTip,
 } from './style';
+import {
+  ICommentListItemProps,
+} from '../BaseCommentItem';
 
 
-export interface IBaseCommentItemTitleProps {
-  from: {
-    _id: string,
-    username: string,
-    useravatar: string,
-  };
-};
+export interface IBaseCommentItemTitleProps extends ICommentListItemProps {};
 
 
 const BaseCommentItemTitle = React.memo((
@@ -50,7 +47,7 @@ const BaseCommentItemTitle = React.memo((
         <PopoverTitleMain>
           <TitleMainAvatar>
             <Avatar
-              src={props.from.useravatar}
+              src={props.content.from.useravatar}
               icon="user"
               shape="square"
               alt="评论者"
@@ -62,7 +59,7 @@ const BaseCommentItemTitle = React.memo((
             />
           </TitleMainAvatar>
           <TitleMainName>{
-            props.from.username
+            props.content.from.username
           }</TitleMainName>
         </PopoverTitleMain>
       </PopoverTitleContainer>
@@ -134,7 +131,7 @@ const BaseCommentItemTitle = React.memo((
           content={handleInitAvatarPopoverContent()}
         >
           <Avatar
-            src={props.from.useravatar}
+            src={props.content.from.useravatar}
             icon="user"
             size="default"
             shape="circle"
@@ -146,7 +143,7 @@ const BaseCommentItemTitle = React.memo((
           style={{
             color: '#999',
           }}
-        >{props.from.username}</span>
+        >{props.content.from.username}</span>
 
     </TitleContainer>
   );

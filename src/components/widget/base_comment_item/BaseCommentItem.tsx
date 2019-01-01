@@ -46,7 +46,7 @@ interface ICommentListItemState {
 /**
  * 回复|评论展示 通用组件
  */
-const BaseCommentItem = React.memo<ICommentListItemProps>((
+export const BaseCommentItem = React.memo<ICommentListItemProps>((
   props: ICommentListItemProps,
 ): JSX.Element => {
 
@@ -100,13 +100,12 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
     <React.Fragment>
       {/* 用户信息框 */}
       <BaseCommentItemTitle
-        {...props.content}
+        {...props}
       />
 
       {/* 内容框 */}
       <BaseCommentItemContent
-        isReply={props.isReply}
-        {...props.content}
+        {...props}
       />
 
       {/* 控制栏 */}
@@ -128,6 +127,3 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
     </React.Fragment>
   );
 });
-
-
-export default BaseCommentItem;

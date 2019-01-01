@@ -7,17 +7,12 @@ import {
   ContentContainer,
   ContentommentReplyRange,
 } from './style';
+import {
+  ICommentListItemProps,
+} from '../BaseCommentItem';
 
 
-export interface IBaseCommentItemContentProps {
-  // ** 评论回复判别 **
-  isReply: boolean;
-  value: string;
-  to?: {
-    _id: string,
-    username: string,
-    useravatar: string,
-  };
+export interface IBaseCommentItemContentProps extends ICommentListItemProps {
 };
 
 
@@ -32,15 +27,15 @@ const BaseCommentItemContent = React.memo<IBaseCommentItemContentProps>((
       </ContentCommentReplyFrom>
         <ContentCommentReplyTo>
           <a>{
-            props.to
-              ? props.to.username
+            props.content.to
+              ? props.content.to.username
               : 'undefined'
           }</a>:&nbsp;&nbsp;
       </ContentCommentReplyTo>
       </ContentommentReplyRange>
       <ContentCommentText
         dangerouslySetInnerHTML={{
-          __html: props.value || '',
+          __html: props.content.value || '',
         }}
       />
     </ContentContainer>
