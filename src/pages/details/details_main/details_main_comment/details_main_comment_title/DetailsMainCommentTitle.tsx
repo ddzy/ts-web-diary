@@ -6,7 +6,7 @@ import {
   TitleTipText,
   TitleWrapper,
 } from './style';
-import BaseCommentInput from 'src/components/widget/BaseCommentInput/BaseCommentInput';
+import BaseCommentInput from 'src/components/widget/base_comment_input/BaseCommentInput';
 
 
 export interface IDetailsMainCommentTitleProps {

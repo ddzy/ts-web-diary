@@ -39,7 +39,7 @@ import {
   ItemReplyBox,
 } from './style';
 import { formatTime } from '../../../utils/utils';
-import BaseCommentInput from '../BaseCommentInput/BaseCommentInput';
+import BaseCommentInput from '../base_comment_input/BaseCommentInput';
 
 
 export interface ICommentListItemProps {

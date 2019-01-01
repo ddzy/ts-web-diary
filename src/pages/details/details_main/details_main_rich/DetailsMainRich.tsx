@@ -7,7 +7,7 @@ import {
   LeftContentContainer,
   LeftContent,
 } from './style';
-import BaseImagePreview from 'src/components/widget/BaseImagePreview/BaseImagePreview';
+import BaseImagePreview from 'src/components/widget/base_image_preview/BaseImagePreview';
 
 
 export interface IDetailsMainRichProps {
