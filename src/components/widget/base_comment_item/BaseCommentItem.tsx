@@ -1,23 +1,9 @@
 import * as React from 'react';
-import {
-  Divider,
-  Icon,
-  Row,
-  Col,
-} from 'antd';
 
-import {
-  ItemBottomBox,
-  ItemBottonRightBox,
-  ItemBottomLikeBox,
-  ItemBottomReplyBox,
-  ItemBottomTimeBox,
-  ItemReplyBox,
-} from './style';
-import { formatTime } from '../../../utils/utils';
-import BaseCommentInput from '../base_comment_input/BaseCommentInput';
 import BaseCommentItemTitle from './base_comment_item_title/BaseCommentItemTitle';
 import BaseCommentItemContent from './base_comment_item_content/BaseCommentItemContent';
+import BaseCommentItemAction from './base_comment_item_action/BaseCommentItemAction';
+import BaseCommentItemReply from './base_comment_item_reply/BaseCommentItemReply';
 
 
 export interface ICommentListItemProps {
@@ -51,8 +37,9 @@ export interface ICommentListItemProps {
 };
 interface ICommentListItemState {
   replyBoxId: string;
-  replyBox: any;
   replyBtn: HTMLElement,
+
+  showReplyBox: boolean;
 };
 
 
@@ -68,13 +55,13 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
     setState,
   ] = React.useState<ICommentListItemState>({
     replyBoxId: '',
-    replyBox: null,
     replyBtn: document.createElement('div'),
+    showReplyBox: false,
   });
 
   React.useEffect(() => {
     state.replyBtn.style.cssText += `${
-      state.replyBox ? 'color: #1890ff;' : 'color: #999;'
+      state.showReplyBox ? 'color: #1890ff;' : 'color: #999;'
     }`;
   }, [state]);
 
@@ -101,29 +88,10 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
     const oTarget = e.currentTarget;
     const oTargetId = oTarget.getAttribute('data-id');
     const commentId = props.content._id;
-    const replyBox = (
-      <ItemReplyBox
-        className="item-reply-box"
-        data-id={props.content._id}
-      >
-        <BaseCommentInput
-          containerStyle={props.baseInputContainerStyle ? props.baseInputContainerStyle : {}}
-          inputStyle={props.baseInputStyle ? props.baseInputStyle : {}}
-          placeHolder={`回复 ${
-            props.content.from
-              ? props.content.from.username
-              : 'undefined'
-          }`}
-          useravatar={props.currentMainUserAvatar}
-          avatarSize={'default'}
-          onSend={handleSend}
-        />
-      </ItemReplyBox>
-    );
 
-    oTargetId === commentId && setState({
-      replyBox: state.replyBox ? '' : replyBox,
-      replyBoxId: state.replyBoxId,
+    setState({
+      showReplyBox: (oTargetId === commentId) && (!state.showReplyBox),
+      replyBoxId: commentId,
       replyBtn: oTarget,
     });
   }
@@ -142,40 +110,21 @@ const BaseCommentItem = React.memo<ICommentListItemProps>((
       />
 
       {/* 控制栏 */}
-      <ItemBottomBox>
-
-        <Row>
-          <Col span={12}>
-            <ItemBottomTimeBox>
-              {formatTime(props.content.create_time)}
-            </ItemBottomTimeBox>
-          </Col>
-          <Col span={12}>
-            <ItemBottonRightBox>
-              <ItemBottomLikeBox
-                data-id={props.content._id}
-              >
-                <Icon type="like-o" />
-                <span>999</span>
-                <Divider type="vertical" />
-              </ItemBottomLikeBox>
-
-              <ItemBottomReplyBox
-                data-id={props.content._id}
-                onClick={handleToggleReplyBox}
-              >
-                <Icon
-                  type="message"
-                />
-                <span>回复</span>
-              </ItemBottomReplyBox>
-            </ItemBottonRightBox>
-          </Col>
-        </Row>
-      </ItemBottomBox>
+      <BaseCommentItemAction
+        {...props}
+        onToggleReplyBox={handleToggleReplyBox}
+      />
 
       {/* 评论输入通用组件 */}
-      {state.replyBox}
+      {
+        state.showReplyBox && (
+          <BaseCommentItemReply
+            {...props}
+            {...state}
+            onSend={handleSend}
+          />
+        )
+      }
     </React.Fragment>
   );
 });
