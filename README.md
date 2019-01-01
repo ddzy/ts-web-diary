@@ -46,10 +46,12 @@
 - [x] 后台查询优化
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
-- [ ] BaseCommentItem组件提取
+- [x] BaseCommentItem组件提取
+- [ ] DetailsCommentMainTitle评论报错的问题
 - [ ] 添加关注功能
 - [ ] 初始化只获取可见区域数据, 加快加载速度
 - [ ] main组件重构, 提取到article组件
+- [ ] 子组件interface继承父组件
 - [x] styled-components重构全局样式, 提取至App组件内部, createGlobalStyle
 - [ ] 移动端简单适配(```掘金```)
 - [x] 合并component下main组件, 重构home页
