@@ -15,7 +15,7 @@ export interface IStaticPayloadOptions {
 export function serviceHandleGetArticleList(
   payload: IStaticPayloadOptions,
   callback?: (
-    data: object[],
+    data: any,
   ) => void,
 ) {
   query({
@@ -24,6 +24,6 @@ export function serviceHandleGetArticleList(
     data: payload,
     jsonp: false,
   }).then((res) => {
-    callback && callback(res.articleList);
+    callback && callback(res);
   });
 }

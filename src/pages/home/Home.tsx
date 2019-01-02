@@ -51,12 +51,16 @@ class Article extends React.Component<IArticleProps, IArticleState> {
     serviceHandleGetArticleList(
       { type, page, pageSize },
       (data) => {
+        const {
+          articleList,
+        } = data;
+
         this.setState((prevState) => {
           return {
             ...prevState,
             serviceState: {
               ...prevState.serviceState,
-              article_list: data,
+              article_list: articleList,
             },
             initialLoading: false,
           };
@@ -86,7 +90,7 @@ class Article extends React.Component<IArticleProps, IArticleState> {
           return {
             serviceState: {
               ...prevState.serviceState,
-              article_list: prevState.serviceState.article_list.concat(data),
+              article_list: prevState.serviceState.article_list.concat(data.articleList),
             },
           };
         });
