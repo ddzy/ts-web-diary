@@ -15,7 +15,7 @@ const router: Router = new Router();
 
 // 装载路由
 router
-  .use('/api', homeController.routes(), homeController.allowedMethods())
+  .use('/api/home', homeController.routes(), homeController.allowedMethods())
   .use('/api/article', articleController.routes(), articleController.allowedMethods())
   .use('/api/login', loginController.routes(), loginController.allowedMethods())
   .use('/api/register', registerController.routes(), registerController.allowedMethods())

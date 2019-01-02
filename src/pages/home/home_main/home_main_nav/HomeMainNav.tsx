@@ -18,25 +18,15 @@ import {
 import {
   ARTICLE_TYPE_PICKER,
   ARTICLE_TYPE_WITH_ENGLISH_PICKER,
-  PAGE_SIZE,
 } from '../../../../constants/constants';
 
 
-export interface IHomeMainNavProps extends RouteComponentProps<any> {
-  onGetArticleList: (
-    type: string,
-    page: number,
-    pageSize: number,
-  ) => void;
-};
+export interface IHomeMainNavProps extends RouteComponentProps<any> {};
 
 
 const HomeMainNav = React.memo<IHomeMainNavProps>((
   props: IHomeMainNavProps,
 ) => {
-
-  const oldPathname = props.location.pathname;
-
   /**
    * 处理初始化导航列表项
    */
@@ -47,7 +37,6 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
       <NavContentListItem
         key={i}
         data-type={ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}
-        onClick={() => handleNavItemClick(ARTICLE_TYPE_WITH_ENGLISH_PICKER[i])}
       >
         <Link
           className={
@@ -61,18 +50,6 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
         </Link>
       </NavContentListItem>
     ));
-  }
-
-  /**
-   * 处理导航点击
-   */
-  function handleNavItemClick(
-    type: string,
-  ): void {
-    const newPathname = props.location.pathname;
-
-    newPathname !== oldPathname
-      && props.onGetArticleList(type, 1, PAGE_SIZE);
   }
 
   return (

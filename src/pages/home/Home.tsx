@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import HomeMain from './home_main/HomeMain';
 import {
-  IStaticOptions,
-  serviceHandleGetArticleList,
+  IServiceState,
+  serviceHandleGetHomeInfo,
 } from './Home.service';
 import {
   HomeWrapper,
@@ -11,59 +11,48 @@ import {
 import { PAGE_SIZE } from 'src/constants/constants';
 
 
-export interface IArticleProps {
+export interface IHomeProps {
   location: Location;
 };
-interface IArticleState {
-  serviceState: IStaticOptions;
-  hasMore: boolean;
-  initialLoading: boolean;
+interface IHomeState extends IServiceState {
+  globalLoading: boolean;
 };
 
 
-class Article extends React.Component<IArticleProps, IArticleState> {
+class Home extends React.Component<IHomeProps, IHomeState> {
 
   public readonly state = {
-    serviceState: {
-      article_list: [],
-    },
-    hasMore: true,
-    initialLoading: true,
+    articleList: [],
+    globalLoading: false,
   }
 
   public componentDidMount(): void {
+    this.handleGetInfo();
+  }
+
+  /**
+   * 获取首屏相关数据
+   */
+  public handleGetInfo = (): void => {
     const {
       pathname
     } = this.props.location;
     const type = pathname.replace('/home/', '');
 
-    this.handelGetArticleList(type, 1, PAGE_SIZE);
-  }
+    this.setState({
+      globalLoading: true,
+    });
 
-  /**
-   * 处理点击navitem, 获取相关文章
-   */
-  public handelGetArticleList = (
-    type: string,
-    page: number,
-    pageSize: number,
-  ): void => {
-    serviceHandleGetArticleList(
-      { type, page, pageSize },
+    serviceHandleGetHomeInfo(
+      { type, page: 1, pageSize: PAGE_SIZE, },
       (data) => {
         const {
           articleList,
-        } = data;
+        } = data.info;
 
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            serviceState: {
-              ...prevState.serviceState,
-              article_list: articleList,
-            },
-            initialLoading: false,
-          };
+        this.setState({
+          globalLoading: false,
+          articleList,
         });
       },
     );
@@ -72,41 +61,39 @@ class Article extends React.Component<IArticleProps, IArticleState> {
   /**
    * 处理加载更多
    */
-  public handleLoadMoreArticleList = (
-    page: number,
-    pageSize: number,
-    callback?: (...args: any[]) => void,
-  ): void => {
-    const {
-      pathname,
-    } = this.props.location;
-    const type: string = pathname.replace('/home/', '');
+  // public handleLoadMoreArticleList = (
+  //   page: number,
+  //   pageSize: number,
+  //   callback?: (...args: any[]) => void,
+  // ): void => {
+  //   const {
+  //     pathname,
+  //   } = this.props.location;
+  //   const type: string = pathname.replace('/home/', '');
 
-    serviceHandleGetArticleList(
-      { type, page, pageSize },
-      (data) => {
-        callback && callback(data);
-        this.setState((prevState) => {
-          return {
-            serviceState: {
-              ...prevState.serviceState,
-              article_list: prevState.serviceState.article_list.concat(data.articleList),
-            },
-          };
-        });
-      },
-    );
-  }
+  //   serviceHandleGetArticleList(
+  //     { type, page, pageSize },
+  //     (data) => {
+  //       callback && callback(data);
+  //       this.setState((prevState) => {
+  //         return {
+  //           serviceState: {
+  //             ...prevState.serviceState,
+  //             article_list: prevState.serviceState.article_list.concat(data.articleList),
+  //           },
+  //         };
+  //       });
+  //     },
+  //   );
+  // }
 
   public render(): JSX.Element {
     return (
       <HomeWrapper
       >
         <HomeMain
-          initialLoading={this.state.initialLoading}
-          articles={this.state.serviceState.article_list}
-          onGetArticleList={this.handelGetArticleList}
-          onLoadMore={this.handleLoadMoreArticleList}
+          globalLoading={this.state.globalLoading}
+          articleList={this.state.articleList}
         />
       </HomeWrapper>
     );
@@ -114,5 +101,4 @@ class Article extends React.Component<IArticleProps, IArticleState> {
 
 }
 
-
-export default Article;
+export default Home;
