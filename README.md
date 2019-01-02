@@ -46,6 +46,7 @@
 - [x] 后台查询优化
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
+- [ ] 重构Home页相关组件
 - [x] BaseCommentItem组件提取
 - [x] DetailsCommentMainTitle评论报错的问题
 - [ ] 添加关注功能
