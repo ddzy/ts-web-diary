@@ -92,6 +92,20 @@ interface ISendReplyReturns {
   };
 };
 
+interface IFixedControlBarStarParams {
+  articleId: string;
+  liked: boolean;
+};
+interface IFixedControlBarStarReturns {
+  code: number;
+  message: string;
+  info: {
+    starInfo: {
+      isLiked: boolean;
+    },
+  };
+};
+
 
 
 /**
@@ -172,24 +186,20 @@ export function serviceHandleSendReply(
  * @param callback 回调函数
  */
 export function serviceHandleFixedControlBarStar(
-  articleid: string,
-  liked: boolean,
-  callback?: () => void,
+  payload: IFixedControlBarStarParams,
+  callback?: (res: IFixedControlBarStarReturns) => void,
 ) {
   query({
     method: 'GET',
     url: '/api/details/star',
     data: {
-      articleid,
-      liked,
+      articleid: payload.articleId,
+      liked: payload.liked,
       userid: localStorage.getItem('userid'),
     },
     jsonp: false,
   }).then((res) => {
-    // res.code === 0
-    //   && callback
-    //   && callback();
-    callback && callback();
+    callback && callback(res);
   });
 }
 

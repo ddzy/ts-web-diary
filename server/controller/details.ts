@@ -277,7 +277,7 @@ detailsController.post('/reply', async (ctx) => {
 /**
  * 文章详情 => 点赞文章
  */
-detailsController.get('/star', async (ctx, next) => {
+detailsController.get('/star', async (ctx) => {
 
   const {
     articleid,
@@ -288,7 +288,7 @@ detailsController.get('/star', async (ctx, next) => {
   const getArticle = await Posts
     .findById(changeId(articleid));
 
-  const result = await Posts
+  await Posts
     .findByIdAndUpdate(
       changeId(articleid),
       {
@@ -307,7 +307,11 @@ detailsController.get('/star', async (ctx, next) => {
   ctx.body = {
     code: 0,
     message: 'Success!',
-    result,
+    info: {
+      starInfo: {
+        isLiked: liked === 'true',
+      },
+    },
   };
 
 });
@@ -317,7 +321,7 @@ detailsController.get('/star', async (ctx, next) => {
 /**
  * 文章详情 => 创建收藏夹
  */
-detailsController.get('/collection/create', async (ctx, next) => {
+detailsController.get('/collection/create', async (ctx) => {
 
   const { userid, collection } = ctx.request.query;
 

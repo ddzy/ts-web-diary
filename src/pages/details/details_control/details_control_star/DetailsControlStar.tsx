@@ -18,44 +18,65 @@ export interface IDetailsControlStarProps extends RouteComponentProps<any> {
   author: string;
   isLiked: boolean;
 };
+interface IDetailsControlStarState {
+  isLiked: boolean;
+};
 
 
 const DetailsControlStar = React.memo<IDetailsControlStarProps>((
   props: IDetailsControlStarProps,
 ): JSX.Element => {
+
+  let saveStarIcon: any = document
+    .createElement('div');
+
+  const [state, setState] = React.useState<IDetailsControlStarState>({
+    isLiked: false,
+  });
+
+  React.useEffect(() => {
+    setState({
+      isLiked: props.isLiked,
+    });
+  }, [props.isLiked]);
+
   /**
    * 处理固钉栏 点赞
    */
   function handleControlBarStar(
     e: React.MouseEvent,
   ): void {
-    e.currentTarget.classList
+    saveStarIcon = e.currentTarget;
+    saveStarIcon.classList
       .contains('fixed-control-bar-star-active')
       ? serviceHandleFixedControlBarStar(
-          props.match.params.id,
-          false,
-          () => {
-            message.info('取消了赞!');
+        {
+          articleId: props.match.params.id,
+          liked: false,
+        },
+        () => {
+          saveStarIcon.classList.remove('fixed-control-bar-star-active');
+          message.info('取消了赞!');
         },
       )
       : serviceHandleFixedControlBarStar(
-          props.match.params.id,
-          true,
-          () => {
-            message.success(`你赞了 ${props.author} 的文章`);
+        {
+          articleId: props.match.params.id,
+          liked: true,
+        },
+        () => {
+          saveStarIcon.classList.add('fixed-control-bar-star-active');
+          message.success(`你赞了 ${props.author} 的文章`);
         },
       );
-
-    e.currentTarget.classList
-      .toggle('fixed-control-bar-star-active');
   }
 
   return (
     <Tooltip title="赞一个" placement="right">
       <Icon
         className={`fixed-control-bar-star${
-          props.isLiked && 'fixed-control-bar-star-active'
-        }`}
+          state.isLiked && ' fixed-control-bar-star-active'
+          }`}
         type="star"
         theme="filled"
         onClick={handleControlBarStar}
