@@ -25,7 +25,7 @@ import {
 
 
 export interface IDetailsActionProps {
-  visible: boolean;
+  globalLoading: boolean;
 
   author: string | '';
   authorAvatar: string | '';
@@ -65,7 +65,7 @@ class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionS
       <Affix offsetTop={70}>
         <DetailsRightWrapper>
           <Skeleton
-            loading={this.props.visible}
+            loading={this.props.globalLoading}
             active={true}
             avatar={{
               size: 'large',

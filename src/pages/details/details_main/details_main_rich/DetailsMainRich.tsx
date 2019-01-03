@@ -11,7 +11,7 @@ import BaseImagePreview from 'src/components/widget/base_image_preview/BaseImage
 
 
 export interface IDetailsMainRichProps {
-  visible: boolean;
+  globalLoading: boolean;
   html: string;
 };
 
@@ -64,7 +64,7 @@ const DetailsMainRich = ((props: IDetailsMainRichProps) => {
   return (
     <LeftContentContainer>
       <Skeleton
-        loading={props.visible}
+        loading={props.globalLoading}
         active={true}
         paragraph={{
           rows: 5,

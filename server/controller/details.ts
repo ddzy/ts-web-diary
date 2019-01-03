@@ -105,21 +105,23 @@ detailsController.get('/', async (ctx) => {
   ctx.body = {
     code: 0,
     message: 'Success!',
-    result: {
-      author: newArticleInfo.author.username,
-      authorAvatar: formatPath(newArticleInfo.author.useravatar),
-      img: newArticleInfo.img || '',
-      watchCount: newArticleInfo.watch,
-      articleCount: newArticleInfo.author.articles.length,
-      mode: newArticleInfo.mode,
-      type: newArticleInfo.type,
-      tag: newArticleInfo.tag,
-      create_time: newArticleInfo.create_time,
-      articleContent: newArticleInfo.content,
-      articleTitle: newArticleInfo.title,
-      isLiked: newArticleInfo.stared && newArticleInfo.stared.includes(userid),
-      comments: formatedCommentsAvatarPathArr,
-      newArticle: getNewArticles,
+    info: {
+      articleInfo: {
+        author: newArticleInfo.author.username,
+        authorAvatar: formatPath(newArticleInfo.author.useravatar),
+        img: newArticleInfo.img || '',
+        watchCount: newArticleInfo.watch,
+        articleCount: newArticleInfo.author.articles.length,
+        mode: newArticleInfo.mode,
+        type: newArticleInfo.type,
+        tag: newArticleInfo.tag,
+        create_time: newArticleInfo.create_time,
+        articleContent: newArticleInfo.content,
+        articleTitle: newArticleInfo.title,
+        isLiked: newArticleInfo.stared && newArticleInfo.stared.includes(userid),
+        comments: formatedCommentsAvatarPathArr,
+        newArticle: getNewArticles,
+      },
     },
   };
 

@@ -15,8 +15,8 @@ import {
   DetailsContent,
 } from './style';
 import {
-  IStaticOptions,
   serviceHandleGetOneArticleInfo,
+  IServiceState,
 } from './Details.service';
 
 
@@ -27,10 +27,9 @@ export interface IDetailsProps {
 
   AuthRouteReducer: { useravatar: string, };
 };
-interface IDetailsState {
-  // ** loading组件相关props **
-  visible: boolean;
-  serviceState: IStaticOptions;
+interface IDetailsState extends IServiceState {
+  // ** 全局loading **
+  globalLoading: boolean;
 };
 
 
@@ -40,9 +39,9 @@ interface IDetailsState {
 class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
   public readonly state = {
-    visible: false,
+    globalLoading: false,
 
-    serviceState: {
+    articleInfo: {
       author: '',
       articleContent: '',
       articleTitle: '',
@@ -65,14 +64,19 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
   public componentDidMount(): void {
     this.handleInitLoading();
 
-    serviceHandleGetOneArticleInfo(this.props.match.params.id, (data) => {
+    serviceHandleGetOneArticleInfo({
+      articleId: this.props.match.params.id,
+    }, (data) => {
+
+      console.log(data);
+
       this.setState((prevState) => {
         return {
           ...prevState,
-          visible: false,
-          serviceState: {
-            ...prevState.serviceState,
-            ...data.result,
+          globalLoading: false,
+          articleInfo: {
+            ...prevState.articleInfo,
+            ...data.info.articleInfo,
           },
         };
       });
@@ -84,7 +88,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
    */
   public handleInitLoading = (): void => {
     this.setState({
-      visible: true,
+      globalLoading: true,
     });
   }
 
@@ -98,8 +102,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 {/* 左侧固钉控制栏 */}
                 <DetailsControl
                   controlStarAreaState={{
-                    isLiked: this.state.serviceState.isLiked,
-                    author: this.state.serviceState.author,
+                    isLiked: this.state.articleInfo.isLiked,
+                    author: this.state.articleInfo.author,
                   }}
                 />
               </Col>
@@ -107,7 +111,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 {/* 左边内容区域 */}
                 <DetailsMain
                   {...this.state}
-                  {...this.state.serviceState}
+                  {...this.state.articleInfo}
                   {...this.props.AuthRouteReducer}
                 />
               </Col>
@@ -115,7 +119,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 {/* 右边侧边栏区域 */}
                 <DetailsAction
                   {...this.state}
-                  {...this.state.serviceState}
+                  {...this.state.articleInfo}
                 />
               </Col>
 

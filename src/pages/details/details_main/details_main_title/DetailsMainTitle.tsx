@@ -24,7 +24,7 @@ import { formatTime } from 'src/utils/utils';
 
 
 export interface IDetailsMainTitleProps {
-  visible: boolean;
+  globalLoading: boolean;
 
   articleTitle: string;
   mode: string;
@@ -57,7 +57,7 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
   return (
     <LeftTitleContainer>
       <Skeleton
-        loading={props.visible}
+        loading={props.globalLoading}
         active={true}
       >
         {/* 标题 */}

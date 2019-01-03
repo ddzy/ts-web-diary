@@ -30,7 +30,7 @@ export interface IDetailsMainProps {
   img: string;
   useravatar: string;
 
-  visible: boolean;
+  globalLoading: boolean;
 };
 
 

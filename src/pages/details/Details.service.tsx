@@ -1,7 +1,10 @@
 import { query } from "src/services/request";
 
 
-export interface IStaticOptions {
+export interface IServiceState {
+  articleInfo: IStaticArticleInfoOptions;
+};
+export interface IStaticArticleInfoOptions {
   author: string,
   articleContent: string,
   articleTitle: string,
@@ -9,14 +12,57 @@ export interface IStaticOptions {
   authorAvatar: string,
   create_time: number,
   mode: string,
-  newArticle: object[],
+  newArticle: IStaticArticleInfoNewArticleOptions[],
   tag: string,
   type: string,
   watchCount: number,
   img: string,
   isLiked: boolean,
-  comments: any[],
+  comments: IStaticArticleInfoCommentsOptions[],
 };
+export interface IStaticArticleInfoNewArticleOptions {
+  title: string;
+  _id: string;
+};
+export interface IStaticArticleInfoCommentsOptions {
+  article: string;
+  create_time: number | string;
+  from: {
+    username: string,
+    _id: string,
+    useravatar: string,
+  };
+  replys: IStaticArticleInfoCommentsReplysOptions[];
+  value: string;
+  _id: string;
+};
+export interface IStaticArticleInfoCommentsReplysOptions {
+  article: string;
+  comment: string;
+  create_time: string | number;
+  from: {
+    username: string,
+    useravatar: string,
+    _id: string,
+  };
+  to: {
+    _id: string,
+    username: string,
+    useravatar: string,
+  };
+  value: string;
+  _id: string;
+};
+
+
+interface IGetOneArticleInfoParams {
+  articleId: string;
+};
+interface IGetOneArticleReturns {
+  code: 0;
+  message: string;
+  info: IServiceState;
+}
 
 
 /**
@@ -25,14 +71,14 @@ export interface IStaticOptions {
  * @param callback 回调函数
  */
 export function serviceHandleGetOneArticleInfo(
-  articleid: string,
-  callback: (res: any) => void,
+  payload: IGetOneArticleInfoParams,
+  callback: (res: IGetOneArticleReturns) => void,
 ) {
   query({
     method: 'GET',
     url: '/api/details',
     data: {
-      articleid,
+      articleid: payload.articleId,
       userid: localStorage.getItem('userid'),
     },
     jsonp: false,
