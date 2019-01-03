@@ -52,33 +52,6 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
   }, [props.articleList]);
 
   /**
-   * 初始化列表数据
-   */
-  // function initListData() {
-  //   const articleList = state.articleList || [];
-
-  //   return articleList.length !== 0
-  //     ? articleList
-  //       .filter((item) => {
-  //         return item && item;
-  //       })
-  //       .map((item) => {
-  //         return {
-  //           id: item._id,
-  //           title: item.title,
-  //           author_name: item.author.username,
-  //           pic_url: item.img,
-  //           create_time: formatTime(item.create_time),
-  //           star: item.star || 0,
-  //           watch: item.watch || 0,
-  //           description: item.description,
-  //         };
-  //       })
-
-  //     : [];
-  // }
-
-  /**
    * 初始化信息栏
    */
   function initIconText(
@@ -127,7 +100,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
         setState({
           ...state,
           hasMore,
-          articleList: state.articleList.concat(articleList),
+          articleList: state.articleList.concat(...articleList),
           loadMoreLoading: false,
         });
     });
@@ -138,7 +111,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
       <PostsWrapper>
         <InfiniteScroll
           loadMore={handleLoadMore}
-          hasMore={state.hasMore}
+          hasMore={state.hasMore && !state.loadMoreLoading}
           pageStart={1}
           initialLoad={false}
         >
@@ -151,7 +124,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
               itemLayout="vertical"
               size="large"
               grid={{ gutter: 16 }}
-              dataSource={props.articleList}
+              dataSource={state.articleList}
               renderItem={(item: IStaticArticleListOptions) => (
                 <List.Item
                   key={item.title}
