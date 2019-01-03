@@ -48,11 +48,11 @@
 - [x] 新建评论, 回复高亮显示
 - [x] 文章description字段
 - [x] react-transition-group挂载两次的问题
-- [ ] main组件重构, 提取到Home组件
+- [x] main组件重构, 提取到Home组件
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
 - [ ] service.tsx interface, params, returns类型定义处理
-- [ ] 解决滚动加载更多bug
+- [x] 解决滚动加载更多bug
 - [ ] 重构Home页相关组件
 - [ ] 添加关注功能
 - [ ] 初始化只获取可见区域数据, 加快加载速度
