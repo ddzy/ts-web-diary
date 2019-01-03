@@ -54,12 +54,18 @@ detailsController.get('/', async (ctx) => {
                 select: ['username', 'useravatar'],
               },
             ],
+            options: {
+              sort: { create_time: '-1' },
+            },
           },
           {
             path: 'from',
             select: ['username', 'useravatar'],
           },
         ],
+        options: {
+          sort: { create_time: '-1' },
+        },
       }
     ])
     .lean(true);
@@ -165,23 +171,23 @@ detailsController.post('/comment', async (ctx, next) => {
   const commentInfo = await Comments
     .findById(result._id, { '__v': 0 })
     .populate([{
-      path: 'article',
-      select: ['_id'],
-    }, {
       path: 'from',
       select: ['_id', 'useravatar', 'username'],
-    }]);
+    }])
+    .lean();
 
   ctx.body = {
     code: 0,
     message: 'Success!',
-    comment: {
-      ...commentInfo._doc,
-      from: {
-        ...commentInfo._doc.from._doc,
-        useravatar: formatPath(
-          commentInfo._doc.from._doc.useravatar,
-        ),
+    info: {
+      commentInfo: {
+        ...commentInfo,
+        from: {
+          ...commentInfo.from,
+          useravatar: formatPath(
+            commentInfo.from.useravatar,
+          ),
+        },
       },
     },
   };
@@ -246,19 +252,21 @@ detailsController.post('/reply', async (ctx) => {
   ctx.body = {
     code: 0,
     message: 'Success!',
-    reply: {
-      ...replyInfo,
-      from: {
-        ...replyInfo.from,
-        useravatar: formatPath(
-          replyInfo.from.useravatar,
-        ),
-      },
-      to: {
-        ...replyInfo.to,
-        useravatar: formatPath(
-          replyInfo.to.useravatar,
-        ),
+    info: {
+      replyInfo: {
+        ...replyInfo,
+        from: {
+          ...replyInfo.from,
+          useravatar: formatPath(
+            replyInfo.from.useravatar,
+          ),
+        },
+        to: {
+          ...replyInfo.to,
+          useravatar: formatPath(
+            replyInfo.to.useravatar,
+          ),
+        },
       },
     },
   };

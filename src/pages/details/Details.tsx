@@ -67,9 +67,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     serviceHandleGetOneArticleInfo({
       articleId: this.props.match.params.id,
     }, (data) => {
-
-      console.log(data);
-
       this.setState((prevState) => {
         return {
           ...prevState,

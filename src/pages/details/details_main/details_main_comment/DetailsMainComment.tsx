@@ -51,15 +51,18 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
     const { id } = props.match.params;
 
     if (value) {
-      // TODO 敏感词过滤
       serviceHandleSendComment({
         value,
         articleId: id || '',
         from: localStorage.getItem('userid') || '',
       }, (data) => {
+        const {
+          commentInfo
+        } = data.info;
+
         setState({
           comments: [
-            data.comment,
+            commentInfo,
             ...state.comments,
           ]
         });
@@ -93,15 +96,19 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
           articleId: id,
         },
         (data) => {
+          const {
+            replyInfo,
+          } = data.info;
+
           setState({
             comments: state.comments.map((item) => {
               if (
-                item._id === data.reply.comment
+                item._id === replyInfo.comment
               ) {
                 return {
                   ...item,
                   replys: [
-                    data.reply,
+                    replyInfo,
                     ...item.replys,
                   ],
                 };

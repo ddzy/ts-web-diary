@@ -64,6 +64,35 @@ interface IGetOneArticleReturns {
   info: IServiceState;
 }
 
+interface ISendCommentParams {
+  value: string;
+  articleId: string;
+  from: string;
+};
+interface ISendCommentReturns {
+  code: number;
+  message: string;
+  info: {
+    commentInfo: IStaticArticleInfoCommentsOptions,
+  };
+};
+
+interface ISendReplyParams {
+  commentId: string;
+  value: string;
+  from: string;
+  to: string;
+  articleId: string;
+};
+interface ISendReplyReturns {
+  code: number;
+  message: string;
+  info: {
+    replyInfo: IStaticArticleInfoCommentsReplysOptions,
+  };
+};
+
+
 
 /**
  * 获取文章数据
@@ -95,8 +124,8 @@ export function serviceHandleGetOneArticleInfo(
  * @param callback 回调函数
  */
 export function serviceHandleSendComment(
-  v: any,
-  callback?: (res: any) => void,
+  v: ISendCommentParams,
+  callback?: (res: ISendCommentReturns) => void,
 ) {
   query({
     method: 'POST',
@@ -119,8 +148,8 @@ export function serviceHandleSendComment(
  * @param callback 回调函数
  */
 export function serviceHandleSendReply(
-  v: any,
-  callback?: (res: any) => void,
+  v: ISendReplyParams,
+  callback?: (res: ISendReplyReturns) => void,
 ) {
   query({
     method: 'POST',
