@@ -31,7 +31,6 @@ import {
 
 export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps<any> { };
 interface IDetailsControlCollectionState {
-  collectionName: string;
   collections: any[];
 };
 
@@ -46,7 +45,6 @@ IDetailsControlCollectionState
   public inputRef: any;
 
   public readonly state = {
-    collectionName: '',
     collections: [],
   }
 
@@ -78,12 +76,18 @@ IDetailsControlCollectionState
         return;
       }
 
-      serviceHandleCreateCollection(collection_input, (data) => {
+      serviceHandleCreateCollection({
+        collectionName: collection_input,
+      }, (data) => {
+          const {
+            collectionInfo,
+          } = data.info;
+
         this.setState((prevState) => {
           return {
             ...prevState,
             collections: prevState.collections.concat(
-              data.collection,
+              collectionInfo,
             )
           };
         }, () => {
@@ -101,18 +105,20 @@ IDetailsControlCollectionState
     collectionId: string,
   ) => {
     serviceHandleSaveToCollection(
-      this.props.match.params.id,
-      collectionId,
+      {
+        collectionId,
+        articleId: this.props.match.params.id,
+      },
       (data) => {
-        this.setState({
-          collectionName: data.collectionName,
-        }, () => {
-          notification.success({
-            message: '提示',
-            description: `成功添加到收藏夹: ${
-              this.state.collectionName
-              }`,
-          });
+        const {
+          name,
+        } = data.info.collectionInfo;
+
+        notification.success({
+          message: '提示',
+          description: `成功添加到收藏夹: ${
+            name
+            }`,
         });
       }
     );

@@ -106,6 +106,36 @@ interface IFixedControlBarStarReturns {
   };
 };
 
+interface ICreateCollectionParams {
+  collectionName: string;
+};
+interface ICreateCollectionReturns {
+  code: number;
+  message: string;
+  info: {
+    collectionInfo: {
+      name: string,
+      _id: string,
+    },
+  };
+};
+
+interface ISaveToCollectionParams {
+  collectionId: string;
+  articleId: string;
+};
+interface ISaveToCollectionReturns {
+  code: number;
+  message: string;
+  info: {
+    collectionInfo: {
+      name: string,
+      _id: string,
+    },
+  };
+};
+
+
 
 
 /**
@@ -209,15 +239,15 @@ export function serviceHandleFixedControlBarStar(
  * @param collection 收藏夹名称
  */
 export function serviceHandleCreateCollection(
-  collection: string,
-  callback?: (res: any) => void,
+  payload: ICreateCollectionParams,
+  callback?: (res: ICreateCollectionReturns) => void,
 ) {
   query({
     url: '/api/details/collection/create',
     method: 'GET',
     jsonp: false,
     data: {
-      collection,
+      collection: payload.collectionName,
       userid: localStorage.getItem('userid'),
     },
   })
@@ -233,9 +263,8 @@ export function serviceHandleCreateCollection(
  * @param collectionId 收藏夹id
  */
 export function serviceHandleSaveToCollection(
-  articleId: string,
-  collectionId: string,
-  callback?: (res: any) => void,
+  payload: ISaveToCollectionParams,
+  callback?: (res: ISaveToCollectionReturns) => void,
 ) {
   query({
     method: 'POST',
@@ -243,8 +272,8 @@ export function serviceHandleSaveToCollection(
     jsonp: false,
     data: {
       userid: localStorage.getItem('userid'),
-      articleId,
-      collectionId,
+      articleId: payload.articleId,
+      collectionId: payload.collectionId,
     },
   }).then((res) => {
     callback && callback(res);

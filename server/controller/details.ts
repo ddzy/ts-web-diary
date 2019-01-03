@@ -361,9 +361,11 @@ detailsController.get('/collection/create', async (ctx) => {
     ctx.body = {
       code: 0,
       message: 'Success!',
-      collection: {
-        name: setToCollections.name,
-        _id: setToCollections._id,
+      info: {
+        collectionInfo: {
+          name: setToCollections.name,
+          _id: setToCollections._id,
+        },
       },
     };
   } else {
@@ -381,7 +383,6 @@ detailsController.get('/collection/create', async (ctx) => {
  */
 detailsController.post('/collection/save', async (ctx, next) => {
   const {
-    // userid,
     articleId,
     collectionId,
   }: any = ctx.request.body;
@@ -392,19 +393,15 @@ detailsController.post('/collection/save', async (ctx, next) => {
       {
         '$addToSet': { articles: articleId },
       },
-      { lean: true, new: true, },
+      { lean: true, new: true, select: 'name', },
     )
-    .populate({
-      path: 'articles',
-      options: {
-        sort: { create_time: -1 },
-      },
-    })
 
   ctx.body = {
     code: 0,
     message: 'Success!',
-    collectionName: saveToCollection.name,
+    info: {
+      collectionInfo: saveToCollection,
+    },
   };
 });
 
