@@ -18,17 +18,20 @@ import {
   ContentTag,
   ItemExtraBox,
 } from './style';
-import { 
-  formatTime, 
-  isArray, 
+import {
+  formatTime,
+  isArray,
 } from '../../../utils/utils';
 import {
   MERGED_ARTICLE_TAG,
 } from '../../../constants/constants';
+import {
+  IStaticArticlesOptions,
+} from '../Collection.service';
 
 
 export interface ICollectionShowItemProps {
-  articles: any[],
+  articles: IStaticArticlesOptions[],
 
   onDeleteCollectionArticle: (
     e: React.MouseEvent,
@@ -39,8 +42,8 @@ export interface ICollectionShowItemProps {
 
 const CollectionShowItem: React.SFC<
   ICollectionShowItemProps
-  > = (
-    props: ICollectionShowItemProps,
+> = (
+  props: ICollectionShowItemProps,
   ): JSX.Element => {
 
     /**
@@ -53,18 +56,18 @@ const CollectionShowItem: React.SFC<
         && articles.length !== 0
         ? articles.map((item) => {
           return (
-            <Row 
+            <Row
               key={item._id}
               style={{
                 marginTop: '10px',
-              }}  
+              }}
             >
               <Card hoverable={true}>
                 {/* 文章信息 */}
-                <Col 
-                  span={18} 
-                  style={{ 
-                    paddingLeft: '8px' 
+                <Col
+                  span={18}
+                  style={{
+                    paddingLeft: '8px'
                   }}>
                   <ItemContentBox>
                     <ContentTip>
@@ -106,10 +109,10 @@ const CollectionShowItem: React.SFC<
                 <Col span={4}>
                   <ItemExtraBox>
                     <img
-                      src={item.author.useravatar || ''}
+                      src={item.img || ''}
                       width="80"
                       height="80"
-                      alt="文章说明"
+                      alt="文章说明图片"
                     />
                   </ItemExtraBox>
                 </Col>
@@ -159,9 +162,8 @@ const CollectionShowItem: React.SFC<
         );
     }
 
-
     /**
-     * 初始化列表 标签数据 
+     * 初始化列表 标签数据
      */
     function handleInitItemTag(
       tag: string,
@@ -179,7 +181,6 @@ const CollectionShowItem: React.SFC<
           );
         });
     }
-
 
     return (
       <React.Fragment>

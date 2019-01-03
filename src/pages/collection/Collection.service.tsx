@@ -1,12 +1,52 @@
 import { query } from "src/services/request";
 
-export interface IStaticOptions {
+export interface IServiceState {
   collectionInfo: {
-    name: string;
-    articles: any[];
-    [key: string]: any;
+    _id: string,
+    name: string,
+    create_time: string | number,
+    articles: IStaticArticlesOptions[],
   };
 };
+export interface IStaticArticlesOptions {
+  _id: string;
+  create_time: string | number;
+  type: string;
+  tag: string;
+  title: string;
+  star: number;
+  img: string;
+  author: {
+    _id: string,
+    username: string,
+  };
+};
+
+
+interface IGetCollectionInfoParams {
+  collectionId: string;
+};
+interface IGetCollectionInfoReturns {
+  code: number;
+  message: string;
+  info: IServiceState;
+};
+
+interface IDeleteCollectionArticleParams {
+  articleId: string;
+  collectionId: string;
+};
+interface IDeleteCollectionArticleReturns {
+  code: number;
+  message: string;
+  info: {
+    collectionInfo: {
+      collectionId: string,
+      articleId: string,
+    },
+  };
+};
+
 
 
 /**
@@ -14,8 +54,8 @@ export interface IStaticOptions {
  * @param collectionId 我的收藏夹id
  */
 export function serviceHandleGetCollectionInfo(
-  collectionId: string,
-  callback?: (data: any) => void,
+  payload: IGetCollectionInfoParams,
+  callback?: (data: IGetCollectionInfoReturns) => void,
 ) {
   query({
     method: 'GET',
@@ -23,7 +63,7 @@ export function serviceHandleGetCollectionInfo(
     jsonp: false,
     data: {
       userid: localStorage.getItem('userid'),
-      collectionId,
+      collectionId: payload.collectionId,
     },
   }).then((res) => {
     callback && callback(res);
@@ -37,9 +77,8 @@ export function serviceHandleGetCollectionInfo(
  * @param callback 回调
  */
 export function serviceHandleDeleteCollectionArticle(
-  articleId: string,
-  collectionId: string,
-  callback?: (result: any) => void,
+  payload: IDeleteCollectionArticleParams,
+  callback?: (data: IDeleteCollectionArticleReturns) => void,
 ) {
   query({
     url: '/api/collection/article/delete',
@@ -47,8 +86,7 @@ export function serviceHandleDeleteCollectionArticle(
     jsonp: false,
     data: {
       userid: localStorage.getItem('userid'),
-      articleId,
-      collectionId,
+      ...payload,
     },
   }).then((res) => {
     callback && callback(res);

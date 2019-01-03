@@ -16,7 +16,7 @@ import collection_bg from '../../static/images/bg_img.png';
 import CollectionShowItem from './collection_show/CollectionShowItem';
 
 import {
-  IStaticOptions,
+  IServiceState,
   serviceHandleGetCollectionInfo,
   serviceHandleDeleteCollectionArticle,
 } from './Collection.service';
@@ -25,8 +25,7 @@ import {
 export interface ICollectionProps {
   match: match<any>;
 };
-interface ICollectionState {
-  serviceState: IStaticOptions;
+interface ICollectionState extends IServiceState {
 };
 
 
@@ -40,11 +39,11 @@ const Collection = React.memo<ICollectionProps>((
     state,
     setState,
   ] = React.useState<ICollectionState>({
-    serviceState: {
-      collectionInfo: {
-        name: '',
-        articles: [],
-      },
+    collectionInfo: {
+      name: '',
+      articles: [],
+      create_time: Date.now(),
+      _id: '',
     },
   });
 
@@ -53,32 +52,31 @@ const Collection = React.memo<ICollectionProps>((
   }, [])
 
   /**
-   * 处理 获取单个收藏夹信息
+   * 处理 获取收藏夹信息
    */
   function handleGetCollectionInfo(): void {
     const { id } = props.match.params;
 
-    serviceHandleGetCollectionInfo(id, (data) => {
+    serviceHandleGetCollectionInfo({
+      collectionId: id,
+    }, (data) => {
+      const {
+        collectionInfo,
+      } = data.info;
+
       setState({
-        ...state,
-        serviceState: {
-          ...state.serviceState,
-          collectionInfo: {
-            ...state.serviceState.collectionInfo,
-            ...data.collectionInfo,
-          },
-        },
+        collectionInfo,
       });
     });
   }
 
   /**
-   * 处理 初始化单个收藏夹 文章列表
+   * 处理 初始化收藏夹 文章列表
    */
   function handleInitShowItem(): JSX.Element {
     return (
       <CollectionShowItem
-        {...state.serviceState.collectionInfo}
+        {...state.collectionInfo}
         onDeleteCollectionArticle={
           handleDeleteCollectionArticle
         }
@@ -93,18 +91,25 @@ const Collection = React.memo<ICollectionProps>((
     e: React.MouseEvent,
     articleId: string,
   ): void {
+    const {
+      id
+    } = props.match.params;
+
     serviceHandleDeleteCollectionArticle(
-      articleId,
-      props.match.params.id,
+      {
+        articleId,
+        collectionId: id,
+      },
       (data) => {
+        const {
+          collectionInfo,
+        } = data.info;
+
         setState({
           ...state,
-          serviceState: {
-            ...state.serviceState,
-            collectionInfo: {
-              ...state.serviceState.collectionInfo,
-              articles: state.serviceState.collectionInfo.articles.filter((item: any) => item._id !== data.result.articleId),
-            },
+          collectionInfo: {
+            ...state.collectionInfo,
+            articles: state.collectionInfo.articles.filter((v) => v._id !== collectionInfo.articleId),
           },
         });
 
@@ -129,7 +134,7 @@ const Collection = React.memo<ICollectionProps>((
           <MainContentWrapper>
             <MainContentTipBox>
               <MainContentTipText>
-                {state.serviceState.collectionInfo.name}
+                {state.collectionInfo.name}
               </MainContentTipText>
             </MainContentTipBox>
 

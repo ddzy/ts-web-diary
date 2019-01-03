@@ -4,9 +4,6 @@ import {
   changeId,
   Collections,
 } from '../model/model';
-import {
-  formatPath,
-} from '../utils/utils';
 
 const collectionController: Router = new Router();
 
@@ -18,50 +15,29 @@ collectionController.get('/getinfo', async (ctx, next) => {
 
   const {
     collectionId,
-    // userid,
   } = await ctx.request.query;
 
   const getCollectionInfo = await Collections
     .findById(
       changeId(collectionId),
-      { '__v': 0 },
-      { lean: true },
+      `name create_time articles`,
     )
     .populate({
       path: 'articles',
+      select: ['create_time', 'type', 'tag', 'title', 'star', 'img', 'author'],
       populate: {
         path: 'author',
-        options: {
-          select: {
-            _id: '_id',
-            username: 'username',
-            useravatar: 'useravatar',
-          },
-        },
+        select: ['username'],
       },
+
     })
-
-  // 格式化图片路径
-  const formatAvatarPath = getCollectionInfo.articles
-    .map((item: any) => {
-      return item && {
-        ...item,
-        author: {
-          ...item.author,
-          useravatar: formatPath(
-            item.author.useravatar,
-          ),
-        },
-      };
-    });
-
+    .lean();
 
   ctx.body = {
     code: 0,
     message: 'Success!',
-    collectionInfo: {
-      ...getCollectionInfo,
-      articles: formatAvatarPath,
+    info: {
+      collectionInfo: getCollectionInfo,
     },
   };
 
@@ -74,7 +50,6 @@ collectionController.get('/getinfo', async (ctx, next) => {
 collectionController.get('/article/delete', async (ctx, next) => {
 
   const {
-    // userid,
     articleId,
     collectionId,
   } = await ctx.request.query;
@@ -91,9 +66,11 @@ collectionController.get('/article/delete', async (ctx, next) => {
   ctx.body = {
     code: 0,
     message: 'Success!',
-    result: {
-      collectionId,
-      articleId,
+    info: {
+      collectionInfo: {
+        collectionId,
+        articleId,
+      },
     },
   };
 
