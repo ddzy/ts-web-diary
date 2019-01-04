@@ -60,8 +60,9 @@ collectionController.get('/article/delete', async (ctx, next) => {
       {
         '$pull': { articles: articleId },
       },
-      { new: true, lean: true, },
+      { new: true },
     )
+    .lean();
 
   ctx.body = {
     code: 0,

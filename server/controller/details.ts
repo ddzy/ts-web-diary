@@ -236,7 +236,6 @@ detailsController.post('/reply', async (ctx) => {
     .findById(
       changeId(result._id),
       { '__v': 0 },
-      { lean: true },
     )
     .populate([
       {
@@ -248,6 +247,7 @@ detailsController.post('/reply', async (ctx) => {
         select: ['_id', 'username', 'useravatar'],
       }
     ])
+    .lean();
 
   ctx.body = {
     code: 0,
@@ -301,8 +301,9 @@ detailsController.get('/star', async (ctx) => {
             return item !== userid;
           }),
       },
-      { new: true, lean: true },
-    );
+      { new: true },
+    )
+    .lean();
 
   ctx.body = {
     code: 0,
@@ -347,7 +348,6 @@ detailsController.get('/collection/create', async (ctx) => {
         },
         {
           new: true,
-          lean: true,
           select: {
             '_id': '_id',
             collections: 'collections',
@@ -357,6 +357,7 @@ detailsController.get('/collection/create', async (ctx) => {
       .populate({
         path: 'collections',
       })
+      .lean();
 
     ctx.body = {
       code: 0,
@@ -393,8 +394,9 @@ detailsController.post('/collection/save', async (ctx) => {
       {
         '$addToSet': { articles: articleId },
       },
-      { lean: true, new: true, select: 'name', },
+      { new: true, select: 'name', },
     )
+    .lean();
 
   ctx.body = {
     code: 0,

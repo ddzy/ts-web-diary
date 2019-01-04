@@ -76,17 +76,16 @@ meController.get('/myarticle', async (ctx) => {
     .findById(
       changeId(userid),
       null,
-      { lean: true },
     )
     .populate({
       path: 'articles',
       options: {
-        lean: true,
         sort: {
           create_time: -1,
         },
       },
-    });
+    })
+    .lean();
 
   ctx.body = {
     code: 0,
@@ -168,14 +167,14 @@ meController.get('/collection/delete', async (ctx) => {
       {
         '$pull': { collections: collectionId },
       },
-      { lean: true, new: true },
+      { new: true },
     )
+    .lean();
 
   await Collections
     .findByIdAndRemove(
       changeId(collectionId),
-      { lean: true, new: true },
-    )
+    );
 
   ctx.body = {
     code: 0,
