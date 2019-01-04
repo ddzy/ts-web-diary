@@ -53,7 +53,7 @@
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
 - [ ] service.tsx interface, params, returns类型定义处理
-- [ ] 重构Home页相关组件
+- [ ] 新增Home页HomeExtra组件内容
 - [ ] 添加关注功能
 - [ ] 初始化只获取可见区域数据, 加快加载速度
 - [ ] 登录注册完善
