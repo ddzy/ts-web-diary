@@ -24,6 +24,7 @@ import {
   CollectionsPopShowListItem,
 } from './style';
 import {
+  IStaticCollectionItem,
   serviceHandleSaveToCollection,
   serviceHandleCreateCollection,
 } from '../../Details.service';
@@ -31,7 +32,7 @@ import {
 
 export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps<any> { };
 interface IDetailsControlCollectionState {
-  collections: any[];
+  collectionList: IStaticCollectionItem[];
 };
 
 
@@ -45,7 +46,7 @@ IDetailsControlCollectionState
   public inputRef: any;
 
   public readonly state = {
-    collections: [],
+    collectionList: [],
   }
 
   public handleGetInputRef = (el: any): void => {
@@ -53,7 +54,7 @@ IDetailsControlCollectionState
   }
 
   /**
-   * 处理 提交添加收藏表单
+   * 处理 提交添加新的收藏夹
    * @param e mouseEvent
    * @param inputRef input输入框
    */
@@ -86,7 +87,7 @@ IDetailsControlCollectionState
         this.setState((prevState) => {
           return {
             ...prevState,
-            collections: prevState.collections.concat(
+            collections: prevState.collectionList.concat(
               collectionInfo,
             )
           };
@@ -98,7 +99,7 @@ IDetailsControlCollectionState
   }
 
   /**
-   * 处理 确认添加至收藏夹
+   * 处理 确认添加文章至收藏夹
    * @param collectionId 收藏夹id
    */
   public handleSaveToCollection = (
@@ -136,8 +137,8 @@ IDetailsControlCollectionState
       <CollectionPopContentContainer>
         <CollectionsPopShowList>
           {
-            this.state.collections.length !== 0
-            && this.state.collections.map((item: any) => {
+            this.state.collectionList.length !== 0
+            && this.state.collectionList.map((item: any) => {
               return (
                 <Popconfirm
                   title="要添加到该收藏夹吗?"

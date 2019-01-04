@@ -55,6 +55,14 @@ export interface IStaticArticleInfoCommentsReplysOptions {
 };
 
 
+
+export interface IStaticCollectionItem {
+  name: string;
+  _id: string;
+};
+
+
+
 interface IGetOneArticleInfoParams {
   articleId: string;
 };
@@ -113,10 +121,7 @@ export interface ICreateCollectionReturns {
   code: number;
   message: string;
   info: {
-    collectionInfo: {
-      name: string,
-      _id: string,
-    },
+    collectionInfo: IStaticCollectionItem,
   };
 };
 
@@ -128,10 +133,7 @@ interface ISaveToCollectionReturns {
   code: number;
   message: string;
   info: {
-    collectionInfo: {
-      name: string,
-      _id: string,
-    },
+    collectionInfo: IStaticCollectionItem,
   };
 };
 
