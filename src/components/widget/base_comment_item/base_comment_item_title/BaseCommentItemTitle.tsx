@@ -29,6 +29,9 @@ import {
 import {
   ICommentListItemProps,
 } from '../BaseCommentItem';
+import {
+  serviceHandleGetCommentUserInfo,
+} from 'src/pages/details/Details.service';
 
 
 export interface IBaseCommentItemTitleProps extends ICommentListItemProps {};
@@ -130,7 +133,17 @@ const BaseCommentItemTitle = React.memo((
   function handleCommentAvatarHover(
     visible: boolean,
   ): void {
-    console.log(visible);
+    const { isReply } = props;
+    const {
+      _id,
+    } = props.commentInfo;
+
+    visible && serviceHandleGetCommentUserInfo({
+      isReply,
+      commentId: _id,
+    }, (data) => {
+      console.log(data);
+    });
   }
 
   return (

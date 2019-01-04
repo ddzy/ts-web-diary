@@ -149,6 +149,18 @@ interface IGetCollectionListReturns {
   };
 };
 
+interface IGetCommentUserInfoParams {
+  isReply: boolean;
+  commentId: string;
+};
+interface IGetCommentUserInfoReturns {
+  code: number;
+  message: string;
+  info: {
+    userInfo: any,
+  };
+};
+
 
 
 
@@ -160,7 +172,7 @@ interface IGetCollectionListReturns {
 export function serviceHandleGetOneArticleInfo(
   payload: IGetOneArticleInfoParams,
   callback: (res: IGetOneArticleReturns) => void,
-) {
+): void {
   query({
     method: 'GET',
     url: '/api/details',
@@ -184,7 +196,7 @@ export function serviceHandleGetOneArticleInfo(
 export function serviceHandleSendComment(
   v: ISendCommentParams,
   callback?: (res: ISendCommentReturns) => void,
-) {
+): void {
   query({
     method: 'POST',
     url: '/api/details/comment',
@@ -208,7 +220,7 @@ export function serviceHandleSendComment(
 export function serviceHandleSendReply(
   v: ISendReplyParams,
   callback?: (res: ISendReplyReturns) => void,
-) {
+): void {
   query({
     method: 'POST',
     url: '/api/details/reply',
@@ -232,7 +244,7 @@ export function serviceHandleSendReply(
 export function serviceHandleFixedControlBarStar(
   payload: IFixedControlBarStarParams,
   callback?: (res: IFixedControlBarStarReturns) => void,
-) {
+): void {
   query({
     method: 'GET',
     url: '/api/details/star',
@@ -255,7 +267,7 @@ export function serviceHandleFixedControlBarStar(
 export function serviceHandleCreateCollection(
   payload: ICreateCollectionParams,
   callback?: (res: ICreateCollectionReturns) => void,
-) {
+): void {
   query({
     url: '/api/details/collection/create',
     method: 'GET',
@@ -279,7 +291,7 @@ export function serviceHandleCreateCollection(
 export function serviceHandleSaveToCollection(
   payload: ISaveToCollectionParams,
   callback?: (res: ISaveToCollectionReturns) => void,
-) {
+): void {
   query({
     method: 'POST',
     url: '/api/details/collection/save',
@@ -301,7 +313,7 @@ export function serviceHandleSaveToCollection(
 export function serviceHandleGetCollectionList(
   payload: IGetCollectionListParams,
   callback?: (res: IGetCollectionListReturns) => void,
-) {
+): void {
   query({
     method: 'GET',
     url: '/api/details/collection/info',
@@ -320,3 +332,18 @@ export function serviceHandleGetCollectionList(
 /**
  * 文章详情 -> comment -> 头像框hover获取评论者信息
  */
+export function serviceHandleGetCommentUserInfo(
+  payload: IGetCommentUserInfoParams,
+  callback?: (data: IGetCommentUserInfoReturns) => void,
+): void {
+  query({
+    method: 'POST',
+    url: '/api/details/comment/user/info',
+    jsonp: false,
+    data: {
+      ...payload,
+    },
+  }).then((res) => {
+    callback && callback(res);
+  });
+}

@@ -153,11 +153,6 @@ const ReplySchema: mongoose.Schema = new Schema({
   value: {
     type: String,
   },
-
-  // whom: {           // 回复人
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User',
-  // },
   article: {
     type: Schema.Types.ObjectId,
     ref: 'Post',

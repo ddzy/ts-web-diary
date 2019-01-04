@@ -439,4 +439,45 @@ detailsController.get('/collection/info', async (
 });
 
 
+/**
+ * 文章详情 -> 评论区 -> 获取评论人信息
+ */
+detailsController.post('/comment/user/info', async (ctx) => {
+  const {
+    isReply,
+    commentId,
+  }: any = await ctx.request.body;
+
+  if (isReply) {
+    const replyUserInfo = await Replys
+      .findById(commentId)
+      .populate([
+        {
+          path: 'from',
+          select: ['username', 'useravatar',]
+        }
+      ])
+
+    ctx.body = {
+      code: 0,
+      message: 'Success!',
+      info: {
+        userInfo: {
+          replyUserInfo,
+        },
+      },
+    };
+  } else {
+    ctx.body = {
+      code: 0,
+      message: 'Success!',
+      info: {
+        userInfo: {},
+      },
+    };
+  }
+
+});
+
+
 export default detailsController;
