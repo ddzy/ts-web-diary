@@ -10,7 +10,7 @@ export interface IStaticArticleInfoOptions {
   articleTitle: string,
   articleCount: number,
   authorAvatar: string,
-  create_time: number,
+  create_time: number | string,
   mode: string,
   newArticle: IStaticArticleInfoNewArticleOptions[],
   tag: string,
@@ -39,7 +39,7 @@ export interface IStaticArticleInfoCommentsOptions {
 export interface IStaticArticleInfoCommentsReplysOptions {
   article: string;
   comment: string;
-  create_time: string | number;
+  create_time: number | string;
   from: {
     username: string,
     useravatar: string,
@@ -64,12 +64,12 @@ interface IGetOneArticleReturns {
   info: IServiceState;
 }
 
-interface ISendCommentParams {
+export interface ISendCommentParams {
   value: string;
   articleId: string;
   from: string;
 };
-interface ISendCommentReturns {
+export interface ISendCommentReturns {
   code: number;
   message: string;
   info: {
@@ -77,14 +77,14 @@ interface ISendCommentReturns {
   };
 };
 
-interface ISendReplyParams {
+export interface ISendReplyParams {
   commentId: string;
   value: string;
   from: string;
   to: string;
   articleId: string;
 };
-interface ISendReplyReturns {
+export interface ISendReplyReturns {
   code: number;
   message: string;
   info: {
@@ -92,11 +92,11 @@ interface ISendReplyReturns {
   };
 };
 
-interface IFixedControlBarStarParams {
+export interface IFixedControlBarStarParams {
   articleId: string;
   liked: boolean;
 };
-interface IFixedControlBarStarReturns {
+export interface IFixedControlBarStarReturns {
   code: number;
   message: string;
   info: {
@@ -106,10 +106,10 @@ interface IFixedControlBarStarReturns {
   };
 };
 
-interface ICreateCollectionParams {
+export interface ICreateCollectionParams {
   collectionName: string;
 };
-interface ICreateCollectionReturns {
+export interface ICreateCollectionReturns {
   code: number;
   message: string;
   info: {

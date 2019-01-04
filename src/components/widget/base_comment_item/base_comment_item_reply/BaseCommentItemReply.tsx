@@ -19,14 +19,14 @@ const BaseCommentItemReply = React.memo<IBaseCommentItemReplyProps>((
   return (
     <ReplyContainer
       className="item-reply-box"
-      data-id={props.content._id}
+      data-id={props.commentInfo._id}
     >
       <BaseCommentInput
         containerStyle={props.baseInputContainerStyle ? props.baseInputContainerStyle : {}}
         inputStyle={props.baseInputStyle ? props.baseInputStyle : {}}
         placeHolder={`回复 ${
-          props.content.from
-            ? props.content.from.username
+          props.commentInfo.from
+            ? props.commentInfo.from.username
             : 'undefined'
           }`}
         useravatar={props.currentMainUserAvatar}

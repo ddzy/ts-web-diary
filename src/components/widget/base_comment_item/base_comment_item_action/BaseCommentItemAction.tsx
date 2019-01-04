@@ -35,13 +35,13 @@ const BaseCommentItemAction = React.memo<IBaseCommentItemActionProps>((
       <Row>
         <Col span={12}>
           <ActionTimeIconBox>
-            {formatTime(props.content.create_time)}
+            {formatTime(props.commentInfo.create_time)}
           </ActionTimeIconBox>
         </Col>
         <Col span={12}>
           <ActionRightBox>
             <ActionLikeIconBox
-              data-id={props.content._id}
+              data-id={props.commentInfo._id}
             >
               <Icon type="like-o" />
               <span>999</span>
@@ -49,7 +49,7 @@ const BaseCommentItemAction = React.memo<IBaseCommentItemActionProps>((
             </ActionLikeIconBox>
 
             <ActionReplyIconBox
-              data-id={props.content._id}
+              data-id={props.commentInfo._id}
               onClick={props.onToggleReplyBox}
             >
               <Icon

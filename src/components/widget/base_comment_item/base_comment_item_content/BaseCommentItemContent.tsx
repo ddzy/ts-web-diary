@@ -27,15 +27,15 @@ const BaseCommentItemContent = React.memo<IBaseCommentItemContentProps>((
       </ContentCommentReplyFrom>
         <ContentCommentReplyTo>
           <a>{
-            props.content.to
-              ? props.content.to.username
+            props.commentInfo.to
+              ? props.commentInfo.to.username
               : 'undefined'
           }</a>:&nbsp;&nbsp;
       </ContentCommentReplyTo>
       </ContentommentReplyRange>
       <ContentCommentText
         dangerouslySetInnerHTML={{
-          __html: props.content.value || '',
+          __html: props.commentInfo.value || '',
         }}
       />
     </ContentContainer>

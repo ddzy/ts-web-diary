@@ -11,10 +11,10 @@ export interface ICommentListItemProps {
   currentMainUserAvatar: string;
   // ** 评论回复判别 **
   isReply: boolean;
-  content: {
+  commentInfo: {
     _id: string;
     value: string;
-    create_time: number;
+    create_time: number | string;
     from: {
       _id: string,
       username: string,
@@ -73,7 +73,7 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
       e,
       {
         from: localStorage.getItem('userid'),
-        to: props.content.from._id,
+        to: props.commentInfo.from._id,
         value: v,
       },
     );
@@ -87,7 +87,7 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
   ): void {
     const oTarget = e.currentTarget;
     const oTargetId = oTarget.getAttribute('data-id');
-    const commentId = props.content._id;
+    const commentId = props.commentInfo._id;
 
     setState({
       showReplyBox: (oTargetId === commentId) && (!state.showReplyBox),

@@ -47,7 +47,7 @@ const BaseCommentItemTitle = React.memo((
         <PopoverTitleMain>
           <TitleMainAvatar>
             <Avatar
-              src={props.content.from.useravatar}
+              src={props.commentInfo.from.useravatar}
               icon="user"
               shape="square"
               alt="评论者"
@@ -59,7 +59,7 @@ const BaseCommentItemTitle = React.memo((
             />
           </TitleMainAvatar>
           <TitleMainName>{
-            props.content.from.username
+            props.commentInfo.from.username
           }</TitleMainName>
         </PopoverTitleMain>
       </PopoverTitleContainer>
@@ -131,7 +131,7 @@ const BaseCommentItemTitle = React.memo((
           content={handleInitAvatarPopoverContent()}
         >
           <Avatar
-            src={props.content.from.useravatar}
+            src={props.commentInfo.from.useravatar}
             icon="user"
             size="default"
             shape="circle"
@@ -143,7 +143,7 @@ const BaseCommentItemTitle = React.memo((
           style={{
             color: '#999',
           }}
-        >{props.content.from.username}</span>
+        >{props.commentInfo.from.username}</span>
 
     </TitleContainer>
   );

@@ -14,23 +14,19 @@ import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
+import {
+  ISendReplyParams,
+  IStaticArticleInfoCommentsOptions,
+} from '../../../../Details.service';
 
 
 export interface IDetailsMainCommentShowItemProps {
   currentMainUserAvatar: string;
-  _id: string;
-  from: {
-    _id: string,
-    username: string,
-    useravatar: string,
-  },
-  value: string
-  create_time: number;
-  replys: any[];
+  singleCommentInfo: IStaticArticleInfoCommentsOptions;
 
   onSend: (
     inputEl: HTMLElement,
-    v: any,
+    v: ISendReplyParams,
   ) => void;
 };
 
@@ -38,18 +34,16 @@ export interface IDetailsMainCommentShowItemProps {
 const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>((
   props: IDetailsMainCommentShowItemProps,
 ): JSX.Element => {
-  const content = props;
-
   /**
    * 处理完善回复信息 +++ commentId
    */
   function handleSendReply(
     el: HTMLElement,
-    v: any,
+    v: ISendReplyParams,
   ): void {
     props.onSend(el, {
       ...v,
-      commentId: props._id,
+      commentId: props.singleCommentInfo._id,
     });
   }
 
@@ -57,7 +51,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
    * 初始化回复列表
    */
   function initReplyList(): JSX.Element[] {
-    const { replys } = props;
+    const { replys } = props.singleCommentInfo;
 
     if (Array.isArray(replys) && replys.length !== 0) {
       return replys.map((reply, index) => {
@@ -74,7 +68,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
                 }}
                 currentMainUserAvatar={props.currentMainUserAvatar}
                 isReply={true}
-                content={reply}
+                commentInfo={reply}
                 {...props}
                 onSend={handleSendReply}
               />
@@ -95,7 +89,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
             backgroundColor: '#fff',
           }}
           isReply={false}
-          content={content}
+          commentInfo={props.singleCommentInfo}
           {...props}
           onSend={handleSendReply}
           currentMainUserAvatar={props.currentMainUserAvatar}

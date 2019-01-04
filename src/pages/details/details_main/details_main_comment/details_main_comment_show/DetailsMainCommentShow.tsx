@@ -13,22 +13,26 @@ import {
 } from './style';
 import { isArray } from 'src/utils/utils';
 import DetailsMainCommentsShowItem from './details_main_comment_show_item/DetailsMainCommentShowItem';
+import {
+  ISendReplyParams,
+  IStaticArticleInfoCommentsOptions,
+} from '../../../Details.service';
 
 
 export interface IDetailsMainCommentShowProps {
-  comments: any[];
+  comments: IStaticArticleInfoCommentsOptions[];
   useravatar: string;
   onSendReply: (
     inputEl: HTMLElement,
-    v: any,
+    v: ISendReplyParams,
   ) => void;
-
 };
 
 
 const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
   props: IDetailsMainCommentShowProps,
 ): JSX.Element => {
+
   /**
    * 初始化评论列表
    */
@@ -47,6 +51,7 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
             <React.Fragment>
               <DetailsMainCommentsShowItem
                 {...item}
+                singleCommentInfo={item}
                 currentMainUserAvatar={props.useravatar}
                 onSend={props.onSendReply}
               />

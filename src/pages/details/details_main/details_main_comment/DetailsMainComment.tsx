@@ -12,7 +12,11 @@ import {
 } from './style';
 import DetailsMainCommentTitle from './details_main_comment_title/DetailsMainCommentTitle';
 import DetailsMainCommentShow from './details_main_comment_show/DetailsMainCommentShow';
-import { serviceHandleSendReply, serviceHandleSendComment } from '../../Details.service';
+import {
+  ISendReplyParams,
+  serviceHandleSendReply,
+  serviceHandleSendComment,
+} from '../../Details.service';
 
 
 export interface IDetailsMainCommentProps extends RouteComponentProps<any> {
@@ -85,7 +89,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
    */
   function handleSendReply(
     inputEl: any,
-    v: any,
+    v: ISendReplyParams,
   ): void {
     const { id } = props.match.params;
 
