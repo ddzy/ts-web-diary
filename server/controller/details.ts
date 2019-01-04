@@ -137,7 +137,7 @@ detailsController.get('/', async (ctx) => {
 /**
  * 文章详情 => 发表评论
  */
-detailsController.post('/comment', async (ctx, next) => {
+detailsController.post('/comment', async (ctx) => {
 
   const {
     from,
@@ -381,7 +381,7 @@ detailsController.get('/collection/create', async (ctx) => {
 /**
  * 文章详情 => 确认添加至收藏夹
  */
-detailsController.post('/collection/save', async (ctx, next) => {
+detailsController.post('/collection/save', async (ctx) => {
   const {
     articleId,
     collectionId,
@@ -401,6 +401,37 @@ detailsController.post('/collection/save', async (ctx, next) => {
     message: 'Success!',
     info: {
       collectionInfo: saveToCollection,
+    },
+  };
+});
+
+
+/**
+ * 文章详情 -> 控制栏 -> 获取收藏夹信息
+ */
+detailsController.get('/collection/info', async (
+  ctx,
+) => {
+  const {
+    userId,
+  } = await ctx.request.query;
+
+  const collectionList = await User
+    .findById(
+      userId,
+      'collections',
+    )
+    .populate([{
+      path: 'collections',
+      select: ['name'],
+    }])
+    .lean();
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    info: {
+      collectionInfo: collectionList.collections,
     },
   };
 });

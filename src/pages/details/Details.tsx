@@ -56,7 +56,6 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       img: '',
       isLiked: false,
       comments: [],
-      collections: [],
       collectionName: '',
     },
   }

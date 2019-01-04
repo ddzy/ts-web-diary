@@ -27,6 +27,7 @@ import {
   IStaticCollectionItem,
   serviceHandleSaveToCollection,
   serviceHandleCreateCollection,
+  serviceHandleGetCollectionList,
 } from '../../Details.service';
 
 
@@ -54,91 +55,22 @@ IDetailsControlCollectionState
   }
 
   /**
-   * 处理 提交添加新的收藏夹
-   * @param e mouseEvent
-   * @param inputRef input输入框
-   */
-  public handleSendCollection = (
-    e: React.FormEvent,
-  ) => {
-    e.preventDefault();
-
-    this.props.form.validateFields((err, values) => {
-      const {
-        collection_input
-      } = values;
-
-      if (!collection_input) {
-        notification.error({
-          message: '错误',
-          description: '请输入正确的收藏夹名称!',
-        });
-
-        return;
-      }
-
-      serviceHandleCreateCollection({
-        collectionName: collection_input,
-      }, (data) => {
-          const {
-            collectionInfo,
-          } = data.info;
-
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            collections: prevState.collectionList.concat(
-              collectionInfo,
-            )
-          };
-        }, () => {
-          this.inputRef.input.value = '';
-        });
-      });
-    });
-  }
-
-  /**
-   * 处理 确认添加文章至收藏夹
-   * @param collectionId 收藏夹id
-   */
-  public handleSaveToCollection = (
-    collectionId: string,
-  ) => {
-    serviceHandleSaveToCollection(
-      {
-        collectionId,
-        articleId: this.props.match.params.id,
-      },
-      (data) => {
-        const {
-          name,
-        } = data.info.collectionInfo;
-
-        notification.success({
-          message: '提示',
-          description: `成功添加到收藏夹: ${
-            name
-            }`,
-        });
-      }
-    );
-  }
-
-  /**
    * 处理初始化气泡框内容
    */
   public handleInitPopoverContent = (): JSX.Element => {
     const {
       getFieldDecorator,
     } = this.props.form;
+    const {
+      collectionList,
+    } = this.state;
 
     return (
       <CollectionPopContentContainer>
         <CollectionsPopShowList>
           {
-            this.state.collectionList.length !== 0
-            && this.state.collectionList.map((item: any) => {
+            collectionList.length !== 0
+            && collectionList.map((item: IStaticCollectionItem) => {
               return (
                 <Popconfirm
                   title="要添加到该收藏夹吗?"
@@ -184,6 +116,93 @@ IDetailsControlCollectionState
     );
   }
 
+  /**
+   * 处理 提交添加新的收藏夹
+   * @param e mouseEvent
+   * @param inputRef input输入框
+   */
+  public handleSendCollection = (
+    e: React.FormEvent,
+  ): void => {
+    e.preventDefault();
+
+    this.props.form.validateFields((err, values) => {
+      const {
+        collection_input
+      } = values;
+
+      if (!collection_input) {
+        notification.error({
+          message: '错误',
+          description: '请输入正确的收藏夹名称!',
+        });
+
+        return;
+      }
+
+      serviceHandleCreateCollection({
+        collectionName: collection_input,
+      }, (data) => {
+          const {
+            collectionInfo,
+          } = data.info;
+
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            collections: prevState.collectionList.concat(
+              collectionInfo,
+            )
+          };
+        }, () => {
+          this.inputRef.input.value = '';
+        });
+      });
+    });
+  }
+
+  /**
+   * 处理 确认添加文章至收藏夹
+   * @param collectionId 收藏夹id
+   */
+  public handleSaveToCollection = (
+    collectionId: string,
+  ): void => {
+    serviceHandleSaveToCollection(
+      {
+        collectionId,
+        articleId: this.props.match.params.id,
+      },
+      (data) => {
+        const {
+          name,
+        } = data.info.collectionInfo;
+
+        notification.success({
+          message: '提示',
+          description: `成功添加到收藏夹: ${
+            name
+            }`,
+        });
+      }
+    );
+  }
+
+  /**
+   * 处理点击Icon,获取收藏夹列表
+   */
+  public handleGetCollectionList = (): void => {
+    serviceHandleGetCollectionList({}, (data) => {
+      const {
+        collectionInfo,
+      } = data.info
+
+      this.setState({
+        collectionList: collectionInfo,
+      });
+    });
+  }
+
   public render(): JSX.Element {
     return (
       <Tooltip title="收藏" placement="right">
@@ -197,6 +216,7 @@ IDetailsControlCollectionState
             className="fixed-control-bar-collection"
             type="heart"
             theme="filled"
+            onClick={this.handleGetCollectionList}
           />
         </Popover>
       </Tooltip>

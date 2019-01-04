@@ -124,11 +124,6 @@ const CommentsSchema: mongoose.Schema = new Schema({
   value: {
     type: String,
   },
-
-  // whom: {                         // 评论人
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User',
-  // },
   article: {                        // 文章
     type: Schema.Types.ObjectId,
     ref: 'Post',

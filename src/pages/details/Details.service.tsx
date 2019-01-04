@@ -1,6 +1,7 @@
 import { query } from "src/services/request";
 
 
+// ** ServiceState Types Defines **
 export interface IServiceState {
   articleInfo: IStaticArticleInfoOptions;
 };
@@ -55,14 +56,14 @@ export interface IStaticArticleInfoCommentsReplysOptions {
 };
 
 
-
+// ** Commen Types Defines **
 export interface IStaticCollectionItem {
   name: string;
   _id: string;
 };
 
 
-
+// ** Service Handle Types Defines **
 interface IGetOneArticleInfoParams {
   articleId: string;
 };
@@ -134,6 +135,17 @@ interface ISaveToCollectionReturns {
   message: string;
   info: {
     collectionInfo: IStaticCollectionItem,
+  };
+};
+
+interface IGetCollectionListParams {
+  userId?: string;
+};
+interface IGetCollectionListReturns {
+  code: number;
+  message: string;
+  info: {
+    collectionInfo: IStaticCollectionItem[],
   };
 };
 
@@ -276,6 +288,28 @@ export function serviceHandleSaveToCollection(
       userid: localStorage.getItem('userid'),
       articleId: payload.articleId,
       collectionId: payload.collectionId,
+    },
+  }).then((res) => {
+    callback && callback(res);
+  });
+}
+
+
+/**
+ * 文章详情 -> 控制栏 -> 获取用户收藏夹信息
+ */
+export function serviceHandleGetCollectionList(
+  payload: IGetCollectionListParams,
+  callback?: (res: IGetCollectionListReturns) => void,
+) {
+  query({
+    method: 'GET',
+    url: '/api/details/collection/info',
+    jsonp: false,
+    data: {
+      userId: payload.userId
+        ? payload.userId
+        : localStorage.getItem('userid'),
     },
   }).then((res) => {
     callback && callback(res);
