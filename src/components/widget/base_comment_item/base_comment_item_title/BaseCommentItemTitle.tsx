@@ -124,18 +124,29 @@ const BaseCommentItemTitle = React.memo((
     );
   }
 
+  /**
+   * 处理评论项头像框hover
+   */
+  function handleCommentAvatarHover(
+    visible: boolean,
+  ): void {
+    console.log(visible);
+  }
+
   return (
     <TitleContainer>
-        <Popover
+      <Popover
+          mouseEnterDelay={.7}
           title={handleInitAvatarPopoverTitle()}
           content={handleInitAvatarPopoverContent()}
+          onVisibleChange={handleCommentAvatarHover}
         >
           <Avatar
             src={props.commentInfo.from.useravatar}
             icon="user"
             size="default"
             shape="circle"
-            alt="评论者"
+          alt="评论者"
           />
         </Popover>
         <Divider type="vertical" />

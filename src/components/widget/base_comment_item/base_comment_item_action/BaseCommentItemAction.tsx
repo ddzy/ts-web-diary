@@ -7,6 +7,7 @@ import {
 } from 'antd';
 
 import {
+  GlobalStyle,
   ActionContainer,
   ActionLikeIconBox,
   ActionReplyIconBox,
@@ -60,6 +61,8 @@ const BaseCommentItemAction = React.memo<IBaseCommentItemActionProps>((
           </ActionRightBox>
         </Col>
       </Row>
+
+      <GlobalStyle />
     </ActionContainer>
   );
 });

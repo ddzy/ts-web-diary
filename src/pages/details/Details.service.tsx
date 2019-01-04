@@ -315,3 +315,8 @@ export function serviceHandleGetCollectionList(
     callback && callback(res);
   });
 }
+
+
+/**
+ * 文章详情 -> comment -> 头像框hover获取评论者信息
+ */

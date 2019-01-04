@@ -60,9 +60,10 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
   });
 
   React.useEffect(() => {
-    state.replyBtn.style.cssText += `${
-      state.showReplyBox ? 'color: #1890ff;' : 'color: #999;'
-    }`;
+    state.replyBtn.classList.toggle(
+      'comment-action-reply-btn-active',
+      state.showReplyBox,
+    );
   }, [state]);
 
   function handleSend(
