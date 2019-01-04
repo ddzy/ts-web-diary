@@ -37,33 +37,30 @@ interface IDetailsControlCollectionState {
 };
 
 
-/**
- * 收藏 弹出层
- */
-class DetailsControlCollection extends React.PureComponent<
-IDetailsControlCollectionProps,
-IDetailsControlCollectionState
-  > {
-  public inputRef: any;
+const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
+  props: IDetailsControlCollectionProps,
+): JSX.Element => {
 
-  public readonly state = {
+  let inputRef: any = null;
+
+  const [state, setState] = React.useState<IDetailsControlCollectionState>({
     collectionList: [],
-  }
+  });
 
-  public handleGetInputRef = (el: any): void => {
-    this.inputRef = el;
+  function handleGetInputRef(el: any): void {
+    inputRef = el;
   }
 
   /**
    * 处理初始化气泡框内容
    */
-  public handleInitPopoverContent = (): JSX.Element => {
+  function handleInitPopoverContent(): JSX.Element {
     const {
       getFieldDecorator,
-    } = this.props.form;
+    } = props.form;
     const {
       collectionList,
-    } = this.state;
+    } = state;
 
     return (
       <CollectionPopContentContainer>
@@ -75,7 +72,7 @@ IDetailsControlCollectionState
                 <Popconfirm
                   title="要添加到该收藏夹吗?"
                   key={item._id}
-                  onConfirm={() => this.handleSaveToCollection(item._id)}
+                  onConfirm={() => handleSaveToCollection(item._id)}
                 >
                   <CollectionsPopShowListItem>
                     {item.name}
@@ -87,7 +84,7 @@ IDetailsControlCollectionState
         </CollectionsPopShowList>
         <CollectionPopFormBox>
           <Form
-            onSubmit={this.handleSendCollection}
+            onSubmit={handleSendCollection}
           >
             <Form.Item>
               {getFieldDecorator('collection_input', {})(
@@ -97,7 +94,7 @@ IDetailsControlCollectionState
                       type="text"
                       size="small"
                       placeholder="新建一个收藏夹..."
-                      ref={(el) => this.handleGetInputRef(el)}
+                      ref={(el) => handleGetInputRef(el)}
                     />
                   </Col>
                   <Col span={4}>
@@ -121,12 +118,12 @@ IDetailsControlCollectionState
    * @param e mouseEvent
    * @param inputRef input输入框
    */
-  public handleSendCollection = (
+  function handleSendCollection(
     e: React.FormEvent,
-  ): void => {
+  ): void {
     e.preventDefault();
 
-    this.props.form.validateFields((err, values) => {
+    props.form.validateFields((err, values) => {
       const {
         collection_input
       } = values;
@@ -147,16 +144,14 @@ IDetailsControlCollectionState
             collectionInfo,
           } = data.info;
 
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            collections: prevState.collectionList.concat(
-              collectionInfo,
-            )
-          };
-        }, () => {
-          this.inputRef.input.value = '';
-        });
+          setState({
+            ...state,
+            collectionList: state.collectionList.concat(collectionInfo),
+          });
+
+          if (inputRef) {
+            inputRef.input.value = '';
+          }
       });
     });
   }
@@ -165,13 +160,13 @@ IDetailsControlCollectionState
    * 处理 确认添加文章至收藏夹
    * @param collectionId 收藏夹id
    */
-  public handleSaveToCollection = (
+  function handleSaveToCollection(
     collectionId: string,
-  ): void => {
+  ): void {
     serviceHandleSaveToCollection(
       {
         collectionId,
-        articleId: this.props.match.params.id,
+        articleId: props.match.params.id,
       },
       (data) => {
         const {
@@ -191,38 +186,38 @@ IDetailsControlCollectionState
   /**
    * 处理点击Icon,获取收藏夹列表
    */
-  public handleGetCollectionList = (): void => {
+  function handleGetCollectionList(): void {
     serviceHandleGetCollectionList({}, (data) => {
       const {
         collectionInfo,
       } = data.info
 
-      this.setState({
+      setState({
         collectionList: collectionInfo,
       });
     });
   }
 
-  public render(): JSX.Element {
-    return (
-      <Tooltip title="收藏" placement="right">
-        <Popover
-          trigger="click"
-          placement="right"
-          title="我的收藏夹"
-          content={this.handleInitPopoverContent()}
-        >
-          <Icon
-            className="fixed-control-bar-collection"
-            type="heart"
-            theme="filled"
-            onClick={this.handleGetCollectionList}
-          />
-        </Popover>
-      </Tooltip>
-    );
-  }
-}
+
+  return (
+    <Tooltip title="收藏" placement="right">
+      <Popover
+        trigger="click"
+        placement="right"
+        title="我的收藏夹"
+        content={handleInitPopoverContent()}
+      >
+        <Icon
+          className="fixed-control-bar-collection"
+          type="heart"
+          theme="filled"
+          onClick={handleGetCollectionList}
+        />
+      </Popover>
+    </Tooltip>
+  );
+
+});
 
 
 export default withRouter(Form.create()(DetailsControlCollection));
