@@ -50,9 +50,10 @@
 - [x] react-transition-group挂载两次的问题
 - [x] main组件重构, 提取到Home组件
 - [x] 解决滚动加载更多bug
+- [ ]DetailsComment下comment和reply分页处理
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] Details评论hover评论人信息
-- [ ] Details收藏夹获取, DetailsComment下comment和reply分页处理
+- [ ] Details收藏夹获取,
 - [ ] service.tsx interface, params, returns类型定义处理
 - [ ] 新增Home页HomeExtra组件内容
 - [ ] 添加关注功能
