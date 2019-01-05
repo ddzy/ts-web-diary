@@ -34,6 +34,7 @@ import {
 } from '../../BaseCommentItem';
 import {
   serviceHandleGetCommentUserInfo,
+  serviceHandleCommentUserFollow,
 } from 'src/pages/details/Details.service';
 
 
@@ -53,6 +54,8 @@ interface IBaseCommentItemTitleAvatarState {
 const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>((
   props: IBaseCommentItemTitleAvatarProps,
 ): JSX.Element => {
+
+  const currentUser = localStorage.getItem('userid');
 
   const [state, setState] = React.useState<IBaseCommentItemTitleAvatarState>({
     loading: false,
@@ -140,12 +143,15 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
                 <Button
                   icon={'user-add'}
                   type="primary"
+                  disabled={currentUser === state.userInfo._id}
+                  onClick={handleCommentAvatarFocusClick}
                 >关注他</Button>
               </Col>
               <Col span={12}>
                 <Button
                   icon={'message'}
                   type="ghost"
+                  disabled={currentUser === state.userInfo._id}
                 >发私信</Button>
               </Col>
             </Row>
@@ -180,6 +186,20 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
         setState({ userInfo, loading: false });
       });
     }
+  }
+
+  /**
+   * 处理评论头像框 点击关注
+   */
+  function handleCommentAvatarFocusClick(): void {
+    const { _id } = state.userInfo;
+
+    serviceHandleCommentUserFollow(
+      { follower: _id },
+      (data) => {
+        console.log(data);
+      },
+    );
   }
 
   return (

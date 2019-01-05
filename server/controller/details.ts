@@ -524,4 +524,28 @@ detailsController.post('/comment/user/info', async (ctx) => {
 });
 
 
+/**
+ * 文章详情 -> 评论区 -> 处理关注
+ */
+detailsController.post('/comment/user/follow', async (ctx) => {
+  const {
+    actioner,
+    follower,
+  }: any = await ctx.request.body;
+
+
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    info: {
+      userInfo: {
+        actioner,
+        follower,
+      },
+    },
+  };
+});
+
+
 export default detailsController;

@@ -152,7 +152,14 @@ interface IGetCommentUserInfoReturns extends IGlobalStaticServiceReturns {
     },
   };
 };
+interface ICommentUserFollowParams {
+  follower: string;
+};
+interface ICommentUserFollowReturns extends IGlobalStaticServiceReturns {
+  info: {
 
+  };
+};
 
 
 
@@ -335,6 +342,29 @@ export function serviceHandleGetCommentUserInfo(
     data: {
       ...payload,
       userId: localStorage.getItem('userid'),
+    },
+  }).then((res) => {
+    callback && callback(res);
+  });
+}
+
+
+/**
+ * 文章详情 -> comment -> 头像框点击关注
+ */
+export function serviceHandleCommentUserFollow(
+  payload: ICommentUserFollowParams,
+  callback?: (
+    data: ICommentUserFollowReturns,
+  ) => void,
+): void {
+  query({
+    method: 'POST',
+    url: '/api/details/comment/user/follow',
+    jsonp: false,
+    data: {
+      ...payload,
+      actioner: localStorage.getItem('userid'),
     },
   }).then((res) => {
     callback && callback(res);
