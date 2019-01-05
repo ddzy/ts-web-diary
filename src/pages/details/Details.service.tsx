@@ -1,16 +1,17 @@
 import { query } from "src/services/request";
+import {
+  IGlobalStaticServiceReturns,
+} from "src/service";
 
 
-// ** Global Types Defination **
-export interface IGlobalStaticServiceReturns {
-  code: number;
-  message: string;
-};
+// ** Common Types Defines **
+
+// ** 评论from字段 **
 export interface IGlobalStaticCommentWhereUserOptions {
   username: string;
   _id: string;
   useravatar: string;
-};
+}
 
 
 

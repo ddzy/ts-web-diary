@@ -1,4 +1,8 @@
 import { query } from "src/services/request";
+import {
+  IGlobalStaticServiceReturns,
+} from 'src/service';
+
 
 export interface IServiceState {
   collectionInfo: {
@@ -26,9 +30,7 @@ export interface IStaticArticlesOptions {
 interface IGetCollectionInfoParams {
   collectionId: string;
 };
-interface IGetCollectionInfoReturns {
-  code: number;
-  message: string;
+interface IGetCollectionInfoReturns extends IGlobalStaticServiceReturns {
   info: IServiceState;
 };
 
@@ -36,9 +38,7 @@ interface IDeleteCollectionArticleParams {
   articleId: string;
   collectionId: string;
 };
-interface IDeleteCollectionArticleReturns {
-  code: number;
-  message: string;
+interface IDeleteCollectionArticleReturns extends IGlobalStaticServiceReturns {
   info: {
     collectionInfo: {
       collectionId: string,
