@@ -50,6 +50,10 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Collections',
   }],
+  create_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
   // ** 关注 **
   attentions: {
     type: Schema.Types.ObjectId,
@@ -213,16 +217,27 @@ const AttentionUsersSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  create_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
 });
 
 const AttentionTopicsSchema: mongoose.Schema = new Schema({
-
+  create_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
 });
 
 const FollowersSchema: mongoose.Schema = new Schema({
   whom: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+  },
+  create_time: {
+    type: Number,
+    default: new Date().getTime(),
   },
 });
 
