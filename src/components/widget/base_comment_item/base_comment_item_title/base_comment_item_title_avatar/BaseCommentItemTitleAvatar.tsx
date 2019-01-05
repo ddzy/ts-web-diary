@@ -7,6 +7,7 @@ import {
   Avatar,
   Spin,
   Divider,
+  message,
 } from 'antd';
 
 import {
@@ -211,6 +212,11 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
             followersCount: state.userInfo.followersCount + 1,
           },
         });
+
+        // ** tip message **
+        message.info(`你关注了: ${
+          state.userInfo.username
+        }`);
       },
     );
   }
