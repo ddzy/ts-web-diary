@@ -22,6 +22,7 @@ const Schema = mongoose.Schema;
  * Attention: 关注的
  * AttentionUsers: 关注的用户
  * AttentionTopics: 关注的话题
+ * Follower: 被关注
  */
 const UserSchema: mongoose.Schema = new Schema({
   articles: [{
@@ -48,10 +49,16 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Collections',
   }],
+  // ** 关注 **
   attentions: {
     type: Schema.Types.ObjectId,
     ref: 'Attentions',
   },
+  // ** 被关注 **
+  followers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Followers',
+  }],
 });
 
 const PostsSchema: mongoose.Schema = new Schema({
@@ -211,6 +218,13 @@ const AttentionTopicsSchema: mongoose.Schema = new Schema({
 
 });
 
+const FollowersSchema: mongoose.Schema = new Schema({
+  whom: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+});
+
 
 export const User: mongoose.Model<any> = mongoose
   .model('User', UserSchema, 'User');
@@ -228,6 +242,8 @@ export const AttentionUsers: mongoose.Model<any> = mongoose
   .model('AttentionUsers', AttentionUsersSchema, 'AttentionUsers');
 export const AttentionTopics: mongoose.Model<any> = mongoose
   .model('AttentionTopics', AttentionTopicsSchema, 'AttentionTopics');
+export const Followers: mongoose.Model<any> = mongoose
+  .model('Followers', FollowersSchema, 'Followers');
 
 
 /**
