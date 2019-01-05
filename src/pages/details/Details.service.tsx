@@ -1,6 +1,19 @@
 import { query } from "src/services/request";
 
 
+// ** Global Types Defination **
+export interface IGlobalStaticServiceReturns {
+  code: number;
+  message: string;
+};
+export interface IGlobalStaticCommentWhereUserOptions {
+  username: string;
+  _id: string;
+  useravatar: string;
+};
+
+
+
 // ** ServiceState Types Defines **
 export interface IServiceState {
   articleInfo: IStaticArticleInfoOptions;
@@ -28,11 +41,7 @@ export interface IStaticArticleInfoNewArticleOptions {
 export interface IStaticArticleInfoCommentsOptions {
   article: string;
   create_time: number | string;
-  from: {
-    username: string,
-    _id: string,
-    useravatar: string,
-  };
+  from: IGlobalStaticCommentWhereUserOptions;
   replys: IStaticArticleInfoCommentsReplysOptions[];
   value: string;
   _id: string;
@@ -41,16 +50,8 @@ export interface IStaticArticleInfoCommentsReplysOptions {
   article: string;
   comment: string;
   create_time: number | string;
-  from: {
-    username: string,
-    useravatar: string,
-    _id: string,
-  };
-  to: {
-    _id: string,
-    username: string,
-    useravatar: string,
-  };
+  from: IGlobalStaticCommentWhereUserOptions;
+  to: IGlobalStaticCommentWhereUserOptions;
   value: string;
   _id: string;
 };
@@ -67,9 +68,7 @@ export interface IStaticCollectionItem {
 interface IGetOneArticleInfoParams {
   articleId: string;
 };
-interface IGetOneArticleReturns {
-  code: 0;
-  message: string;
+interface IGetOneArticleReturns extends IGlobalStaticServiceReturns {
   info: IServiceState;
 }
 
@@ -78,9 +77,7 @@ export interface ISendCommentParams {
   articleId: string;
   from: string;
 };
-export interface ISendCommentReturns {
-  code: number;
-  message: string;
+export interface ISendCommentReturns extends IGlobalStaticServiceReturns {
   info: {
     commentInfo: IStaticArticleInfoCommentsOptions,
   };
@@ -93,9 +90,7 @@ export interface ISendReplyParams {
   to: string;
   articleId: string;
 };
-export interface ISendReplyReturns {
-  code: number;
-  message: string;
+export interface ISendReplyReturns extends IGlobalStaticServiceReturns {
   info: {
     replyInfo: IStaticArticleInfoCommentsReplysOptions,
   };
@@ -105,9 +100,7 @@ export interface IFixedControlBarStarParams {
   articleId: string;
   liked: boolean;
 };
-export interface IFixedControlBarStarReturns {
-  code: number;
-  message: string;
+export interface IFixedControlBarStarReturns extends IGlobalStaticServiceReturns {
   info: {
     starInfo: {
       isLiked: boolean;
@@ -118,9 +111,7 @@ export interface IFixedControlBarStarReturns {
 export interface ICreateCollectionParams {
   collectionName: string;
 };
-export interface ICreateCollectionReturns {
-  code: number;
-  message: string;
+export interface ICreateCollectionReturns extends IGlobalStaticServiceReturns {
   info: {
     collectionInfo: IStaticCollectionItem,
   };
@@ -130,9 +121,7 @@ interface ISaveToCollectionParams {
   collectionId: string;
   articleId: string;
 };
-interface ISaveToCollectionReturns {
-  code: number;
-  message: string;
+interface ISaveToCollectionReturns extends IGlobalStaticServiceReturns {
   info: {
     collectionInfo: IStaticCollectionItem,
   };
@@ -141,9 +130,7 @@ interface ISaveToCollectionReturns {
 interface IGetCollectionListParams {
   userId?: string;
 };
-interface IGetCollectionListReturns {
-  code: number;
-  message: string;
+interface IGetCollectionListReturns extends IGlobalStaticServiceReturns {
   info: {
     collectionInfo: IStaticCollectionItem[],
   };
@@ -153,11 +140,15 @@ interface IGetCommentUserInfoParams {
   isReply: boolean;
   commentId: string;
 };
-interface IGetCommentUserInfoReturns {
-  code: number;
-  message: string;
+interface IGetCommentUserInfoReturns extends IGlobalStaticServiceReturns {
   info: {
-    userInfo: any,
+    userInfo: {
+      _id: string,
+      username: string,
+      useravatar: string,
+      articlesCount: number,
+      followersCount: number,
+    },
   };
 };
 
@@ -342,6 +333,7 @@ export function serviceHandleGetCommentUserInfo(
     jsonp: false,
     data: {
       ...payload,
+      userId: localStorage.getItem('userid'),
     },
   }).then((res) => {
     callback && callback(res);

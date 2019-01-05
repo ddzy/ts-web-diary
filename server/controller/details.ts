@@ -450,29 +450,73 @@ detailsController.post('/comment/user/info', async (ctx) => {
 
   if (isReply) {
     const replyUserInfo = await Replys
-      .findById(commentId)
+      .findById(
+        commentId,
+        'from',
+      )
       .populate([
         {
           path: 'from',
-          select: ['username', 'useravatar',]
+          select: ['username', 'useravatar', 'articles', 'followers'],
         }
       ])
+      .lean();
+    const {
+      from,
+    } = await replyUserInfo;
 
     ctx.body = {
       code: 0,
       message: 'Success!',
       info: {
         userInfo: {
-          replyUserInfo,
+          _id: from._id,
+          username: from.username,
+          useravatar: from.useravatar
+            ? formatPath(from.useravatar)
+            : '',
+          articlesCount: from.articles
+            ? from.articles.length
+            : 0,
+          followersCount: from.followers
+            ? from.followers.length
+            : 0,
         },
       },
     };
-  } else {
+  }
+  else {
+    const commentUserInfo = await Comments
+      .findById(
+        commentId,
+        'from',
+      )
+      .populate([
+        {
+          path: 'from',
+          select: ['username', 'useravatar', 'articles', 'followers'],
+        }
+      ])
+      .lean();
+    const { from } = await commentUserInfo;
+
     ctx.body = {
       code: 0,
       message: 'Success!',
       info: {
-        userInfo: {},
+        userInfo: {
+          _id: from._id,
+          username: from.username,
+          useravatar: from.useravatar
+            ? formatPath(from.useravatar)
+            : '',
+          articlesCount: from.articles
+            ? from.articles.length
+            : 0,
+          followersCount: from.followers
+            ? from.followers.length
+            : 0,
+        },
       },
     };
   }

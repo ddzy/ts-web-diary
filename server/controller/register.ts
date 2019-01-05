@@ -30,6 +30,7 @@ registerController.post('/', async (ctx, next) => {
       await User.create({
         username,
         usergender,
+        useravatar: '',
         userpwd: md5(userpwd),
       });
       ctx.body = {

@@ -44,6 +44,7 @@ const UserSchema: mongoose.Schema = new Schema({
   useravatar: {
     type: String,
     require: false,
+    default: '',
   },
   collections: [{
     type: Schema.Types.ObjectId,
@@ -169,7 +170,7 @@ const ReplySchema: mongoose.Schema = new Schema({
     ref: 'Comments',
   },
   replyValue: {
-    type: String,       // 评论回复
+    type: String,
   },
   create_time: {
     type: Number,

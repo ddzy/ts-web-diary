@@ -34,12 +34,33 @@ import {
 } from 'src/pages/details/Details.service';
 
 
-export interface IBaseCommentItemTitleProps extends ICommentListItemProps {};
+export interface IBaseCommentItemTitleProps extends ICommentListItemProps { };
+interface IBaseCommentItemTitleState {
+  userInfo: {
+    _id: string,
+    username: string,
+    useravatar: string,
+    articlesCount: number,
+    followersCount: number,
+  };
+};
 
 
 const BaseCommentItemTitle = React.memo((
   props: IBaseCommentItemTitleProps,
 ): JSX.Element => {
+
+  const [
+    state, setState
+  ] = React.useState<IBaseCommentItemTitleState>({
+    userInfo: {
+      _id: '',
+      username: '',
+      useravatar: '',
+      articlesCount: 0,
+      followersCount: 0,
+    },
+  });
 
   /**
    * 初始化处理头像框 popover title
@@ -50,7 +71,8 @@ const BaseCommentItemTitle = React.memo((
         <PopoverTitleMain>
           <TitleMainAvatar>
             <Avatar
-              src={props.commentInfo.from.useravatar}
+              // src={props.commentInfo.from.useravatar}
+              src={state.userInfo.useravatar}
               icon="user"
               shape="square"
               alt="评论者"
@@ -62,7 +84,8 @@ const BaseCommentItemTitle = React.memo((
             />
           </TitleMainAvatar>
           <TitleMainName>{
-            props.commentInfo.from.username
+            // props.commentInfo.from.username
+            state.userInfo.username
           }</TitleMainName>
         </PopoverTitleMain>
       </PopoverTitleContainer>
@@ -83,7 +106,7 @@ const BaseCommentItemTitle = React.memo((
                   文章
                 </ContentMainArticleCountTip>
                 <ContentMainArticleCountText>
-                  9
+                  {state.userInfo.articlesCount}
                 </ContentMainArticleCountText>
               </ContentMainArticleCountBox>
             </Col>
@@ -93,7 +116,7 @@ const BaseCommentItemTitle = React.memo((
                   获赞
                 </ContentMainLikedCountTip>
                 <ContentMainLikedCountText>
-                  1002
+                  0
                 </ContentMainLikedCountText>
               </ContentMainLikedCountBox>
             </Col>
@@ -103,7 +126,7 @@ const BaseCommentItemTitle = React.memo((
                   关注者
                 </ContentMainFocusedCountTip>
                 <ContentMainFocusedCountText>
-                  150
+                  {state.userInfo.followersCount}
                 </ContentMainFocusedCountText>
               </ContentMainFocusedCountBox>
             </Col>
@@ -142,7 +165,11 @@ const BaseCommentItemTitle = React.memo((
       isReply,
       commentId: _id,
     }, (data) => {
-      console.log(data);
+        const {
+          userInfo,
+        } = data.info;
+
+        setState({ userInfo });
     });
   }
 
