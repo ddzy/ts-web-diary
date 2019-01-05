@@ -51,9 +51,9 @@
 - [x] main组件重构, 提取到Home组件
 - [x] 解决滚动加载更多bug
 - [x] Details收藏夹获取,
+- [x] Details评论hover评论人信息
 - [ ] DetailsComment下comment和reply分页处理
 - [ ] 组件shouldComponentUpdate性能优化
-- [ ] Details评论hover评论人信息
 - [ ] service.tsx interface, params, returns类型定义处理
 - [ ] 提取.service.tsx的通用定义到全局
 - [ ] 新增Home页HomeExtra组件内容
