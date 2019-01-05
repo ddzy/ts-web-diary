@@ -7,6 +7,7 @@ import {
   Comments,
   Replys,
   Collections,
+  Followers,
 } from '../model/model';
 import {
   formatPath,
@@ -446,6 +447,7 @@ detailsController.post('/comment/user/info', async (ctx) => {
   const {
     isReply,
     commentId,
+    userId,
   }: any = await ctx.request.body;
 
   if (isReply) {
@@ -481,6 +483,9 @@ detailsController.post('/comment/user/info', async (ctx) => {
           followersCount: from.followers
             ? from.followers.length
             : 0,
+          isFollowed: from.followers.some((item: any) => {
+            return item.equals(userId);
+          }),
         },
       },
     };
@@ -498,7 +503,9 @@ detailsController.post('/comment/user/info', async (ctx) => {
         }
       ])
       .lean();
-    const { from } = await commentUserInfo;
+    const {
+      from,
+    } = await commentUserInfo;
 
     ctx.body = {
       code: 0,
@@ -516,6 +523,9 @@ detailsController.post('/comment/user/info', async (ctx) => {
           followersCount: from.followers
             ? from.followers.length
             : 0,
+          isFollowed: from.followers.some((item: any) => {
+            return item.equals(userId);
+          }),
         },
       },
     };
@@ -533,15 +543,23 @@ detailsController.post('/comment/user/follow', async (ctx) => {
     follower,
   }: any = await ctx.request.body;
 
-
+  Followers
+    .create({
+      whom: actioner,
+    });
+  User
+    .findByIdAndUpdate(
+      follower,
+      { '$addToSet': { followers: changeId(actioner) } },
+      { new: true },
+    )
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     info: {
-      userInfo: {
-        actioner,
-        follower,
+      followInfo: {
+        isFollowed: true,
       },
     },
   };

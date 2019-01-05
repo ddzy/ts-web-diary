@@ -47,6 +47,7 @@ interface IBaseCommentItemTitleAvatarState {
     useravatar: string,
     articlesCount: number,
     followersCount: number,
+    isFollowed: boolean,
   };
 };
 
@@ -65,6 +66,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
       useravatar: '',
       articlesCount: 0,
       followersCount: 0,
+      isFollowed: false,
     },
   });
 
@@ -143,7 +145,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
                 <Button
                   icon={'user-add'}
                   type="primary"
-                  disabled={currentUser === state.userInfo._id}
+                  disabled={currentUser === state.userInfo._id || state.userInfo.isFollowed}
                   onClick={handleCommentAvatarFocusClick}
                 >关注他</Button>
               </Col>
@@ -182,7 +184,6 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
         const {
           userInfo,
         } = data.info;
-
         setState({ userInfo, loading: false });
       });
     }
@@ -197,7 +198,17 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
     serviceHandleCommentUserFollow(
       { follower: _id },
       (data) => {
-        console.log(data);
+        const {
+          isFollowed,
+        } = data.info.followInfo;
+
+        setState({
+          ...state,
+          userInfo: {
+            ...state.userInfo,
+            isFollowed,
+          },
+        });
       },
     );
   }

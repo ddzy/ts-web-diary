@@ -149,6 +149,7 @@ interface IGetCommentUserInfoReturns extends IGlobalStaticServiceReturns {
       useravatar: string,
       articlesCount: number,
       followersCount: number,
+      isFollowed: boolean,
     },
   };
 };
@@ -157,7 +158,9 @@ interface ICommentUserFollowParams {
 };
 interface ICommentUserFollowReturns extends IGlobalStaticServiceReturns {
   info: {
-
+    followInfo: {
+      isFollowed: boolean,
+    },
   };
 };
 
