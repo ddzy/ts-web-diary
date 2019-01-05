@@ -543,11 +543,11 @@ detailsController.post('/comment/user/follow', async (ctx) => {
     follower,
   }: any = await ctx.request.body;
 
-  Followers
+  await Followers
     .create({
       whom: actioner,
     });
-  User
+  await User
     .findByIdAndUpdate(
       follower,
       { '$addToSet': { followers: changeId(actioner) } },

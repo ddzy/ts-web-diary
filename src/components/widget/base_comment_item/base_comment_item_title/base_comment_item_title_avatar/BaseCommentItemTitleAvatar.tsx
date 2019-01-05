@@ -183,7 +183,8 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
       }, (data) => {
         const {
           userInfo,
-        } = data.info;
+          } = data.info;
+
         setState({ userInfo, loading: false });
       });
     }
@@ -207,6 +208,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
           userInfo: {
             ...state.userInfo,
             isFollowed,
+            followersCount: state.userInfo.followersCount + 1,
           },
         });
       },
