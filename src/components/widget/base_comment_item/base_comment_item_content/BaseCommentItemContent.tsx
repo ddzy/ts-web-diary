@@ -24,14 +24,14 @@ const BaseCommentItemContent = React.memo<IBaseCommentItemContentProps>((
       <ContentommentReplyRange isReply={props.isReply}>
         <ContentCommentReplyFrom>
           回复&nbsp;
-      </ContentCommentReplyFrom>
+        </ContentCommentReplyFrom>
         <ContentCommentReplyTo>
           <a>{
             props.commentInfo.to
               ? props.commentInfo.to.username
               : 'undefined'
           }</a>:&nbsp;&nbsp;
-      </ContentCommentReplyTo>
+        </ContentCommentReplyTo>
       </ContentommentReplyRange>
       <ContentCommentText
         dangerouslySetInnerHTML={{

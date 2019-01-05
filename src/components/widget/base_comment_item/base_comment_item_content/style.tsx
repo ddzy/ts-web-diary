@@ -12,7 +12,7 @@ export const ContentContainer = styled.div`
 
 export const ContentCommentText = styled.blockquote`
   display: inline-block;
-  font-weight: bold;
+  /* font-weight: bold; */
 `;
 
 // 评论回复判别
