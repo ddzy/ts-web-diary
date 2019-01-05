@@ -75,7 +75,6 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
           <PopoverTitleMain>
             <TitleMainAvatar>
               <Avatar
-                // src={props.commentInfo.from.useravatar}
                 src={state.userInfo.useravatar}
                 icon="user"
                 shape="square"
@@ -88,7 +87,6 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
               />
             </TitleMainAvatar>
             <TitleMainName>{
-              // props.commentInfo.from.username
               state.userInfo.username
             }</TitleMainName>
           </PopoverTitleMain>

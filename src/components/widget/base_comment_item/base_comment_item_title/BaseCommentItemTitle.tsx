@@ -17,26 +17,6 @@ const BaseCommentItemTitle = React.memo((
 ): JSX.Element => {
   return (
     <TitleContainer>
-      {/* <Popover
-        mouseEnterDelay={.7}
-        title={handleInitAvatarPopoverTitle()}
-        content={handleInitAvatarPopoverContent()}
-        onVisibleChange={handleCommentAvatarHover}
-      >
-        <Avatar
-          src={props.commentInfo.from.useravatar}
-          icon="user"
-          size="default"
-          shape="circle"
-          alt="评论者"
-        />
-      </Popover>
-      <Divider type="vertical" />
-      <span
-        style={{
-          color: '#999',
-        }}
-      >{props.commentInfo.from.username}</span> */}
       <BaseCommentItemTitleAvatar
         {...props}
       />
