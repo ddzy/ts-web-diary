@@ -53,11 +53,11 @@
 - [x] Details收藏夹获取,
 - [x] Details评论hover评论人信息
 - [x] 提取.service.tsx的通用定义到全局
+- [x] 添加关注功能
 - [ ] DetailsComment下comment和reply分页处理
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] service.tsx interface, params, returns类型定义处理
 - [ ] 新增Home页HomeExtra组件内容
-- [ ] 添加关注功能
 - [ ] 初始化只获取可见区域数据, 加快加载速度
 - [ ] 登录注册完善
 - [ ] redis重构点赞
