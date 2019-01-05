@@ -54,6 +54,10 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Number,
     default: new Date().getTime(),
   },
+  update_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
   // ** 关注 **
   attentions: {
     type: Schema.Types.ObjectId,
@@ -144,6 +148,10 @@ const CommentsSchema: mongoose.Schema = new Schema({
     type: Number,
     default: new Date().getTime(),
   },
+  update_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
   commentValue: {
     type: String,
   },
@@ -180,6 +188,10 @@ const ReplySchema: mongoose.Schema = new Schema({
     type: Number,
     default: new Date().getTime(),
   },
+  update_time: {
+    type: Number,
+    default: new Date().getTime(),
+  },
   star: {
     type: Number,
     default: 0,
@@ -198,6 +210,10 @@ const CollectionsSchema: mongoose.Schema = new Schema({
   create_time: {
     type: String,
     default: new Date().toLocaleString(),
+  },
+  update_time: {
+    type: Number,
+    default: new Date().getTime(),
   },
 });
 
