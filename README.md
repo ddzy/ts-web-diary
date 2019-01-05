@@ -59,6 +59,7 @@
 - [ ] service.tsx interface, params, returns类型定义处理
 - [ ] 新增Home页HomeExtra组件内容
 - [ ] 初始化只获取可见区域数据, 加快加载速度
+- [ ] 后台异常处理重构, 前台异常信息展示
 - [ ] 登录注册完善
 - [ ] redis重构点赞
 - [ ] sendReply分页
