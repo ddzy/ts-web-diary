@@ -72,3 +72,9 @@ export const EMOJI_PICKER: string[] = [
  * 分页 每页条数
  */
 export const PAGE_SIZE: number = 5;
+
+/**
+ * 评论 | 回复每页条数
+ */
+export const COMMENT_PAGE_SIZE: number = 5;
+export const REPLY_PAGE_SIZE: number = 3;

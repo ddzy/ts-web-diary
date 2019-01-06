@@ -16,16 +16,23 @@ import {
   ISendReplyParams,
   serviceHandleSendReply,
   serviceHandleSendComment,
+  IStaticArticleInfoCommentsOptions,
+  serviceHandleGetMoreComments,
 } from '../../Details.service';
+import {
+  COMMENT_PAGE_SIZE,
+  REPLY_PAGE_SIZE,
+} from 'src/constants/constants';
 
 
 export interface IDetailsMainCommentProps extends RouteComponentProps<any> {
   useravatar: string;
 
-  comments: any[];
+  comments: IStaticArticleInfoCommentsOptions[];
 };
 interface IDetailsMainCommentState {
-  comments: any[];
+  comments: IStaticArticleInfoCommentsOptions[];
+  commentHasMore: boolean;
 }
 
 /**
@@ -37,10 +44,12 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
 
   const [state, setState] = React.useState<IDetailsMainCommentState>({
     comments: [],
+    commentHasMore: true,
   });
 
   React.useEffect(() => {
     setState({
+      ...state,
       comments: props.comments,
     });
   }, [props.comments]);
@@ -64,7 +73,8 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
           commentInfo
         } = data.info;
 
-        setState({
+          setState({
+          ...state,
           comments: [
             commentInfo,
             ...state.comments,
@@ -105,6 +115,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
           } = data.info;
 
           setState({
+            ...state,
             comments: state.comments.map((item) => {
               if (
                 item._id === replyInfo.comment
@@ -134,6 +145,33 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
     }
   }
 
+  /**
+   * 处理分页获取评论
+   */
+  function handleLoadMoreComment(
+    v: {
+      lastCommentId: string,
+    },
+  ): void {
+    const { id } = props.match.params;
+
+    serviceHandleGetMoreComments(
+      { articleId: id, ...v, commentPageSize: COMMENT_PAGE_SIZE, replyPageSize: REPLY_PAGE_SIZE },
+      (data) => {
+        const {
+          hasMore,
+          comments,
+        } = data.info.commentsInfo;
+
+        setState({
+          ...state,
+          comments: state.comments.concat(...comments),
+          commentHasMore: hasMore,
+        });
+      },
+    );
+  }
+
   return (
     <LeftCommentContainer
       id="left-comment-container"
@@ -146,9 +184,11 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
 
       {/* 根评论展示栏 */}
       <DetailsMainCommentShow
+        commentHasMore={state.commentHasMore}
         comments={state.comments}
         useravatar={props.useravatar}
         onSendReply={handleSendReply}
+        onLoadMoreComment={handleLoadMoreComment}
       />
     </LeftCommentContainer>
   );

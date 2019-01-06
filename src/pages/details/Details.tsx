@@ -18,6 +18,10 @@ import {
   serviceHandleGetOneArticleInfo,
   IServiceState,
 } from './Details.service';
+import {
+  COMMENT_PAGE_SIZE,
+  REPLY_PAGE_SIZE,
+} from 'src/constants/constants';
 
 
 export interface IDetailsProps {
@@ -65,6 +69,8 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
     serviceHandleGetOneArticleInfo({
       articleId: this.props.match.params.id,
+      commentPageSize: COMMENT_PAGE_SIZE,
+      replyPageSize: REPLY_PAGE_SIZE,
     }, (data) => {
       this.setState((prevState) => {
         return {

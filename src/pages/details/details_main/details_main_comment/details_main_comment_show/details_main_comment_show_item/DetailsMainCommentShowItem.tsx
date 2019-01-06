@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 import {
+  ShowLoadMoreBox,
+  ShowLoadMoreText,
   ItemContainer,
   CommentContainer,
   ReplyContainer,
@@ -102,6 +104,16 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
           <TransitionGroup>
             {initReplyList()}
           </TransitionGroup>
+          {
+            props.singleCommentInfo.replys.length !== 0
+            && (
+              <ShowLoadMoreBox>
+                <ShowLoadMoreText>
+                  加载更多>>
+                </ShowLoadMoreText>
+              </ShowLoadMoreBox>
+            )
+          }
         </ReplyList>
       </ReplyContainer>
     </ItemContainer>

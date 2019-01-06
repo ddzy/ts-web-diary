@@ -9,7 +9,9 @@ import {
 
 import {
   ShowContainer,
-  ShowList
+  ShowList,
+  ShowLoadMoreBox,
+  ShowLoadMoreText,
 } from './style';
 import { isArray } from 'src/utils/utils';
 import DetailsMainCommentsShowItem from './details_main_comment_show_item/DetailsMainCommentShowItem';
@@ -26,6 +28,12 @@ export interface IDetailsMainCommentShowProps {
     inputEl: HTMLElement,
     v: ISendReplyParams,
   ) => void;
+  onLoadMoreComment: (
+    v: {
+      lastCommentId: string,
+    },
+  ) => void;
+  commentHasMore: boolean;
 };
 
 
@@ -33,15 +41,16 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
   props: IDetailsMainCommentShowProps,
 ): JSX.Element => {
 
+  const { comments } = props;
+  const { length } = comments;
+
   /**
    * 初始化评论列表
    */
   function initCommentListItem(): JSX.Element[] | [] {
-    const comments = props.comments;
-
     return isArray(comments)
-      && comments.length !== 0
-      ? comments.map((item) => {
+      && length !== 0
+      ? comments.map((item, index) => {
         return (
           <CSSTransition
             key={item._id}
@@ -55,7 +64,9 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
                 currentMainUserAvatar={props.useravatar}
                 onSend={props.onSendReply}
               />
-              <Divider />
+              {
+                index !== length - 1 && <Divider />
+              }
             </React.Fragment>
           </CSSTransition>
         );
@@ -63,13 +74,34 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
       : [];
   }
 
+  /**
+   * 处理评论加载更多
+   */
+  function handleLoadMoreComments(): void {
+    const lastCommentId = comments[length - 1]._id;
+
+    props.onLoadMoreComment({
+      lastCommentId,
+    });
+  }
+
   return (
     <ShowContainer>
       <ShowList>
-        {/* {initCommentListItem()} */}
         <TransitionGroup>
           {initCommentListItem()}
         </TransitionGroup>
+        {
+          props.commentHasMore && (
+            <ShowLoadMoreBox>
+              <ShowLoadMoreText
+                onClick={handleLoadMoreComments}
+              >
+                加载更多>>
+              </ShowLoadMoreText>
+            </ShowLoadMoreBox>
+          )
+        }
       </ShowList>
     </ShowContainer>
   );

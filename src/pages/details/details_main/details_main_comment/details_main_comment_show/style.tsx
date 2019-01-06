@@ -7,3 +7,19 @@ export const ShowContainer = styled.div`
 `;
 
 export const ShowList = styled.ul``;
+
+export const ShowLoadMoreBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 1.875rem;
+  margin-top: 0.9375rem;
+`;
+export const ShowLoadMoreText = styled.span`
+  color: #09c;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    color: #1890ff;
+  }
+`;

@@ -68,6 +68,8 @@ export interface IStaticCollectionItem {
 // ** Service Handle Types Defines **
 interface IGetOneArticleInfoParams {
   articleId: string;
+  commentPageSize: number;
+  replyPageSize: number;
 };
 interface IGetOneArticleReturns extends IGlobalStaticServiceReturns {
   info: IServiceState;
@@ -164,6 +166,21 @@ interface ICommentUserFollowReturns extends IGlobalStaticServiceReturns {
   };
 };
 
+export interface IGetMoreCommentsParams {
+  articleId: string;
+  lastCommentId: string;
+  commentPageSize: number;
+  replyPageSize: number;
+};
+export interface IGetMoreCommentsReturns extends IGlobalStaticServiceReturns {
+  info: {
+    commentsInfo: {
+      comments: IStaticArticleInfoCommentsOptions[],
+      hasMore: boolean,
+    },
+  };
+};
+
 
 
 /**
@@ -179,8 +196,8 @@ export function serviceHandleGetOneArticleInfo(
     method: 'GET',
     url: '/api/details',
     data: {
-      articleid: payload.articleId,
-      userid: localStorage.getItem('userid'),
+      ...payload,
+      userId: localStorage.getItem('userid'),
     },
     jsonp: false,
   }).then((res) => {
@@ -201,7 +218,7 @@ export function serviceHandleSendComment(
 ): void {
   query({
     method: 'POST',
-    url: '/api/details/comment',
+    url: '/api/details/comment/create',
     jsonp: false,
     data: {
       userId: localStorage.getItem('userid') || '',
@@ -225,7 +242,7 @@ export function serviceHandleSendReply(
 ): void {
   query({
     method: 'POST',
-    url: '/api/details/reply',
+    url: '/api/details/reply/create',
     jsonp: false,
     data: {
       ...v,
@@ -368,6 +385,29 @@ export function serviceHandleCommentUserFollow(
     data: {
       ...payload,
       actioner: localStorage.getItem('userid'),
+    },
+  }).then((res) => {
+    callback && callback(res);
+  });
+}
+
+
+/**
+ * 文章详情 -> comment -> 评论获取加载更多
+ */
+export function serviceHandleGetMoreComments(
+  payload: IGetMoreCommentsParams,
+  callback?: (
+    data: IGetMoreCommentsReturns,
+  ) => void,
+): void {
+  query({
+    method: 'GET',
+    url: '/api/details/comment/info',
+    jsonp: false,
+    data: {
+      ...payload,
+      userId: localStorage.getItem('userid'),
     },
   }).then((res) => {
     callback && callback(res);

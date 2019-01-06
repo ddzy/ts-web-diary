@@ -16,3 +16,19 @@ export const ReplyListItem = styled.li`
   padding: 1rem;
   border-bottom: 1px solid #f1f1f1;
 `;
+
+export const ShowLoadMoreBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 1.875rem;
+  margin-top: 0.9375rem;
+`;
+export const ShowLoadMoreText = styled.span`
+  color: #09c;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    color: #1890ff;
+  }
+`;
