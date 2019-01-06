@@ -55,6 +55,7 @@
 - [x] 提取.service.tsx的通用定义到全局
 - [x] 添加关注功能
 - [x] DetailsComment下comment分页
+- [ ] React.lazy() 重构react-loadable
 - [ ] DetailsCommentShow自身维护comments-state, 避免过长转递props
 - [ ] DetailsComment下reply分页处理
 - [ ] 组件shouldComponentUpdate性能优化
