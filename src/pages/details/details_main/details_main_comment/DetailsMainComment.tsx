@@ -50,6 +50,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   React.useEffect(() => {
     setState({
       ...state,
+      commentHasMore: props.comments.length !== 0,
       comments: props.comments,
     });
   }, [props.comments]);
