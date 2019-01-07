@@ -134,7 +134,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
                 <ShowLoadMoreText
                   onClick={handleLoadMoreReplys}
                 >
-                  加载更多>>
+                  加载更多
                 </ShowLoadMoreText>
               </ShowLoadMoreBox>
             )

@@ -25,10 +25,11 @@ export const ShowLoadMoreBox = styled.div`
   margin-top: 0.9375rem;
 `;
 export const ShowLoadMoreText = styled.span`
-  color: #09c;
+  font-size: 0.75rem;
+  color: #406599;
   cursor: pointer;
   user-select: none;
   &:hover {
-    color: #1890ff;
+    opacity: .8;
   }
 `;
