@@ -33,7 +33,14 @@ export interface IDetailsMainCommentShowProps {
       lastCommentId: string,
     },
   ) => void;
+  onLoadMoreReply: (
+    v: {
+      lastReplyId: string,
+      commentId: string,
+    },
+  ) => void;
   commentHasMore: boolean;
+  replyHasMore: boolean;
 };
 
 
@@ -60,9 +67,11 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
             <React.Fragment>
               <DetailsMainCommentsShowItem
                 {...item}
+                replyHasMore={props.replyHasMore}
                 singleCommentInfo={item}
                 currentMainUserAvatar={props.useravatar}
                 onSend={props.onSendReply}
+                onLoadMoreReply={props.onLoadMoreReply}
               />
               {
                 index !== length - 1 && <Divider />

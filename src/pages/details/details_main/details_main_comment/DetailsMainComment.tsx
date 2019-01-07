@@ -18,6 +18,7 @@ import {
   serviceHandleSendComment,
   IStaticArticleInfoCommentsOptions,
   serviceHandleGetMoreComments,
+  serviceHandleGetMoreReplys,
 } from '../../Details.service';
 import {
   COMMENT_PAGE_SIZE,
@@ -33,6 +34,7 @@ export interface IDetailsMainCommentProps extends RouteComponentProps<any> {
 interface IDetailsMainCommentState {
   comments: IStaticArticleInfoCommentsOptions[];
   commentHasMore: boolean;
+  replyHasMore: boolean;
 }
 
 /**
@@ -45,6 +47,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   const [state, setState] = React.useState<IDetailsMainCommentState>({
     comments: [],
     commentHasMore: true,
+    replyHasMore: true,
   });
 
   React.useEffect(() => {
@@ -173,6 +176,40 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
     );
   }
 
+  /**
+   * 处理分页获取回复
+   */
+  function handleLoadMoreReply(
+    v: {
+      lastReplyId: string,
+      commentId: string,
+    },
+  ) {
+    serviceHandleGetMoreReplys(
+      { ...v, replyPageSize: REPLY_PAGE_SIZE, },
+      (data) => {
+        const {
+          hasMore,
+          replys,
+        } = data.info.replysInfo;
+
+        setState({
+          ...state,
+          replyHasMore: hasMore,
+          comments: state.comments.map((comment) => {
+            if (comment._id === v.commentId) {
+              return {
+                ...comment,
+                replys: comment.replys.concat(...replys),
+              };
+            }
+            return comment;
+          }),
+        });
+      },
+    );
+  }
+
   return (
     <LeftCommentContainer
       id="left-comment-container"
@@ -186,10 +223,12 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
       {/* 根评论展示栏 */}
       <DetailsMainCommentShow
         commentHasMore={state.commentHasMore}
+        replyHasMore={state.replyHasMore}
         comments={state.comments}
         useravatar={props.useravatar}
         onSendReply={handleSendReply}
         onLoadMoreComment={handleLoadMoreComment}
+        onLoadMoreReply={handleLoadMoreReply}
       />
     </LeftCommentContainer>
   );

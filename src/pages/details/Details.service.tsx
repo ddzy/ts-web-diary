@@ -120,30 +120,30 @@ export interface ICreateCollectionReturns extends IGlobalStaticServiceReturns {
   };
 };
 
-interface ISaveToCollectionParams {
+export interface ISaveToCollectionParams {
   collectionId: string;
   articleId: string;
 };
-interface ISaveToCollectionReturns extends IGlobalStaticServiceReturns {
+export interface ISaveToCollectionReturns extends IGlobalStaticServiceReturns {
   info: {
     collectionInfo: IStaticCollectionItem,
   };
 };
 
-interface IGetCollectionListParams {
+export interface IGetCollectionListParams {
   userId?: string;
 };
-interface IGetCollectionListReturns extends IGlobalStaticServiceReturns {
+export interface IGetCollectionListReturns extends IGlobalStaticServiceReturns {
   info: {
     collectionInfo: IStaticCollectionItem[],
   };
 };
 
-interface IGetCommentUserInfoParams {
+export interface IGetCommentUserInfoParams {
   isReply: boolean;
   commentId: string;
 };
-interface IGetCommentUserInfoReturns extends IGlobalStaticServiceReturns {
+export interface IGetCommentUserInfoReturns extends IGlobalStaticServiceReturns {
   info: {
     userInfo: {
       _id: string,
@@ -155,10 +155,10 @@ interface IGetCommentUserInfoReturns extends IGlobalStaticServiceReturns {
     },
   };
 };
-interface ICommentUserFollowParams {
+export interface ICommentUserFollowParams {
   follower: string;
 };
-interface ICommentUserFollowReturns extends IGlobalStaticServiceReturns {
+export interface ICommentUserFollowReturns extends IGlobalStaticServiceReturns {
   info: {
     followInfo: {
       isFollowed: boolean,
@@ -176,6 +176,20 @@ export interface IGetMoreCommentsReturns extends IGlobalStaticServiceReturns {
   info: {
     commentsInfo: {
       comments: IStaticArticleInfoCommentsOptions[],
+      hasMore: boolean,
+    },
+  };
+};
+
+export interface IGetMoreReplysParams {
+  commentId: string;
+  lastReplyId: string;
+  replyPageSize: number;
+};
+export interface IGetMoreReplysReturns extends IGlobalStaticServiceReturns {
+  info: {
+    replysInfo: {
+      replys: IStaticArticleInfoCommentsReplysOptions[],
       hasMore: boolean,
     },
   };
@@ -404,6 +418,29 @@ export function serviceHandleGetMoreComments(
   query({
     method: 'GET',
     url: '/api/details/comment/info',
+    jsonp: false,
+    data: {
+      ...payload,
+      userId: localStorage.getItem('userid'),
+    },
+  }).then((res) => {
+    callback && callback(res);
+  });
+}
+
+
+/**
+ * 文章详情 -> reply -> 回复获取加载更多
+ */
+export function serviceHandleGetMoreReplys(
+  payload: IGetMoreReplysParams,
+  callback?: (
+    data: IGetMoreReplysReturns,
+  ) => void,
+): void {
+  query({
+    method: 'GET',
+    url: '/api/details/reply/info',
     jsonp: false,
     data: {
       ...payload,

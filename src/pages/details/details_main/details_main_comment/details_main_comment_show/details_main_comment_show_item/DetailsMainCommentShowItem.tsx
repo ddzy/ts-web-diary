@@ -25,10 +25,17 @@ import {
 export interface IDetailsMainCommentShowItemProps {
   currentMainUserAvatar: string;
   singleCommentInfo: IStaticArticleInfoCommentsOptions;
+  replyHasMore: boolean;
 
   onSend: (
     inputEl: HTMLElement,
     v: ISendReplyParams,
+  ) => void;
+  onLoadMoreReply: (
+    v: {
+      lastReplyId: string,
+      commentId: string,
+    },
   ) => void;
 };
 
@@ -36,26 +43,15 @@ export interface IDetailsMainCommentShowItemProps {
 const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>((
   props: IDetailsMainCommentShowItemProps,
 ): JSX.Element => {
-  /**
-   * 处理完善回复信息 +++ commentId
-   */
-  function handleSendReply(
-    el: HTMLElement,
-    v: ISendReplyParams,
-  ): void {
-    props.onSend(el, {
-      ...v,
-      commentId: props.singleCommentInfo._id,
-    });
-  }
+
+  const { replys } = props.singleCommentInfo;
+  const { length } = replys;
 
   /**
    * 初始化回复列表
    */
   function initReplyList(): JSX.Element[] {
-    const { replys } = props.singleCommentInfo;
-
-    if (Array.isArray(replys) && replys.length !== 0) {
+    if (Array.isArray(replys) && length !== 0) {
       return replys.map((reply, index) => {
         return (
           <CSSTransition
@@ -82,6 +78,32 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
     return [];
   }
 
+  /**
+   * 处理提交回复
+   */
+  function handleSendReply(
+    el: HTMLElement,
+    v: ISendReplyParams,
+  ): void {
+    props.onSend(el, {
+      ...v,
+      commentId: props.singleCommentInfo._id,
+    });
+  }
+
+  /**
+   * 处理回复加载更多
+   */
+  function handleLoadMoreReplys(): void {
+    const lastReplyId = replys[length - 1]._id;
+    const { _id } = props.singleCommentInfo;
+
+    props.onLoadMoreReply({
+      lastReplyId,
+      commentId: _id,
+    });
+  }
+
   return (
     <ItemContainer>
       {/* 单个评论项 评论展示 */}
@@ -106,9 +128,12 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
           </TransitionGroup>
           {
             props.singleCommentInfo.replys.length !== 0
+            && props.replyHasMore
             && (
               <ShowLoadMoreBox>
-                <ShowLoadMoreText>
+                <ShowLoadMoreText
+                  onClick={handleLoadMoreReplys}
+                >
                   加载更多>>
                 </ShowLoadMoreText>
               </ShowLoadMoreBox>
