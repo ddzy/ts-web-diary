@@ -56,10 +56,11 @@
 - [x] 添加关注功能
 - [x] DetailsComment下comment分页
 - [x] 评论为空时, 加载更多报错bug
+- [x] DetailsComment下reply分页处理
+- [ ] Details下相关文章获取, 右侧action重构
 - [ ] React.lazy() 重构react-loadable
 - [ ] react-lazeload重构
 - [ ] DetailsCommentShow自身维护comments-state, 避免过长转递props
-- [ ] DetailsComment下reply分页处理
 - [ ] 组件shouldComponentUpdate性能优化
 - [ ] service.tsx interface, params, returns类型定义处理
 - [ ] 新增Home页HomeExtra组件内容
