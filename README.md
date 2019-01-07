@@ -56,6 +56,8 @@
 - [x] 添加关注功能
 - [x] DetailsComment下comment分页
 - [ ] React.lazy() 重构react-loadable
+- [ ] react-lazeload重构
+- [ ] 评论为空时, 加载更多报错bug
 - [ ] DetailsCommentShow自身维护comments-state, 避免过长转递props
 - [ ] DetailsComment下reply分页处理
 - [ ] 组件shouldComponentUpdate性能优化
