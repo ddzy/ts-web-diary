@@ -57,6 +57,7 @@
 - [x] DetailsComment下comment分页
 - [x] 评论为空时, 加载更多报错bug
 - [x] DetailsComment下reply分页处理
+- [x] 新增DetailsComment下comment&&reply加载更多,状态显示
 - [ ] Details下相关文章获取, 右侧action重构
 - [ ] React.lazy() 重构react-loadable
 - [ ] react-lazeload重构
