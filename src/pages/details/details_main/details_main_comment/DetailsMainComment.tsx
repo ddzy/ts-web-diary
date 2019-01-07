@@ -156,6 +156,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
     v: {
       lastCommentId: string,
     },
+    callback?: () => void,
   ): void {
     const { id } = props.match.params;
 
@@ -172,6 +173,8 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
           comments: state.comments.concat(...comments),
           commentHasMore: hasMore,
         });
+
+        callback && callback();
       },
     );
   }
@@ -184,6 +187,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
       lastReplyId: string,
       commentId: string,
     },
+    callback?: () => void,
   ) {
     serviceHandleGetMoreReplys(
       { ...v, replyPageSize: REPLY_PAGE_SIZE, },
@@ -206,6 +210,8 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
             return comment;
           }),
         });
+
+        callback && callback();
       },
     );
   }

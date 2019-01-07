@@ -32,15 +32,20 @@ export interface IDetailsMainCommentShowProps {
     v: {
       lastCommentId: string,
     },
+    callback?: () => void,
   ) => void;
   onLoadMoreReply: (
     v: {
       lastReplyId: string,
       commentId: string,
     },
+    callback?: () => void,
   ) => void;
   commentHasMore: boolean;
   replyHasMore: boolean;
+};
+interface IDetailsMainCommentShowState {
+  loadMoreText: string;
 };
 
 
@@ -50,6 +55,10 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
 
   const { comments } = props;
   const { length } = comments;
+
+  const [state, setState] = React.useState<IDetailsMainCommentShowState>({
+    loadMoreText: '加载更多>>',
+  });
 
   /**
    * 初始化评论列表
@@ -89,8 +98,12 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
   function handleLoadMoreComments(): void {
     const lastCommentId = comments[length - 1]._id;
 
+    setState({ loadMoreText: '加载中...' });
+
     props.onLoadMoreComment({
       lastCommentId,
+    }, () => {
+      setState({ loadMoreText: '加载更多>>' });
     });
   }
 
@@ -106,7 +119,7 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
               <ShowLoadMoreText
                 onClick={handleLoadMoreComments}
               >
-                加载更多>>
+                {state.loadMoreText}
               </ShowLoadMoreText>
             </ShowLoadMoreBox>
           )
