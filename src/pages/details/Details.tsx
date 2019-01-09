@@ -3,8 +3,7 @@ import {
   Row,
   Col,
 } from 'antd';
-import { History } from 'history';
-import { match } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 
 import DetailsMain from './details_main/DetailsMain';
@@ -24,11 +23,9 @@ import {
 } from 'src/constants/constants';
 
 
-export interface IDetailsProps {
-  location: Location;
-  history: History;
-  match: match<any>;
-
+export interface IDetailsProps extends RouteComponentProps<{
+  id: string,
+}> {
   AuthRouteReducer: { useravatar: string, };
 };
 interface IDetailsState extends IServiceState {
@@ -40,6 +37,7 @@ interface IDetailsState extends IServiceState {
 /**
  * 单个文章详情页
  */
+@(connect(mapStateToProps) as any)
 class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
   public readonly state = {
@@ -142,6 +140,4 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(Details) as React.ComponentClass<any>;
+export default Details;
