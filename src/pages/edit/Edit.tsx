@@ -23,9 +23,7 @@ interface IEditState {
 };
 
 
-/**
- * 编辑文章页
- */
+@(connect(mapStateToProps) as any)
 class Edit extends React.PureComponent<IEditProps, IEditState> {
 
   public readonly state = {
@@ -86,6 +84,5 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(Edit) as React.ComponentClass<any>;
+
+export default Edit;

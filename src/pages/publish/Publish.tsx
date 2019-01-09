@@ -19,9 +19,7 @@ interface IPublishState {
 };
 
 
-/**
- * 发表文章
- */
+@(connect(mapStateToProps) as any)
 class Publish extends React.PureComponent<IPublishProps, IPublishState> {
 
   public readonly state = {
@@ -101,6 +99,4 @@ function mapStateToProps(state: any) {
 }
 
 
-export default connect(
-  mapStateToProps,
-)(Publish) as React.ComponentClass<any>;
+export default Publish;

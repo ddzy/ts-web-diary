@@ -33,9 +33,7 @@ interface IMeState {
 };
 
 
-/**
- * 个人中心
- */
+@(connect(mapStateToProps) as any)
 class Me extends React.Component<IMeProps, IMeState> {
 
   public readonly state = {
@@ -218,6 +216,5 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(Me) as React.ComponentClass<any>;
+
+export default Me;
