@@ -42,6 +42,8 @@ interface IRegisterState {
 };
 
 
+@(connect(mapStateToProps) as any)
+@(Form.create() as any)
 class Login extends React.PureComponent<IRegisterProps, IRegisterState> {
 
   public readonly state = {
@@ -160,6 +162,8 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(Form.create()(Login)) as React.ComponentClass<any>;
+// export default connect(
+//   mapStateToProps,
+// )(Form.create()(Login)) as React.ComponentClass<any>;
+
+export default Login;
