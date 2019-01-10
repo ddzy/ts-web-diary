@@ -14,6 +14,10 @@ import DetailsMainRelated from './details_main_related/DetailsMainRelated';
 import {
   DetailsLeftWrapper,
 } from './style';
+import {
+  IStaticArticleInfoCommentsOptions,
+  IStaticArticleInfoRelatedArticlesOptions,
+} from '../Details.service';
 import QuillImageBlot from '../../../components/write/write_edit/QuillImageBlot';
 
 Quill.register(QuillImageBlot, true);
@@ -27,9 +31,10 @@ export interface IDetailsMainProps {
   mode: string;
   tag: string;
   type: string;
-  comments: any[];
+  comments: IStaticArticleInfoCommentsOptions[];
   img: string;
   useravatar: string;
+  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
 
   globalLoading: boolean;
 };
@@ -99,7 +104,9 @@ const DetailsMain = React.memo<IDetailsMainProps>((
 
       {/* 相关推荐区 */}
       <React.Fragment>
-        <DetailsMainRelated />
+        <DetailsMainRelated
+          {...props}
+        />
         <Divider />
       </React.Fragment>
     </DetailsLeftWrapper>

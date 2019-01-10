@@ -114,6 +114,24 @@ detailsController.get('/', async (ctx) => {
     })
     .limit(5);
 
+  // ** 获取相关推荐文章 **
+  const getRelatedArticles = await Posts
+    .find(
+      { type: newArticleInfo.type, },
+      'author create_time type tag title img',
+    )
+    .populate([
+      {
+        path: 'author',
+        select: ['username'],
+      }
+    ])
+    .sort({
+      create_time: '-1',
+    })
+    .limit(5)
+    .lean();
+
   ctx.body = {
     code: 0,
     message: 'Success!',
@@ -133,6 +151,7 @@ detailsController.get('/', async (ctx) => {
         isLiked: newArticleInfo.stared && newArticleInfo.stared.includes(userId),
         comments: formatedCommentsAvatarPathArr,
         newArticle: getNewArticles,
+        relatedArticles: getRelatedArticles,
       },
     },
   };

@@ -34,6 +34,7 @@ export interface IStaticArticleInfoOptions {
   img: string,
   isLiked: boolean,
   comments: IStaticArticleInfoCommentsOptions[],
+  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[],
 };
 export interface IStaticArticleInfoNewArticleOptions {
   title: string;
@@ -55,6 +56,18 @@ export interface IStaticArticleInfoCommentsReplysOptions {
   to: IGlobalStaticCommentWhereUserOptions;
   value: string;
   _id: string;
+};
+export interface IStaticArticleInfoRelatedArticlesOptions {
+  _id: string;
+  create_time: string | number;
+  type: string;
+  tag: string;
+  title: string;
+  img: string;
+  author: {
+    _id: string,
+    username: string,
+  };
 };
 
 

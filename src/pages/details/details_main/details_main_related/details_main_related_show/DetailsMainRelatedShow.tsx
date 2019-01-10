@@ -4,14 +4,21 @@ import {
   ShowWrapper,
   ShowMain,
 } from './style';
+import {
+  IStaticArticleInfoRelatedArticlesOptions,
+} from '../../../Details.service';
 
 
-export interface IDetailsMainRelatedShowProps { };
+export interface IDetailsMainRelatedShowProps {
+  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+};
 
 
 const DetailsMainRelatedShow = React.memo((
   props: IDetailsMainRelatedShowProps,
 ): JSX.Element => {
+
+  console.log(props.relatedArticles);
 
   return (
     <ShowWrapper>
