@@ -13,8 +13,12 @@ import {
 import {
   ItemContentBox,
   ItemExtraBox,
+  ExtraImageShow,
   ContentTag,
   ContentTip,
+  ContentTipUserNameText,
+  ContentTipTimeText,
+  ContentTipTypeText,
   ContentTitle,
 } from './style';
 import {
@@ -61,11 +65,17 @@ const DetailsMainRelatedShowItem = React.memo<IDetailsMainRelatedShowItemProps>(
         <Col span={18}>
           <ItemContentBox>
             <ContentTip>
-              <span>{props.author.username}</span>
+              <ContentTipUserNameText>
+                {props.author.username}
+              </ContentTipUserNameText>
               <Divider type="vertical" />
-              {formatTime(props.create_time)}
+              <ContentTipTimeText>
+                {formatTime(props.create_time)}
+              </ContentTipTimeText>
               <Divider type="vertical" />
-              {ARTICLE_TYPE_EN_TO_CN[props.type]}
+              <ContentTipTypeText>
+                {ARTICLE_TYPE_EN_TO_CN[props.type]}
+              </ContentTipTypeText>
             </ContentTip>
             <ContentTitle>
               <Link
@@ -85,11 +95,8 @@ const DetailsMainRelatedShowItem = React.memo<IDetailsMainRelatedShowItemProps>(
         </Col>
         <Col span={6}>
           <ItemExtraBox>
-            <img
-              src={props.img}
-              width="80"
-              height="80"
-              alt="文章说明图片"
+            <ExtraImageShow
+              extraBgImg={props.img}
             />
           </ItemExtraBox>
         </Col>
