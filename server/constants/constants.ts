@@ -12,7 +12,7 @@ export const SECRET_FOR_TOKEN = 'WEB_DIARY_PROJECT';
 // ** Website **
 export const WEBSITE = {
   host: 'http://localhost',
-  port: 6666,
+  port: 8888,
 };
 
 
