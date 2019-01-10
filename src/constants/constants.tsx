@@ -56,6 +56,23 @@ export const MERGED_ARTICLE_TAG: object = mixinObj(
 );
 
 /**
+ * 文章类型 英文 -> 中文
+ */
+export const ARTICLE_TYPE_EN_TO_CN: object = mixinObj(
+  ARTICLE_TYPE_WITH_ENGLISH_PICKER,
+  ARTICLE_TYPE_PICKER,
+);
+
+/**
+ * 文章类型 中文 -> 英文
+ */
+export const ARTICLE_TYPE_CN_TO_EN: object = mixinObj(
+  ARTICLE_TYPE_PICKER,
+  ARTICLE_TYPE_WITH_ENGLISH_PICKER,
+);
+
+
+/**
  * 表情字体符号
  */
 export const EMOJI_PICKER: string[] = [

@@ -7,6 +7,7 @@ import {
 import {
   IStaticArticleInfoRelatedArticlesOptions,
 } from '../../../Details.service';
+import DetailsMainRelatedShowItem from './details_main_related_show_item/DetailsMainRelatedShowItem';
 
 
 export interface IDetailsMainRelatedShowProps {
@@ -18,12 +19,26 @@ const DetailsMainRelatedShow = React.memo((
   props: IDetailsMainRelatedShowProps,
 ): JSX.Element => {
 
-  console.log(props.relatedArticles);
+  function handleInitArticleList(): JSX.Element[] {
+    const { relatedArticles } = props;
+    const { length } = relatedArticles;
+
+    return length === 0
+      ? []
+      : relatedArticles.map((v, i) => {
+        return (
+          <DetailsMainRelatedShowItem
+            key={i}
+            {...v}
+          />
+        );
+      });
+  }
 
   return (
     <ShowWrapper>
       <ShowMain>
-        相关推荐文章列表
+        {handleInitArticleList()}
       </ShowMain>
     </ShowWrapper>
   );

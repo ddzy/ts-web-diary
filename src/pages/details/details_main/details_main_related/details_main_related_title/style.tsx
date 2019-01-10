@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
 
-export const TitleWrapper = styled.div`
-  border-bottom: 1px solid #ccc;
-`;
+export const TitleWrapper = styled.div``;
 export const TitleMain = styled.div``;
 export const MainTextBox = styled.div``;
 export const MainText = styled.h3`
