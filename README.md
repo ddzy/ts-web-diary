@@ -59,7 +59,7 @@
 - [x] DetailsComment下reply分页处理
 - [x] 新增DetailsComment下comment&&reply加载更多,状态显示
 - [x] Decorator重构所有组件, 已完成重构connect
-- [ ] Decorator重构所有组件, 待完成withRouter
+- [x] Decorator重构所有组件, 待完成withRouter
 - [ ] Details下相关文章获取, 右侧action重构
 - [ ] React.lazy() 重构react-loadable
 - [ ] react-lazeload重构
