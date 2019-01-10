@@ -10,6 +10,7 @@ import 'highlight.js/styles/atom-one-light.css';
 import DetailsMainComment from './details_main_comment/DetailsMainComment';
 import DetailsMainRich from './details_main_rich/DetailsMainRich';
 import DetailsMainTitle from './details_main_title/DetailsMainTitle';
+import DetailsMainRelated from './details_main_related/DetailsMainRelated';
 import {
   DetailsLeftWrapper,
 } from './style';
@@ -93,6 +94,13 @@ const DetailsMain = React.memo<IDetailsMainProps>((
           useravatar={props.useravatar}
           comments={props.comments}
         />
+        <Divider />
+      </React.Fragment>
+
+      {/* 相关推荐区 */}
+      <React.Fragment>
+        <DetailsMainRelated />
+        <Divider />
       </React.Fragment>
     </DetailsLeftWrapper>
   );
