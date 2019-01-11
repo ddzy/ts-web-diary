@@ -55,7 +55,8 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
       .querySelector('#header-main-container') as HTMLDivElement;
     const oHomeMainNavBar = document
       .querySelector('#home-nav-bar') as HTMLDivElement;
-    const oHomeMainNavBarParent = oHomeMainNavBar.parentElement as HTMLDivElement;
+    const oHomeMainNavBarParent = oHomeMainNavBar && oHomeMainNavBar
+      .parentElement as HTMLDivElement;
 
     // ** 处理header滚动状态 **
     oHeaderContainer.style.cssText += `
@@ -64,6 +65,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
       });
     `;
 
+    // ** 处理Home页二级导航滚动 **
     if (oHomeMainNavBar && oHomeMainNavBarParent) {
       oHomeMainNavBar.style.cssText += `
         transform: translateY(${
