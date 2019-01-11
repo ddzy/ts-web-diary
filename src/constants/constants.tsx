@@ -86,7 +86,7 @@ export const EMOJI_PICKER: string[] = [
 ];
 
 /**
- * 分页 每页条数
+ * 默认分页 每页条数
  */
 export const PAGE_SIZE: number = 5;
 

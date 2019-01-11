@@ -208,6 +208,20 @@ export interface IGetMoreReplysReturns extends IGlobalStaticServiceReturns {
   };
 };
 
+export interface IGetMoreRelatedArticlesParams {
+  articleId: string;
+  page: number;
+  pageSize: number;
+};
+export interface IGetMoreRelatedArticlesReturns extends IGlobalStaticServiceReturns {
+  info: {
+    relatedArticlesInfo: {
+      articles: IStaticArticleInfoRelatedArticlesOptions[],
+      hasMore: boolean,
+    },
+  };
+};
+
 
 
 /**
@@ -455,6 +469,29 @@ export function serviceHandleGetMoreReplys(
     method: 'GET',
     url: '/api/details/reply/info',
     jsonp: false,
+    data: {
+      ...payload,
+      userId: localStorage.getItem('userid'),
+    },
+  }).then((res) => {
+    callback && callback(res);
+  });
+}
+
+
+/**
+ * 文章详情 -> related -> 推荐文章加载更多
+ */
+export function serviceHandleGetMoreRelatedArticles(
+  payload: IGetMoreRelatedArticlesParams,
+  callback?: (
+    data: IGetMoreRelatedArticlesReturns,
+  ) => void,
+): void {
+  query({
+    jsonp: false,
+    method: 'GET',
+    url: '/api/details/related/more',
     data: {
       ...payload,
       userId: localStorage.getItem('userid'),

@@ -1,4 +1,12 @@
 import * as React from 'react';
+import * as InfiniteScroll from 'react-infinite-scroller';
+import {
+  Skeleton,
+} from 'antd';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   ShowWrapper,
@@ -6,12 +14,23 @@ import {
 } from './style';
 import {
   IStaticArticleInfoRelatedArticlesOptions,
+  serviceHandleGetMoreRelatedArticles,
 } from '../../../Details.service';
+import {
+  PAGE_SIZE,
+} from '../../../../../constants/constants';
 import DetailsMainRelatedShowItem from './details_main_related_show_item/DetailsMainRelatedShowItem';
 
 
-export interface IDetailsMainRelatedShowProps {
+export interface IDetailsMainRelatedShowProps extends RouteComponentProps<{
+  id: string,
+}> {
   relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+};
+interface IDetailsMainRelatedShowState {
+  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+  loading: boolean;
+  hasMore: boolean;
 };
 
 
@@ -19,8 +38,24 @@ const DetailsMainRelatedShow = React.memo((
   props: IDetailsMainRelatedShowProps,
 ): JSX.Element => {
 
+  const [
+    state,
+    setState,
+  ] = React.useState<IDetailsMainRelatedShowState>({
+    relatedArticles: [],
+    loading: false,
+    hasMore: true,
+  });
+
+  React.useEffect(() => {
+    setState({
+      ...state,
+      relatedArticles: props.relatedArticles,
+    });
+  }, [props.relatedArticles]);
+
   function handleInitArticleList(): JSX.Element[] {
-    const { relatedArticles } = props;
+    const { relatedArticles } = state;
     const { length } = relatedArticles;
 
     return length === 0
@@ -35,10 +70,52 @@ const DetailsMainRelatedShow = React.memo((
       });
   }
 
+  /**
+   * 处理加载更多
+   */
+  function handleLoadMore(page: number) {
+    const { id } = props.match.params;
+
+    setState({
+      ...state,
+      loading: true,
+    });
+
+    serviceHandleGetMoreRelatedArticles(
+      { articleId: id, pageSize: PAGE_SIZE, page },
+      (data) => {
+        const {
+          articles,
+          hasMore,
+        } = data.info.relatedArticlesInfo;
+
+        setState({
+          ...state,
+          loading: false,
+          hasMore,
+          relatedArticles: state.relatedArticles.concat(...articles),
+        });
+      },
+    );
+  }
+
   return (
     <ShowWrapper>
       <ShowMain>
-        {handleInitArticleList()}
+        <InfiniteScroll
+          loadMore={handleLoadMore}
+          hasMore={state.hasMore && !state.loading}
+          pageStart={1}
+          initialLoad={false}
+        >
+          {handleInitArticleList()}
+        </InfiniteScroll>
+        <Skeleton
+          loading={state.loading}
+          active={true}
+        >
+          <div />
+        </Skeleton>
       </ShowMain>
     </ShowWrapper>
   );
@@ -46,4 +123,4 @@ const DetailsMainRelatedShow = React.memo((
 });
 
 
-export default DetailsMainRelatedShow;
+export default withRouter(DetailsMainRelatedShow);
