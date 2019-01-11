@@ -7,7 +7,8 @@ export const GlobalStyle = createGlobalStyle`
     color: #1890ff;
   }
   .article-nav-item-default {
-    color: #71777c;
+    /* color: #71777c; */
+    color: initial;
   }
 `;
 
@@ -16,9 +17,9 @@ export const NavWrapper = styled.nav`
   width: 100%;
   height: 2.8125rem;
   line-height: 2.8125rem;
-  background-color: rgba(255, 255, 255, .9);
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.3);
   text-align: center;
-  box-shadow: 0 0.0625rem 0.3rem rgba(0,0,0,.1);
 `;
 export const NavContent = styled.div`
   width: 75rem;
