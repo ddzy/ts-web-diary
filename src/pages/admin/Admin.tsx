@@ -53,6 +53,9 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     const nDeltaY = e.deltaY as number;
     const oHeaderContainer = document
       .querySelector('#header-main-container') as HTMLDivElement;
+    const oHomeMainNavBar = document
+      .querySelector('#home-nav-bar') as HTMLDivElement;
+    const oHomeMainNavBarParent = oHomeMainNavBar.parentElement as HTMLDivElement;
 
     // ** 处理header滚动状态 **
     oHeaderContainer.style.cssText += `
@@ -60,6 +63,19 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         nDeltaY > 0 ? '-100%' : 0
       });
     `;
+
+    if (oHomeMainNavBar && oHomeMainNavBarParent) {
+      oHomeMainNavBar.style.cssText += `
+        transform: translateY(${
+          nDeltaY > 0 ? '-100%' : 0
+        });
+      `;
+      oHomeMainNavBarParent.style.cssText += `
+        z-index: ${
+          nDeltaY > 0 ? 'initial' : 10
+        };
+      `;
+    }
   }
 
   public render(): JSX.Element {

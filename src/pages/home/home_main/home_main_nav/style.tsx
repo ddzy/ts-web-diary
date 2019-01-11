@@ -3,12 +3,15 @@ import styled, {
 } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-  .article-nav-item-active {
+  .home-nav-item-active {
     color: #1890ff;
   }
-  .article-nav-item-default {
+  .home-nav-item-default {
     /* color: #71777c; */
     color: initial;
+  }
+  .home-nav-bar-scrolled {
+    transform: translateY(-100%);
   }
 `;
 
@@ -20,6 +23,8 @@ export const NavWrapper = styled.nav`
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.3);
   text-align: center;
+  transform: translateY(0);
+  transition: transform .3s ease;
 `;
 export const NavContent = styled.div`
   width: 75rem;

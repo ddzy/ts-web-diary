@@ -41,8 +41,8 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
         <Link
           className={
             `/home/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}` === pathName
-              ? 'article-nav-item-active'
-              : 'article-nav-item-default'
+              ? 'home-nav-item-active'
+              : 'home-nav-item-default'
           }
           to={`/home/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}`}
         >
@@ -57,7 +57,7 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
       <Affix
         offsetTop={60}
       >
-        <NavWrapper>
+        <NavWrapper id="home-nav-bar">
           <NavContent>
             <NavContentList>
               {handleInitNavItem()}
