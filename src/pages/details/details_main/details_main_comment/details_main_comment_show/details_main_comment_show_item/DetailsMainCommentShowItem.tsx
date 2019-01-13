@@ -11,7 +11,7 @@ import {
 } from './style';
 import {
   BaseCommentItem,
-} from 'src/components/widget/base_comment_item/BaseCommentItem';
+} from 'components/widget/base_comment_item/BaseCommentItem';
 import {
   TransitionGroup,
   CSSTransition,
@@ -19,7 +19,7 @@ import {
 import {
   ISendReplyParams,
   IStaticArticleInfoCommentsOptions,
-} from '../../../../Details.service';
+} from 'pages/details/Details.service';
 
 
 export interface IDetailsMainCommentShowItemProps {

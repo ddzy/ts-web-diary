@@ -9,7 +9,7 @@ import WriteEdit from './write_edit/WriteEdit';
 import WriteUpload from './write_upload/WriteUpload';
 import WriteExtra from './write_extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
-import { query } from 'src/services/request';
+import { query } from 'services/request';
 
 
 export interface IWriteProps {

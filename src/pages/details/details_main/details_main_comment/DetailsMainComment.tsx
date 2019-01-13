@@ -23,7 +23,7 @@ import {
 import {
   COMMENT_PAGE_SIZE,
   REPLY_PAGE_SIZE,
-} from 'src/constants/constants';
+} from 'constants/constants';
 
 
 export interface IDetailsMainCommentProps extends RouteComponentProps<any> {

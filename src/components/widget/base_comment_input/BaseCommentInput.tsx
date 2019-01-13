@@ -21,7 +21,7 @@ import {
 import { Emojify, emojify } from 'react-emojione';
 import {
   EMOJI_PICKER,
-} from '../../../constants/constants';
+} from 'constants/constants';
 import ContentEditable from 'react-contenteditable';
 
 

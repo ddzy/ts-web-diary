@@ -1,4 +1,4 @@
-import { query } from "src/services/request";
+import { query } from "services/request";
 
 export interface IStaticOptions {
   // ** 我的文章列表 **

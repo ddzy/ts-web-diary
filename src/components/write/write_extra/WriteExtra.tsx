@@ -15,7 +15,7 @@ import {
   ARTICLE_TAG_PICKER,
   ARTICLE_TYPE_PICKER,
   ARTICLE_TYPE_WITH_ENGLISH_PICKER,
-} from '../../../constants/constants';
+} from 'constants/constants';
 import {
   WriteExtraWrapper,
   TagWrapper,

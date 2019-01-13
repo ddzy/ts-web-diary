@@ -14,7 +14,7 @@ import {
   ActionRightBox,
   ActionTimeIconBox,
 } from './style';
-import { formatTime } from 'src/utils/utils';
+import { formatTime } from 'utils/utils';
 import {
   ICommentListItemProps,
 } from '../BaseCommentItem';

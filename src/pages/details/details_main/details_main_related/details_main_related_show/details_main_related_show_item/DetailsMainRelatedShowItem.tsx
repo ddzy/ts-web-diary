@@ -23,12 +23,12 @@ import {
 } from './style';
 import {
   IStaticArticleInfoRelatedArticlesOptions,
-} from '../../../../Details.service';
+} from 'pages/details/Details.service';
 import {
   MERGED_ARTICLE_TAG,
   ARTICLE_TYPE_EN_TO_CN,
-} from 'src/constants/constants';
-import { formatTime } from 'src/utils/utils';
+} from 'constants/constants';
+import { formatTime } from 'utils/utils';
 
 
 export interface IDetailsMainRelatedShowItemProps extends IStaticArticleInfoRelatedArticlesOptions {

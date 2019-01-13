@@ -20,9 +20,7 @@ import {
   PopContentListItem,
   PopContentListSpan,
 } from './style';
-import {
-  MERGED_ARTICLE_TAG,
-} from '../../../../constants/constants';
+import { MERGED_ARTICLE_TAG } from 'constants/constants';
 
 
 export interface IHeaderMainSearchProps {

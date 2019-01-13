@@ -17,7 +17,7 @@ import Quill, { Sources, Delta } from 'quill';
 import {
   WriteEditWrapper,
 } from './style';
-import BaseLoading from 'src/components/widget/base_loading/BaseLoading';
+import BaseLoading from 'components/widget/base_loading/BaseLoading';
 
 
 export interface IWriteEditProps extends FormComponentProps {

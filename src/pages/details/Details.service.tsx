@@ -1,7 +1,7 @@
-import { query } from "src/services/request";
+import { query } from "services/request";
 import {
   IGlobalStaticServiceReturns,
-} from "src/service";
+} from "service";
 
 
 // ** Common Types Defines **

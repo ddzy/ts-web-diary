@@ -10,7 +10,7 @@ import {
   MeArticleContainer,
 } from './style';
 import MeArticleList from './me_dashboard_article/MeArticleList';
-import { isArray } from '../../../utils/utils';
+import { isArray } from 'utils/utils';
 import MyCollectionList from './me_dashboard_collection/MeCollectionList';
 
 

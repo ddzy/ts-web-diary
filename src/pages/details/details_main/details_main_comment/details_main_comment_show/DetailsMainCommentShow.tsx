@@ -13,12 +13,12 @@ import {
   ShowLoadMoreBox,
   ShowLoadMoreText,
 } from './style';
-import { isArray } from 'src/utils/utils';
+import { isArray } from 'utils/utils';
 import DetailsMainCommentsShowItem from './details_main_comment_show_item/DetailsMainCommentShowItem';
 import {
   ISendReplyParams,
   IStaticArticleInfoCommentsOptions,
-} from '../../../Details.service';
+} from 'pages/details/Details.service';
 
 
 export interface IDetailsMainCommentShowProps {

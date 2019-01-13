@@ -1,12 +1,5 @@
-import { query } from "src/services/request";
+import { query } from "services/request";
 
-
-/**
- * 获取热搜
- */
-// export function serviceHandleGetHotSearchArticles() {
-
-// }
 
 /**
  * 获取用户搜索

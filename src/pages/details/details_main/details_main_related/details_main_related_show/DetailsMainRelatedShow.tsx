@@ -15,10 +15,10 @@ import {
 import {
   IStaticArticleInfoRelatedArticlesOptions,
   serviceHandleGetMoreRelatedArticles,
-} from '../../../Details.service';
+} from 'pages/details/Details.service';
 import {
   PAGE_SIZE,
-} from '../../../../../constants/constants';
+} from 'constants/constants';
 import DetailsMainRelatedShowItem from './details_main_related_show_item/DetailsMainRelatedShowItem';
 
 

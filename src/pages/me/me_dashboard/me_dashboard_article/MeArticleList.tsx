@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { 
-  Row, 
-  Col, 
-  Card, 
-  Button, 
-  Divider, 
-  Icon, 
-  Tag, 
+import {
+  Row,
+  Col,
+  Card,
+  Button,
+  Divider,
+  Icon,
+  Tag,
   Popconfirm,
 } from 'antd';
 import { Link } from 'react-router-dom';
@@ -23,8 +23,8 @@ import {
   MeArticleControlBox,
   MeArticleControl
 } from './style';
-import { MERGED_ARTICLE_TAG } from '../../../../constants/constants';
-import { formatTime } from '../../../../utils/utils';
+import { MERGED_ARTICLE_TAG } from 'constants/constants';
+import { formatTime } from 'utils/utils';
 
 
 export interface IMeArticleListProps {
@@ -63,9 +63,9 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
       .split(',')
       .map((item) => {
         return (
-          <Tag 
+          <Tag
             key={item}
-            style={{ marginLeft: '3px !important' }} 
+            style={{ marginLeft: '3px !important' }}
             color={MERGED_ARTICLE_TAG[item]}
           >{item}</Tag>
         );
@@ -90,11 +90,11 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
                 </MeArticleWatchTip>
               </MeArticleWatchBox>
             </Col>
-  
+
             {/* 文章信息 */}
             <Col span={18} style={{ paddingLeft: '8px' }}>
               <MeArticleContentBox>
-                <ContentTip>                 
+                <ContentTip>
                   <Icon type="tag-o" style={{ marginLeft: '5px' }} />
                   {this.props.type}
                   <Divider type="vertical" />
@@ -109,11 +109,11 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
 
                 </ContentTip>
                 <ContentTitle>
-                  <Link 
-                    to={`/details/${this.props.id}`} 
-                    style={{ 
+                  <Link
+                    to={`/details/${this.props.id}`}
+                    style={{
                       fontWeight: 'bold',
-                      fontSize: '20px', 
+                      fontSize: '20px',
                       color: 'initial'
                     }}
                   >
@@ -125,7 +125,7 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
                 </ContentTag>
               </MeArticleContentBox>
             </Col>
-  
+
             {/* 文章管理 */}
             <Col span={4} style={{ height: '100%' }}>
               <MeArticleControlBox>
@@ -141,13 +141,13 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
                       )
                     }
                   >
-                    <Button 
+                    <Button
                       htmlType="button"
                       type="ghost"
                       size="small"
                     >编辑</Button>
                   </Popconfirm>
-                  <Popconfirm 
+                  <Popconfirm
                     title="确定要删除文章吗?"
                     cancelText="算了"
                     okText="确定"

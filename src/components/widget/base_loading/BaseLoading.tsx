@@ -7,7 +7,7 @@ import {
   MainContentItem,
   LOADING,
 } from './style';
-import { getWindowWH } from 'src/utils/utils';
+import { getWindowWH } from 'utils/utils';
 
 
 export interface IBaseLoadingProps {

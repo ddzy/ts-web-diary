@@ -19,8 +19,8 @@ import {
   ARTICLE_TYPE_PICKER,
   MERGED_ARTICLE_TAG,
   ARTICLE_TYPE_WITH_ENGLISH_PICKER,
-} from 'src/constants/constants';
-import { formatTime } from 'src/utils/utils';
+} from 'constants/constants';
+import { formatTime } from 'utils/utils';
 
 
 export interface IDetailsMainTitleProps {

@@ -18,7 +18,7 @@ import {
   IStaticArticleInfoCommentsOptions,
   IStaticArticleInfoRelatedArticlesOptions,
 } from '../Details.service';
-import QuillImageBlot from '../../../components/write/write_edit/QuillImageBlot';
+import QuillImageBlot from 'components/write/write_edit/QuillImageBlot';
 
 Quill.register(QuillImageBlot, true);
 

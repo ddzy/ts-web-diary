@@ -8,7 +8,7 @@ import {
 import {
   HomeWrapper,
 } from './style';
-import { PAGE_SIZE } from 'src/constants/constants';
+import { PAGE_SIZE } from 'constants/constants';
 
 
 export interface IHomeProps {

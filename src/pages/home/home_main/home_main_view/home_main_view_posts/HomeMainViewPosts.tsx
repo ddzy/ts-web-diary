@@ -15,12 +15,12 @@ import {
   GlobalStyleSet,
   PostsWrapper,
 } from './style';
-import { formatTime } from 'src/utils/utils';
-import { PAGE_SIZE } from 'src/constants/constants';
+import { formatTime } from 'utils/utils';
+import { PAGE_SIZE } from 'constants/constants';
 import {
   IStaticArticleListOptions,
   serviceHandleGetArticleList,
-} from 'src/pages/home/Home.service';
+} from 'pages/home/Home.service';
 
 
 export interface IHomeMainViewPostsProps extends RouteComponentProps<any> {

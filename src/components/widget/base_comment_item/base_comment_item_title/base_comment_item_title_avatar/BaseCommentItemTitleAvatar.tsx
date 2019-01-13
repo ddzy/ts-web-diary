@@ -36,7 +36,7 @@ import {
 import {
   serviceHandleGetCommentUserInfo,
   serviceHandleCommentUserFollow,
-} from 'src/pages/details/Details.service';
+} from 'pages/details/Details.service';
 
 
 export interface IBaseCommentItemTitleAvatarProps extends ICommentListItemProps { };

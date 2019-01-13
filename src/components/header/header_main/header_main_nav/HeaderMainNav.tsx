@@ -9,7 +9,7 @@ import {
   MainNavItem,
   MainNavList,
 } from './style';
-import headerNavConfig from '../../../../config/headerNav.config';
+import headerNavConfig from 'config/headerNav.config';
 
 
 export interface IHeaderMainNavProps {
