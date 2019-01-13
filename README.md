@@ -62,7 +62,7 @@
 - [x] Decorator重构所有组件, 待完成withRouter
 - [x] Details下相关文章获取, 分页
 - [x] 后台model重构
-- [ ] @重构长路径
+- [x] 绝对路径重构import, 避免路径过长
 - [ ] DetailsComment BUG: 单个reply加载更多处理
 - [ ] 个人中心上传无法上传头像(```BUG```)
 - [ ] 右侧action重构
