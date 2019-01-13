@@ -1,6 +1,6 @@
 ## 实时发布文章的交流平台
 ## Tip
-> 最近更新于 19/1/11
+> 最近更新于 19/1/13
 ## Todo
 - [x] 自定义配置BaseCommentInput_style
 - [x] 动态添加回复按钮click样式
@@ -61,6 +61,8 @@
 - [x] Decorator重构所有组件, 已完成重构connect
 - [x] Decorator重构所有组件, 待完成withRouter
 - [x] Details下相关文章获取, 分页
+- [ ] 后台model重构
+- [ ] @重构长路径
 - [ ] DetailsComment BUG: 单个reply加载更多处理
 - [ ] 右侧action重构
 - [ ] 后台路由重构
