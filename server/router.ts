@@ -2,7 +2,6 @@ import * as Router from 'koa-router';
 
 import homeController from './controller/home';
 import articleController from './controller/article';
-import registerController from './controller/register';
 import meController from './controller/me';
 import writeController from './controller/write';
 import checkAuthController from './controller/checkAuth';
@@ -24,7 +23,7 @@ import pageControllerNew from './controller/page/page';
 import pageHomeControllerNew from './controller/page/home/pageHome';
 import pageDetailsControllerNew from './controller/page/details/pageDetails';
 import loginControllerNew from './controller/login/login';
-
+import registerControllerNew from './controller/register/register';
 
 
 const router: Router = new Router({
@@ -36,7 +35,6 @@ const router: Router = new Router({
 router
   .use('/home', homeController.routes(), homeController.allowedMethods())
   .use('/article', articleController.routes(), articleController.allowedMethods())
-  .use('/register', registerController.routes(), registerController.allowedMethods())
   .use('/me', meController.routes(), meController.allowedMethods())
   .use('/write', writeController.routes(), writeController.allowedMethods())
   .use('/checkauth', checkAuthController.routes(), checkAuthController.allowedMethods())
@@ -59,6 +57,7 @@ router
   .use('/page/details', pageDetailsControllerNew.routes(), pageDetailsControllerNew.allowedMethods())
   .use('/search', searchControllerNew.routes(), searchControllerNew.allowedMethods())
   .use('/login', loginControllerNew.routes(), loginControllerNew.allowedMethods())
+  .use('/register', registerControllerNew.routes(), registerControllerNew.allowedMethods())
 
 
 export default router;
