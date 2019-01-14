@@ -235,7 +235,7 @@ export function serviceHandleGetOneArticleInfo(
 ): void {
   query({
     method: 'GET',
-    url: '/api/details',
+    url: '/api/page/details/info',
     data: {
       ...payload,
       userId: localStorage.getItem('userid'),
