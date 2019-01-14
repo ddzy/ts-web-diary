@@ -309,7 +309,8 @@ export function serviceHandleFixedControlBarStar(
 ): void {
   query({
     method: 'GET',
-    url: '/api/details/star',
+    // url: '/api/details/star',
+    url: '/api/action/star/article',
     data: {
       articleid: payload.articleId,
       liked: payload.liked,

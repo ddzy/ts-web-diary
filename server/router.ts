@@ -18,6 +18,9 @@ import articleUpdateControllerNew from './controller/article/update/articleUpdat
 import articleDeleteControllerNew from './controller/article/delete/articleDelete';
 import actionControllerNew from './controller/action/action';
 import actionStarControllerNew from './controller/action/star/actionStar';
+import actionStarArticleControllerNew from './controller/action/star/article/actionStarArticle';
+import actionStarCommentControllerNew from './controller/action/star/comment/actionStarComment';
+import actionStarReplyControllerNew from './controller/action/star/reply/actionStarReply';
 import searchControllerNew from './controller/search/search';
 import pageControllerNew from './controller/page/page';
 import pageHomeControllerNew from './controller/page/home/pageHome';
@@ -54,6 +57,10 @@ commentArticleControllerNew
   .use('/create', commentArticleCreateControllerNew.routes(), commentArticleCreateControllerNew.allowedMethods())
 replyArticleControllerNew
   .use('/create', replyArticleCreateControllerNew.routes(), replyArticleCreateControllerNew.allowedMethods())
+actionStarControllerNew
+  .use('/article', actionStarArticleControllerNew.routes(), actionStarArticleControllerNew.allowedMethods())
+  .use('/comment', actionStarCommentControllerNew.routes(), actionStarCommentControllerNew.allowedMethods())
+  .use('/reply', actionStarReplyControllerNew.routes(), actionStarReplyControllerNew.allowedMethods())
 
 
 // !! 二级路由 !!
