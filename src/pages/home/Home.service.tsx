@@ -57,7 +57,8 @@ export function serviceHandleGetHomeInfo(
   ) => void,
 ) {
   query({
-    url: '/api/home/info',
+    // url: '/api/home/info',
+    url: '/api/page/home/info',
     data: payload,
     jsonp: false,
     method: 'GET',
@@ -76,7 +77,8 @@ export function serviceHandleGetArticleList(
   ) => void,
 ) {
   query({
-    url: '/api/home/article/list',
+    // url: '/api/home/article/list',
+    url: '/api/article/info/list/more',
     method: 'GET',
     data: payload,
     jsonp: false,
