@@ -259,7 +259,8 @@ export function serviceHandleSendComment(
 ): void {
   query({
     method: 'POST',
-    url: '/api/details/comment/create',
+    // url: '/api/details/comment/create',
+    url: '/api/comment/article/create',
     jsonp: false,
     data: {
       userId: localStorage.getItem('userid') || '',
