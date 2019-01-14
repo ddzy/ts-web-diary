@@ -33,6 +33,10 @@ import commentArticleCreateControllerNew from './controller/comment/article/crea
 import replyControllerNew from './controller/reply/reply';
 import replyArticleControllerNew from './controller/reply/article/replyArticle';
 import replyArticleCreateControllerNew from './controller/reply/article/create/replyArticleCreate';
+import collectionControllerNew from './controller/collection/collection';
+import collectionCreateControllerNew from './controller/collection/create/collectionCreate';
+import collectionUpdateControllerNew from './controller/collection/update/collectionUpdate';
+import collectionInfoControllerNew from './controller/collection/info/collectionInfo';
 
 
 const router: Router = new Router({
@@ -78,6 +82,10 @@ commentControllerNew
   .use('/article', commentArticleControllerNew.routes(), commentArticleControllerNew.allowedMethods())
 replyControllerNew
   .use('/article', replyArticleControllerNew.routes(), replyArticleControllerNew.allowedMethods())
+collectionControllerNew
+  .use('/create', collectionCreateControllerNew.routes(), collectionCreateControllerNew.allowedMethods())
+  .use('/update', collectionUpdateControllerNew.routes(), collectionUpdateControllerNew.allowedMethods())
+  .use('/info', collectionInfoControllerNew.routes(), collectionInfoControllerNew.allowedMethods())
 
 
 // !! 重构路由 一级路由 !!
@@ -90,5 +98,5 @@ router
   .use('/register', registerControllerNew.routes(), registerControllerNew.allowedMethods())
   .use('/comment', commentControllerNew.routes(), commentControllerNew.allowedMethods())
   .use('/reply', replyControllerNew.routes(), replyControllerNew.allowedMethods())
-
+  .use('/collection', collectionControllerNew.routes(), collectionControllerNew.allowedMethods())
 export default router;

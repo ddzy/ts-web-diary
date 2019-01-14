@@ -332,7 +332,8 @@ export function serviceHandleCreateCollection(
   callback?: (res: ICreateCollectionReturns) => void,
 ): void {
   query({
-    url: '/api/details/collection/create',
+    // url: '/api/details/collection/create',
+    url: '/api/collection/create',
     method: 'GET',
     jsonp: false,
     data: {
@@ -357,7 +358,8 @@ export function serviceHandleSaveToCollection(
 ): void {
   query({
     method: 'POST',
-    url: '/api/details/collection/save',
+    // url: '/api/details/collection/save',
+    url: '/api/collection/update',
     jsonp: false,
     data: {
       userid: localStorage.getItem('userid'),
@@ -379,7 +381,8 @@ export function serviceHandleGetCollectionList(
 ): void {
   query({
     method: 'GET',
-    url: '/api/details/collection/info',
+    // url: '/api/details/collection/info',
+    url: '/api/collection/info',
     jsonp: false,
     data: {
       userId: payload.userId
