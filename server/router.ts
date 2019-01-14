@@ -52,6 +52,11 @@ commentArticleControllerNew
 
 
 // !! 二级路由 !!
+articleControllerNew
+  .use('/create', articleCreateControllerNew.routes(), articleCreateControllerNew.allowedMethods())
+  .use('/info', articleInfoControllerNew.routes(), articleInfoControllerNew.allowedMethods())
+  .use('/update', articleUpdateControllerNew.routes(), articleUpdateControllerNew.allowedMethods())
+  .use('/delete', articleDeleteControllerNew.routes(), articleDeleteControllerNew.allowedMethods())
 commentControllerNew
   .use('/article', commentArticleControllerNew.routes(), commentArticleControllerNew.allowedMethods())
 
@@ -59,10 +64,6 @@ commentControllerNew
 // !! 重构路由 一级路由 !!
 router
   .use('/article', articleControllerNew.routes(), articleControllerNew.allowedMethods())
-  .use('/article/create', articleCreateControllerNew.routes(), articleCreateControllerNew.allowedMethods())
-  .use('/article/info', articleInfoControllerNew.routes(), articleInfoControllerNew.allowedMethods())
-  .use('/article/update', articleUpdateControllerNew.routes(), articleUpdateControllerNew.allowedMethods())
-  .use('/article/delete', articleDeleteControllerNew.routes(), articleDeleteControllerNew.allowedMethods())
   .use('/action', actionControllerNew.routes(), actionControllerNew.allowedMethods())
   .use('/action/star', actionStarControllerNew.routes(), actionStarControllerNew.allowedMethods())
   .use('/page', pageControllerNew.routes(), pageControllerNew.allowedMethods())
