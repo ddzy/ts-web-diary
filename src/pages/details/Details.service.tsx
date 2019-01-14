@@ -428,7 +428,8 @@ export function serviceHandleCommentUserFollow(
 ): void {
   query({
     method: 'POST',
-    url: '/api/details/comment/user/follow',
+    // url: '/api/details/comment/user/follow',
+    url: '/api/action/follow/user',
     jsonp: false,
     data: {
       ...payload,
