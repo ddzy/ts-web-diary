@@ -27,6 +27,9 @@ import registerControllerNew from './controller/register/register';
 import commentControllerNew from './controller/comment/comment';
 import commentArticleControllerNew from './controller/comment/article/commentArticle';
 import commentArticleCreateControllerNew from './controller/comment/article/create/commentArticleCreate';
+import replyControllerNew from './controller/reply/reply';
+import replyArticleControllerNew from './controller/reply/article/replyArticle';
+import replyArticleCreateControllerNew from './controller/reply/article/create/replyArticleCreate';
 
 
 const router: Router = new Router({
@@ -49,6 +52,8 @@ router
 // !! 三级路由 !!
 commentArticleControllerNew
   .use('/create', commentArticleCreateControllerNew.routes(), commentArticleCreateControllerNew.allowedMethods())
+replyArticleControllerNew
+  .use('/create', replyArticleCreateControllerNew.routes(), replyArticleCreateControllerNew.allowedMethods())
 
 
 // !! 二级路由 !!
@@ -64,6 +69,8 @@ pageControllerNew
   .use('/details', pageDetailsControllerNew.routes(), pageDetailsControllerNew.allowedMethods())
 commentControllerNew
   .use('/article', commentArticleControllerNew.routes(), commentArticleControllerNew.allowedMethods())
+replyControllerNew
+  .use('/article', replyArticleControllerNew.routes(), replyArticleControllerNew.allowedMethods())
 
 
 // !! 重构路由 一级路由 !!
@@ -75,6 +82,6 @@ router
   .use('/login', loginControllerNew.routes(), loginControllerNew.allowedMethods())
   .use('/register', registerControllerNew.routes(), registerControllerNew.allowedMethods())
   .use('/comment', commentControllerNew.routes(), commentControllerNew.allowedMethods())
-
+  .use('/reply', replyControllerNew.routes(), replyControllerNew.allowedMethods())
 
 export default router;

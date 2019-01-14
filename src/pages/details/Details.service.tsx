@@ -284,7 +284,8 @@ export function serviceHandleSendReply(
 ): void {
   query({
     method: 'POST',
-    url: '/api/details/reply/create',
+    // url: '/api/details/reply/create',
+    url: '/api/reply/article/create',
     jsonp: false,
     data: {
       ...v,
