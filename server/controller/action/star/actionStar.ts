@@ -10,7 +10,7 @@ const actionStarController: Router = new Router();
 /**
  * 首页 -> 点赞
  */
-actionStarController.get('/article/star', async (ctx) => {
+actionStarController.get('/article', async (ctx) => {
 
   const {
     // userid,

@@ -56,7 +56,12 @@ articleControllerNew
   .use('/create', articleCreateControllerNew.routes(), articleCreateControllerNew.allowedMethods())
   .use('/info', articleInfoControllerNew.routes(), articleInfoControllerNew.allowedMethods())
   .use('/update', articleUpdateControllerNew.routes(), articleUpdateControllerNew.allowedMethods())
-  .use('/delete', articleDeleteControllerNew.routes(), articleDeleteControllerNew.allowedMethods())
+  .use('/delete', articleDeleteControllerNew.routes(), articleDeleteControllerNew.allowedMethods());
+actionControllerNew
+  .use('/star', actionStarControllerNew.routes(), actionStarControllerNew.allowedMethods())
+pageControllerNew
+  .use('/home', pageHomeControllerNew.routes(), pageHomeControllerNew.allowedMethods())
+  .use('/details', pageDetailsControllerNew.routes(), pageDetailsControllerNew.allowedMethods())
 commentControllerNew
   .use('/article', commentArticleControllerNew.routes(), commentArticleControllerNew.allowedMethods())
 
@@ -65,10 +70,7 @@ commentControllerNew
 router
   .use('/article', articleControllerNew.routes(), articleControllerNew.allowedMethods())
   .use('/action', actionControllerNew.routes(), actionControllerNew.allowedMethods())
-  .use('/action/star', actionStarControllerNew.routes(), actionStarControllerNew.allowedMethods())
   .use('/page', pageControllerNew.routes(), pageControllerNew.allowedMethods())
-  .use('/page/home', pageHomeControllerNew.routes(), pageHomeControllerNew.allowedMethods())
-  .use('/page/details', pageDetailsControllerNew.routes(), pageDetailsControllerNew.allowedMethods())
   .use('/search', searchControllerNew.routes(), searchControllerNew.allowedMethods())
   .use('/login', loginControllerNew.routes(), loginControllerNew.allowedMethods())
   .use('/register', registerControllerNew.routes(), registerControllerNew.allowedMethods())
