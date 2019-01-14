@@ -67,6 +67,7 @@
 - [ ] 个人中心上传无法上传头像(```BUG```)
 - [ ] 右侧action重构
 - [ ] 后台路由重构
+- [ ] 关注功能完善, 将关注的对象添加到```attentions```
 - [ ] React.lazy() 重构react-loadable
 - [ ] react-lazeload重构
 - [ ] DetailsCommentShow自身维护comments-state, 避免过长转递props
