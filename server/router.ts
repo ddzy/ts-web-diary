@@ -21,6 +21,7 @@ import actionStarControllerNew from './controller/action/star/actionStar';
 import actionStarArticleControllerNew from './controller/action/star/article/actionStarArticle';
 import actionStarCommentControllerNew from './controller/action/star/comment/actionStarComment';
 import actionStarReplyControllerNew from './controller/action/star/reply/actionStarReply';
+import actionAvatarControllerNew from './controller/action/avatar/actionAvatar';
 import searchControllerNew from './controller/search/search';
 import pageControllerNew from './controller/page/page';
 import pageHomeControllerNew from './controller/page/home/pageHome';
@@ -75,6 +76,7 @@ articleControllerNew
   .use('/delete', articleDeleteControllerNew.routes(), articleDeleteControllerNew.allowedMethods());
 actionControllerNew
   .use('/star', actionStarControllerNew.routes(), actionStarControllerNew.allowedMethods())
+  .use('/avatar', actionAvatarControllerNew.routes(), actionAvatarControllerNew.allowedMethods())
 pageControllerNew
   .use('/home', pageHomeControllerNew.routes(), pageHomeControllerNew.allowedMethods())
   .use('/details', pageDetailsControllerNew.routes(), pageDetailsControllerNew.allowedMethods())

@@ -404,7 +404,8 @@ export function serviceHandleGetCommentUserInfo(
 ): void {
   query({
     method: 'POST',
-    url: '/api/details/comment/user/info',
+    // url: '/api/details/comment/user/info',
+    url: '/api/action/avatar/userinfo',
     jsonp: false,
     data: {
       ...payload,
