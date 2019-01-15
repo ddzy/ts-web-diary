@@ -14,7 +14,7 @@ export interface IQuillImageBlotProps {
 /**
  * 自定义覆盖 insertEmbed
  */
-export default class QuillImageBlot extends InlineEmbed {
+export default class BaseQuillImageBlot extends InlineEmbed {
 
   public static blotName: string = 'image';
   public static tagName: string = 'img';
@@ -23,11 +23,11 @@ export default class QuillImageBlot extends InlineEmbed {
 
   public static create(value: IQuillImageBlotProps) {
     const node = super.create();
-    
+
     node.setAttribute('alt', value.alt);
     node.setAttribute('src', value.src);
     node.setAttribute('data-src', value["data-src"]);
-    node.setAttribute('class', value.class ? value.class : QuillImageBlot.className);
+    node.setAttribute('class', value.class ? value.class : BaseQuillImageBlot.className);
 
     return node;
   }

@@ -18,7 +18,7 @@ import {
   WriteEditWrapper,
 } from './style';
 import BaseLoading from 'components/widget/base_loading/BaseLoading';
-import QuillImageBlot from './QuillImageBlot';
+import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
 import {
   quillModuleConfig,
   quillFormatConfig,
@@ -27,7 +27,7 @@ import {
   IGetQiniuTokenReturns,
 } from '../Write.service';
 
-Quill.register(QuillImageBlot);
+Quill.register(BaseQuillImageBlot);
 
 
 export interface IWriteEditProps extends FormComponentProps {

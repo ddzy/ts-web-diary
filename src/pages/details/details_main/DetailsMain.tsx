@@ -18,9 +18,10 @@ import {
   IStaticArticleInfoCommentsOptions,
   IStaticArticleInfoRelatedArticlesOptions,
 } from '../Details.service';
-import QuillImageBlot from 'components/write/write_edit/QuillImageBlot';
+// import QuillImageBlot from 'components/write/write_edit/QuillImageBlot';
+import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
 
-Quill.register(QuillImageBlot, true);
+Quill.register(BaseQuillImageBlot, true);
 
 
 export interface IDetailsMainProps {
