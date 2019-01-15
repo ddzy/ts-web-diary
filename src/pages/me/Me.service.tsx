@@ -106,7 +106,8 @@ export function serviceHandleDeleteMyCollection(
 ) {
   query({
     method: 'GET',
-    url: '/api/me/collection/delete',
+    // url: '/api/me/collection/delete',
+    url: '/api/collection/delete/single',
     jsonp: false,
     data: {
       userid: localStorage.getItem('userid'),

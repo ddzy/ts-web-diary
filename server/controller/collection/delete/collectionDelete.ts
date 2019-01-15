@@ -3,6 +3,7 @@ import * as Router from 'koa-router';
 import {
   Collections,
   changeId,
+  User,
 } from '../../../model/model';
 
 const collectionDeleteController: Router = new Router();
@@ -37,6 +38,36 @@ collectionDeleteController.get('/article', async (ctx) => {
         articleId,
       },
     },
+  };
+
+});
+
+/**
+ * 删除单个收藏夹
+ */
+collectionDeleteController.get('/single', async (ctx) => {
+
+  const { userid, collectionId } = await ctx.request.query;
+
+  await User
+    .findByIdAndUpdate(
+      changeId(userid),
+      {
+        '$pull': { collections: collectionId },
+      },
+      { new: true },
+    )
+    .lean();
+
+  await Collections
+    .findByIdAndRemove(
+      changeId(collectionId),
+    );
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    collectionId,
   };
 
 });
