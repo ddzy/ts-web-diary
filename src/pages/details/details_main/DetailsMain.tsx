@@ -46,9 +46,7 @@ export interface IDetailsMainProps {
 const DetailsMain = React.memo<IDetailsMainProps>((
   props: IDetailsMainProps,
 ): JSX.Element => {
-  /**
-   * 初始化富文本editor内容
-   */
+  // ** 初始化富文本editor内容 **
   function initArticleContent(): string {
     const { articleContent } = props;
     const parsedArticleContent = articleContent
