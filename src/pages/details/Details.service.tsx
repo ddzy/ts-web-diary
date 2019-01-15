@@ -452,7 +452,8 @@ export function serviceHandleGetMoreComments(
 ): void {
   query({
     method: 'GET',
-    url: '/api/details/comment/info',
+    // url: '/api/details/comment/info',
+    url: '/api/comment/article/info/more',
     jsonp: false,
     data: {
       ...payload,

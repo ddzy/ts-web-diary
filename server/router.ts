@@ -32,6 +32,7 @@ import registerControllerNew from './controller/register/register';
 import commentControllerNew from './controller/comment/comment';
 import commentArticleControllerNew from './controller/comment/article/commentArticle';
 import commentArticleCreateControllerNew from './controller/comment/article/create/commentArticleCreate';
+import commentArticleInfoControllerNew from './controller/comment/article/info/commentArticleInfo';
 import replyControllerNew from './controller/reply/reply';
 import replyArticleControllerNew from './controller/reply/article/replyArticle';
 import replyArticleCreateControllerNew from './controller/reply/article/create/replyArticleCreate';
@@ -61,6 +62,7 @@ router
 // !! 三级路由 !!
 commentArticleControllerNew
   .use('/create', commentArticleCreateControllerNew.routes(), commentArticleCreateControllerNew.allowedMethods())
+  .use('/info', commentArticleInfoControllerNew.routes(), commentArticleInfoControllerNew.allowedMethods())
 replyArticleControllerNew
   .use('/create', replyArticleCreateControllerNew.routes(), replyArticleCreateControllerNew.allowedMethods())
 actionStarControllerNew
