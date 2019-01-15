@@ -476,7 +476,8 @@ export function serviceHandleGetMoreReplys(
 ): void {
   query({
     method: 'GET',
-    url: '/api/details/reply/info',
+    // url: '/api/details/reply/info',
+    url: '/api/reply/article/info/more',
     jsonp: false,
     data: {
       ...payload,

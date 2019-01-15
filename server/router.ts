@@ -36,6 +36,7 @@ import commentArticleInfoControllerNew from './controller/comment/article/info/c
 import replyControllerNew from './controller/reply/reply';
 import replyArticleControllerNew from './controller/reply/article/replyArticle';
 import replyArticleCreateControllerNew from './controller/reply/article/create/replyArticleCreate';
+import replyArticleInfoControllerNew from './controller/reply/article/info/replyArticleInfo';
 import collectionControllerNew from './controller/collection/collection';
 import collectionCreateControllerNew from './controller/collection/create/collectionCreate';
 import collectionUpdateControllerNew from './controller/collection/update/collectionUpdate';
@@ -65,6 +66,7 @@ commentArticleControllerNew
   .use('/info', commentArticleInfoControllerNew.routes(), commentArticleInfoControllerNew.allowedMethods())
 replyArticleControllerNew
   .use('/create', replyArticleCreateControllerNew.routes(), replyArticleCreateControllerNew.allowedMethods())
+  .use('/info', replyArticleInfoControllerNew.routes(), replyArticleInfoControllerNew.allowedMethods())
 actionStarControllerNew
   .use('/article', actionStarArticleControllerNew.routes(), actionStarArticleControllerNew.allowedMethods())
   .use('/comment', actionStarCommentControllerNew.routes(), actionStarCommentControllerNew.allowedMethods())
