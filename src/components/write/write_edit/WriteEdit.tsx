@@ -19,6 +19,10 @@ import {
 } from './style';
 import BaseLoading from 'components/widget/base_loading/BaseLoading';
 import QuillImageBlot from './QuillImageBlot';
+import {
+  quillModuleConfig,
+  quillFormatConfig,
+} from 'config/quill.config';
 
 Quill.register(QuillImageBlot);
 
@@ -67,40 +71,14 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
 
   public initModules = (): object => {
     return {
+      ...quillModuleConfig,
       toolbar: {
-        container: [
-          [{ 'header': [1, 2, 3, 4, false] },],
-          [
-            { 'size': ['small', false, 'large', 'huge'] }, {
-              'color': [
-                '#000', '#e70000', '#ff9a00', '#ff0', '#00bb00', '#1890ff', '#0066cd', '#facdcd', '#f06666',
-                '#bcbcbc', '#fff',
-              ]
-            }
-          ],
-          ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
-
-          [{ 'header': 1 }, { 'header': 2 }],
-
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-          ['link', 'image'],
-          ['clean']
-        ],
+        ...quillModuleConfig.toolbar,
         handlers: {
           image: this.handleEditorImageUpload,
         },
       },
     };
-  }
-
-  public initFormats = (): string[] => {
-    return [
-      'header', 'size', 'color',
-      'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block',
-      'header', 'header',
-      'list', 'bullet', 'indent',
-      'link', 'image',
-    ];
   }
 
   public componentDidMount(): void {
@@ -268,7 +246,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
                   ref={this.getEditorRef}
                   value={this.props.editContent}
                   modules={this.initModules()}
-                  formats={this.initFormats()}
+                  formats={quillFormatConfig}
                   placeholder="创作您的文章..."
                   onChange={this.handleChange}
                 />
