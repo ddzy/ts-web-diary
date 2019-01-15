@@ -41,6 +41,7 @@ import collectionControllerNew from './controller/collection/collection';
 import collectionCreateControllerNew from './controller/collection/create/collectionCreate';
 import collectionUpdateControllerNew from './controller/collection/update/collectionUpdate';
 import collectionInfoControllerNew from './controller/collection/info/collectionInfo';
+import collectionDeleteControllerNew from './controller/collection/delete/collectionDelete';
 
 
 const router: Router = new Router({
@@ -94,6 +95,7 @@ collectionControllerNew
   .use('/create', collectionCreateControllerNew.routes(), collectionCreateControllerNew.allowedMethods())
   .use('/update', collectionUpdateControllerNew.routes(), collectionUpdateControllerNew.allowedMethods())
   .use('/info', collectionInfoControllerNew.routes(), collectionInfoControllerNew.allowedMethods())
+  .use('/delete', collectionDeleteControllerNew.routes(), collectionDeleteControllerNew.allowedMethods())
 
 
 // !! 重构路由 一级路由 !!

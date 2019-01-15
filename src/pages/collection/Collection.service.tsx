@@ -50,7 +50,7 @@ interface IDeleteCollectionArticleReturns extends IGlobalStaticServiceReturns {
 
 
 /**
- * 获取收藏夹信息
+ * 获取我的单个收藏夹信息
  * @param collectionId 我的收藏夹id
  */
 export function serviceHandleGetCollectionInfo(
@@ -59,7 +59,8 @@ export function serviceHandleGetCollectionInfo(
 ) {
   query({
     method: 'GET',
-    url: '/api/collection/getinfo',
+    // url: '/api/collection/getinfo',
+    url: '/api/collection/info/single',
     jsonp: false,
     data: {
       userid: localStorage.getItem('userid'),
@@ -81,7 +82,8 @@ export function serviceHandleDeleteCollectionArticle(
   callback?: (data: IDeleteCollectionArticleReturns) => void,
 ) {
   query({
-    url: '/api/collection/article/delete',
+    // url: '/api/collection/article/delete',
+    url: '/api/collection/delete/article',
     method: 'GET',
     jsonp: false,
     data: {

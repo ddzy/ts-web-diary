@@ -382,7 +382,7 @@ export function serviceHandleGetCollectionList(
   query({
     method: 'GET',
     // url: '/api/details/collection/info',
-    url: '/api/collection/info',
+    url: '/api/collection/info/list',
     jsonp: false,
     data: {
       userId: payload.userId
