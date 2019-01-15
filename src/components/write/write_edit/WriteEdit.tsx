@@ -27,7 +27,7 @@ import {
   IGetQiniuTokenReturns,
 } from '../Write.service';
 
-Quill.register(BaseQuillImageBlot);
+Quill.register(BaseQuillImageBlot, true);
 
 
 export interface IWriteEditProps extends FormComponentProps {
