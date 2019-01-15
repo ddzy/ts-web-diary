@@ -41,6 +41,52 @@ articleInfoController.get('/list/more', async (ctx) => {
 });
 
 
+/**
+ * 获取推荐文章 -> 加载更多
+ */
+/**
+ * 文章详情 -> 相关推荐区 -> 推荐文章加载更多
+ */
+articleInfoController.get('/related/more', async (ctx) => {
+  const {
+    articleId,
+    page,
+    pageSize,
+  } = await ctx.request.query;
+
+  const getArticle = await Posts
+    .findById(articleId);
+  const getArticleType = await getArticle.type;
+  const getRelatedArticles = await Posts
+    .find(
+      { type: getArticleType, },
+      'author create_time type tag title img',
+    )
+    .populate([
+      {
+        path: 'author',
+        select: ['username'],
+      }
+    ])
+    .sort({
+      create_time: '-1',
+    })
+    .skip((Number(page - 1) * Number(pageSize)))
+    .limit(Number(pageSize))
+    .lean();
+
+  ctx.body = {
+    code: 0,
+    message: 'Success',
+    info: {
+      relatedArticlesInfo: {
+        articles: getRelatedArticles,
+        hasMore: getRelatedArticles.length !== 0,
+      },
+    },
+  };
+});
+
 
 
 export default articleInfoController;

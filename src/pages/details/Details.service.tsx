@@ -501,7 +501,8 @@ export function serviceHandleGetMoreRelatedArticles(
   query({
     jsonp: false,
     method: 'GET',
-    url: '/api/details/related/more',
+    // url: '/api/details/related/more',
+    url: '/api/article/info/related/more',
     data: {
       ...payload,
       userId: localStorage.getItem('userid'),
