@@ -14,7 +14,8 @@ export function serviceHandleSendArticle(
   callback?: (data: any) => void
 ) {
   query({
-    url: '/api/write/insert',
+    // url: '/api/write/insert',
+    url: '/api/article/create',
     method: 'POST',
     data: { ...data, userid: localStorage.getItem('userid') }, jsonp: false
   })

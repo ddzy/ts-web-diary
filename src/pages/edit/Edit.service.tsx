@@ -16,7 +16,8 @@ export function serviceHandleGetEditArticleInfo(
 ) {
     query({
       method: 'GET',
-      url: '/api/write/geteditinfo',
+      // url: '/api/write/geteditinfo',
+      url: '/api/article/info/edit',
       data: {
         articleid,
       },
@@ -38,7 +39,8 @@ export function serviceHandleSendEditArticleInfo(
 ) {
     query({
       method: 'POST',
-      url: '/api/write/update',
+      // url: '/api/write/update',
+      url: '/api/article/update',
       data: {
         userid: localStorage.getItem('userid'),
         ...data,

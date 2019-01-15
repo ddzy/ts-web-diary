@@ -1,6 +1,9 @@
 import * as Router from 'koa-router';
 
-import { Posts } from '../../../model/model';
+import {
+  Posts,
+  changeId,
+} from '../../../model/model';
 
 const articleInfoController: Router = new Router();
 
@@ -40,12 +43,8 @@ articleInfoController.get('/list/more', async (ctx) => {
   };
 });
 
-
 /**
  * 获取推荐文章 -> 加载更多
- */
-/**
- * 文章详情 -> 相关推荐区 -> 推荐文章加载更多
  */
 articleInfoController.get('/related/more', async (ctx) => {
   const {
@@ -87,6 +86,30 @@ articleInfoController.get('/related/more', async (ctx) => {
   };
 });
 
+/**
+ * 获取编辑的文章信息
+ */
+articleInfoController.get('/edit', async (ctx) => {
+  const { articleid } = ctx.request.query;
+
+  const articleInfo = await Posts
+    .findById(
+      changeId(articleid),
+      {
+        create_time: 0,
+        description: 0,
+        star: 0,
+        watch: 0,
+        '__v': 0,
+      }
+    );
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    articleInfo,
+  };
+});
 
 
 export default articleInfoController;
