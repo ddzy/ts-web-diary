@@ -107,7 +107,9 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     this.inputRef.focus();
   }
 
-  //// 处理富文本
+  /**
+   * 处理富文本
+   */
   public handleChange = (
     content: string,
     _delta: Delta,
@@ -120,7 +122,9 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     );
   }
 
-  //// 处理富文本图片上传
+  /**
+   * 处理富文本图片上传
+   */
   public handleEditorImageUpload = (): void => {
     const editor: Quill = this.editorRef.getEditor();
     const editorSelRange = editor.getSelection();
@@ -208,11 +212,16 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     });
   }
 
-  //// 获取input的ref
+  /**
+   * 获取input的ref
+   */
   public getInputinputRef = (el: Input): void => {
     this.inputRef = el;
   }
-  //// 获取editor的ref
+
+  /**
+   * 获取editor的ref
+   */
   public getEditorRef = (el: ReactQuill): void => {
     this.editorRef = el;
   }
