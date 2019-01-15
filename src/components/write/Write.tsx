@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Card, Row, Col, Button } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  Button,
+} from 'antd';
 
 import {
   WriteWrapper,
@@ -9,28 +14,32 @@ import WriteEdit from './write_edit/WriteEdit';
 import WriteUpload from './write_upload/WriteUpload';
 import WriteExtra from './write_extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
-import { query } from 'services/request';
+import {
+  IGetQiniuTokenReturns,
+  serviceHandleGetQiniuToken,
+} from './Write.service';
 
 
 export interface IWriteProps {
-  onSendArticle: (      // 发表文章
+  onSendArticle: (
     data: any,
   ) => void;
   username: string;
 
-  defaultEditValue?: any;     // 编辑文章默认数据
+  defaultEditValue?: any;
 };
 interface IWriteState {
-  editTitle?: string;        // 文章标题
-  editContent?: any;      // 文章内容
-  article_title_image?: string;          // 文章标题图片
-  extraContent?: {            // 附加信息
+  editTitle?: string;
+  editContent?: any;
+  article_title_image?: string;
+  extraContent?: {
     article_mode: { value: string },
     article_type: { value: string },
     article_tag: { value: string[] },
   };
 
-  editContentWithDelta?: object,    // delta数据, 解决光标跳动bug
+  // ** delta数据, 解决光标跳动bug **
+  editContentWithDelta?: object,
 };
 
 
@@ -41,7 +50,6 @@ class Write extends React.PureComponent<
   IWriteProps,
   IWriteState
   > {
-
   public readonly state = {
     editTitle: '',
     editContent: {},
@@ -58,7 +66,6 @@ class Write extends React.PureComponent<
       },
     },
   }
-
 
   public componentWillReceiveProps(nextProps: any) {
     if (nextProps.defaultEditValue) {
@@ -81,14 +88,16 @@ class Write extends React.PureComponent<
     }
   }
 
-
-  //// 处理标题栏表单
+  /**
+   * 处理标题栏表单
+   */
   public handleEditFormChange = (changedFields: any): void => {
     this.setState({ editTitle: changedFields.editTitle.value });
   }
 
-
-  //// 处理富文本编辑
+  /**
+   * 处理富文本编辑
+   */
   public handleEditContentChange = (
     content: string,
     delta: any,
@@ -99,8 +108,9 @@ class Write extends React.PureComponent<
     });
   }
 
-
-  //// 处理上传主题图片
+  /**
+   * 处理上传主题图片
+   */
   public handleTitleImageChange = (file: any): void => {
     const img = file.article_title_image.value.file;
 
@@ -109,9 +119,10 @@ class Write extends React.PureComponent<
     });
   }
 
-
-  //// 处理附加栏表单
-  public handleExtraFormChange = (changedFields: any): void => {
+  /**
+   * 处理附加栏表单
+   */
+   public handleExtraFormChange = (changedFields: any): void => {
     this.setState((prevState) => {
       return {
         extraContent: {
@@ -122,32 +133,27 @@ class Write extends React.PureComponent<
     });
   }
 
-
-  //// 提交文章
+  /**
+   * 提交文章
+   */
   public handleSend: React.MouseEventHandler = () => {
     this.props.onSendArticle(
       this.state,
     );
   }
 
-
-  //// 处理 富文本上传图片
+  /**
+   * 处理 富文本上传图片
+   */
   public handleEditContentImageUpload = (
-    callback: (info: any) => void,
+    callback: (
+      data: IGetQiniuTokenReturns,
+    ) => void,
   ): void => {
-    query({
-      // url: '/api/upload/get_qiniu_token',
-      url: '/api/upload/qiniu',
-      method: 'GET',
-      data: {
-        userid: localStorage.getItem('userid'),
-      },
-      jsonp: false,
-    }).then((res) => {
-      callback(res.data);
+    serviceHandleGetQiniuToken({}, (data) => {
+      callback(data);
     });
   }
-
 
   public render(): JSX.Element {
     return (

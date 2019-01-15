@@ -25,10 +25,12 @@ uploadController.get('/qiniu', async (ctx) => {
     ctx.body = {
       code: 0,
       message: 'Success',
-      data: {
-        uploadToken,
-        userid,
-        domain,
+      info: {
+        qiniuInfo: {
+          uploadToken,
+          userid,
+          domain,
+        },
       },
     };
   } else {

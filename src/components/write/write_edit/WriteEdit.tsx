@@ -23,6 +23,9 @@ import {
   quillModuleConfig,
   quillFormatConfig,
 } from 'config/quill.config';
+import {
+  IGetQiniuTokenReturns,
+} from '../Write.service';
 
 Quill.register(QuillImageBlot);
 
@@ -38,7 +41,7 @@ export interface IWriteEditProps extends FormComponentProps {
     delta: any,
   ) => void;
   onEditContentImageUpload: (
-    callback: (info: object) => void,
+    callback: (info: IGetQiniuTokenReturns) => void,
   ) => void;
 };
 interface IWriteEditState {
@@ -115,12 +118,11 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const files = target.files as FileList;
       const file = files.item(0) as File;
 
-      this.props.onEditContentImageUpload(async (info: any) => {
+      this.props.onEditContentImageUpload(async (data) => {
         const date: string = new Date().toLocaleDateString();
         const username: string = this.props.username;
         const key: string = `${date}/${username}/posts/${Date.now()}`;
-        const token: string = info.uploadToken;
-        const domain: string = info.domain;
+        const { uploadToken, domain } = data.info.qiniuInfo;
 
         // loading
         this.setState({ loadingVisible: true });
@@ -128,7 +130,7 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
         const $qiniu: qiniu.Observable = qiniu.upload(
           file,
           key,
-          token,
+          uploadToken,
           {},
           {},
         );
