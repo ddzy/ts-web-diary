@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { notification } from 'antd';
 import { History } from 'history';
+import { hot } from 'react-hot-loader';
 
 import {
   MeWrapper,
@@ -217,4 +218,4 @@ function mapStateToProps(state: any) {
 }
 
 
-export default Me;
+export default hot(module)(Me);

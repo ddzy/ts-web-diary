@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { History } from 'history';
 import { notification } from 'antd';
 import { match } from 'react-router';
+import { hot } from 'react-hot-loader';
 
 import Header from '../../components/header/Header';
 import Write from '../../components/write/Write';
@@ -85,4 +86,4 @@ function mapStateToProps(state: any) {
 }
 
 
-export default Edit;
+export default hot(module)(Edit);

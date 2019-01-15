@@ -7,18 +7,11 @@ import {
   Radio,
   message,
 } from 'antd';
-import {
-  Link,
-} from 'react-router-dom';
-import {
-  FormComponentProps,
-} from 'antd/lib/form';
-import {
-  connect,
-} from 'react-redux';
-import {
-  History,
-} from 'history';
+import { Link } from 'react-router-dom';
+import { FormComponentProps } from 'antd/lib/form';
+import { connect } from 'react-redux';
+import { History } from 'history';
+import { hot } from 'react-hot-loader';
 
 import bg_img from '../../static/images/bg_img.png';
 import {
@@ -163,4 +156,4 @@ function mapStateToProps(state: any) {
 }
 
 
-export default Register;
+export default hot(module)(Register);

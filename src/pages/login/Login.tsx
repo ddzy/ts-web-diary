@@ -10,6 +10,7 @@ import {
 import { Link, match } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form';
 import { History } from 'history';
+import { hot } from 'react-hot-loader';
 
 import bg_img from '../../static/images/bg_img.png';
 import {
@@ -161,4 +162,4 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
 }
 
 
-export default Form.create()(Login);
+export default hot(module)(Form.create()(Login));

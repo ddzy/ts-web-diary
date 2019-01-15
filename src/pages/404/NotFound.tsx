@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { History } from 'history';
+import { hot } from 'react-hot-loader';
 
 import bgImg from '../../static/images/bg_img.png';
 import {
@@ -63,4 +64,4 @@ const NotFound = React.memo<INotFoundProps>((
 });
 
 
-export default NotFound;
+export default hot(module)(NotFound);

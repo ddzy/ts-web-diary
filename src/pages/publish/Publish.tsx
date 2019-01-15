@@ -2,6 +2,7 @@ import * as React from 'react';
 import {  Modal, notification } from 'antd';
 import { connect } from 'react-redux';
 import { History } from 'history';
+import { hot } from 'react-hot-loader';
 
 import Write from '../../components/write/Write';
 import {
@@ -99,4 +100,4 @@ function mapStateToProps(state: any) {
 }
 
 
-export default Publish;
+export default hot(module)(Publish);

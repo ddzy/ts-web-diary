@@ -5,6 +5,7 @@ import {
 } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
+import { hot } from 'react-hot-loader';
 
 import DetailsMain from './details_main/DetailsMain';
 import DetailsAction from './details_action/DetailsAction';
@@ -141,4 +142,4 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default Details;
+export default hot(module)(Details);

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Location } from 'history';
+import { hot } from 'react-hot-loader';
 
 import Header from '../../components/header/Header';
 import {
@@ -94,4 +95,4 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
   }
 }
 
-export default Admin;
+export default hot(module)(Admin);

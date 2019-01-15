@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { match } from 'react-router';
 import { notification } from 'antd';
+import { hot } from 'react-hot-loader';
 
 import {
   CollectionContainer,
@@ -149,4 +150,4 @@ const Collection = React.memo<ICollectionProps>((
 });
 
 
-export default Collection;
+export default hot(module)(Collection);

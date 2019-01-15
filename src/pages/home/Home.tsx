@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { hot } from 'react-hot-loader';
 
 import HomeMain from './home_main/HomeMain';
 import {
@@ -101,4 +102,4 @@ class Home extends React.Component<IHomeProps, IHomeState> {
 
 }
 
-export default Home;
+export default hot(module)(Home);
