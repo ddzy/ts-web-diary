@@ -1,7 +1,13 @@
 const tsImportPluginFactory = require('ts-import-plugin')
 const { getLoader } = require("react-app-rewired");
+const rewireReactHotLoader = require('react-app-rewire-hot-loader')
 
-module.exports = function override(config) {
+
+module.exports = function override(config, env) {
+
+  // ** hot-module-replace **
+  config = rewireReactHotLoader(config, env);
+
   const tsLoader = getLoader(
     config.module.rules,
     (rule) =>
