@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 
 export const UserContainer = styled.div`
-  margin-top: 3.75rem;
 `;
-export const UserMain = styled.div``;
+export const UserContent = styled.div`
+  width: 62.5rem;
+  margin: 0.625rem auto 0;
+`;

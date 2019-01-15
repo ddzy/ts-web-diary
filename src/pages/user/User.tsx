@@ -4,8 +4,10 @@ import { hot } from 'react-hot-loader';
 
 import {
   UserContainer,
-  UserMain,
+  UserContent,
 } from './style';
+import UserProfile from './user_profile/UserProfile';
+import UserMain from './user_main/UserMain';
 
 
 export interface IUserProps extends RouteComponentProps<{
@@ -16,14 +18,12 @@ export interface IUserProps extends RouteComponentProps<{
 const User = React.memo<IUserProps>((
   props: IUserProps,
 ): JSX.Element => {
-  const { pathname } = props.location;
-
   return (
     <UserContainer>
-      <UserMain>
-        个人中心, 重构
-        {pathname}
-      </UserMain>
+      <UserContent>
+        <UserProfile />
+        <UserMain />
+      </UserContent>
     </UserContainer>
   );
 });
