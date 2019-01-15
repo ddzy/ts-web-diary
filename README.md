@@ -1,6 +1,6 @@
 ## 实时发布文章的交流平台
 ## Tip
-> 最近更新于 19/1/14
+> 最近更新于 19/1/15
 ## Todo
 - [x] 自定义配置BaseCommentInput_style
 - [x] 动态添加回复按钮click样式
@@ -63,6 +63,7 @@
 - [x] Details下相关文章获取, 分页
 - [x] 后台model重构
 - [x] 绝对路径重构import, 避免路径过长
+- [ ] 配置模块热替换
 - [ ] DetailsComment BUG: 单个reply加载更多处理
 - [ ] 个人中心上传无法上传头像(```BUG```)
 - [ ] 右侧action重构
