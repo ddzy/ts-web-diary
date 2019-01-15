@@ -60,6 +60,10 @@ const LoadableCollection = Loadable({
   loader: () => import('../pages/collection/Collection'),
   loading: () => null,
 });
+const LoadableUser = Loadable({
+  loader: () => import('../pages/user/User'),
+  loading: () => null,
+});
 
 
 export interface IRouterConfigProps { };
@@ -107,6 +111,20 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                       )} />
                       <Route path="/publish" component={LoadablePublish} />
                       <Route path="/me" component={LoadableMe} />
+                      <Route path="/user/:id" render={() => (
+                        <Switch>
+                          <Route exact path="/user/:id/activity" component={LoadableUser} />
+                          <Route exact path="/user/:id/post" component={LoadableUser} />
+                          <Route exact path="/user/:id/collection" component={LoadableUser} />
+                          <Route path="/user/:id/attention" render={() => (
+                            <Switch>
+                              <Route exact path="/user/:id/attention/user" component={LoadableUser} />
+                              <Route exact path="/user/:id/attention/topic" component={LoadableUser} />
+                            </Switch>
+                          )} />
+                          <Route exact path="/user/:id/follower" component={LoadableUser} />
+                        </Switch>
+                      )} />
                       <Route path="/details/:id" component={LoadableDetails} />
                       <Route path="/edit/:id" component={LoadableEdit} />
                       <Route path="/collection/:id" component={LoadableCollection} />

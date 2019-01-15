@@ -86,7 +86,8 @@ const HeaderMainAction = React.memo<IHeaderMainActionProps>((
    * 处理跳转至me页
    */
   function handleToMe(): void {
-    props.history.push('/me');
+    const userId: string = localStorage.getItem('userid') || '';
+    props.history.push(`/user/${userId}/activity`);
   }
 
   /**
