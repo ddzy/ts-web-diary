@@ -136,7 +136,8 @@ class Write extends React.PureComponent<
     callback: (info: any) => void,
   ): void => {
     query({
-      url: '/api/upload/get_qiniu_token',
+      // url: '/api/upload/get_qiniu_token',
+      url: '/api/upload/qiniu',
       method: 'GET',
       data: {
         userid: localStorage.getItem('userid'),

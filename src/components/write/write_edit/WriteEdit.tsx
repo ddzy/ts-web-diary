@@ -62,7 +62,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     loadingVisible: false,
   }
 
-
   public initModules = (): object => {
     return {
       toolbar: {
@@ -91,7 +90,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     };
   }
 
-
   public initFormats = (): string[] => {
     return [
       'header', 'size', 'color',
@@ -102,11 +100,9 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     ];
   }
 
-
   public componentDidMount(): void {
     this.inputRef.focus();
   }
-
 
   //// 处理富文本
   public handleChange = (
@@ -120,7 +116,6 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       editor.getContents(),
     );
   }
-
 
   //// 处理富文本图片上传
   public handleEditorImageUpload = (): void => {
@@ -210,17 +205,14 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     });
   }
 
-
   //// 获取input的ref
   public getInputinputRef = (el: Input): void => {
     this.inputRef = el;
   }
-
   //// 获取editor的ref
   public getEditorRef = (el: ReactQuill): void => {
     this.editorRef = el;
   }
-
 
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;

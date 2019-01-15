@@ -42,6 +42,7 @@ import collectionCreateControllerNew from './controller/collection/create/collec
 import collectionUpdateControllerNew from './controller/collection/update/collectionUpdate';
 import collectionInfoControllerNew from './controller/collection/info/collectionInfo';
 import collectionDeleteControllerNew from './controller/collection/delete/collectionDelete';
+import uploadControllerNew from './controller/upload/upload';
 
 
 const router: Router = new Router({
@@ -109,4 +110,5 @@ router
   .use('/comment', commentControllerNew.routes(), commentControllerNew.allowedMethods())
   .use('/reply', replyControllerNew.routes(), replyControllerNew.allowedMethods())
   .use('/collection', collectionControllerNew.routes(), collectionControllerNew.allowedMethods())
+  .use('/upload', uploadControllerNew.routes(), uploadControllerNew.allowedMethods())
 export default router;
