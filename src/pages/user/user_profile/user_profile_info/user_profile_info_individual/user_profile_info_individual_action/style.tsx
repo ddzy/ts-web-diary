@@ -8,6 +8,4 @@ export const CollapseHeaderTipText = styled.span`
   color: #999;
 `;
 
-export const CollapseHeaderButtonBox = styled.div`
-  padding-left: 6.25rem;
-`;
+export const CollapseHeaderButtonBox = styled.div``;

@@ -18,34 +18,33 @@ const IUserProfileInfoIndividualAction = React.memo<IUserProfileInfoIndividualAc
 
   function handleInitCollapseHeader(): JSX.Element {
     return (
-      <Row>
-        <Col span={12}>
-          <CollapseHeaderTipText>
-            查看详细信息
-          </CollapseHeaderTipText>
-        </Col>
-        <Col span={12}>
-          <CollapseHeaderButtonBox>
-            <Button
-              icon="edit"
-              type="ghost"
-            >编辑个人信息</Button>
-          </CollapseHeaderButtonBox>
-        </Col>
-      </Row>
+      <CollapseHeaderTipText>
+        查看详细信息
+      </CollapseHeaderTipText>
     );
   }
 
   return (
     <ActionContainer>
       <ActionContent>
-        <Collapse
-          bordered={false}
-        >
-          <Collapse.Panel header={handleInitCollapseHeader()} key="1">
-            个人信息详情
-          </Collapse.Panel>
-        </Collapse>
+        <Row>
+          <Col span={18}>
+            <Collapse bordered={false}>
+              <Collapse.Panel
+                header={handleInitCollapseHeader()}
+                key="1"
+              >个人信息详情</Collapse.Panel>
+            </Collapse>
+          </Col>
+          <Col span={6}>
+            <CollapseHeaderButtonBox>
+              <Button
+                type="dashed"
+                icon="edit"
+              >编辑个人信息</Button>
+            </CollapseHeaderButtonBox>
+          </Col>
+        </Row>
       </ActionContent>
     </ActionContainer>
   );
