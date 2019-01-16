@@ -66,6 +66,7 @@
 - [x] 配置模块热替换
 - [x] 七牛上传undefined的问题(```BUG```)
 - [ ] 个人中心大重构(```HAMMER```)
+- [ ] username缓存至localStorage, 避免过长props传递
 - [ ] antd-Empty重构空数据状态
 - [ ] DetailsComment BUG: 单个reply加载更多处理
 - [ ] 个人中心上传无法上传头像(```BUG```)
