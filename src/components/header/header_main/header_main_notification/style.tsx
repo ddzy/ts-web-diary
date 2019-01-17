@@ -14,5 +14,8 @@ export const MainNotificationMainListItem = styled.li`
   svg {
     width: 1.3rem;
     height: 1.3rem;
+  };
+  &:nth-of-type(1) {
+    text-align: right;
   }
 `;

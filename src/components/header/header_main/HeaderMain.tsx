@@ -45,10 +45,10 @@ const HeaderMain = React.memo<IHeaderMainProps>((
           <Col span={4}>
             <HeaderMainLogo />
           </Col>
-          <Col span={10}>
+          <Col span={12}>
             <HeaderMainNav {...props} />
           </Col>
-          <Col span={10}>
+          <Col span={8}>
             <HeaderMainAction {...props} />
           </Col>
         </Row>
@@ -62,13 +62,13 @@ const HeaderMain = React.memo<IHeaderMainProps>((
           <Col span={4}>
             <HeaderMainLogo />
           </Col>
-          <Col span={10}>
+          <Col span={8}>
             <HeaderMainSearch {...props} />
           </Col>
-          <Col span={4}>
+          <Col span={8}>
             <HeaderMainNotification />
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <HeaderMainChat />
           </Col>
         </Row>
