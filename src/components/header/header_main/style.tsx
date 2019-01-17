@@ -22,7 +22,7 @@ export const MainContainer = styled.div`
 `;
 
 export const MainInner = styled.div`
-  display: flex;
+  /* display: flex; */
   height: 100%;
 `;
 

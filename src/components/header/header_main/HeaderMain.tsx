@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Row, Col } from 'antd';
 
 import {
   MainContainer,
@@ -40,23 +41,37 @@ const HeaderMain = React.memo<IHeaderMainProps>((
       id="header-main-container"
     >
       <MainInner>
-        <HeaderMainLogo />
-        <HeaderMainNav
-          location={props.location}
-        />
-        <HeaderMainAction
-          authInfo={props.authInfo}
-        />
+        <Row>
+          <Col span={4}>
+            <HeaderMainLogo />
+          </Col>
+          <Col span={10}>
+            <HeaderMainNav {...props} />
+          </Col>
+          <Col span={10}>
+            <HeaderMainAction {...props} />
+          </Col>
+        </Row>
       </MainInner>
       <MainOuter>
-        <HeaderMainLogo />
-        <HeaderMainSearch
-          hotTags={props.hotTags}
-          searchedArticles={props.searchedArticles}
-          onSearch={props.onSearch}
-        />
-        <HeaderMainNotification />
-        <HeaderMainChat />
+        <Row
+          style={{
+            width: '100%',
+          }}
+        >
+          <Col span={4}>
+            <HeaderMainLogo />
+          </Col>
+          <Col span={10}>
+            <HeaderMainSearch {...props} />
+          </Col>
+          <Col span={4}>
+            <HeaderMainNotification />
+          </Col>
+          <Col span={6}>
+            <HeaderMainChat />
+          </Col>
+        </Row>
       </MainOuter>
     </MainContainer>
   );

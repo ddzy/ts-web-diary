@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 
 export const ActionContainer = styled.div`
-  flex: 2;
   display: flex;
   justify-content: space-between;
 `;

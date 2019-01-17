@@ -19,13 +19,13 @@ export const GlobalStyleSet = createGlobalStyle`
 
 
 export const MainNavContainer = styled.div`
-  flex: 6;
 `;
 
 export const MainNavList = styled.ul`
   display: flex;
   justify-content: flex-start;
   height: 100%;
+  margin-bottom: 0;
   font-size: 1rem;
 `;
 
@@ -56,12 +56,6 @@ export const MainNavItem = styled.li`
     right: -100%;
     bottom: 0;
   }
-  /* &:hover {
-    background-color: #1890ff;
-    a {
-      color:  #fff;
-    }
-  } */
   &:hover::before {
     left: 0;
     background-color: #1890ff;

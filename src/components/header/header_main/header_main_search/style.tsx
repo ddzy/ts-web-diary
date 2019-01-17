@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 
 export const SearchWrapper = styled.div`
-  flex: 4;
 `;
 export const SearchMain = styled.div``;
 export const SearchMainInput = styled.div``;

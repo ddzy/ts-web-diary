@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 
 export const MainNotificationWrapper = styled.div`
-  flex: 3;
 `;
 export const MainNotificationMainlist = styled.ul`
   box-sizing: border-box;
