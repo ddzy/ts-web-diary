@@ -65,6 +65,7 @@
 - [x] 绝对路径重构import, 避免路径过长
 - [x] 配置模块热替换
 - [x] 七牛上传undefined的问题(```BUG```)
+- [ ] Invalid prop component of type object supplied to Route, expected function. (```BUG```)
 - [ ] 个人中心大重构(```HAMMER```)
 - [ ] Header样式对齐调整(```FEATURE```)
 - [ ] username缓存至localStorage, 避免过长props传递
