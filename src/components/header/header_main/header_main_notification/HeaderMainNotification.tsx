@@ -1,13 +1,12 @@
 import * as React from 'react';
-import {
-  Icon,
-} from 'antd';
+import { Row, Col } from 'antd';
 
 import {
-  MainNotificationWrapper,
-  MainNotificationMainlist,
-  MainNotificationMainListItem,
+  NotificationWrapper,
+  NotificationMain,
 } from './style';
+import HeaderMainNotificationNotice from './header_main_notification_notice/HeaderMainNotificationNotice';
+import HeaderMainNotificationMessage from './header_main_notification_message/HeaderMainNotificationMessage';
 
 
 export interface IHeaderMainNotificationProps { };
@@ -17,22 +16,18 @@ export const HeaderMainNotification = React.memo((
   props: IHeaderMainNotificationProps,
 ): JSX.Element => {
   return (
-    <MainNotificationWrapper>
-      <MainNotificationMainlist>
-        <MainNotificationMainListItem>
-          <Icon
-            type="notification"
-            theme="filled"
-          />
-        </MainNotificationMainListItem>
-        <MainNotificationMainListItem>
-          <Icon
-            type="message"
-            theme="filled"
-          />
-        </MainNotificationMainListItem>
-      </MainNotificationMainlist>
-    </MainNotificationWrapper>
+    <NotificationWrapper>
+      <NotificationMain>
+        <Row>
+          <Col span={12}>
+            <HeaderMainNotificationNotice />
+          </Col>
+          <Col span={12}>
+            <HeaderMainNotificationMessage />
+          </Col>
+        </Row>
+      </NotificationMain>
+    </NotificationWrapper>
   );
 });
 

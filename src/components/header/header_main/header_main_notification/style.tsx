@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 
-export const MainNotificationWrapper = styled.div`
+export const NotificationWrapper = styled.div`
 `;
+export const NotificationMain = styled.div``;
 export const MainNotificationMainlist = styled.ul`
   box-sizing: border-box;
   display: flex;
