@@ -54,19 +54,19 @@ const UserMainContent = React.memo<IUserMainContentProps>((
             tab="动态"
             key="activity"
           >
-            <Route exact path="/user/:id/activity" component={(UserMainContentActivity)} />
+            <Route exact path="/user/:id/activity" component={() => <UserMainContentActivity />} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="文章"
             key="post"
           >
-            <Route exact path="/user/:id/post" component={(UserMainContentPost)} />
+            <Route exact path="/user/:id/post" component={() => <UserMainContentPost />} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="收藏"
             key="collection"
           >
-            <Route exact path="/user/:id/collection" component={(UserMainContentCollection)} />
+            <Route exact path="/user/:id/collection" component={() => <UserMainContentCollection />} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="关注"
@@ -82,4 +82,4 @@ const UserMainContent = React.memo<IUserMainContentProps>((
 });
 
 
-export default withRouter(UserMainContent);
+export default withRouter(UserMainContent || null);
