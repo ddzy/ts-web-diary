@@ -12,17 +12,12 @@ import UserMain from './user_main/UserMain';
 
 export interface IUserProps extends RouteComponentProps<{
   id: string,
-}> {
-  children?: React.ReactChildren;
-};
+}> {};
 
 
 const User = React.memo<IUserProps>((
   props: IUserProps,
 ): JSX.Element => {
-
-  console.log(props.children);
-
   return (
     <UserContainer>
       <UserContent>

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Tabs, } from 'antd';
-import { withRouter, RouteComponentProps, Switch, Route } from 'react-router-dom';
-import { CSSTransition, } from 'react-transition-group';
+import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
 
 import {
   ContentContainer,
@@ -21,6 +20,10 @@ const UserMainContent = React.memo<IUserMainContentProps>((
   props: IUserMainContentProps,
 ): JSX.Element => {
 
+  /**
+   * 处理tab切换, url改变
+   * @param path url地址
+   */
   function handleTabChange(
     path: string,
   ): void {
@@ -28,65 +31,50 @@ const UserMainContent = React.memo<IUserMainContentProps>((
     props.history.replace(`/user/${userId}/${path}`);
   }
 
+  /**
+   * 处理tab默认指向
+   */
+  function handleTabDefaultActive(): string {
+    const { pathname } = props.location;
+
+    return pathname.substring(
+      pathname.lastIndexOf('/') + 1,
+    );
+  }
+
   return (
     <ContentContainer>
       <ContentMain>
-            <Tabs
-              defaultActiveKey="activity"
-              size="large"
-              onChange={handleTabChange}
-              animated={false}
-            >
-              <Tabs.TabPane
-                tab="动态"
-                key="activity"
-              >
-
-            <CSSTransition
-              key={props.location.pathname}
-              classNames="fadeTranslateZ"
-              timeout={500}
-            >
-                  <Switch location={props.location}>
-                  <Route exact path="/user/:id/activity" component={(UserMainContentActivity)} />
-                  <Route exact path="/user/:id/post" component={(UserMainContentPost)} />
-                  <Route exact path="/user/:id/collection" component={(UserMainContentCollection)} />
-                </Switch>
-            </CSSTransition>
-            {props.children}
-              </Tabs.TabPane>
-              <Tabs.TabPane
-                tab="文章"
-                key="post"
-              > <Switch location={props.location}>
-                  <Route exact path="/user/:id/activity" component={(UserMainContentActivity)} />
-                  <Route exact path="/user/:id/post" component={(UserMainContentPost)} />
-                  <Route exact path="/user/:id/collection" component={(UserMainContentCollection)} />
-                </Switch>
-                {props.children}</Tabs.TabPane>
-              <Tabs.TabPane
-                tab="收藏"
-                key="collection"
-              >
-                <Switch location={props.location}>
-                  <Route exact path="/user/:id/activity" component={(UserMainContentActivity)} />
-                  <Route exact path="/user/:id/post" component={(UserMainContentPost)} />
-                  <Route exact path="/user/:id/collection" component={(UserMainContentCollection)} />
-                </Switch>
-                {props.children}
-              </Tabs.TabPane>
-              <Tabs.TabPane
-                tab="关注"
-                key="attention"
-              >
-                <Switch location={props.location}>
-                  <Route exact path="/user/:id/activity" component={(UserMainContentActivity)} />
-                  <Route exact path="/user/:id/post" component={(UserMainContentPost)} />
-                  <Route exact path="/user/:id/collection" component={(UserMainContentCollection)} />
-                </Switch>
-                {props.children}
-              </Tabs.TabPane>
-            </Tabs>
+        <Tabs
+          defaultActiveKey={handleTabDefaultActive()}
+          size="large"
+          onChange={handleTabChange}
+        >
+          <Tabs.TabPane
+            tab="动态"
+            key="activity"
+          >
+            <Route exact path="/user/:id/activity" component={(UserMainContentActivity)} />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab="文章"
+            key="post"
+          >
+            <Route exact path="/user/:id/post" component={(UserMainContentPost)} />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab="收藏"
+            key="collection"
+          >
+            <Route exact path="/user/:id/collection" component={(UserMainContentCollection)} />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab="关注"
+            key="attention"
+          >
+            关注路由
+          </Tabs.TabPane>
+        </Tabs>
       </ContentMain>
     </ContentContainer>
   );
