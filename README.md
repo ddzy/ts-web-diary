@@ -67,6 +67,7 @@
 - [x] 七牛上传undefined的问题(```BUG```)
 - [x] Invalid prop component of type object supplied to Route, expected function. (```BUG```)
 - [ ] 个人中心大重构(```HAMMER```)
+- [ ] Home二级路由调整
 - [ ] Header样式对齐调整(```FEATURE```)
 - [ ] username缓存至localStorage, 避免过长props传递
 - [ ] antd-Empty重构空数据状态
