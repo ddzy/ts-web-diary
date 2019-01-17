@@ -10,9 +10,6 @@ import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
-import UserMainContentActivity from 'pages/user/user_main/user_main_content/user_main_content_activity/UserMainContentActivity';
-import UserMainContentPost from 'pages/user/user_main/user_main_content/user_main_content_post/UserMainContentPost';
-import UserMainContentCollection from 'pages/user/user_main/user_main_content/user_main_content_collection/UserMainContentCollection';
 
 
 const LoadableApp = Loadable({
@@ -88,7 +85,7 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                 <TransitionGroup>
                   <CSSTransition
                     classNames='fadeTranslate'
-                    key={props.location.key}
+                    key={(/\/user\/.+/.test(props.location.pathname)) ? '' : props.location.pathname}
                     timeout={{
                       enter: 1000,
                       exit: 500,
@@ -114,7 +111,7 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                       )} />
                       <Route path="/publish" component={LoadablePublish} />
                       <Route path="/me" component={LoadableMe} />
-                      <Route path="/user/:id" children={() => (
+                      {/* <Route path="/user/:id" component={LoadableUser} children={() => (
                         <Switch>
                           <Route exact path="/user/:id/activity" component={UserMainContentActivity} />
                           <Route exact path="/user/:id/post" component={UserMainContentPost} />
@@ -127,7 +124,8 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                           )} />
                           <Route exact path="/user/:id/follower" component={LoadableUser} />
                         </Switch>
-                      )} />
+                      )} /> */}
+                      <Route path="/user/:id" component={LoadableUser} />
                       <Route path="/details/:id" component={LoadableDetails} />
                       <Route path="/edit/:id" component={LoadableEdit} />
                       <Route path="/collection/:id" component={LoadableCollection} />
