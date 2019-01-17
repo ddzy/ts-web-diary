@@ -1,21 +1,32 @@
 import * as React from 'react';
+import { Row, Col, } from 'antd';
 
 import {
   MainContainer,
   MainContent,
 } from './style';
+import UserMainContent from './user_main_content/UserMainContent';
+import UserMainExtra from './user_main_extra/UserMainExtra';
+
 
 export interface IUserProfileProps { };
 
 
-const UserProfile = React.memo<IUserProfileProps>((
+const UserMain = React.memo<IUserProfileProps>((
   props: IUserProfileProps,
 ): JSX.Element => {
 
   return (
     <MainContainer>
       <MainContent>
-        个人主区域
+        <Row gutter={6}>
+          <Col span={16}>
+            <UserMainContent />
+          </Col>
+          <Col span={8}>
+            <UserMainExtra />
+          </Col>
+        </Row>
       </MainContent>
     </MainContainer>
   );
@@ -23,4 +34,4 @@ const UserProfile = React.memo<IUserProfileProps>((
 });
 
 
-export default UserProfile;
+export default UserMain;
