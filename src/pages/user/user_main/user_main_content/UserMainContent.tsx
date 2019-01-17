@@ -7,6 +7,7 @@ import {
   ContentMain,
 } from './style';
 
+
 export interface IUserMainContentProps extends RouteComponentProps<any> {
   children?: React.ReactElement<HTMLElement>
 };

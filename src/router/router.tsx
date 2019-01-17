@@ -10,6 +10,9 @@ import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
+import UserMainContentActivity from 'pages/user/user_main/user_main_content/user_main_content_activity/UserMainContentActivity';
+import UserMainContentPost from 'pages/user/user_main/user_main_content/user_main_content_post/UserMainContentPost';
+import UserMainContentCollection from 'pages/user/user_main/user_main_content/user_main_content_collection/UserMainContentCollection';
 
 
 const LoadableApp = Loadable({
@@ -111,11 +114,11 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
                       )} />
                       <Route path="/publish" component={LoadablePublish} />
                       <Route path="/me" component={LoadableMe} />
-                      <Route path="/user/:id" render={() => (
+                      <Route path="/user/:id" children={() => (
                         <Switch>
-                          <Route exact path="/user/:id/activity" component={LoadableUser} />
-                          <Route exact path="/user/:id/post" component={LoadableUser} />
-                          <Route exact path="/user/:id/collection" component={LoadableUser} />
+                          <Route exact path="/user/:id/activity" component={UserMainContentActivity} />
+                          <Route exact path="/user/:id/post" component={UserMainContentPost} />
+                          <Route exact path="/user/:id/collection" component={UserMainContentCollection} />
                           <Route path="/user/:id/attention" render={() => (
                             <Switch>
                               <Route exact path="/user/:id/attention/user" component={LoadableUser} />
