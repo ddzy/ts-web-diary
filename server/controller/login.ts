@@ -33,8 +33,10 @@ loginController.post('/', async (ctx) => {
         username: result.username,
         token: jwt.sign({
           data: { userid: result._id },
-          exp: ~~(Date.now() / 1000) + (60 * 60),
-        }, SECRET_FOR_TOKEN),
+          // exp: ~~(Date.now() / 1000) + (60 * 60),
+        }, SECRET_FOR_TOKEN, {
+          expiresIn: '10h',
+        }),
       }
     : ctx.body = {
         code: 1,
