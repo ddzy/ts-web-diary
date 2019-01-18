@@ -10,6 +10,7 @@ import {
   Tooltip,
   Popover,
   Icon,
+  Empty,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import {
@@ -67,19 +68,20 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
         <CollectionsPopShowList>
           {
             collectionList.length !== 0
-            && collectionList.map((item: IStaticCollectionItem) => {
-              return (
-                <Popconfirm
-                  title="要添加到该收藏夹吗?"
-                  key={item._id}
-                  onConfirm={() => handleSaveToCollection(item._id)}
-                >
-                  <CollectionsPopShowListItem>
-                    {item.name}
-                  </CollectionsPopShowListItem>
-                </Popconfirm>
-              );
-            })
+              ? collectionList.map((item: IStaticCollectionItem) => {
+                return (
+                  <Popconfirm
+                    title="要添加到该收藏夹吗?"
+                    key={item._id}
+                    onConfirm={() => handleSaveToCollection(item._id)}
+                  >
+                    <CollectionsPopShowListItem>
+                      {item.name}
+                    </CollectionsPopShowListItem>
+                  </Popconfirm>
+                );
+              })
+              : <Empty description="没有更多数据..." />
           }
         </CollectionsPopShowList>
         <CollectionPopFormBox>
@@ -140,18 +142,18 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       serviceHandleCreateCollection({
         collectionName: collection_input,
       }, (data) => {
-          const {
-            collectionInfo,
-          } = data.info;
+        const {
+          collectionInfo,
+        } = data.info;
 
-          setState({
-            ...state,
-            collectionList: state.collectionList.concat(collectionInfo),
-          });
+        setState({
+          ...state,
+          collectionList: state.collectionList.concat(collectionInfo),
+        });
 
-          if (inputRef) {
-            inputRef.input.value = '';
-          }
+        if (inputRef) {
+          inputRef.input.value = '';
+        }
       });
     });
   }
