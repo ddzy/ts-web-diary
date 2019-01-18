@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/react-hot-loader": "^4.1.0",
-    "antd": "^3.9.1",
+    "antd": "^3.12.3",
     "axios": "^0.18.0",
     "draft-js-emoji-plugin": "^2.1.1",
     "draft-js-plugin-editor": "0.0.0",
