@@ -1,14 +1,33 @@
 import * as React from 'react';
+import * as Loadable from 'react-loadable';
 import { Tabs, } from 'antd';
-import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
+import {
+  withRouter,
+  RouteComponentProps,
+  Route,
+} from 'react-router-dom';
 
 import {
   ContentContainer,
   ContentMain,
 } from './style';
-import UserMainContentActivity from './user_main_content_activity/UserMainContentActivity';
-import UserMainContentPost from './user_main_content_post/UserMainContentPost';
-import UserMainContentCollection from './user_main_content_collection/UserMainContentCollection';
+
+const LoadableUserMainContentActivity = Loadable({
+  loader: () => import('./user_main_content_activity/UserMainContentActivity'),
+  loading: () => null,
+});
+const LoadableUserMainContentPost = Loadable({
+  loader: () => import('./user_main_content_post/UserMainContentPost'),
+  loading: () => null,
+});
+const LoadableUserMainContentCollection = Loadable({
+  loader: () => import('./user_main_content_collection/UserMainContentCollection'),
+  loading: () => null,
+});
+const LoadableUserMainContentAttention = Loadable({
+  loader: () => import('./user_main_content_attention/UserMainContentAttention'),
+  loading: () => null,
+});
 
 
 export interface IUserMainContentProps extends RouteComponentProps<any> {
@@ -54,25 +73,25 @@ const UserMainContent = React.memo<IUserMainContentProps>((
             tab="动态"
             key="activity"
           >
-            <Route exact path="/user/:id/activity" component={() => <UserMainContentActivity />} />
+            <Route exact path="/user/:id/activity" component={LoadableUserMainContentActivity} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="文章"
             key="post"
           >
-            <Route exact path="/user/:id/post" component={() => <UserMainContentPost />} />
+            <Route exact path="/user/:id/post" component={LoadableUserMainContentPost} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="收藏"
             key="collection"
           >
-            <Route exact path="/user/:id/collection" component={() => <UserMainContentCollection />} />
+            <Route exact path="/user/:id/collection" component={LoadableUserMainContentCollection} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="关注"
             key="attention"
           >
-            关注路由
+            <Route exact path="/user/:id/attention" component={LoadableUserMainContentAttention} />
           </Tabs.TabPane>
         </Tabs>
       </ContentMain>

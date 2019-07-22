@@ -1,30 +1,46 @@
 import * as React from 'react';
+import * as Loadable from 'react-loadable';
+// import * as InfiniteScroll from 'react-infinite-scroller';
 import {
-  Link,
+  Route,
+  Switch,
   withRouter,
   RouteComponentProps,
+  Redirect,
 } from 'react-router-dom';
-import {
-  Icon,
-  List,
-  Skeleton,
-  Empty,
-} from 'antd';
-import * as InfiniteScroll from 'react-infinite-scroller';
+// import {
+//   Icon,
+  // List,
+  // Skeleton,
+  // Empty,
+// } from 'antd';
 
 import {
-  GlobalStyleSet,
-  PostsWrapper,
+  // GlobalStyleSet,
+  // PostsWrapper,
 } from './style';
-import { formatTime } from 'utils/utils';
-import { PAGE_SIZE } from 'constants/constants';
+// import { formatTime } from 'utils/utils';
+// import { PAGE_SIZE } from 'constants/constants';
 import {
   IStaticArticleListOptions,
-  serviceHandleGetArticleList,
+  // serviceHandleGetArticleList,
 } from 'pages/home/Home.service';
 
+const LoadableHomeMainViewPostsFrontend = Loadable({
+  loader: () => import('./home_main_view_posts_frontend/HomeMainViewPostsFrontend'),
+  loading: () => null,
+});
+const LoadableHomeMainViewPostsBackend = Loadable({
+  loader: () => import('./home_main_view_posts_backend/HomeMainViewPostsBackend'),
+  loading: () => null,
+});
+const LoadableHomeMainViewPostsAndroid = Loadable({
+  loader: () => import('./home_main_view_posts_android/HomeMainViewPostsAndroid'),
+  loading: () => null,
+});
 
-export interface IHomeMainViewPostsProps extends RouteComponentProps<any> {
+
+export interface IHomeMainViewPostsProps extends RouteComponentProps {
   articleList: IStaticArticleListOptions[];
   globalLoading: boolean;
 };
@@ -55,61 +71,68 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
   /**
    * 初始化信息栏
    */
-  function initIconText(
-    data: { type: string, text: string, id?: string, tip: string }
-  ): JSX.Element {
-    return (
-      <span
-        data-type={data.type}
-        data-id={data.id}
-      >
-        <Icon
-          type={data.type}
-          style={{ marginRight: 8 }}
-        />
-        <span>{data.text}</span>
-      </span>
-    );
-  }
+  // function initIconText(
+  //   data: { type: string, text: string, id?: string, tip: string }
+  // ): JSX.Element {
+  //   return (
+  //     <span
+  //       data-type={data.type}
+  //       data-id={data.id}
+  //     >
+  //       <Icon
+  //         type={data.type}
+  //         style={{ marginRight: 8 }}
+  //       />
+  //       <span>{data.text}</span>
+  //     </span>
+  //   );
+  // }
 
   /**
    * 处理加载更多
    */
-  function handleLoadMore(
-    page: number,
-  ): void {
-    const {
-      pathname
-    } = props.location;
-    const type: string = pathname.replace('/home/', '');
+  // function handleLoadMore(
+  //   page: number,
+  // ): void {
+  //   const {
+  //     pathname
+  //   } = props.location;
+  //   const type: string = pathname.replace('/home/', '');
 
-    setState({
-      ...state,
-      loadMoreLoading: true,
-    });
+  //   setState({
+  //     ...state,
+  //     loadMoreLoading: true,
+  //   });
 
-    serviceHandleGetArticleList({
-      type,
-      page,
-      pageSize: PAGE_SIZE,
-    }, (data) => {
-      const {
-        articleList,
-        hasMore,
-      } = data.info;
+  //   serviceHandleGetArticleList({
+  //     type,
+  //     page,
+  //     pageSize: PAGE_SIZE,
+  //   }, (data) => {
+  //     const {
+  //       articleList,
+  //       hasMore,
+  //     } = data.info;
 
-      setState({
-        ...state,
-        hasMore,
-        articleList: state.articleList.concat(...articleList),
-        loadMoreLoading: false,
-      });
-    });
-  }
+  //     setState({
+  //       ...state,
+  //       hasMore,
+  //       articleList: state.articleList.concat(...articleList),
+  //       loadMoreLoading: false,
+  //     });
+  //   });
+  // }
 
   return (
     <React.Fragment>
-      <PostsWrapper>
+      <Switch>
+        <Route exact path="/home" render={() => <Redirect to="/home/frontend" />} />
+        <Route path="/home/frontend" component={LoadableHomeMainViewPostsFrontend} />
+        <Route path="/home/backend" component={LoadableHomeMainViewPostsBackend} />
+        <Route path="/home/android" component={LoadableHomeMainViewPostsAndroid} />
+      </Switch>
+
+      {/* <PostsWrapper>
         <InfiniteScroll
           loadMore={handleLoadMore}
           hasMore={state.hasMore && !state.loadMoreLoading}
@@ -205,10 +228,10 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
             }
           </Skeleton>
         </InfiniteScroll>
-      </PostsWrapper>
+      </PostsWrapper> */}
 
       {/* Global Style Set */}
-      <GlobalStyleSet />
+      {/* <GlobalStyleSet /> */}
     </React.Fragment>
   );
 
