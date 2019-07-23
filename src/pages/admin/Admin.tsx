@@ -47,6 +47,10 @@ const LoadableEdit = Loadable({
   loader: () => import('pages/edit/Edit'),
   loading: () => null,
 });
+const LoadableChat = Loadable({
+  loader: () => import('pages/chat/Chat'),
+  loading: () => null,
+});
 
 
 
@@ -141,6 +145,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
               <Redirect to="/home" />
             )} />
             <Route path="/home" component={LoadableHome} />
+            <Route path="/chat" component={LoadableChat} />
             <Route path="/user/:id" component={LoadableUser} />
             <Route exact path="/collection/:id" component={LoadableCollection} />
             <Route exact path="/details/:id" component={LoadableDetails} />
