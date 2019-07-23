@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Link,
+  NavLink,
 } from 'react-router-dom';
 
 import {
@@ -12,38 +12,11 @@ import {
 import headerNavConfig from 'config/headerNav.config';
 
 
-export interface IHeaderMainNavProps {
-  location: any;
-};
+export interface IHeaderMainNavProps {};
 interface IHeaderMainNavState {};
 
 
 class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMainNavState> {
-
-  public static getDerivedStateFromProps = (
-    nextProps: IHeaderMainNavProps
-  ) => {
-    HeaderMainNav._setNavItemStyle(nextProps.location.pathname);
-
-    return null;
-  }
-
-  /**
-   * 处理默认选中navItem项
-   */
-  public static _setNavItemStyle = (
-    pathname: string,
-  ): void => {
-    const oUl = document.getElementById('header-navbar');
-    const oLi = oUl && oUl.querySelectorAll('li');
-
-    oLi && Array.from(oLi).forEach((item) => {
-      pathname.includes(item.getAttribute('data-pane') || '')
-        ? item.classList.add('header-active')
-        : item.classList.remove('header-active');
-    });
-
-  }
 
   public readonly state: IHeaderMainNavState = {}
 
@@ -56,7 +29,10 @@ class HeaderMainNav extends React.PureComponent<IHeaderMainNavProps, IHeaderMain
         key={item.path}
         data-pane={item.path}
       >
-        <Link to={item.path}>{item.name}</Link>
+        <NavLink
+          to={item.path}
+          activeClassName={'header-nav-link-active'}
+        >{item.name}</NavLink>
       </MainNavItem>
 
     ));

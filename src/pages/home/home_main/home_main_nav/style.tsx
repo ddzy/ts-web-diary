@@ -3,11 +3,10 @@ import styled, {
 } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-  .home-nav-item-active {
+  .home-nav-link-active {
     color: #1890ff;
   }
-  .home-nav-item-default {
-    /* color: #71777c; */
+  .home-nav-link-default {
     color: initial;
   }
   .home-nav-bar-scrolled {
@@ -36,4 +35,10 @@ export const NavContentList = styled.ul`
 `;
 export const NavContentListItem = styled.li`
   padding: 0 .8rem;
+
+  a {
+    &:focus {
+      text-decoration: none;
+    }
+  }
 `;
