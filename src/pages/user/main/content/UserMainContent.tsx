@@ -13,19 +13,19 @@ import {
 } from './style';
 
 const LoadableUserMainContentActivity = Loadable({
-  loader: () => import('./user_main_content_activity/UserMainContentActivity'),
+  loader: () => import('./activity/UserMainContentActivity'),
   loading: () => null,
 });
 const LoadableUserMainContentPost = Loadable({
-  loader: () => import('./user_main_content_post/UserMainContentPost'),
+  loader: () => import('./post/UserMainContentPost'),
   loading: () => null,
 });
 const LoadableUserMainContentCollection = Loadable({
-  loader: () => import('./user_main_content_collection/UserMainContentCollection'),
+  loader: () => import('./collection/UserMainContentCollection'),
   loading: () => null,
 });
 const LoadableUserMainContentAttention = Loadable({
-  loader: () => import('./user_main_content_attention/UserMainContentAttention'),
+  loader: () => import('./attention/UserMainContentAttention'),
   loading: () => null,
 });
 

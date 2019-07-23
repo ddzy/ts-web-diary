@@ -5,8 +5,8 @@ import {
   ViewWrapper,
   ViewContent,
 } from './style';
-import HomeMainViewPosts from './home_main_view_posts/HomeMainViewPosts';
-import HomeMainViewExtra from './home_main_view_extra/HomeMainViewExtra';
+import HomeMainViewPosts from './posts/HomeMainViewPosts';
+import HomeMainViewExtra from './extra/HomeMainViewExtra';
 
 
 export interface IHomeMainViewProps extends RouteComponentProps {

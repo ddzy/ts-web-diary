@@ -19,7 +19,7 @@ import {
 import {
   PAGE_SIZE,
 } from 'constants/constants';
-import DetailsMainRelatedShowItem from './details_main_related_show_item/DetailsMainRelatedShowItem';
+import DetailsMainRelatedShowItem from './item/DetailsMainRelatedShowItem';
 
 
 export interface IDetailsMainRelatedShowProps extends RouteComponentProps<{

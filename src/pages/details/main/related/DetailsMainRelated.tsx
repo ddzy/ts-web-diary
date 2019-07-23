@@ -7,8 +7,8 @@ import {
 import {
   IStaticArticleInfoRelatedArticlesOptions,
 } from '../../Details.service';
-import DetailsMainRelatedTitle from './details_main_related_title/DetailsMainRelatedTitle';
-import DetailsMainRelatedShow from './details_main_related_show/DetailsMainRelatedShow';
+import DetailsMainRelatedTitle from './title/DetailsMainRelatedTitle';
+import DetailsMainRelatedShow from './show/DetailsMainRelatedShow';
 
 
 export interface IDetailsMainRelatedProps {

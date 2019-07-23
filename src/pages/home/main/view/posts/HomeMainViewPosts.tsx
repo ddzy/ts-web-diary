@@ -27,15 +27,15 @@ import {
 } from 'pages/home/Home.service';
 
 const LoadableHomeMainViewPostsFrontend = Loadable({
-  loader: () => import('./home_main_view_posts_frontend/HomeMainViewPostsFrontend'),
+  loader: () => import('./frontend/HomeMainViewPostsFrontend'),
   loading: () => null,
 });
 const LoadableHomeMainViewPostsBackend = Loadable({
-  loader: () => import('./home_main_view_posts_backend/HomeMainViewPostsBackend'),
+  loader: () => import('./backend/HomeMainViewPostsBackend'),
   loading: () => null,
 });
 const LoadableHomeMainViewPostsAndroid = Loadable({
-  loader: () => import('./home_main_view_posts_android/HomeMainViewPostsAndroid'),
+  loader: () => import('./android/HomeMainViewPostsAndroid'),
   loading: () => null,
 });
 

@@ -17,23 +17,23 @@ import {
 } from './style';
 
 const LoadableChatInterfaces = Loadable({
-  loader: () => import('./chat_interfaces/ChatInterfaces'),
+  loader: () => import('./interfaces/ChatInterfaces'),
   loading: () => null,
 });
 const LoadableChatFriends = Loadable({
-  loader: () => import('./chat_friends/ChatFriends'),
+  loader: () => import('./friends/ChatFriends'),
   loading: () => null,
 });
 const LoadableChatGroups = Loadable({
-  loader: () => import('./chat_groups/ChatGroups'),
+  loader: () => import('./groups/ChatGroups'),
   loading: () => null,
 });
 const LoadableChatCollections = Loadable({
-  loader: () => import('./chat_collections/ChatCollections'),
+  loader: () => import('./collections/ChatCollections'),
   loading: () => null,
 });
 const LoadableChatSettings = Loadable({
-  loader: () => import('./chat_settings/ChatSettings'),
+  loader: () => import('./settings/ChatSettings'),
   loading: () => null,
 });
 

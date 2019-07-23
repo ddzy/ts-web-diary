@@ -11,9 +11,9 @@ import {
   FixedControlList,
   FixedControlListItem,
 } from './style';
-import DetailsControlCollection from './details_control_collection/DetailsControlCollection';
-import DetailsControlComment from './details_control_comment/DetailsControlComment';
-import DetailsControlStar from './details_control_star/DetailsControlStar';
+import DetailsControlCollection from './collection/DetailsControlCollection';
+import DetailsControlComment from './comment/DetailsControlComment';
+import DetailsControlStar from './star/DetailsControlStar';
 
 
 export interface IDetailsControlProps {

@@ -5,8 +5,8 @@ import {
   IndividualContainer,
   IndividualContent,
 } from './style';
-import UserProfileInfoIndividualTitle from './user_profile_info_individual_title/UserProfileInfoIndividualTitle';
-import UserProfileInfoIndividualAction from './user_profile_info_individual_action/UserProfileInfoIndividualAction';
+import UserProfileInfoIndividualTitle from './title/UserProfileInfoIndividualTitle';
+import UserProfileInfoIndividualAction from './action/UserProfileInfoIndividualAction';
 
 
 export interface IUserProfileInfoIndividualProps { };

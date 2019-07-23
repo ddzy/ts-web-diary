@@ -8,8 +8,8 @@ import {
   UserContainer,
   UserContent,
 } from './style';
-import UserProfile from './user_profile/UserProfile';
-import UserMain from './user_main/UserMain';
+import UserProfile from './profile/UserProfile';
+import UserMain from './main/UserMain';
 
 
 export interface IUserProps extends RouteComponentProps {};

@@ -10,8 +10,8 @@ import {
 import {
   LeftCommentContainer,
 } from './style';
-import DetailsMainCommentTitle from './details_main_comment_title/DetailsMainCommentTitle';
-import DetailsMainCommentShow from './details_main_comment_show/DetailsMainCommentShow';
+import DetailsMainCommentTitle from './title/DetailsMainCommentTitle';
+import DetailsMainCommentShow from './show/DetailsMainCommentShow';
 import {
   ISendReplyParams,
   serviceHandleSendReply,

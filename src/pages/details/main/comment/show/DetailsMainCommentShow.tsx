@@ -14,7 +14,7 @@ import {
   ShowLoadMoreText,
 } from './style';
 import { isArray } from 'utils/utils';
-import DetailsMainCommentsShowItem from './details_main_comment_show_item/DetailsMainCommentShowItem';
+import DetailsMainCommentsShowItem from './item/DetailsMainCommentShowItem';
 import {
   ISendReplyParams,
   IStaticArticleInfoCommentsOptions,

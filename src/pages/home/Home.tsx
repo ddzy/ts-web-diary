@@ -4,7 +4,7 @@ import {
   RouteComponentProps,
 } from 'react-router';
 
-import HomeMain from './home_main/HomeMain';
+import HomeMain from './main/HomeMain';
 import {
   IServiceState,
   serviceHandleGetHomeInfo,

@@ -3,8 +3,8 @@ import {
   withRouter, RouteComponentProps,
 } from 'react-router-dom';
 
-import HomeMainNav from './home_main_nav/HomeMainNav';
-import HomeMainView from './home_main_view/HomeMainView';
+import HomeMainNav from './nav/HomeMainNav';
+import HomeMainView from './view/HomeMainView';
 import {
   MainWrapper,
   MainContent,

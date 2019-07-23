@@ -5,8 +5,8 @@ import {
   MainContainer,
   MainContent,
 } from './style';
-import UserMainContent from './user_main_content/UserMainContent';
-import UserMainExtra from './user_main_extra/UserMainExtra';
+import UserMainContent from './content/UserMainContent';
+import UserMainExtra from './extra/UserMainExtra';
 
 
 export interface IUserProfileProps { };

@@ -7,10 +7,10 @@ import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import 'highlight.js/styles/atom-one-light.css';
 
-import DetailsMainComment from './details_main_comment/DetailsMainComment';
-import DetailsMainRich from './details_main_rich/DetailsMainRich';
-import DetailsMainTitle from './details_main_title/DetailsMainTitle';
-import DetailsMainRelated from './details_main_related/DetailsMainRelated';
+import DetailsMainComment from './comment/DetailsMainComment';
+import DetailsMainRich from './rich/DetailsMainRich';
+import DetailsMainTitle from './title/DetailsMainTitle';
+import DetailsMainRelated from './related/DetailsMainRelated';
 import {
   DetailsLeftWrapper,
 } from './style';

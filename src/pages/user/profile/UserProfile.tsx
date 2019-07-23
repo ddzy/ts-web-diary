@@ -4,8 +4,8 @@ import {
   ProfileContainer,
   ProfileMain,
 } from './style';
-import UserProfileCover from './user_profile_cover/UserProfileCover';
-import UserProfileInfo from './user_profile_info/UserProfileInfo';
+import UserProfileCover from './cover/UserProfileCover';
+import UserProfileInfo from './info/UserProfileInfo';
 
 
 export interface IUserProfileProps { };

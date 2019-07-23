@@ -5,8 +5,8 @@ import {
   InfoWrapper,
   InfoContent,
 } from './style';
-import UserProfileInfoAvatar from './user_profile_info_avatar/UserProfileInfoAvatar';
-import UserProfileInfoIndividual from './user_profile_info_individual/UserProfileInfoIndividual';
+import UserProfileInfoAvatar from './avatar/UserProfileInfoAvatar';
+import UserProfileInfoIndividual from './individual/UserProfileInfoIndividual';
 
 
 export interface IUserProfileInfoProps { };

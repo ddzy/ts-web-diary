@@ -14,7 +14,7 @@ import {
   MainContentShowBox,
 } from './style';
 import collection_bg from '../../static/images/bg_img.png';
-import CollectionShowItem from './collection_show/collection_show_item/CollectionShowItem';
+import CollectionShowItem from './show/item/CollectionShowItem';
 
 import {
   IServiceState,
