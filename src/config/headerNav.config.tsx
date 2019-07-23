@@ -9,7 +9,7 @@ export interface IHeaderNavConfigStaticOptions {
 
 
 const headerNavConfig: IHeaderNavConfigStaticOptions[] = [
-  { path: '/home/frontend', name: '首页' },
+  { path: '/home', name: '首页' },
   { path: '/activities', name: '动态' },
   { path: '/topics', name: '话题' },
   { path: '/community', name: '社区' },

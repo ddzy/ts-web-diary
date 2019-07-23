@@ -7,9 +7,9 @@ import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 
-import DetailsMain from './details_main/DetailsMain';
-import DetailsAction from './details_action/DetailsAction';
-import DetailsControl from './details_control/DetailsControl';
+import DetailsMain from './main/DetailsMain';
+import DetailsAction from './action/DetailsAction';
+import DetailsControl from './control/DetailsControl';
 import {
   DetailsWrapper,
   DetailsContent,
