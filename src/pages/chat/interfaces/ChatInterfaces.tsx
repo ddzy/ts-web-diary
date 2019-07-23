@@ -4,6 +4,8 @@ import {
   InterfacesWrapper,
   InterfacesMain,
 } from './style';
+import ChatInterfacesNav from './nav/ChatInterfacesNav';
+import ChatInterfacesView from './view/ChatInterfacesView';
 
 
 export interface IChatInterfacesProps {
@@ -15,7 +17,8 @@ function ChatInterfaces(props: IChatInterfacesProps) {
   return (
     <InterfacesWrapper>
       <InterfacesMain>
-        聊天主视图
+        <ChatInterfacesNav />
+        <ChatInterfacesView />
       </InterfacesMain>
     </InterfacesWrapper>
   );

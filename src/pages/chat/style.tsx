@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const ChatWrapper = styled.div``;
 export const ChatMain = styled.div`
-  width: 60rem;
+  width: 75rem;
   margin: 1.25rem auto 0;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 0.75rem;
