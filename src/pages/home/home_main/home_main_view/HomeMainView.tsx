@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import {
   ViewWrapper,
@@ -8,7 +9,7 @@ import HomeMainViewPosts from './home_main_view_posts/HomeMainViewPosts';
 import HomeMainViewExtra from './home_main_view_extra/HomeMainViewExtra';
 
 
-export interface IHomeMainViewProps {
+export interface IHomeMainViewProps extends RouteComponentProps {
   articleList: any[];
   globalLoading: boolean;
 };
@@ -35,4 +36,4 @@ const HomeMainView = React.memo<IHomeMainViewProps>((
 });
 
 
-export default HomeMainView;
+export default withRouter(HomeMainView);

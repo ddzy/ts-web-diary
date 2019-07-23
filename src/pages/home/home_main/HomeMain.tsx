@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {
+  withRouter, RouteComponentProps,
+} from 'react-router-dom';
 
 import HomeMainNav from './home_main_nav/HomeMainNav';
 import HomeMainView from './home_main_view/HomeMainView';
@@ -11,7 +14,7 @@ import {
 } from '../Home.service';
 
 
-export interface IHomeMainProps {
+export interface IHomeMainProps extends RouteComponentProps {
   articleList: IStaticArticleListOptions[];
   globalLoading: boolean;
 };
@@ -37,4 +40,4 @@ const HomeMain = React.memo<IHomeMainProps>((
 });
 
 
-export default HomeMain;
+export default withRouter(HomeMain);

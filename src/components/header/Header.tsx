@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
+import {
   Affix,
 } from 'antd';
 
@@ -13,10 +17,7 @@ import {
 } from './Header.service';
 
 
-export interface IHeaderProps {
-  // ** 路由参数 **
-  location: any;
-
+export interface IHeaderProps extends RouteComponentProps {
   AuthRouteReducer: {
     isAuth: boolean;
     username: string;
@@ -75,6 +76,6 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
-)(Header) as React.ComponentClass<any>;
+)(Header) as React.ComponentClass<any>);

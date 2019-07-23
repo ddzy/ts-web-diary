@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { hot } from 'react-hot-loader';
+import {
+  RouteComponentProps,
+  withRouter,
+} from 'react-router';
 
 import {
   UserContainer,
@@ -10,9 +12,7 @@ import UserProfile from './user_profile/UserProfile';
 import UserMain from './user_main/UserMain';
 
 
-export interface IUserProps extends RouteComponentProps<{
-  id: string,
-}> {};
+export interface IUserProps extends RouteComponentProps {};
 
 
 const User = React.memo<IUserProps>((
@@ -29,4 +29,4 @@ const User = React.memo<IUserProps>((
 });
 
 
-export default hot(module)(User);
+export default withRouter(User);
