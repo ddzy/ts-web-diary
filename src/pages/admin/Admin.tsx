@@ -123,10 +123,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     }
   }
 
-  public componentDidUpdate() {
-    console.log('admin updated');
-  }
-
   public render(): JSX.Element {
     return (
       <AdminWrapper>

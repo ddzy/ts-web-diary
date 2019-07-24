@@ -8,3 +8,7 @@ export const ContentMain = styled.div`
   max-height: 450px;
   padding: 12px;
 `;
+export const ContentMainList = styled.ul``;
+export const ContentMainItem = styled.li`
+  margin-top: 12px;
+`;

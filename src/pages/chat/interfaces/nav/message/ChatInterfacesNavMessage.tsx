@@ -2,13 +2,13 @@ import * as React from 'react';
 import {
   List,
   Avatar,
+  Badge,
 } from 'antd';
 
 import {
   MessageWrapper,
   MessageMain,
 } from './style';
-import { formatTime } from 'utils/utils';
 
 
 export interface IChatInterfacesMessageProps { };
@@ -92,12 +92,13 @@ const ChatInterfacesMessage = React.memo((props: IChatInterfacesMessageProps) =>
             <List.Item key={item.id}>
               <List.Item.Meta
                 avatar={
-                  <Avatar src={item.avatar} />
+                  <Badge count={999}>
+                    <Avatar src={item.avatar} size="large" />
+                  </Badge>
                 }
                 title={item.title}
                 description={item.description}
               />
-              <div>{formatTime(Date.now())}</div>
             </List.Item>
           )}
         />

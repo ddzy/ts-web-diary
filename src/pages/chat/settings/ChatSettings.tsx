@@ -1,33 +1,36 @@
 import * as React from 'react';
-import {
-  Icon,
-} from 'antd';
 
 import {
   SettingsWrapper,
   SettingsMain,
+  SettingsMainList,
+  SettingsMainItem,
 } from './style';
+import ChatSettingsMessageTip from './message-tip/ChatSettingsMessageTip';
+import ChatSettingslogout from './logout/ChatSettingslogout';
 
 
 export interface IChatSettingsProps {
 
 };
 
-
-export default function ChatSettings(props: IChatSettingsProps) {
+const ChatSettings = React.memo((props: IChatSettingsProps) => {
   return (
     <SettingsWrapper>
       <SettingsMain>
-        <Icon
-          type="setting"
-          theme="filled"
-          style={{
-            color: '#1da57a',
-            fontSize: '20px',
-            cursor: 'pointer',
-          }}
-        />
+        <SettingsMainList>
+          <SettingsMainItem>
+            {/* 新消息通知 */}
+            <ChatSettingsMessageTip />
+          </SettingsMainItem>
+          <SettingsMainItem>
+            {/* 注销登录 */}
+            <ChatSettingslogout />
+          </SettingsMainItem>
+        </SettingsMainList>
       </SettingsMain>
     </SettingsWrapper>
   );
-}
+});
+
+export default ChatSettings;

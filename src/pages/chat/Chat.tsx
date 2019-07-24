@@ -113,6 +113,18 @@ const Chat = React.memo((props: IChatProps) => {
     props.history.push(`/chat/${type}`);
   }
 
+  /**
+   * 处理 - chat页一级路由与tabs联调
+   * [Bug]: 路由有时可能与tabs的默认展开面板不对应
+   */
+  function handleTabsDefaultActiveKey() {
+    const basePathname = ['interfaces', 'friends', 'groups', 'collections'];
+    const currentPathname = props.location.pathname;
+    const processedPathname = basePathname.find((v) => currentPathname.includes(v));
+
+    return processedPathname ? processedPathname : basePathname[0];
+  }
+
   return (
     <ChatWrapper>
       <ChatMain>
@@ -122,6 +134,7 @@ const Chat = React.memo((props: IChatProps) => {
           <Tabs
             tabPosition='left'
             size={'large'}
+            defaultActiveKey={handleTabsDefaultActiveKey()}
             onChange={handleTabsChange}
           >
             <Tabs.TabPane tab={_initTabPaneTitle('interfaces')} key="interfaces">
