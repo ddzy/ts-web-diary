@@ -42,12 +42,28 @@ const ChatCollections = React.memo((props: IChatCollectionsProps) => {
     type && props.history.push(`/chat/collections/${type}`);
   }
 
+  /**
+   * 处理 - 当前页路由与Collapse联调
+   * [Bug]: 路由有时可能与Collapse的默认展开面板不对应
+   */
+  function handleTabsDefaultActiveKey() {
+    const basePathname = ['images', 'files', 'texts'];
+    const currentPathname = props.location.pathname;
+    const processedPathname = basePathname.find((v) => currentPathname.includes(v));
+
+    return processedPathname ? [processedPathname] : [basePathname[0]];
+  }
+
   return (
     <CollectionsWrapper>
       <CollectionsMain>
         <Route exact path="/chat/collections" render={() => <Redirect to="/chat/collections/images" />} />
 
-        <Collapse accordion onChange={handleTabChange}>
+        <Collapse
+          accordion
+          defaultActiveKey={handleTabsDefaultActiveKey()}
+          onChange={handleTabChange}
+        >
           <Collapse.Panel header="收藏的图片" key="images">
             <Route path="/chat/collections/images" component={LoadableChatCollectionsImages} />
           </Collapse.Panel>

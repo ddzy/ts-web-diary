@@ -36,6 +36,18 @@ const ChatGroups = React.memo((props: IChatGroupsProps) => {
     props.history.push(`/chat/groups/${type}`);
   }
 
+  /**
+   * 处理 - 当前页路由与tabs联调
+   * [Bug]: 路由有时可能与tabs的默认展开面板不对应
+   */
+  function handleTabsDefaultActiveKey() {
+    const basePathname = ['joined', 'created'];
+    const currentPathname = props.location.pathname;
+    const processedPathname = basePathname.find((v) => currentPathname.includes(v));
+
+    return processedPathname ? processedPathname : basePathname[0];
+  }
+
   return (
     <GroupsWrapper>
       <GroupsMain>
@@ -45,6 +57,7 @@ const ChatGroups = React.memo((props: IChatGroupsProps) => {
           type="card"
           size="large"
           onChange={handleTabChange}
+          defaultActiveKey={handleTabsDefaultActiveKey()}
         >
           <Tabs.TabPane tab={'我加入的'} key="joined">
             <Route path="/chat/groups/joined" component={LoadableChatGroupsJoined} />
