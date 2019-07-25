@@ -11,7 +11,7 @@ export const MessageMain = styled.div`
   };
   svg {
     &:hover {
-      color: #1890ff;
+      color: #1DA57A;
     }
   }
 `;

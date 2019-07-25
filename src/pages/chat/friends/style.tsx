@@ -7,6 +7,6 @@ export const FriendsMain = styled.div``;
 export const FriendsMainTitle = styled.div``;
 export const FriendsMainTitleInner = styled.div``;
 export const FriendsMainTitleInnerText = styled.h1`
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #999;
 `;

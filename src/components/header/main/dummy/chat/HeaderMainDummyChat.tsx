@@ -15,11 +15,13 @@ import {
 
 export interface IHeaderMainChatProps extends RouteComponentProps { };
 
-
 const HeaderMainChat = React.memo<IHeaderMainChatProps>((
   props: IHeaderMainChatProps,
 ): JSX.Element => {
-  function handleToChatBtnClick() {
+  /**
+   * 处理 - 跳转至聊天室页
+   */
+  function handleToChatPage() {
     props.history.push('/chat');
   }
 
@@ -29,7 +31,7 @@ const HeaderMainChat = React.memo<IHeaderMainChatProps>((
         <Button
           type="primary"
           icon="cloud"
-          onClick={handleToChatBtnClick}
+          onClick={handleToChatPage}
         >
           聊天室
         </Button>

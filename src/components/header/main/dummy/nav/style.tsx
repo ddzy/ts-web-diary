@@ -6,13 +6,15 @@ import styled, {
 // ** Global Style **
 export const GlobalStyleSet = createGlobalStyle`
   .header-nav-link-active {
+    color: #1DA57A;
+
     &&::before {
       left: 0;
-      background-color: #1890ff;
+      background-color: #1DA57A;
     }
     &&:after {
       right: 0;
-      background-color: #1890ff;
+      background-color: #1DA57A;
     }
   }
 `;
@@ -51,7 +53,7 @@ export const MainNavItem = styled.li`
       position: absolute;
       width: 100%;
       height: 0.1875rem;
-      background-color: #daa520;
+      background-color: #fff;
       transition: background-color .3s ease,
                   left .3s ease,
                   right .3s ease;
@@ -66,11 +68,11 @@ export const MainNavItem = styled.li`
     }
     &:hover::before {
       left: 0;
-      background-color: #1890ff;
+      background-color: #1DA57A;
     }
     &:hover::after {
       right: 0;
-      background-color: #1890ff;
+      background-color: #1DA57A;
     }
   }
 `;

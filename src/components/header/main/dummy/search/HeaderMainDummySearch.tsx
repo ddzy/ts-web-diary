@@ -21,36 +21,45 @@ import {
   PopContentListSpan,
 } from './style';
 import { MERGED_ARTICLE_TAG } from 'constants/constants';
+import { query } from "services/request";
 
 
-export interface IHeaderMainSearchProps {
-  searchedArticles: any;
-  hotTags: object;
-  onSearch: (
-    e: any,
-  ) => void;
+export interface IHeaderMainDummySearchProps {
+};
+export interface IHeaderMainDummySearchState {
+  // ? 搜索框是否为空, 用来决定popover显示`热门标签`或`搜索到的文章`
+  isInputEmpty: boolean;
+  // ? popover显示的标题, 依赖于`isInputEmpty`的值
+  popoverTitle: string;
+  // ? 搜索到的文章
+  // TODO 类型定义
+  searchedArticles: any[];
 };
 
 
-const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
-  props: IHeaderMainSearchProps,
+const HeaderMainDummySearch = React.memo<IHeaderMainDummySearchProps>((
+  props: IHeaderMainDummySearchProps,
 ): JSX.Element => {
   const [
     state,
     setState,
-  ] = React.useState({
+  ] = React.useState<IHeaderMainDummySearchState>({
     isInputEmpty: false,
     popoverTitle: '',
+    searchedArticles: [],
   });
   const emitChangeDebounced = debounce(emitChange, 400);
 
   /**
-   * 处理初始化popcontent
+   * 初始化 - popover的显示内容
    */
-  function handleInitPopContent(): JSX.Element {
+  function _initPopoverContent(): JSX.Element {
     // ??? 输入框为空 -> 热门标签
     // ??? 输入框不为空 -> 搜索结果
-    const { isInputEmpty } = state;
+    const {
+      isInputEmpty,
+      searchedArticles,
+    } = state;
 
     const emptyContent: JSX.Element = (
       <React.Fragment>
@@ -65,7 +74,7 @@ const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
     );
     const unEmptyContent: JSX.Element = (
       <PopContentList>
-        {props.searchedArticles.map((hot: any, i: number) => (
+        {searchedArticles.map((hot: any, i: number) => (
           <PopContentListItem
             key={i}
           >
@@ -81,7 +90,7 @@ const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
   }
 
   /**
-   * 处理搜索框输入
+   * 处理 - 搜索框输入
    */
   function handleChange(e: React.ChangeEvent): void {
     e.persist();
@@ -89,23 +98,43 @@ const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
   }
 
   function emitChange(
-    e: any,
+    e: React.ChangeEvent,
   ): void {
-    setState({
-      isInputEmpty: false,
-      popoverTitle: '搜索到的文章',
+    const event = e as React.ChangeEvent;
+    const target = event.target as HTMLInputElement;
+
+    // ? 后台 - 根据关键词查询文章
+    query({
+      method: 'GET',
+      data: {
+        keyword: target.value,
+        userId: localStorage.getItem('userid'),
+      },
+      jsonp: false,
+      url: '/api/article/search/input/list',
+    }).then((res) => {
+      setState({
+        ...state,
+        searchedArticles: res.data,
+        isInputEmpty: false,
+        popoverTitle: '搜索到的文章'
+      });
     });
-    props.onSearch(e);
   }
 
   /**
-   * 处理是否显示热门标签
+   * 处理 - 是否显示热门标签
    */
-  function handleFocus(e: any): void {
-    const v: string = e.target.value;
+  function handleFocus(
+    e: React.FocusEvent,
+  ): void {
+    const event = e as React.FocusEvent;
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
 
-    if (!v) {
+    if (!value) {
       setState({
+        ...state,
         isInputEmpty: true,
         popoverTitle: '热门标签',
       });
@@ -122,7 +151,7 @@ const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
             trigger="focus"
             content={
               <PopContentBox>
-                {handleInitPopContent()}
+                {_initPopoverContent()}
               </PopContentBox>
             }
           >
@@ -140,4 +169,4 @@ const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
   );
 });
 
-export default HeaderMainSearch;
+export default HeaderMainDummySearch;
