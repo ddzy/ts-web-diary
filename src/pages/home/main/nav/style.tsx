@@ -4,7 +4,7 @@ import styled, {
 
 export const GlobalStyle = createGlobalStyle`
   .home-nav-link-active {
-    color: #1890ff;
+    color: #1DA57A;
   }
   .home-nav-link-default {
     color: initial;

@@ -48,9 +48,7 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
 
   return (
     <React.Fragment>
-      <Affix
-        offsetTop={60}
-      >
+      <Affix>
         <NavWrapper id="home-nav-bar">
           <NavContent>
             <NavContentList>
