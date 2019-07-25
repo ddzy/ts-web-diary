@@ -21,13 +21,6 @@ export interface IHeaderMainProps {
     useravatar: string;
     username: string;
   };
-
-  // ** header_main_search **
-  searchedArticles: any;
-  hotTags: object;
-  onSearch: (
-    e: any,
-  ) => void;
 };
 
 
@@ -64,7 +57,7 @@ const HeaderMain = React.memo<IHeaderMainProps>((
             <HeaderMainDummyLogo />
           </Col>
           <Col span={8}>
-            <HeaderMainDummySearch {...props} />
+            <HeaderMainDummySearch />
           </Col>
           <Col span={6} offset={2}>
             <HeaderMainDummyUser {...props} />
