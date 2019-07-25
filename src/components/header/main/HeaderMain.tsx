@@ -6,12 +6,13 @@ import {
   MainInner,
   MainOuter,
 } from './style';
-import HeaderMainLogo from './logo/HeaderMainLogo';
-import HeaderMainNav from './nav/HeaderMainNav';
-import HeaderMainAction from './action/HeaderMainAction';
-import HeaderMainSearch from './search/HeaderMainSearch';
-import HeaderMainNotification from './notification/HeaderMainNotification';
-import HeaderMainChat from './chat/HeaderMainChat';
+import HeaderMainDummyLogo from './dummy/logo/HeaderMainDummyLogo';
+import HeaderMainDummyNav from './dummy/nav/HeaderMainDummyNav';
+import HeaderMainDummyUser from './dummy/user/HeaderMainDummyUser';
+import HeaderMainDummySearch from './dummy/search/HeaderMainDummySearch';
+import HeaderMainDummyNotification from './dummy/notification/HeaderMainDummyNotification';
+import HeaderMainDummyChat from './dummy/chat/HeaderMainDummyChat';
+import HeaderMainDummyPublish from './dummy/publish/HeaderMainDummyPublish';
 
 
 export interface IHeaderMainProps {
@@ -20,9 +21,6 @@ export interface IHeaderMainProps {
     useravatar: string;
     username: string;
   };
-
-  // ** header_main_nav **
-  location: any;
 
   // ** header_main_search **
   searchedArticles: any;
@@ -43,13 +41,16 @@ const HeaderMain = React.memo<IHeaderMainProps>((
       <MainInner>
         <Row>
           <Col span={4}>
-            <HeaderMainLogo />
-          </Col>
-          <Col span={12}>
-            <HeaderMainNav {...props} />
+            <HeaderMainDummyLogo />
           </Col>
           <Col span={8}>
-            <HeaderMainAction {...props} />
+            <HeaderMainDummyNav />
+          </Col>
+          <Col span={6} offset={2}>
+            <HeaderMainDummyNotification />
+          </Col>
+          <Col span={4}>
+            <HeaderMainDummyPublish />
           </Col>
         </Row>
       </MainInner>
@@ -60,16 +61,16 @@ const HeaderMain = React.memo<IHeaderMainProps>((
           }}
         >
           <Col span={4}>
-            <HeaderMainLogo />
+            <HeaderMainDummyLogo />
           </Col>
           <Col span={8}>
-            <HeaderMainSearch {...props} />
+            <HeaderMainDummySearch {...props} />
           </Col>
-          <Col span={8}>
-            <HeaderMainNotification />
+          <Col span={6} offset={2}>
+            <HeaderMainDummyUser {...props} />
           </Col>
           <Col span={4}>
-            <HeaderMainChat />
+            <HeaderMainDummyChat />
           </Col>
         </Row>
       </MainOuter>

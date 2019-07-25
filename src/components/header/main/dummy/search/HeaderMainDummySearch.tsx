@@ -23,7 +23,7 @@ import {
 import { MERGED_ARTICLE_TAG } from 'constants/constants';
 
 
-export interface IHeaderMainSearchProps {
+export interface IHeaderMainDummySearchProps {
   searchedArticles: any;
   hotTags: object;
   onSearch: (
@@ -32,8 +32,8 @@ export interface IHeaderMainSearchProps {
 };
 
 
-const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
-  props: IHeaderMainSearchProps,
+const HeaderMainDummySearch = React.memo<IHeaderMainDummySearchProps>((
+  props: IHeaderMainDummySearchProps,
 ): JSX.Element => {
   const [
     state,
@@ -140,4 +140,4 @@ const HeaderMainSearch = React.memo<IHeaderMainSearchProps>((
   );
 });
 
-export default HeaderMainSearch;
+export default HeaderMainDummySearch;

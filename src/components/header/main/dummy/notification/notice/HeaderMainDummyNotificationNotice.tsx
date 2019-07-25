@@ -7,11 +7,11 @@ import {
 } from './style';
 
 
-export interface IHeaderMainNotificationNoticeProps { };
+export interface IHeaderMainDummyNotificationNoticeProps { };
 
 
-const HeaderMainNotificationNotice = React.memo<IHeaderMainNotificationNoticeProps>((
-  props: IHeaderMainNotificationNoticeProps,
+const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificationNoticeProps>((
+  props: IHeaderMainDummyNotificationNoticeProps,
 ): JSX.Element => {
 
   return (
@@ -28,4 +28,4 @@ const HeaderMainNotificationNotice = React.memo<IHeaderMainNotificationNoticePro
 });
 
 
-export default HeaderMainNotificationNotice;
+export default HeaderMainDummyNotificationNotice;

@@ -61,8 +61,6 @@ const Header = React.memo<IHeaderProps>((
           searchedArticles={searchState.searchedArticles}
           hotTags={searchState.hotTags}
           onSearch={handleSearch}
-
-          location={props.location}
         />
       </HeaderWrapper>
     </Affix>
