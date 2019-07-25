@@ -10,9 +10,9 @@ import {
   WriteWrapper,
   WriteContent,
 } from './style';
-import WriteEdit from './write_edit/WriteEdit';
-import WriteUpload from './write_upload/WriteUpload';
-import WriteExtra from './write_extra/WriteExtra';
+import WriteEdit from './edit/WriteEdit';
+import WriteUpload from './upload/WriteUpload';
+import WriteExtra from './extra/WriteExtra';
 import { getBase64 } from '../../utils/utils';
 import {
   IGetQiniuTokenReturns,

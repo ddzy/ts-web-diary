@@ -5,8 +5,8 @@ import {
   NotificationWrapper,
   NotificationMain,
 } from './style';
-import HeaderMainNotificationNotice from './header_main_notification_notice/HeaderMainNotificationNotice';
-import HeaderMainNotificationMessage from './header_main_notification_message/HeaderMainNotificationMessage';
+import HeaderMainNotificationNotice from './notice/HeaderMainNotificationNotice';
+import HeaderMainNotificationMessage from './message/HeaderMainNotificationMessage';
 
 
 export interface IHeaderMainNotificationProps { };

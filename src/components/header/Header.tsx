@@ -11,7 +11,7 @@ import {
 import {
   HeaderWrapper,
 } from './style';
-import HeaderMain from './header_main/HeaderMain';
+import HeaderMain from './main/HeaderMain';
 import {
   serviceHandleGetUserSearchArticles,
 } from './Header.service';

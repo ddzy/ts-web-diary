@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import BaseCommentItemTitle from './base_comment_item_title/BaseCommentItemTitle';
-import BaseCommentItemContent from './base_comment_item_content/BaseCommentItemContent';
-import BaseCommentItemAction from './base_comment_item_action/BaseCommentItemAction';
-import BaseCommentItemReply from './base_comment_item_reply/BaseCommentItemReply';
+import BaseCommentItemTitle from './title/BaseCommentItemTitle';
+import BaseCommentItemContent from './content/BaseCommentItemContent';
+import BaseCommentItemAction from './action/BaseCommentItemAction';
+import BaseCommentItemReply from './reply/BaseCommentItemReply';
 
 
 export interface ICommentListItemProps {

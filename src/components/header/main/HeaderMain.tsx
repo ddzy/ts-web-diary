@@ -6,12 +6,12 @@ import {
   MainInner,
   MainOuter,
 } from './style';
-import HeaderMainLogo from './header_main_logo/HeaderMainLogo';
-import HeaderMainNav from './header_main_nav/HeaderMainNav';
-import HeaderMainAction from './header_main_action/HeaderMainAction';
-import HeaderMainSearch from './header_main_search/HeaderMainSearch';
-import HeaderMainNotification from './header_main_notification/HeaderMainNotification';
-import HeaderMainChat from './header_main_chat/HeaderMainChat';
+import HeaderMainLogo from './logo/HeaderMainLogo';
+import HeaderMainNav from './nav/HeaderMainNav';
+import HeaderMainAction from './action/HeaderMainAction';
+import HeaderMainSearch from './search/HeaderMainSearch';
+import HeaderMainNotification from './notification/HeaderMainNotification';
+import HeaderMainChat from './chat/HeaderMainChat';
 
 
 export interface IHeaderMainProps {
