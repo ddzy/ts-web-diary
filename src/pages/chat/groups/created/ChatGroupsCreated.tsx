@@ -5,16 +5,21 @@ import {
   Button,
   Avatar,
   Popconfirm,
+  Drawer,
 } from 'antd';
 
 import {
   CreatedWrapper,
   CreatedMain,
+  CreatedMainTitle,
+  CreatedMainTitleInner,
 } from './style';
+import ChatGroupsCreatedAdd from './add/ChatGroupsCreatedAdd';
 
 
-export interface IChatGroupsCreatedProps {
-
+export interface IChatGroupsCreatedProps { };
+export interface IChatGroupsCreatedState {
+  isShowAddDrawer: boolean;
 };
 
 const ChatGroupsCreated = React.memo((props: IChatGroupsCreatedProps) => {
@@ -62,7 +67,6 @@ const ChatGroupsCreated = React.memo((props: IChatGroupsCreatedProps) => {
       ),
     },
   ];
-
   const dataSource = [
     {
       key: '1',
@@ -108,17 +112,78 @@ const ChatGroupsCreated = React.memo((props: IChatGroupsCreatedProps) => {
     },
   ];
 
+  const [state, setState] = React.useState<IChatGroupsCreatedState>({
+    isShowAddDrawer: false,
+  });
+
+  /**
+   * 处理 - 显示创建群聊弹窗
+   */
+  function handleShowAddDrawer() {
+    setState({
+      ...state,
+      isShowAddDrawer: true,
+    });
+  }
+
+  /**
+   * 处理 - 隐藏创建群聊弹窗
+   */
+  function handleHideAddDrawer() {
+    setState({
+      ...state,
+      isShowAddDrawer: false,
+    });
+  }
+
+  /**
+   * 处理 - 提交创建群聊的表单
+   * @param value 群聊信息
+   */
+  function handleSubmitAddDrawer(
+    value: {
+      groupName: string,
+      groupDescription: string,
+    },
+  ) {
+    console.log(value);
+  }
+
   return (
     <CreatedWrapper>
       <CreatedMain>
         <Table
           bordered
+          title={() => (
+            <CreatedMainTitle>
+              <CreatedMainTitleInner>
+                <Button
+                  type="primary"
+                  onClick={handleShowAddDrawer}
+                >创建新的群聊</Button>
+              </CreatedMainTitleInner>
+            </CreatedMainTitle>
+          )}
           pagination={{
             defaultPageSize: 5,
           }}
           columns={columns}
           dataSource={dataSource}
         />
+
+        {/* 创建群聊弹窗 */}
+        <Drawer
+          title="创建新的群聊"
+          destroyOnClose
+          width={500}
+          visible={state.isShowAddDrawer}
+          onClose={handleHideAddDrawer}
+        >
+          <ChatGroupsCreatedAdd
+            onHideAddDrawer={handleHideAddDrawer}
+            onSubmitAddDrawer={handleSubmitAddDrawer}
+          />
+        </Drawer>
       </CreatedMain>
     </CreatedWrapper>
   );
