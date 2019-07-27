@@ -47,6 +47,20 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Followers',
   }],
+
+  // ? 我的好友
+  friend: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }],
+
+  // ? 聊天列表
+  chat_memory: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ChatMemory',
+    required: true,
+  }],
 });
 
 const User: mongoose.Model<any> = mongoose
