@@ -12,6 +12,14 @@ import Followers from './followers/followersModel';
 import Attentions from './attentions/attentionsModel';
 import AttentionUsers from './attentions/attention_users/attentionUsersModel';
 import AttentionTopics from './attentions/attention_topics/attentionTopicsModel';
+import Chat from './chat/chatModel';
+import ChatSingle from './chat/single/chatSingleModel';
+import ChatSingleMember from './chat/single/member/chatSingleMemberModel';
+import ChatSingleMessage from './chat/single/message/chatSingleMessageModel';
+import ChatGroup from './chat/group/chatGroupModel';
+import ChatGroupMember from './chat/group/member/chatGroupMemberModel';
+import ChatGroupMessage from './chat/group/message/chatGroupMessageModel';
+import ChatStatus from './chat/status/chatStatusModel';
 
 
 mongoose.set('useFindAndModify', false);
@@ -43,4 +51,12 @@ export {
   Followers,
   AttentionUsers,
   AttentionTopics,
+  Chat,
+  ChatSingle,
+  ChatSingleMember,
+  ChatSingleMessage,
+  ChatGroup,
+  ChatGroupMember,
+  ChatGroupMessage,
+  ChatStatus,
 };
