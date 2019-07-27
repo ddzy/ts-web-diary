@@ -20,6 +20,7 @@ import ChatGroup from './chat/group/chatGroupModel';
 import ChatGroupMember from './chat/group/member/chatGroupMemberModel';
 import ChatGroupMessage from './chat/group/message/chatGroupMessageModel';
 import ChatStatus from './chat/status/chatStatusModel';
+import ChatMemory from './chat/memory/chatMemoryModel';
 
 
 mongoose.set('useFindAndModify', false);
@@ -59,4 +60,5 @@ export {
   ChatGroupMember,
   ChatGroupMessage,
   ChatStatus,
+  ChatMemory,
 };
