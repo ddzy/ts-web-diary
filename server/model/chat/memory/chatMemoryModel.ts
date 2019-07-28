@@ -11,6 +11,7 @@ import * as mongoose from 'mongoose';
 
 const ChatMemorySchema: mongoose.Schema = new mongoose.Schema({
   // ? 聊天类型: single | group | ...
+  // ? 考虑到后续可能会做拓展, 即由单聊创建群聊
   chat_type: {
     type: String,
     required: true,
@@ -18,6 +19,16 @@ const ChatMemorySchema: mongoose.Schema = new mongoose.Schema({
   // ? 聊天唯一id
   chat_id: {
     type: String,
+    required: true,
+  },
+  // ? 创建时间
+  create_time: {
+    type: Number,
+    required: true,
+  },
+  // ? 更新时间
+  update_time: {
+    type: Number,
     required: true,
   },
 });

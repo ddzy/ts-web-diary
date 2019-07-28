@@ -45,6 +45,7 @@ import collectionDeleteControllerNew from './controller/collection/delete/collec
 import uploadControllerNew from './controller/upload/upload';
 import chatController from './controller/chat/chat';
 import chatInfoController from './controller/chat/info/chatInfo';
+import chatCreateController from './controller/chat/create/chatCreate';
 
 
 const router: Router = new Router({
@@ -100,7 +101,8 @@ collectionControllerNew
   .use('/info', collectionInfoControllerNew.routes(), collectionInfoControllerNew.allowedMethods())
   .use('/delete', collectionDeleteControllerNew.routes(), collectionDeleteControllerNew.allowedMethods())
 chatController
-  .use('/info', chatInfoController.routes(), chatInfoController.allowedMethods());
+  .use('/info', chatInfoController.routes(), chatInfoController.allowedMethods())
+  .use('/create', chatCreateController.routes(), chatCreateController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!

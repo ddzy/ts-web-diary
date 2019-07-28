@@ -29,10 +29,16 @@ const ChatSingleSchema: mongoose.Schema = new Schema({
     ref: 'ChatSingleMember',
     required: true,
   },
-  // ? 消息内容
-  message: {
+  // ? 消息
+  message: [{
     type: Schema.Types.ObjectId,
     ref: 'ChatSingleMessage',
+    required: true,
+  }],
+  // ? 消息总数
+  message_total: {
+    type: Number,
+    default: 0,
     required: true,
   },
   // ? 创建时间
@@ -41,10 +47,15 @@ const ChatSingleSchema: mongoose.Schema = new Schema({
     required: true,
   },
   // ? 最后会话时间
-  last_create_time: {
+  last_message_time: {
     type: Number,
     required: true,
   },
+  // ? 更新时间
+  // update_time: {
+  //   type: Number,
+  //   required: true,
+  // },
 });
 
 const ChatSingle: mongoose.Model<any> = mongoose

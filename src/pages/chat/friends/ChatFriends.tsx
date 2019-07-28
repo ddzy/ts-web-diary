@@ -101,12 +101,13 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
           <React.Fragment>
             <Popconfirm
               title={'确认要和当前用户对话吗?'}
+              onConfirm={() => { handleChat(record) }}
             >
               <Button type="primary">发起聊天</Button>
             </Popconfirm>
             <Divider type="vertical" />
             <Popconfirm
-              title={'确认要删除该好友吗? 同时会取消关注他.'}
+              title={'确认要删除该好友吗?'}
             >
               <Button type="danger">删除好友</Button>
             </Popconfirm>
@@ -131,6 +132,42 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
           avatar: friend.useravatar,
           name: friend.username,
         };
+      });
+    }
+  }
+
+  /**
+   * 处理 - 发起好友单聊
+   * @param value 表格每一行的数据
+   */
+  function handleChat(
+    value: {
+      key: string,
+    },
+  ) {
+    // 接收方
+    const toId = value.key;
+    // 发送方
+    const fromId = localStorage.getItem('userid');
+
+    if (!fromId) {
+      notification.error({
+        message: '错误',
+        description: '登录凭证已过期, 请重新登录',
+      });
+
+      props.history.push('/login');
+    } else {
+      query({
+        method: 'POST',
+        url: '/api/chat/create/single',
+        jsonp: false,
+        data: {
+          fromId,
+          toId,
+        },
+      }).then((data) => {
+        console.log(data);
       });
     }
   }
