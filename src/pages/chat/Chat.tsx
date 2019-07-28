@@ -15,6 +15,7 @@ import {
   ChatMain,
   ChatMainContent,
 } from './style';
+import { customMouseEvent } from 'utils/utils';
 
 const LoadableChatInterfaces = Loadable({
   loader: () => import('./interfaces/ChatInterfaces'),
@@ -38,12 +39,10 @@ const LoadableChatSettings = Loadable({
 });
 
 
-export interface IChatProps extends RouteComponentProps {
-
-};
-
+export interface IChatProps extends RouteComponentProps {};
 
 const Chat = React.memo((props: IChatProps) => {
+
   /**
    * 初始化 - tab-title
    * @param type tab名称
@@ -53,6 +52,7 @@ const Chat = React.memo((props: IChatProps) => {
       interfaces() {
         return (
           <Button
+            className={'custom-chat-tab-pane-interfaces'}
             type="primary"
             size="large"
             icon="message"
@@ -115,7 +115,7 @@ const Chat = React.memo((props: IChatProps) => {
 
   /**
    * 处理 - chat页一级路由与tabs联调
-   * [Bug]: 路由有时可能与tabs的默认展开面板不对应
+   * [Bug]: 刷新页面后, 路由与tabs的默认展开面板不对应
    */
   function handleTabsDefaultActiveKey() {
     const basePathname = ['interfaces', 'friends', 'groups', 'collections'];
@@ -123,6 +123,22 @@ const Chat = React.memo((props: IChatProps) => {
     const processedPathname = basePathname.find((v) => currentPathname.includes(v));
 
     return processedPathname ? processedPathname : basePathname[0];
+  }
+
+  /**
+   * 处理 - chat页tabs与一级路由联调
+   * [Bug]: 不刷新页面, 路由改变, 需要tabPane面板与路由pathname对应
+   */
+  function handleTabsPaneAdaptPathname(
+    type: string,
+  ) {
+    const baseClassName = `.custom-chat-tab-pane-${type}`;
+    const oTabPane: any = document.querySelector(baseClassName);
+
+    if (oTabPane) {
+      // ? 模拟点击事件
+      customMouseEvent(oTabPane, 'click');
+    }
   }
 
   return (
@@ -141,7 +157,7 @@ const Chat = React.memo((props: IChatProps) => {
               <Route path="/chat/interfaces" component={LoadableChatInterfaces} />
             </Tabs.TabPane>
             <Tabs.TabPane tab={_initTabPaneTitle('friends')} key="friends">
-              <Route path="/chat/friends" component={LoadableChatFriends} />
+              <Route path="/chat/friends" render={() => <LoadableChatFriends onTabsPaneAdaptPathname={handleTabsPaneAdaptPathname} />} />
             </Tabs.TabPane>
             <Tabs.TabPane tab={_initTabPaneTitle('groups')} key="groups">
               <Route path="/chat/groups" component={LoadableChatGroups} />

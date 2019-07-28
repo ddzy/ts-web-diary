@@ -28,7 +28,10 @@ import { query } from 'services/request';
 
 
 export interface IChatFriendsProps extends RouteComponentProps {
-
+  // ? 处理 - 当前tabpane跳转至`interfaces`
+  onTabsPaneAdaptPathname: (
+    type: string,
+  ) => void;
 };
 export interface IChatFriendsState {
   // ? 好友列表
@@ -166,8 +169,8 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
           fromId,
           toId,
         },
-      }).then((data) => {
-        console.log(data);
+      }).then(() => {
+        props.onTabsPaneAdaptPathname('interfaces');
       });
     }
   }
