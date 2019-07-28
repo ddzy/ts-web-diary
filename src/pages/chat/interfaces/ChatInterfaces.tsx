@@ -1,4 +1,8 @@
 import * as React from 'react';
+import {
+  Row,
+  Col,
+} from 'antd';
 
 import {
   InterfacesWrapper,
@@ -17,8 +21,14 @@ function ChatInterfaces(props: IChatInterfacesProps) {
   return (
     <InterfacesWrapper>
       <InterfacesMain>
-        <ChatInterfacesNav />
-        <ChatInterfacesView />
+        <Row>
+          <Col span={8}>
+            <ChatInterfacesNav />
+          </Col>
+          <Col span={16}>
+            <ChatInterfacesView />
+          </Col>
+        </Row>
       </InterfacesMain>
     </InterfacesWrapper>
   );

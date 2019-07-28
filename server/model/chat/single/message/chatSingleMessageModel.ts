@@ -13,15 +13,26 @@ const { Schema } = mongoose;
 
 const ChatSingleMessageSchema: mongoose.Schema = new Schema({
   // ? 所属单聊
+  // chat_id: {
+  //   type: Schema.Types.ObjectId,
+  //   required: true,
+  //   ref: 'ChatSingle',
+  // },
+  // ? 单聊唯一标识id
   chat_id: {
-    type: Schema.Types.ObjectId,
+    type: String,
     required: true,
-    ref: 'ChatSingle',
   },
   // ? 所属单聊成员
   member_id: {
     type: Schema.Types.ObjectId,
     ref: 'ChatSingleMember',
+    required: true,
+  },
+  // ? 消息内容
+  content: {
+    type: String,
+    default: '',
     required: true,
   },
   // ? 消息创建时间
@@ -37,10 +48,10 @@ const ChatSingleMessageSchema: mongoose.Schema = new Schema({
     default: Date.now(),
   },
   // ? 未读消息总数
-  unread_total: {
-    type: Number,
-    default: 0,
-  },
+  // unread_total: {
+  //   type: Number,
+  //   default: 0,
+  // },
 });
 
 const ChatSingleMessage: mongoose.Model<any> = mongoose
