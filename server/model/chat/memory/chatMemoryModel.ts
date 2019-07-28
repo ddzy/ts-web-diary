@@ -21,6 +21,26 @@ const ChatMemorySchema: mongoose.Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // ? 聊天名称
+  chat_name: {
+    type: String,
+    default: '',
+  },
+  // ? 最近的消息内容
+  last_message_content: {
+    type: String,
+    default: '',
+  },
+  // ? 单聊 | 群聊头像
+  chat_avatar: {
+    type: String,
+    default: '',
+  },
+  // ? 未读消息总数
+  unread_message_total: {
+    type: Number,
+    default: 0,
+  },
   // ? 创建时间
   create_time: {
     type: Number,

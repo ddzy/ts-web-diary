@@ -32,27 +32,6 @@ chatCreateController.post('/single', async (ctx) => {
   // ? 创建唯一聊天标识ID
   const uniqueChatID = [fromId, toId].sort().join('_');
 
-  // ? 创建新的聊天历史
-  const isExistChatMemory = await ChatMemory.findOneAndUpdate(
-    { chat_id: uniqueChatID },
-    { '$set': {chat_type: 'single', update_time: Date.now()} },
-    { new: true, },
-  );
-  if (!isExistChatMemory) {
-    const createdChatMemory = await ChatMemory.create({
-      chat_type: 'single',
-      chat_id: uniqueChatID,
-      create_time: Date.now(),
-      update_time: Date.now(),
-    });
-
-    await User.findByIdAndUpdate(fromId, {
-      '$addToSet': {
-        chat_memory: createdChatMemory,
-      },
-    });
-  }
-
   // ? 创建新的单聊成员
   let isExistChatSingleMember = await ChatSingleMember.find({
     chat_id: uniqueChatID,
@@ -91,6 +70,42 @@ chatCreateController.post('/single', async (ctx) => {
       message_total: 0,
       last_message_time: Date.now(),
       create_time: Date.now(),
+    });
+  }
+
+  // ? 创建新的聊天历史
+  const isExistChatMemory = await ChatMemory.findOneAndUpdate(
+    { chat_id: uniqueChatID },
+    { '$set': {chat_type: 'single', update_time: Date.now()} },
+    { new: true, },
+  );
+  if (!isExistChatMemory) {
+    // ? 查找接收方名称, 头像信息
+    // TODO 目前为了方便, 聊天室的用户信息暂时和应用的登录用户相同, 日后可能会分开.
+    const foundSingleMember = await ChatSingleMember
+      .findById(isExistChatSingleMember[1], 'user_id')
+      .populate([
+        {
+          path: 'user_id',
+          select: ['useravatar', 'username'],
+        },
+      ]);
+
+    const createdChatMemory = await ChatMemory.create({
+      chat_type: 'single',
+      chat_id: uniqueChatID,
+      chat_name: foundSingleMember.user_id.username,
+      chat_avatar: foundSingleMember.user_id.useravatar,
+      last_message_content: '',
+      unread_message_total: 0,
+      create_time: Date.now(),
+      update_time: Date.now(),
+    });
+
+    await User.findByIdAndUpdate(fromId, {
+      '$addToSet': {
+        chat_memory: createdChatMemory,
+      },
     });
   }
 

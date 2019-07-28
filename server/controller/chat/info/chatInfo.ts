@@ -40,4 +40,36 @@ chatInfoController.get('/friend/list', async (ctx) => {
   };
 })
 
+/**
+ * 获取聊天历史列表
+ */
+chatInfoController.get('/memory/list', async (ctx) => {
+  const {
+    userId
+  } = ctx.request.query;
+
+  // ? 查找聊天历史列表
+  const foundUserInfo = await User
+    .findById(userId, 'chat_memory')
+    .populate([
+      {
+        path: 'chat_memory',
+        options: {
+          sort: {
+            update_time: -1,
+          },
+        },
+      },
+    ]);
+  const filteredChatMemoryList = await foundUserInfo.chat_memory;
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      chatMemoryList: filteredChatMemoryList,
+    },
+  };
+})
+
 export default chatInfoController;
