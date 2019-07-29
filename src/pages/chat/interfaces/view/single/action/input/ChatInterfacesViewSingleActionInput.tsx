@@ -1,14 +1,12 @@
 import * as React from 'react';
 import {
   Input,
-  Button,
 } from 'antd';
 
 import {
   InputWrapper,
   InputMain,
   InputMainContent,
-  InputMainSend,
 } from './style';
 
 
@@ -23,12 +21,6 @@ const ChatInterfacesViewSingleActionInput = React.memo((props: IChatInterfacesVi
             placeholder={'说点什么吧...'}
           />
         </InputMainContent>
-        <InputMainSend>
-          <Button
-            type="primary"
-            block
-          >发送</Button>
-        </InputMainSend>
       </InputMain>
     </InputWrapper>
   );

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
   Icon,
+  Row,
+  Col,
 } from 'antd';
 
 import {
@@ -17,28 +19,34 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
   return (
     <ExtraWrapper>
       <ExtraMain>
-        <ExtraMainEmoji>
-          <Icon
-            type="smile"
-            theme="filled"
-            style={{
-              color: '#1da57a',
-              fontSize: '28px',
-              cursor: 'pointer',
-            }}
-          />
-        </ExtraMainEmoji>
-        <ExtraMainApplication>
-          <Icon
-            type="appstore"
-            theme="filled"
-            style={{
-              color: '#1da57a',
-              fontSize: '28px',
-              cursor: 'pointer',
-            }}
-          />
-        </ExtraMainApplication>
+        <Row>
+          <Col span={12}>
+            <ExtraMainEmoji>
+              <Icon
+                type="smile"
+                theme="filled"
+                style={{
+                  color: '#1da57a',
+                  fontSize: '28px',
+                  cursor: 'pointer',
+                }}
+              />
+            </ExtraMainEmoji>
+          </Col>
+          <Col span={12}>
+            <ExtraMainApplication>
+              <Icon
+                type="appstore"
+                theme="filled"
+                style={{
+                  color: '#1da57a',
+                  fontSize: '28px',
+                  cursor: 'pointer',
+                }}
+              />
+            </ExtraMainApplication>
+          </Col>
+        </Row>
       </ExtraMain>
     </ExtraWrapper>
   );
