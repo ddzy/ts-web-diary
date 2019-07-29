@@ -10,9 +10,9 @@ import { formatTime } from 'utils/utils';
 import BaseChatMessage from 'components/widget/base_chat_message/BaseChatMessage';
 
 
-export interface IChatInterfacesViewContentProps { };
+export interface IChatInterfacesViewSingleContentProps { };
 
-const ChatInterfacesViewContent = React.memo((props: IChatInterfacesViewContentProps) => {
+const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSingleContentProps) => {
   const messageList = [
     {
       id: 1,
@@ -75,4 +75,4 @@ const ChatInterfacesViewContent = React.memo((props: IChatInterfacesViewContentP
   );
 });
 
-export default ChatInterfacesViewContent;
+export default ChatInterfacesViewSingleContent;

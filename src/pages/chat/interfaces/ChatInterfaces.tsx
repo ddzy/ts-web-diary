@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import {
   Row,
   Col,
@@ -12,10 +13,9 @@ import ChatInterfacesNav from './nav/ChatInterfacesNav';
 import ChatInterfacesView from './view/ChatInterfacesView';
 
 
-export interface IChatInterfacesProps {
+export interface IChatInterfacesProps extends RouteComponentProps {
 
 };
-
 
 function ChatInterfaces(props: IChatInterfacesProps) {
   return (
@@ -34,4 +34,4 @@ function ChatInterfaces(props: IChatInterfacesProps) {
   );
 }
 
-export default ChatInterfaces;
+export default withRouter(ChatInterfaces);

@@ -13,6 +13,8 @@ import {
 import {
   MessageWrapper,
   MessageMain,
+  MessageMainItem,
+  MessageMainItemInner,
 } from './style';
 import { query } from 'services/request';
 
@@ -79,23 +81,42 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     }
   }
 
+  /**
+   * 处理 - 右侧view界面跳转至单聊(single)或群聊(group)
+   * @param type 聊天类型(single | gorup)
+   * @param chatId 聊天唯一标识
+   * @todo 为了方便日后拓展, 故将single和group完全分为两个独立路由
+   */
+  function handleToSingleOrGroupClick(
+    type: string,
+    chatId: string,
+  ) {
+    props.history.push(`/chat/interfaces/${type}/${chatId}`);
+  }
+
   return (
     <MessageWrapper>
       <MessageMain>
         <List
           dataSource={state.chatMemoryList}
           renderItem={(item: IStaticChatMemoryListItem) => (
-            <List.Item key={item.chat_id}>
-              <List.Item.Meta
-                avatar={
-                  <Badge count={item.unread_message_total}>
-                    <Avatar src={item.chat_avatar} size="large" />
-                  </Badge>
-                }
-                title={item.chat_name}
-                description={item.last_message_content || '暂无消息记录'}
-              />
-            </List.Item>
+            <MessageMainItem onClick={() => {
+              handleToSingleOrGroupClick(item.chat_type, item.chat_id);
+            }}>
+              <MessageMainItemInner>
+                <List.Item key={item.chat_id}>
+                  <List.Item.Meta
+                    avatar={
+                      <Badge count={item.unread_message_total}>
+                        <Avatar src={item.chat_avatar} size="large" />
+                      </Badge>
+                    }
+                    title={item.chat_name}
+                    description={item.last_message_content || '暂无消息记录'}
+                  />
+                </List.Item>
+              </MessageMainItemInner>
+            </MessageMainItem>
           )}
         />
       </MessageMain>

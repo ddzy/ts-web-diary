@@ -11,9 +11,9 @@ import {
 } from './style';
 
 
-export interface IChatInterfacesViewActionExtraProps { };
+export interface IChatInterfacesViewGroupActionExtraProps { };
 
-const ChatInterfacesViewActionExtra = React.memo((props: IChatInterfacesViewActionExtraProps) => {
+const ChatInterfacesViewGroupActionExtra = React.memo((props: IChatInterfacesViewGroupActionExtraProps) => {
   return (
     <ExtraWrapper>
       <ExtraMain>
@@ -44,4 +44,4 @@ const ChatInterfacesViewActionExtra = React.memo((props: IChatInterfacesViewActi
   );
 });
 
-export default ChatInterfacesViewActionExtra;
+export default ChatInterfacesViewGroupActionExtra;
