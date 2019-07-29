@@ -52,10 +52,10 @@ const ChatSingleSchema: mongoose.Schema = new Schema({
     required: true,
   },
   // ? 更新时间
-  // update_time: {
-  //   type: Number,
-  //   required: true,
-  // },
+  update_time: {
+    type: Number,
+    default: Date.now(),
+  },
 });
 
 const ChatSingle: mongoose.Model<any> = mongoose

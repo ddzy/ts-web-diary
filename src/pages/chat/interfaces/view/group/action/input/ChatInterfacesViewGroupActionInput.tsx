@@ -12,9 +12,9 @@ import {
 } from './style';
 
 
-export interface IChatInterfacesViewActionInputProps { };
+export interface IChatInterfacesViewGroupActionInputProps { };
 
-const ChatInterfacesViewActionInput = React.memo((props: IChatInterfacesViewActionInputProps) => {
+const ChatInterfacesViewGroupActionInput = React.memo((props: IChatInterfacesViewGroupActionInputProps) => {
   return (
     <InputWrapper>
       <InputMain>
@@ -34,4 +34,4 @@ const ChatInterfacesViewActionInput = React.memo((props: IChatInterfacesViewActi
   );
 });
 
-export default ChatInterfacesViewActionInput;
+export default ChatInterfacesViewGroupActionInput;

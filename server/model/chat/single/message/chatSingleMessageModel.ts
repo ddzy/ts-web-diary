@@ -29,6 +29,12 @@ const ChatSingleMessageSchema: mongoose.Schema = new Schema({
     ref: 'ChatSingleMember',
     required: true,
   },
+  // ? 消息类型
+  // ? 目前只计划三种类型: images | files | plain
+  content_type: {
+    type: String,
+    required: true,
+  },
   // ? 消息内容
   content: {
     type: String,

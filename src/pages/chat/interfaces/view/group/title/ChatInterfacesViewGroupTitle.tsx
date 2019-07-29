@@ -7,9 +7,9 @@ import {
 } from './style';
 
 
-export interface IChatInterfacesViewTitleProps { };
+export interface IChatInterfacesViewGroupTitleProps { };
 
-const ChatInterfacesViewTitle = React.memo((props: IChatInterfacesViewTitleProps) => {
+const ChatInterfacesViewGroupTitle = React.memo((props: IChatInterfacesViewGroupTitleProps) => {
   return (
     <TitleWrapper>
       <TitleMain>
@@ -19,4 +19,4 @@ const ChatInterfacesViewTitle = React.memo((props: IChatInterfacesViewTitleProps
   );
 });
 
-export default ChatInterfacesViewTitle;
+export default ChatInterfacesViewGroupTitle;
