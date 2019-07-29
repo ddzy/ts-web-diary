@@ -46,6 +46,8 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "styled-components": "^4.1.2",
     "utility": "^1.14.0"
   },
@@ -87,6 +89,8 @@
     "@types/redux": "^3.6.0",
     "@types/redux-devtools-extension": "^2.13.2",
     "@types/redux-thunk": "^2.1.0",
+    "@types/socket.io": "^2.1.2",
+    "@types/socket.io-client": "^1.4.32",
     "@types/styled-components": "^4.1.4",
     "react-app-rewire-less": "^2.1.2",
     "react-app-rewired": "^1.5.2",
