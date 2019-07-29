@@ -24,54 +24,36 @@ export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
     id: string,
   }>;
 };
-export interface IChatInterfacesViewSingleState {
-  // ? 单聊相关信息
+
+const initialState = {
   singleChatInfo: {
     from_member_id: {
-      _id: string,
-      chat_id: string,
+      _id: '',
+      chat_id: '',
       user_id: {
-        _id: string,
-        username: string,
+        _id: '',
+        username: '',
       },
     },
     to_member_id: {
-      _id: string,
-      chat_id: string,
+      _id: '',
+      chat_id: '',
       user_id: {
-        _id: string,
-        username: string,
+        _id: '',
+        username: '',
       },
     },
-    message: IStaticChatMessageParams[],
-  };
+    message: [],
+  },
 };
+
+type IChatInterfacesViewSingleState = typeof initialState;
 export interface IStaticChatMessageParams {
 
 };
 
 const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSingleProps) => {
-  const [state, setState] = React.useState<IChatInterfacesViewSingleState>({
-    singleChatInfo: {
-      from_member_id: {
-        _id: '',
-        chat_id: '',
-        user_id: {
-          _id: '',
-          username: '',
-        },
-      },
-      to_member_id: {
-        _id: '',
-        chat_id: '',
-        user_id: {
-          _id: '',
-          username: '',
-        },
-      },
-      message: [],
-    },
-  });
+  const [state, setState] = React.useState<IChatInterfacesViewSingleState>(initialState);
 
   React.useEffect(() => {
     _getSingleChatMessageList();
@@ -122,6 +104,18 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     }
   }
 
+  /**
+   * 处理 - 发送聊天消息
+   */
+  function handleChatMessageSend(
+    messageInfo: {
+      type: string,
+      content: string,
+    },
+  ) {
+    // TODO 组装聊天消息到message列表
+  }
+
   return (
     <SingleWrapper>
       <SingleMain>
@@ -132,7 +126,9 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         <ChatInterfacesViewSingleContent />
 
         {/* 底部操作栏 */}
-        <ChatInterfacesViewSingleAction />
+        <ChatInterfacesViewSingleAction
+          onChatMessageSend={handleChatMessageSend}
+        />
       </SingleMain>
     </SingleWrapper>
   );

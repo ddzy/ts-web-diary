@@ -10,7 +10,10 @@ import {
 } from './style';
 
 
-export interface IChatInterfacesViewSingleActionInputProps { };
+export interface IChatInterfacesViewSingleActionInputProps {
+  // ? 输入框onChange
+  onPlainInputChange: (e: React.ChangeEvent) => void;
+};
 
 const ChatInterfacesViewSingleActionInput = React.memo((props: IChatInterfacesViewSingleActionInputProps) => {
   return (
@@ -19,6 +22,7 @@ const ChatInterfacesViewSingleActionInput = React.memo((props: IChatInterfacesVi
         <InputMainContent>
           <Input
             placeholder={'说点什么吧...'}
+            onChange={props.onPlainInputChange}
           />
         </InputMainContent>
       </InputMain>

@@ -9,7 +9,10 @@ import {
 } from './style';
 
 
-export interface IChatInterfacesViewSingleActionSendProps { };
+export interface IChatInterfacesViewSingleActionSendProps {
+  // ? 发送聊天消息
+  onChatMessageSend: () => void;
+};
 
 const ChatInterfacesViewSingleActionSend = React.memo((props: IChatInterfacesViewSingleActionSendProps) => {
   return (
@@ -18,6 +21,7 @@ const ChatInterfacesViewSingleActionSend = React.memo((props: IChatInterfacesVie
         <Button
           type="primary"
           block
+          onClick={props.onChatMessageSend}
         >发送</Button>
       </SendMain>
     </SendWrapper>
