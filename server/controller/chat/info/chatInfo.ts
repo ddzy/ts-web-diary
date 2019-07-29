@@ -9,6 +9,7 @@
 import * as Router from 'koa-router';
 import {
   User,
+  ChatSingle,
 } from '../../../model/model';
 
 const chatInfoController = new Router();
@@ -71,5 +72,57 @@ chatInfoController.get('/memory/list', async (ctx) => {
     },
   };
 })
+
+/**
+ * [单聊] - 获取指定单聊信息
+ * @todo 日后会将single和group路由切分
+ */
+chatInfoController.get('/single', async (ctx) => {
+  interface IQueryParams {
+    userId: string;
+    chatId: string;
+    chatType: string;
+  };
+
+  const {
+    chatId,
+  } = ctx.request.query as IQueryParams;
+
+  // ? 查询指定单聊信息
+  const foundChatSingleInfo = await ChatSingle
+    .findOne(
+      { chat_id: chatId },
+      'from_member_id to_member_id message',
+    )
+    .populate([
+      {
+        path: 'from_member_id',
+        select: ['chat_id', 'user_id'],
+        populate: {
+          path: 'user_id',
+          select: ['username'],
+        },
+      },
+      {
+        path: 'to_member_id',
+        select: ['chat_id', 'user_id'],
+        populate: {
+          path: 'user_id',
+          select: ['username'],
+        },
+      },
+      {
+        path: 'message',
+      },
+    ]);
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      singleChatInfo: foundChatSingleInfo,
+    },
+  };
+});
 
 export default chatInfoController;

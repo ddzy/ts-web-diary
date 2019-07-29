@@ -7,13 +7,25 @@ import {
 } from './style';
 
 
-export interface IChatInterfacesViewSingleTitleProps { };
+export interface IChatInterfacesViewSingleTitleProps {
+  // ? 接收方个人信息
+  toMemberInfo: {
+    _id: string,
+    chat_id: string,
+    user_id: {
+      _id: string,
+      username: string,
+    },
+  };
+};
 
 const ChatInterfacesViewSingleTitle = React.memo((props: IChatInterfacesViewSingleTitleProps) => {
   return (
     <TitleWrapper>
       <TitleMain>
-        <TitleText>小红</TitleText>
+        <TitleText>
+          {props.toMemberInfo.user_id.username}
+        </TitleText>
       </TitleMain>
     </TitleWrapper>
   );
