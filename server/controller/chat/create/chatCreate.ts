@@ -7,12 +7,14 @@
  */
 
 import * as Router from 'koa-router';
+import * as IO from 'socket.io';
 
 import {
   User,
   ChatMemory,
   ChatSingle,
   ChatSingleMember,
+  ChatSingleMessage,
 } from '../../../model/model';
 
 const chatCreateController = new Router();
@@ -76,7 +78,7 @@ chatCreateController.post('/single', async (ctx) => {
   // ? 创建新的聊天历史
   const isExistChatMemory = await ChatMemory.findOneAndUpdate(
     { chat_id: uniqueChatID },
-    { '$set': {chat_type: 'single', update_time: Date.now()} },
+    { '$set': { chat_type: 'single', update_time: Date.now() } },
     { new: true, },
   );
   if (!isExistChatMemory) {
@@ -97,6 +99,8 @@ chatCreateController.post('/single', async (ctx) => {
       chat_name: foundSingleMember.user_id.username,
       chat_avatar: foundSingleMember.user_id.useravatar,
       last_message_content: '',
+      last_message_member_name: '',
+      last_message_content_type: 'plain',
       unread_message_total: 0,
       create_time: Date.now(),
       update_time: Date.now(),
@@ -116,5 +120,119 @@ chatCreateController.post('/single', async (ctx) => {
     },
   };
 });
+
+/**
+ * 处理 - 创建新的单聊消息
+ */
+export function handleChat(socket: IO.Socket) {
+  interface ISingleChatMessageProps {
+    chatId: string;
+    chatType: string;
+    fromUserId: string;
+    toUserId: string;
+    fromMemberId: string;
+    toMemberId: string;
+    contentType: 'plain' | 'image' | 'file';
+    content: string;
+  };
+
+  socket.on('sendChatSingleMessage', async (messageInfo: ISingleChatMessageProps) => {
+    // 更新单聊消息表
+    const updatedChatSingleMessage = await ChatSingleMessage.create({
+      chat_id: messageInfo.chatId,
+      from_member_id: messageInfo.fromMemberId,
+      to_member_id: messageInfo.toMemberId,
+      content_type: messageInfo.contentType,
+      content: messageInfo.content,
+      create_time: Date.now(),
+      update_time: Date.now(),
+    });
+
+    // 更新单聊成员表
+    const updatedChatSingleMember = await ChatSingleMember
+      .findByIdAndUpdate(
+        messageInfo.fromMemberId,
+        {
+          '$push': { create_message: updatedChatSingleMessage._id },
+          '$inc': {
+            create_message_total: 1,
+          },
+          '$set': {
+            last_create_message_time: updatedChatSingleMessage.create_time,
+          },
+        },
+        { new: true },
+      )
+      .populate([
+        {
+          path: 'user_id',
+        }
+      ]);
+
+    // 更新单聊表
+    await ChatSingle.findOneAndUpdate(
+      { chat_id: messageInfo.chatId },
+      {
+        '$push': { message: updatedChatSingleMessage._id },
+        '$inc': { message_total: 1 },
+        '$set': {
+          last_message: updatedChatSingleMessage._id,
+          last_message_time: updatedChatSingleMessage.create_time,
+          update_time: Date.now(),
+        },
+      },
+      { new: true },
+    );
+
+    // 查找单聊接收方
+    const foundChatToMember = await ChatSingleMember
+      .findById(messageInfo.toMemberId)
+      .populate([
+        {
+          path: 'user_id',
+        },
+      ]);
+
+    // 更新单聊历史表
+    await ChatMemory.findOneAndUpdate(
+      { chat_id: messageInfo.chatId },
+      {
+        '$set': {
+          chat_name: foundChatToMember.user_id.username,
+          chat_avatar: foundChatToMember.user_id.useravatar,
+          last_message_member_name: updatedChatSingleMember.user_id.username,
+          last_message_content_type: updatedChatSingleMessage.content_type,
+          last_message_content: updatedChatSingleMessage.content,
+          unread_message_total: 0,
+          update_time: Date.now(),
+        },
+      },
+    );
+
+    // 查找聊天消息信息
+    const foundChatSingleMessage = await ChatSingleMessage
+      .findById(updatedChatSingleMessage._id)
+      .populate([
+        {
+          path: 'from_member_id',
+          select: ['user_id'],
+          populate: {
+            path: 'user_id',
+            select: ['username', 'useravatar'],
+          },
+        },
+        {
+          path: 'to_member_id',
+          select: ['user_id'],
+          populate: {
+            path: 'user_id',
+            select: ['username', 'useravatar'],
+          },
+        },
+      ]);
+
+    socket.emit('receiveChatSingleMessage', foundChatSingleMessage);
+  });
+};
 
 export default chatCreateController;

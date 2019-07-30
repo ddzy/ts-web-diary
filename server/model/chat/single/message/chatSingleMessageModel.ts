@@ -12,19 +12,19 @@ const { Schema } = mongoose;
 
 
 const ChatSingleMessageSchema: mongoose.Schema = new Schema({
-  // ? 所属单聊
-  // chat_id: {
-  //   type: Schema.Types.ObjectId,
-  //   required: true,
-  //   ref: 'ChatSingle',
-  // },
   // ? 单聊唯一标识id
   chat_id: {
     type: String,
     required: true,
   },
-  // ? 所属单聊成员
-  member_id: {
+  // ? 发送方
+  from_member_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'ChatSingleMember',
+    required: true,
+  },
+  // ? 接收方
+  to_member_id: {
     type: Schema.Types.ObjectId,
     ref: 'ChatSingleMember',
     required: true,

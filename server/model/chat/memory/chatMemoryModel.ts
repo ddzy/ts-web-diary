@@ -26,6 +26,16 @@ const ChatMemorySchema: mongoose.Schema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  // ? 最近的发言人姓名
+  last_message_member_name: {
+    type: String,
+    default: '',
+  },
+  // ? 最近的消息类型
+  last_message_content_type: {
+    type: String,
+    default: '',
+  },
   // ? 最近的消息内容
   last_message_content: {
     type: String,

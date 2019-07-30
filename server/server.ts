@@ -4,13 +4,18 @@ import * as koaJwt from 'koa-jwt';
 import * as koaStatic from 'koa-static';
 import * as koaCors from 'koa-cors';
 import * as path from 'path';
+import * as IO from 'socket.io';
+import * as Http from 'http';
 
 import {
   SECRET_FOR_TOKEN,
 } from './constants/constants';
 import router from './router';
+import { handleChat } from './controller/chat/create/chatCreate';
 
 const app: Koa = new Koa();
+const server: Http.Server = Http.createServer(app.callback());
+const io: IO.Server = IO(server);
 
 
 app
@@ -51,4 +56,11 @@ app
   ))
   .use(router.routes())
   .use(router.allowedMethods())
-  .listen(8888);
+
+
+// ? 处理聊天相关socket推送
+io
+  .of('/chat')
+  .on('connection', handleChat);
+
+server.listen(8888);

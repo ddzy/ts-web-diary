@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as IO from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -24,8 +25,11 @@ export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
     id: string,
   }>;
 };
+type IChatInterfacesViewSingleState = typeof initialState;
+
 
 const initialState = {
+  // ? 单聊信息
   singleChatInfo: {
     from_member_id: {
       _id: '',
@@ -47,22 +51,18 @@ const initialState = {
   },
 };
 
-type IChatInterfacesViewSingleState = typeof initialState;
-export interface IStaticChatMessageParams {
-
-};
 
 const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSingleProps) => {
   const [state, setState] = React.useState<IChatInterfacesViewSingleState>(initialState);
 
   React.useEffect(() => {
-    _getSingleChatMessageList();
+    _getSingleChatMessageInfo();
   }, [props.match.params.id]);
 
   /**
    * 后台 - 获取单聊信息
    */
-  function _getSingleChatMessageList() {
+  function _getSingleChatMessageInfo() {
     const userId = localStorage.getItem('userid');
     const chatId = props.match.params.id;
     const chatType = 'single';
@@ -113,7 +113,40 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       content: string,
     },
   ) {
-    // TODO 组装聊天消息到message列表
+    // TODO 组装聊天消息
+    const chatId = props.match.params.id;
+    const chatType = 'single';
+    const fromUserId = state.singleChatInfo.from_member_id.user_id._id;
+    const toUserId = state.singleChatInfo.to_member_id.user_id._id;
+    const fromMemberId = state.singleChatInfo.from_member_id._id;
+    const toMemberId = state.singleChatInfo.to_member_id._id;
+    const contentType = messageInfo.type;
+    const content = messageInfo.content;
+
+    const chatSocket = IO('ws://localhost:8888/chat');
+
+    chatSocket.on('connect', () => {
+      chatSocket.emit('sendChatSingleMessage', {
+        chatId,
+        chatType,
+        fromUserId,
+        toUserId,
+        fromMemberId,
+        toMemberId,
+        contentType,
+        content,
+      });
+
+      chatSocket.on('receiveChatSingleMessage', (message: any) => {
+        setState({
+          ...state,
+          singleChatInfo: {
+            ...state.singleChatInfo,
+            message: state.singleChatInfo.message.concat(message),
+          },
+        });
+      });
+    });
   }
 
   return (
@@ -123,7 +156,9 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         <ChatInterfacesViewSingleTitle toMemberInfo={state.singleChatInfo.to_member_id}/>
 
         {/* 中部消息栏 */}
-        <ChatInterfacesViewSingleContent />
+        <ChatInterfacesViewSingleContent
+          singleChatMessage={state.singleChatInfo.message}
+        />
 
         {/* 底部操作栏 */}
         <ChatInterfacesViewSingleAction

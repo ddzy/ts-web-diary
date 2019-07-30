@@ -51,6 +51,12 @@ const ChatSingleSchema: mongoose.Schema = new Schema({
     type: Number,
     required: true,
   },
+  // ? 最后的一次会话
+  last_message: {
+    type: Schema.Types.ObjectId,
+    ref: 'ChatSingleMessage',
+    required: true,
+  },
   // ? 更新时间
   update_time: {
     type: Number,
