@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { hot } from 'react-hot-loader';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router';
 
-import HomeMain from './home_main/HomeMain';
+import HomeMain from './main/HomeMain';
 import {
   IServiceState,
   serviceHandleGetHomeInfo,
@@ -12,8 +15,7 @@ import {
 import { PAGE_SIZE } from 'constants/constants';
 
 
-export interface IHomeProps {
-  location: Location;
+export interface IHomeProps extends RouteComponentProps {
 };
 interface IHomeState extends IServiceState {
   globalLoading: boolean;
@@ -59,35 +61,6 @@ class Home extends React.Component<IHomeProps, IHomeState> {
     );
   }
 
-  /**
-   * 处理加载更多
-   */
-  // public handleLoadMoreArticleList = (
-  //   page: number,
-  //   pageSize: number,
-  //   callback?: (...args: any[]) => void,
-  // ): void => {
-  //   const {
-  //     pathname,
-  //   } = this.props.location;
-  //   const type: string = pathname.replace('/home/', '');
-
-  //   serviceHandleGetArticleList(
-  //     { type, page, pageSize },
-  //     (data) => {
-  //       callback && callback(data);
-  //       this.setState((prevState) => {
-  //         return {
-  //           serviceState: {
-  //             ...prevState.serviceState,
-  //             article_list: prevState.serviceState.article_list.concat(data.articleList),
-  //           },
-  //         };
-  //       });
-  //     },
-  //   );
-  // }
-
   public render(): JSX.Element {
     return (
       <HomeWrapper
@@ -102,4 +75,4 @@ class Home extends React.Component<IHomeProps, IHomeState> {
 
 }
 
-export default hot(module)(Home);
+export default withRouter(Home);

@@ -80,7 +80,7 @@ const RouterConfig = React.memo<IRouterConfigProps>((): JSX.Element => {
           <Route
             path="/"
             render={(props) => (
-              <LoadableAdmin location={props.location}>
+              <LoadableAdmin>
                 <LoadableAuthRoute />
                 <TransitionGroup>
                   <CSSTransition

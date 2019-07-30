@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { Location } from 'history';
-import { hot } from 'react-hot-loader';
+import * as Loadable from 'react-loadable';
+import {
+  Route,
+  Switch,
+  Redirect,
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import Header from '../../components/header/Header';
 import {
@@ -9,10 +15,46 @@ import {
 } from './style';
 import BgImg from '../../static/images/admin_bg_img.png';
 
+const LoadableHome = Loadable({
+  loader: () => import('pages/home/Home'),
+  loading: () => null,
+});
+const LoadableAuthRoute = Loadable({
+  loader: () => import('components/authroute/AuthRoute'),
+  loading: () => null,
+});
+const LoadableNotFound = Loadable({
+  loader: () => import('pages/404/NotFound'),
+  loading: () => null,
+});
+const LoadableUser = Loadable({
+  loader: () => import('pages/user/User'),
+  loading: () => null,
+});
+const LoadableCollection = Loadable({
+  loader: () => import('pages/collection/Collection'),
+  loading: () => null,
+});
+const LoadableDetails = Loadable({
+  loader: () => import('pages/details/Details'),
+  loading: () => null,
+});
+const LoadablePublish = Loadable({
+  loader: () => import('pages/publish/Publish'),
+  loading: () => null,
+});
+const LoadableEdit = Loadable({
+  loader: () => import('pages/edit/Edit'),
+  loading: () => null,
+});
+const LoadableChat = Loadable({
+  loader: () => import('pages/chat/Chat'),
+  loading: () => null,
+});
 
-export interface IAdminProps {
-  location: Location;
-  children: any;
+
+
+export interface IAdminProps extends RouteComponentProps {
 };
 interface IAdminState {
   pathname: string;
@@ -87,12 +129,30 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         <AdminContent
           bgImg={BgImg}
         >
-          <Header location={this.props.location} />
-          {this.props.children}
+          {/* 全局头部 */}
+          <Header />
+
+          {/* 全局权限路由 */}
+          <LoadableAuthRoute />
+
+          {/* 全局页面路由 */}
+          <Switch>
+            <Route exact path="/" render={() => (
+              <Redirect to="/home" />
+            )} />
+            <Route path="/home" component={LoadableHome} />
+            <Route path="/chat" component={LoadableChat} />
+            <Route path="/user/:id" component={LoadableUser} />
+            <Route exact path="/collection/:id" component={LoadableCollection} />
+            <Route exact path="/details/:id" component={LoadableDetails} />
+            <Route exact path="/edit/:id" component={LoadableEdit} />
+            <Route exact path="/publish" component={LoadablePublish} />
+            <Route component={LoadableNotFound} />
+          </Switch>
         </AdminContent>
       </AdminWrapper>
     );
   }
 }
 
-export default hot(module)(Admin);
+export default withRouter(Admin);

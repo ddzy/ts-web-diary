@@ -2,7 +2,7 @@
 
 /**
  * 格式化时间
- * @param time 时间 
+ * @param time 时间
  */
 export function formatTime(time: string | number): string {
   const after = Number(time) as number;
@@ -10,7 +10,7 @@ export function formatTime(time: string | number): string {
 
   const distance = now - after as number;
   const seconds = distance / 1000 as number;
-  
+
   if(seconds <= 1) {
     return `1  秒前`;
   }else if(seconds > 1 && seconds < 60) {
@@ -33,7 +33,7 @@ export function formatTime(time: string | number): string {
  * @param callback 处理函数
  */
 export function getBase64(
-  img: Blob, 
+  img: Blob,
   callback: (result: any) => void
 ) {
   const reader = new FileReader();
@@ -55,7 +55,7 @@ export function getWindowWH() {
     innerWidth = window.innerWidth;
     innerHeight = window.innerHeight;
   });
-  
+
   return {
     winWidth: innerWidth,
     winHeight: innerHeight,
@@ -69,7 +69,7 @@ export function getWindowWH() {
  * @param obj 任意参数
  */
 export function isArray(obj: any) {
-  return obj 
+  return obj
     && ({}).toString.call(null, obj) === '[object Array]'
     || Array.isArray(obj);
 }
@@ -97,7 +97,7 @@ export function mixinObj(
   arr1.forEach((v: string | number, i: number) => {
     Reflect.set(resultObj, v, arr2[i]);
   });
-  
+
   return resultObj;
 }
 
@@ -139,5 +139,32 @@ export function convertBase64UrlToBlob(
 
   return new Blob([ia], {
     type: url.split(',')[0].split(':')[1].split(';')[0],
+  });
+}
+
+
+/**
+ * 自定义模拟鼠标事件
+ * @param element DOM元素
+ * @param type 鼠标事件类型
+ * @param callback 处理器
+ */
+export function customMouseEvent(
+  element: Element,
+  type: 'click' | 'dblclick' | 'mouseup' | 'mousedown',
+  callback?: (event: MouseEvent) => void,
+): void {
+  if (element['click'] && typeof element['click'] === 'function') {
+    element['click']();
+  } else {
+    const event = new MouseEvent(type, {
+      bubbles: true,
+    });
+
+    element.dispatchEvent(event);
+  }
+
+  element.addEventListener(type, (e) => {
+    callback && callback(e as MouseEvent);
   });
 }
