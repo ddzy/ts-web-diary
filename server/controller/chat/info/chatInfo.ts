@@ -113,6 +113,24 @@ chatInfoController.get('/single', async (ctx) => {
       },
       {
         path: 'message',
+        populate: [
+          {
+            path: 'from_member_id',
+            select: ['user_id'],
+            populate: {
+              path: 'user_id',
+              select: ['username', 'useravatar'],
+            },
+          },
+          {
+            path: 'to_member_id',
+            select: ['user_id'],
+            populate: {
+              path: 'user_id',
+              select: ['username', 'useravatar'],
+            },
+          },
+        ],
       },
     ]);
 

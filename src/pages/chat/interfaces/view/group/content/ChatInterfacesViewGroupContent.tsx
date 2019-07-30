@@ -15,35 +15,35 @@ export interface IChatInterfacesViewGroupContentProps { };
 const ChatInterfacesViewGroupContent = React.memo((props: IChatInterfacesViewGroupContentProps) => {
   const messageList = [
     {
-      id: 1,
+      id: '1',
       avatar: '',
       name: '小红',
       time: formatTime(Date.now()),
       content: '今日新增了两个代码片段, 加快开发效率',
     },
     {
-      id: 2,
+      id: '2',
       avatar: '',
       name: '阳哥',
       time: formatTime(Date.now()),
       content: '不错啊, 继续加油',
     },
     {
-      id: 3,
+      id: '3',
       avatar: '',
       name: '小黑',
       time: formatTime(Date.now()),
       content: '我今天掌握了闭包的使用',
     },
     {
-      id: 4,
+      id: '4',
       avatar: '',
       name: '咪咪老师',
       time: formatTime(Date.now()),
       content: '大家都很棒',
     },
     {
-      id: 5,
+      id: '5',
       avatar: '',
       name: '前端布道师',
       time: formatTime(Date.now()),

@@ -10,58 +10,69 @@ import { formatTime } from 'utils/utils';
 import BaseChatMessage from 'components/widget/base_chat_message/BaseChatMessage';
 
 
-export interface IChatInterfacesViewSingleContentProps { };
+export interface IChatInterfacesViewSingleContentProps {
+  // ? 单聊消息列表
+  singleChatMessage: IStaticChatSingleMessageParams[];
+};
+// ? 单聊消息格式
+export interface IStaticChatSingleMessageParams {
+  _id: string;
+  chat_id: string;
+  from_member_id: {
+    _id: string,
+    user_id: {
+      _id: string,
+      useravatar: string,
+      username: string,
+    },
+  },
+  to_member_id: {
+    _id: string,
+    user_id: {
+      _id: string,
+      useravatar: string,
+      username: string,
+    },
+  },
+  content_type: string;
+  content: string;
+  create_time: number;
+  update_time: number;
+};
 
 const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSingleContentProps) => {
-  const messageList = [
-    {
-      id: 1,
-      avatar: '',
-      name: '小红',
-      time: formatTime(Date.now()),
-      content: '今日新增了两个代码片段, 加快开发效率',
-    },
-    {
-      id: 2,
-      avatar: '',
-      name: '阳哥',
-      time: formatTime(Date.now()),
-      content: '不错啊, 继续加油',
-    },
-    {
-      id: 3,
-      avatar: '',
-      name: '小黑',
-      time: formatTime(Date.now()),
-      content: '我今天掌握了闭包的使用',
-    },
-    {
-      id: 4,
-      avatar: '',
-      name: '咪咪老师',
-      time: formatTime(Date.now()),
-      content: '大家都很棒',
-    },
-    {
-      id: 5,
-      avatar: '',
-      name: '前端布道师',
-      time: formatTime(Date.now()),
-      content: '今日前端新闻播报',
-    },
-  ];
-
+  /**
+   * 初始化 - 消息列表
+   */
   function _initMessageList() {
-    return messageList.map((v) => {
-      return (
-        <ContentMainItem key={v.id}>
-          <BaseChatMessage
-            isSend={true}
-            chatMessageInfo = {v}
-          />
-        </ContentMainItem>
-      );
-    });
+    const { singleChatMessage } = props;
+
+    if (singleChatMessage.length) {
+      return singleChatMessage.map((v) => {
+        // 判断是发送方 or 接收方
+        const userId = localStorage.getItem('userid');
+        const isSend = v.from_member_id.user_id._id === userId;
+
+        const chatMessageInfo = {
+          id: isSend ? v.from_member_id._id : v.to_member_id._id,
+          avatar: isSend ? v.from_member_id.user_id.useravatar : v.to_member_id.user_id.useravatar,
+          name: isSend ? v.from_member_id.user_id.username : v.to_member_id.user_id.username,
+          time: formatTime(v.create_time),
+          content: v.content,
+        };
+
+        return (
+          <ContentMainItem key={v._id}>
+            <BaseChatMessage
+              isSend={isSend}
+              chatMessageInfo = {chatMessageInfo}
+            />
+          </ContentMainItem>
+        );
+      });
+    }
+
+    return [];
   }
 
   return (

@@ -16,7 +16,7 @@ import {
 export interface IBaseChatMessageInfoProps {
   isSend: boolean;
   chatMessageInfo: {
-    id: number,
+    id: string,
     avatar: string,
     name: string,
     time: string,

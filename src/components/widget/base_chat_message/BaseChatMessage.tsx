@@ -13,7 +13,7 @@ export interface IBaseChatMessageProps {
   isSend: boolean;
   // ? 聊天信息
   chatMessageInfo: {
-    id: number,
+    id: string,
     avatar: string,
     name: string,
     time: string,
