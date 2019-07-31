@@ -123,16 +123,38 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     const contentType = messageInfo.type;
     const content = messageInfo.content;
 
+    const userId = localStorage.getItem('userid');
+    const newFromUserId = userId === fromUserId
+      ? fromUserId
+      : userId === toUserId
+        ? toUserId
+        : '';
+    const newToUserId = userId === fromUserId
+      ? toUserId
+      : userId === toUserId
+        ? fromUserId
+        : '';
+    const newFromMemberId = userId === fromUserId
+      ? fromMemberId
+      : userId === toUserId
+        ? toMemberId
+        : '';
+    const newToMemberId = userId === fromUserId
+      ? toMemberId
+      : userId === toUserId
+        ? fromMemberId
+        : '';
+
     const chatSocket = IO('ws://localhost:8888/chat');
 
     chatSocket.on('connect', () => {
       chatSocket.emit('sendChatSingleMessage', {
         chatId,
         chatType,
-        fromUserId,
-        toUserId,
-        fromMemberId,
-        toMemberId,
+        fromUserId: newFromUserId,
+        toUserId: newToUserId,
+        fromMemberId: newFromMemberId,
+        toMemberId: newToMemberId,
         contentType,
         content,
       });
@@ -153,7 +175,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     <SingleWrapper>
       <SingleMain>
         {/* 顶部标题栏 */}
-        <ChatInterfacesViewSingleTitle toMemberInfo={state.singleChatInfo.to_member_id}/>
+        <ChatInterfacesViewSingleTitle singleChatInfo={state.singleChatInfo}/>
 
         {/* 中部消息栏 */}
         <ChatInterfacesViewSingleContent
