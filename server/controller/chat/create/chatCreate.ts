@@ -165,7 +165,7 @@ chatCreateController.post('/single', async (ctx) => {
 /**
  * 处理 - 创建新的单聊消息
  */
-export function handleChat(socket: IO.Socket) {
+export function handleChat(socket: IO.Socket, io: IO.Namespace) {
   interface ISingleChatMessageProps {
     chatId: string;
     chatType: string;
@@ -275,7 +275,7 @@ export function handleChat(socket: IO.Socket) {
         },
       ]);
 
-    socket.emit('receiveChatSingleMessage', foundChatSingleMessage);
+    io.emit('receiveChatSingleMessage', foundChatSingleMessage);
   });
 };
 

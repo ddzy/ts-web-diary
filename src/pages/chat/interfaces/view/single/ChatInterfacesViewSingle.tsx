@@ -28,6 +28,7 @@ export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
 type IChatInterfacesViewSingleState = typeof initialState;
 
 
+const chatSocket = IO('http://localhost:8888/chat');
 const initialState = {
   // ? 单聊信息
   singleChatInfo: {
@@ -49,11 +50,28 @@ const initialState = {
     },
     message: [],
   },
+
+  // ? 标识是否已经发送消息
+  // ! 直接在componentDidMount监听websocket, state会为空
+  // ! 故使用该state来判断监听事件
+  hasSent: false,
 };
 
 
 const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSingleProps) => {
   const [state, setState] = React.useState<IChatInterfacesViewSingleState>(initialState);
+
+  React.useEffect(() => {
+    chatSocket.on('receiveChatSingleMessage', (message: any) => {
+      setState({
+        ...state,
+        singleChatInfo: {
+          ...state.singleChatInfo,
+          message: state.singleChatInfo.message.concat(message),
+        },
+      });
+    });
+  }, [state.hasSent]);
 
   React.useEffect(() => {
     _getSingleChatMessageInfo();
@@ -145,29 +163,20 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         ? fromMemberId
         : '';
 
-    const chatSocket = IO('ws://localhost:8888/chat');
+    chatSocket.emit('sendChatSingleMessage', {
+      chatId,
+      chatType,
+      fromUserId: newFromUserId,
+      toUserId: newToUserId,
+      fromMemberId: newFromMemberId,
+      toMemberId: newToMemberId,
+      contentType,
+      content,
+    });
 
-    chatSocket.on('connect', () => {
-      chatSocket.emit('sendChatSingleMessage', {
-        chatId,
-        chatType,
-        fromUserId: newFromUserId,
-        toUserId: newToUserId,
-        fromMemberId: newFromMemberId,
-        toMemberId: newToMemberId,
-        contentType,
-        content,
-      });
-
-      chatSocket.on('receiveChatSingleMessage', (message: any) => {
-        setState({
-          ...state,
-          singleChatInfo: {
-            ...state.singleChatInfo,
-            message: state.singleChatInfo.message.concat(message),
-          },
-        });
-      });
+    setState({
+      ...state,
+      hasSent: !state.hasSent,
     });
   }
 
@@ -175,7 +184,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     <SingleWrapper>
       <SingleMain>
         {/* 顶部标题栏 */}
-        <ChatInterfacesViewSingleTitle singleChatInfo={state.singleChatInfo}/>
+        <ChatInterfacesViewSingleTitle singleChatInfo={state.singleChatInfo} />
 
         {/* 中部消息栏 */}
         <ChatInterfacesViewSingleContent
