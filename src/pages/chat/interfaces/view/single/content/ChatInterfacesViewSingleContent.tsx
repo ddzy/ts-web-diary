@@ -42,23 +42,29 @@ export interface IStaticChatSingleMessageParams {
 
 const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSingleContentProps) => {
   /**
-   * 初始化 - 消息列表
+   * 初始化 - 单聊消息列表
    */
   function _initMessageList() {
     const { singleChatMessage } = props;
+    const userId = localStorage.getItem('userid');
 
     if (singleChatMessage.length) {
       return singleChatMessage.map((v) => {
-        // 判断是发送方 or 接收方
-        const userId = localStorage.getItem('userid');
-        const isSend = v.from_member_id.user_id._id === userId;
+        // 根据发送方 or 接收方初始化相关信息
+        const fromMemberId = v.from_member_id._id;
+        const fromUserId = v.from_member_id.user_id._id;
+        const fromUserName = v.from_member_id.user_id.username;
+        const fromUserAvatar = v.from_member_id.user_id.useravatar;
+        const content = v.content;
+        const time = formatTime(v.create_time);
 
+        const isSend = userId === fromUserId;
         const chatMessageInfo = {
-          id: isSend ? v.from_member_id._id : v.to_member_id._id,
-          avatar: isSend ? v.from_member_id.user_id.useravatar : v.to_member_id.user_id.useravatar,
-          name: isSend ? v.from_member_id.user_id.username : v.to_member_id.user_id.username,
-          time: formatTime(v.create_time),
-          content: v.content,
+          id: fromMemberId,
+          name: fromUserName,
+          avatar: fromUserAvatar,
+          time,
+          content,
         };
 
         return (
