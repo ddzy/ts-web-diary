@@ -174,7 +174,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       content,
     });
 
-    setState({
+    !state.hasSent && setState({
       ...state,
       hasSent: !state.hasSent,
     });
