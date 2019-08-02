@@ -36,6 +36,10 @@ export interface IStaticChatMemoryListItem {
   chat_avatar: string;
   // ? 最新的聊天内容
   last_message_content: string;
+  // ? 最新的聊天内容类型
+  last_message_content_type: string;
+  // ? 最新的发言人名称
+  last_message_member_name: string;
   // ? 未读消息总数
   unread_message_total: number;
 };
@@ -50,7 +54,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   }, []);
 
   /**
-   * 后台 - 获取聊天历史列表
+   * [后台] - 获取聊天历史列表
    */
   function _getChatMemoryList() {
     const userId = localStorage.getItem('userid');
@@ -82,7 +86,38 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   }
 
   /**
-   * 处理 - 右侧view界面跳转至单聊(single)或群聊(group)
+   * [初始化] - 聊天历史列表
+   */
+  function _initChatMemoryList() {
+
+    return (
+      <List
+        dataSource={state.chatMemoryList}
+        renderItem={(item: IStaticChatMemoryListItem) => (
+          <MessageMainItem onClick={() => {
+            handleToSingleOrGroupClick(item.chat_type, item.chat_id);
+          }}>
+            <MessageMainItemInner>
+              <List.Item key={item.chat_id}>
+                <List.Item.Meta
+                  avatar={
+                    <Badge count={item.unread_message_total}>
+                      <Avatar src={item.chat_avatar} size="large" />
+                    </Badge>
+                  }
+                  title={item.chat_name}
+                  description={`${item.last_message_member_name}: ${item.last_message_content}` || '暂无消息记录'}
+                />
+              </List.Item>
+            </MessageMainItemInner>
+          </MessageMainItem>
+        )}
+      />
+    );
+  }
+
+  /**
+   * [处理] - 右侧view界面跳转至单聊(single)或群聊(group)
    * @param type 聊天类型(single | gorup)
    * @param chatId 聊天唯一标识
    * @todo 为了方便日后拓展, 故将single和group完全分为两个独立路由
@@ -97,28 +132,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   return (
     <MessageWrapper>
       <MessageMain>
-        <List
-          dataSource={state.chatMemoryList}
-          renderItem={(item: IStaticChatMemoryListItem) => (
-            <MessageMainItem onClick={() => {
-              handleToSingleOrGroupClick(item.chat_type, item.chat_id);
-            }}>
-              <MessageMainItemInner>
-                <List.Item key={item.chat_id}>
-                  <List.Item.Meta
-                    avatar={
-                      <Badge count={item.unread_message_total}>
-                        <Avatar src={item.chat_avatar} size="large" />
-                      </Badge>
-                    }
-                    title={item.chat_name}
-                    description={item.last_message_content || '暂无消息记录'}
-                  />
-                </List.Item>
-              </MessageMainItemInner>
-            </MessageMainItem>
-          )}
-        />
+        {_initChatMemoryList()}
       </MessageMain>
     </MessageWrapper>
   );

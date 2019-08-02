@@ -35,6 +35,9 @@ chatCreateController.post('/single', async (ctx) => {
   const uniqueChatID = [fromId, toId].sort().join('_');
 
   // ? 创建新的单聊成员
+  // * 单聊成员按照单聊划分
+  // * 每个单聊有两个不同的成员, 但是user是相同的
+  // * 考虑到以后的拓展
   let isExistChatSingleMember = await ChatSingleMember.find({
     chat_id: uniqueChatID,
   });
@@ -60,10 +63,13 @@ chatCreateController.post('/single', async (ctx) => {
   }
 
   // ? 创建新的单聊
+  // * 唯一的聊天历史对应一个单聊
+  // * chat_id唯一标识一个单聊
   let isExistChatSingle = await ChatSingle.findOne(
     { chat_id: uniqueChatID },
   );
   if (!isExistChatSingle) {
+    // 创建单聊信息
     isExistChatSingle = await ChatSingle.create({
       chat_id: uniqueChatID,
       from_member_id: isExistChatSingleMember[0],
@@ -76,15 +82,16 @@ chatCreateController.post('/single', async (ctx) => {
   }
 
   // ? 创建新的聊天历史
-  const isExistChatMemory = await ChatMemory.findOneAndUpdate(
+  // * 聊天历史有两个, 分别对应发送方和接收方
+  // * 但是两者有共同的聊天标识(chat_id)
+  const isExistChatMemory = await ChatMemory.find(
     { chat_id: uniqueChatID },
-    { '$set': { chat_type: 'single', update_time: Date.now() } },
-    { new: true, },
   );
-  if (!isExistChatMemory) {
-    // ? 查找接收方名称, 头像信息
+  if (!isExistChatMemory.length) {
+    // ? 分别查找接收方、发送方名称, 头像信息
+    // ? 同时更新发送方、接收方的chat_memory信息
     // TODO 目前为了方便, 聊天室的用户信息暂时和应用的登录用户相同, 日后可能会分开.
-    const foundSingleMember = await ChatSingleMember
+    const foundToSingleMember = await ChatSingleMember
       .findById(isExistChatSingleMember[1], 'user_id')
       .populate([
         {
@@ -92,12 +99,20 @@ chatCreateController.post('/single', async (ctx) => {
           select: ['useravatar', 'username'],
         },
       ]);
+    const foundFromSingleMember = await ChatSingleMember
+      .findById(isExistChatSingleMember[0], 'user_id')
+      .populate([
+        {
+          path: 'user_id',
+          select: ['useravatar', 'username'],
+        },
+      ]);
 
-    const createdChatMemory = await ChatMemory.create({
+    const createdToChatMemory = await ChatMemory.create({
       chat_type: 'single',
       chat_id: uniqueChatID,
-      chat_name: foundSingleMember.user_id.username,
-      chat_avatar: foundSingleMember.user_id.useravatar,
+      chat_name: foundToSingleMember.user_id.username,
+      chat_avatar: foundToSingleMember.user_id.useravatar,
       last_message_content: '',
       last_message_member_name: '',
       last_message_content_type: 'plain',
@@ -106,10 +121,36 @@ chatCreateController.post('/single', async (ctx) => {
       update_time: Date.now(),
     });
 
-    await User.findByIdAndUpdate(fromId, {
+    const createdFromChatMemory = await ChatMemory.create({
+      chat_type: 'single',
+      chat_id: uniqueChatID,
+      chat_name: foundFromSingleMember.user_id.username,
+      chat_avatar: foundFromSingleMember.user_id.useravatar,
+      last_message_content: '',
+      last_message_member_name: '',
+      last_message_content_type: 'plain',
+      unread_message_total: 0,
+      create_time: createdToChatMemory.create_time,
+      update_time: createdToChatMemory.update_time,
+    });
+
+    // 更新发送方, 聊天历史列表
+    const u1 = await User.findByIdAndUpdate(fromId, {
       '$addToSet': {
-        chat_memory: createdChatMemory,
+        chat_memory: createdToChatMemory,
       },
+    }, { new: true });
+
+    // 更新接收方, 聊天历史列表
+    const u2 = await User.findByIdAndUpdate(toId, {
+      '$addToSet': {
+        chat_memory: createdFromChatMemory,
+      },
+    }, { new: true });
+
+    console.log({
+      u1,
+      u2,
     });
   }
 
@@ -124,7 +165,7 @@ chatCreateController.post('/single', async (ctx) => {
 /**
  * 处理 - 创建新的单聊消息
  */
-export function handleChat(socket: IO.Socket) {
+export function handleChat(socket: IO.Socket, io: IO.Namespace) {
   interface ISingleChatMessageProps {
     chatId: string;
     chatType: string;
@@ -194,7 +235,7 @@ export function handleChat(socket: IO.Socket) {
       ]);
 
     // 更新单聊历史表
-    await ChatMemory.findOneAndUpdate(
+    await ChatMemory.update(
       { chat_id: messageInfo.chatId },
       {
         '$set': {
@@ -206,6 +247,9 @@ export function handleChat(socket: IO.Socket) {
           unread_message_total: 0,
           update_time: Date.now(),
         },
+      },
+      {
+        multi: true,
       },
     );
 
@@ -231,7 +275,7 @@ export function handleChat(socket: IO.Socket) {
         },
       ]);
 
-    socket.emit('receiveChatSingleMessage', foundChatSingleMessage);
+    io.emit('receiveChatSingleMessage', foundChatSingleMessage);
   });
 };
 

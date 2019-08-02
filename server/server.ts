@@ -58,9 +58,10 @@ app
   .use(router.allowedMethods())
 
 
-// ? 处理聊天相关socket推送
-io
-  .of('/chat')
-  .on('connection', handleChat);
+// ? 处理聊天相关Websocket
+const chatIO = io.of('/chat');
+chatIO.on('connection', (socket) => {
+  handleChat(socket, chatIO);
+});
 
 server.listen(8888);
