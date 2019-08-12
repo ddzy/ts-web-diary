@@ -26,6 +26,24 @@ const ChatMemorySchema: mongoose.Schema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  // ? 发送方id
+  from_member_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatSingleMember',
+    required: true,
+  },
+  // ? 接收方id
+  to_member_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatSingleMember',
+    required: true,
+  },
+  // ? 唯一标识发送方或接收方, 便于实时更新相关信息
+  is_from_member: {
+    type: Boolean,
+    default: true,
+    required: true,
+  },
   // ? 最近的发言人姓名
   last_message_member_name: {
     type: String,

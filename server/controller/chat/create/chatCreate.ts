@@ -108,11 +108,15 @@ chatCreateController.post('/single', async (ctx) => {
         },
       ]);
 
-    const createdToChatMemory = await ChatMemory.create({
+
+    const createdFromChatMemory = await ChatMemory.create({
       chat_type: 'single',
       chat_id: uniqueChatID,
-      chat_name: foundToSingleMember.user_id.username,
-      chat_avatar: foundToSingleMember.user_id.useravatar,
+      is_from_member: true,
+      from_member_id: foundFromSingleMember._id,
+      to_member_id: foundToSingleMember._id,
+      chat_name: foundFromSingleMember.user_id.username,
+      chat_avatar: foundFromSingleMember.user_id.useravatar,
       last_message_content: '',
       last_message_member_name: '',
       last_message_content_type: 'plain',
@@ -121,37 +125,35 @@ chatCreateController.post('/single', async (ctx) => {
       update_time: Date.now(),
     });
 
-    const createdFromChatMemory = await ChatMemory.create({
+    const createdToChatMemory = await ChatMemory.create({
       chat_type: 'single',
       chat_id: uniqueChatID,
-      chat_name: foundFromSingleMember.user_id.username,
-      chat_avatar: foundFromSingleMember.user_id.useravatar,
+      is_from_member: false,
+      from_member_id: foundFromSingleMember._id,
+      to_member_id: foundToSingleMember._id,
+      chat_name: foundToSingleMember.user_id.username,
+      chat_avatar: foundToSingleMember.user_id.useravatar,
       last_message_content: '',
       last_message_member_name: '',
       last_message_content_type: 'plain',
       unread_message_total: 0,
-      create_time: createdToChatMemory.create_time,
-      update_time: createdToChatMemory.update_time,
+      create_time: createdFromChatMemory.update_time,
+      update_time: createdFromChatMemory.update_time,
     });
 
     // 更新发送方, 聊天历史列表
-    const u1 = await User.findByIdAndUpdate(fromId, {
+    await User.findByIdAndUpdate(fromId, {
       '$addToSet': {
         chat_memory: createdToChatMemory,
       },
     }, { new: true });
 
     // 更新接收方, 聊天历史列表
-    const u2 = await User.findByIdAndUpdate(toId, {
+    await User.findByIdAndUpdate(toId, {
       '$addToSet': {
         chat_memory: createdFromChatMemory,
       },
     }, { new: true });
-
-    console.log({
-      u1,
-      u2,
-    });
   }
 
   ctx.body = {
@@ -234,9 +236,40 @@ export function handleChat(socket: IO.Socket, io: IO.Namespace) {
         },
       ]);
 
-    // 更新单聊历史表
-    await ChatMemory.update(
-      { chat_id: messageInfo.chatId },
+    // 查找单聊发送方
+    const foundChatFromMember = await ChatSingleMember
+      .findById(messageInfo.fromMemberId)
+      .populate([
+        {
+          path: 'user_id',
+        },
+      ]);
+
+    // 更新发送方单聊历史表
+    await ChatMemory.updateOne(
+      {
+        chat_id: messageInfo.chatId,
+        is_from_member: true,
+      },
+      {
+        '$set': {
+          chat_name: foundChatFromMember.user_id.username,
+          chat_avatar: foundChatFromMember.user_id.useravatar,
+          last_message_member_name: updatedChatSingleMember.user_id.username,
+          last_message_content_type: updatedChatSingleMessage.content_type,
+          last_message_content: updatedChatSingleMessage.content,
+          unread_message_total: 0,
+          update_time: Date.now(),
+        },
+      },
+    );
+
+    // 更新接收方单聊历史表
+    await ChatMemory.updateOne(
+      {
+        chat_id: messageInfo.chatId,
+        is_from_member: false,
+      },
       {
         '$set': {
           chat_name: foundChatToMember.user_id.username,
@@ -247,9 +280,6 @@ export function handleChat(socket: IO.Socket, io: IO.Namespace) {
           unread_message_total: 0,
           update_time: Date.now(),
         },
-      },
-      {
-        multi: true,
       },
     );
 
