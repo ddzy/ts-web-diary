@@ -7,7 +7,7 @@ export interface ICommonProps {
 
 export const InfoWrapper = styled.div`
   flex: 1;
-  margin-right: 12px;
+  margin-right: 0.75rem;
 `;
 export const InfoMain = styled.div`
 `;
@@ -19,27 +19,30 @@ export const InfoMainUserInner = styled('div')<ICommonProps>`
   display: flex;
 
   /* 发送方 */
-  flex-direction: ${(props) => props.isSend ? 'row-reverse' : 'initial'};
+  flex-direction: ${(props) => props.isSend ? 'row-reverse' : 'row'};
 `;
 export const InfoMainUserName = styled.div`
 `;
 export const InfoMainUserTime = styled('div')<ICommonProps>`
-  margin: 0 ${(props) => props.isSend ? '8px' : 0} 0 ${(props) => props.isSend ? 0 : '8px'};
+  margin: 0 ${(props) => props.isSend ? '0.5rem' : 0} 0 ${(props) => props.isSend ? 0 : '0.5rem'};
   color: #999;
-  font-size: 12px;
+  font-size: 0.75rem;
 `;
 
 // 下半部分
-export const InfoMainContent = styled.div`
+export const InfoMainContent = styled('div')<ICommonProps>`
+  display: flex;
+  flex-direction: ${(props) => props.isSend ? 'row-reverse' : 'row'};
+  padding: 0 ${(props) => props.isSend ? '0.75rem' : 0} 0 ${(props) => props.isSend ? 0 : '0.75rem'};
 `;
 export const InfoMainContentInner = styled.div`
-  padding-top: 8px;
+  padding-top: 0.5rem;
 `;
 export const InfoMainContentInnerText = styled('p')<ICommonProps>`
   position: relative;
   width: fit-content;
-  padding: 4px;
-  border-radius: 12px;
+  padding: 0.25rem;
+  border-radius: 0.75rem;
 
   background-color: ${(props) => props.isSend ? '#1da57a' : '#fff'};
   color: ${(props) => props.isSend ? '#fff' : 'initial'};
@@ -49,9 +52,9 @@ export const InfoMainContentInnerText = styled('p')<ICommonProps>`
     display: ${(props) => props.isSend ? 'none' : 'block'};
     content: '';
     position: absolute;
-    left: -12px;
+    left: -0.75rem;
     top: 0;
-    border: 12px solid transparent;
+    border: 0.75rem solid transparent;
     border-color: transparent;
     border-top-color: #fff;
   }
@@ -61,9 +64,9 @@ export const InfoMainContentInnerText = styled('p')<ICommonProps>`
     display: ${(props) => props.isSend ? 'block' : 'none'};
     content: '';
     position: absolute;
-    right: -12px;
+    right: -0.75rem;
     top: 0;
-    border: 12px solid transparent;
+    border: 0.75rem solid transparent;
     border-color: transparent;
     border-top-color: #1da57a;
   }
