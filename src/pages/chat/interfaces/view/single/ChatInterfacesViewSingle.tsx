@@ -50,11 +50,6 @@ const initialState = {
     },
     message: [],
   },
-
-  // ? 标识是否已经发送消息
-  // ! 直接在componentDidMount监听websocket, state会为空
-  // ! 故使用该state来判断监听事件
-  hasSent: false,
 };
 
 
@@ -62,6 +57,11 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
   const [state, setState] = React.useState<IChatInterfacesViewSingleState>(initialState);
 
   React.useEffect(() => {
+    // ? 先移除所有的监听器, 避免出现指数增长的情况
+    chatSocket.removeAllListeners();
+
+    // * 接收聊天信息
+    // ? 不能在componentDidMount时监听, 只会监听一个聊天会话
     chatSocket.on('receiveChatSingleMessage', (message: any) => {
       setState({
         ...state,
@@ -71,7 +71,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         },
       });
     });
-  }, [state.hasSent]);
+  });
 
   React.useEffect(() => {
     _getSingleChatMessageInfo();
@@ -172,11 +172,6 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       toMemberId: newToMemberId,
       contentType,
       content,
-    });
-
-    !state.hasSent && setState({
-      ...state,
-      hasSent: !state.hasSent,
     });
   }
 
