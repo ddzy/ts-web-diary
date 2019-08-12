@@ -53,35 +53,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   });
 
   React.useEffect(() => {
-    // ? 先移除所有的监听器, 避免出现指数增长的情况
-    chatSocket.removeAllListeners();
-
-    // * 接收聊天信息
-    // ? 不能在componentDidMount时监听, 那样做只会监听一个聊天会话
-    chatSocket.on('updateChatMemoryItem', (
-      newChatMemoryItemInfo: {
-        chat_id: string;
-        last_message_member_name: string;
-        last_message_content_type: string;
-        last_message_content: string;
-      },
-    ) => {
-      setState({
-        ...state,
-        chatMemoryList: state.chatMemoryList.map((v) => {
-          if (v.chat_id === newChatMemoryItemInfo.chat_id) {
-            return {
-              ...v,
-              last_message_member_name: newChatMemoryItemInfo.last_message_member_name,
-              last_message_content_type: newChatMemoryItemInfo.last_message_content_type,
-              last_message_content: newChatMemoryItemInfo.last_message_content,
-            };
-          }
-
-          return v;
-        }),
-      });
-    });
+    _setChatMemoryList();
   });
 
   React.useEffect(() => {
@@ -118,6 +90,41 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
         });
       });
     }
+  }
+
+  /**
+   * [更新] - 聊天历史列表
+   */
+  function _setChatMemoryList() {
+    // ? 先移除所有的监听器, 避免出现指数增长的情况
+    chatSocket.removeAllListeners();
+
+    // * 接收聊天信息
+    // ? 不能在componentDidMount时监听, 那样做只会监听一个聊天会话
+    chatSocket.on('updateChatMemoryItem', (
+      newChatMemoryItemInfo: {
+        chat_id: string;
+        last_message_member_name: string;
+        last_message_content_type: string;
+        last_message_content: string;
+      },
+    ) => {
+      setState({
+        ...state,
+        chatMemoryList: state.chatMemoryList.map((v) => {
+          if (v.chat_id === newChatMemoryItemInfo.chat_id) {
+            return {
+              ...v,
+              last_message_member_name: newChatMemoryItemInfo.last_message_member_name,
+              last_message_content_type: newChatMemoryItemInfo.last_message_content_type,
+              last_message_content: newChatMemoryItemInfo.last_message_content,
+            };
+          }
+
+          return v;
+        }),
+      });
+    });
   }
 
   /**
