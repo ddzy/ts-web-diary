@@ -32,10 +32,10 @@ const ChatInterfacesView = React.memo((props: IChatInterfacesViewProps) => {
       <ViewMain>
         <Switch>
           {/* 单聊路由视图 */}
-          <Route path="/chat/interfaces/single/:id" component={LoadableChatInterfacesViewSingle} />
+          <Route path="/chat/interfaces/single/:id" render={() => <LoadableChatInterfacesViewSingle />} />
 
           {/* 群聊路由视图 */}
-          <Route path="/chat/interfaces/group/:id" component={LoadableChatInterfacesViewGroup} />
+          <Route path="/chat/interfaces/group/:id" render={() => <LoadableChatInterfacesViewGroup />} />
         </Switch>
       </ViewMain>
     </ViewWrapper>

@@ -41,8 +41,14 @@ export interface IStaticChatSingleMessageParams {
 };
 
 const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSingleContentProps) => {
+  const $scrollWrapper = React.useRef(null);
+
+  React.useEffect(() => {
+    _setScrollWrapperToAffixBottom();
+  });
+
   /**
-   * 初始化 - 单聊消息列表
+   * [初始化] - 单聊消息列表
    */
   function _initMessageList() {
     const { singleChatMessage } = props;
@@ -81,9 +87,20 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
     return [];
   }
 
+  /**
+   * [设置] - 聊天消息视图吸顶, 避免自行滚动
+   */
+  function _setScrollWrapperToAffixBottom() {
+    if ($scrollWrapper && $scrollWrapper.current) {
+      const oDiv = ($scrollWrapper.current) as unknown as HTMLDivElement;
+
+      oDiv.scrollTop = oDiv.scrollHeight;
+    }
+  }
+
   return (
     <ContentWrapper>
-      <ContentMain>
+      <ContentMain ref={$scrollWrapper}>
         <ContentMainList>
           {_initMessageList()}
         </ContentMainList>
