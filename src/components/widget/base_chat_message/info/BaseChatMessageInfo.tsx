@@ -36,7 +36,7 @@ const BaseChatMessageInfo = React.memo((props: IBaseChatMessageInfoProps) => {
             </InfoMainUserTime>
           </InfoMainUserInner>
         </InfoMainUser>
-        <InfoMainContent>
+        <InfoMainContent isSend={props.isSend}>
           <InfoMainContentInner>
             <InfoMainContentInnerText isSend={props.isSend}>
               {props.chatMessageInfo.content}
