@@ -1,4 +1,8 @@
 import * as React from 'react';
+import {
+  TransitionGroup,
+  CSSTransition,
+} from 'react-transition-group';
 
 import {
   ContentWrapper,
@@ -74,12 +78,18 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
         };
 
         return (
-          <ContentMainItem key={v._id}>
-            <BaseChatMessage
-              isSend={isSend}
-              chatMessageInfo = {chatMessageInfo}
-            />
-          </ContentMainItem>
+          <CSSTransition
+            key={v._id}
+            timeout={2000}
+            classNames={'fadeTranslateZ'}
+          >
+            <ContentMainItem>
+              <BaseChatMessage
+                isSend={isSend}
+                chatMessageInfo={chatMessageInfo}
+              />
+            </ContentMainItem>
+          </CSSTransition>
         );
       });
     }
@@ -102,7 +112,9 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
     <ContentWrapper>
       <ContentMain ref={$scrollWrapper}>
         <ContentMainList>
-          {_initMessageList()}
+          <TransitionGroup>
+            {_initMessageList()}
+          </TransitionGroup>
         </ContentMainList>
       </ContentMain>
     </ContentWrapper>
