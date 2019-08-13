@@ -5,6 +5,8 @@ import {
   Avatar,
   Badge,
   notification,
+  Spin,
+  Icon,
 } from 'antd';
 import {
   withRouter,
@@ -26,6 +28,9 @@ export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };
 export interface IChatInterfacesNavMessageState {
   // ? 聊天历史列表
   chatMemoryList: IStaticChatMemoryListItem[];
+  // ? loading状态
+  // * 只在首次获取数据时有效
+  loading: boolean;
 };
 export interface IStaticChatMemoryListItem {
   // ? 聊天类型 single | group
@@ -50,6 +55,7 @@ export interface IStaticChatMemoryListItem {
 const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessageProps) => {
   const [state, setState] = React.useState<IChatInterfacesNavMessageState>({
     chatMemoryList: [],
+    loading: false,
   });
 
   React.useEffect(() => {
@@ -57,6 +63,12 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   });
 
   React.useEffect(() => {
+    // loading状态
+    setState({
+      ...state,
+      loading: true,
+    });
+
     _getChatMemoryList();
   }, []);
 
@@ -87,6 +99,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
         setState({
           ...state,
           chatMemoryList,
+          loading: false,
         });
       });
     }
@@ -172,11 +185,17 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   }
 
   return (
-    <MessageWrapper>
-      <MessageMain>
-        {_initChatMemoryList()}
-      </MessageMain>
-    </MessageWrapper>
+    <Spin
+      size={'large'}
+      indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
+      spinning={state.loading}
+    >
+      <MessageWrapper>
+        <MessageMain>
+          {_initChatMemoryList()}
+        </MessageMain>
+      </MessageWrapper>
+    </Spin>
   );
 });
 
