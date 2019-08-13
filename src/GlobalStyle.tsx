@@ -65,28 +65,6 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
 
 
   /*
-    ??? 优化Chrome滚动条
-  */
-  /* 滚动槽 */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 64px;
-  }
-  ::-webkit-scrollbar-track {
-    border-radius: 6px;
-    background: rgba(0, 0, 0, .06);
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, .08);
-  }
-  /* 滚动条滑块 */
-  ::-webkit-scrollbar-thumb {
-    height: 64px;
-    border-radius: 6px;
-    background-color: rgba(0, 0, 0, .08);
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, .2);
-  }
-
-
-  /*
     ??? 重置 antd 样式
   */
   .ant-list-item {
