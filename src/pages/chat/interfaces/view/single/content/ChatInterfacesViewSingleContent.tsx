@@ -80,7 +80,8 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
         return (
           <CSSTransition
             key={v._id}
-            timeout={2000}
+            timeout={300}
+            exit={false}
             classNames={'fadeTranslateZ'}
           >
             <ContentMainItem>
