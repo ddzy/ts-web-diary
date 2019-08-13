@@ -18,13 +18,14 @@ export interface IChatInterfacesViewSingleActionProps {
   // ? 发送聊天消息
   onChatMessageSend: (
     messageInfo: IChatInterfacesViewSingleActionState['messageInfo'],
+    callback?: () => void,
   ) => void;
 };
 export interface IChatInterfacesViewSingleActionState {
   // ? 聊天消息
   messageInfo: {
-    // ? 消息类型
-    // ? 目前只计划实现三种, plain(普通文本)、image(图片)、文件(file)
+    // * 消息类型
+    // * 目前只计划实现三种, plain(普通文本)、image(图片)、文件(file)
     type: 'plain' | 'image' | 'file',
     content: string,
   };
@@ -62,13 +63,28 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
   /**
    * 处理 - 发送聊天消息
    */
-  function handleChatMessageSend() {
+  function handleChatMessageSend(
+    callback?: () => void,
+  ) {
     const { content } = state.messageInfo;
 
     if (!content) {
       message.error('输入内容不能为空!');
+
+      callback && callback();
     } else {
-      props.onChatMessageSend(state.messageInfo);
+      props.onChatMessageSend(state.messageInfo, () => {
+        // 清空输入框
+        setState({
+          ...state,
+          messageInfo: {
+            ...state.messageInfo,
+            content: '',
+          },
+        });
+
+        callback && callback();
+      });
     }
   }
 
@@ -83,10 +99,11 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
           <Col span={16}>
             {/* 聊天输入框 */}
             <ChatInterfacesViewSingleActionInput
+              plainInputValue={state.messageInfo.content}
               onPlainInputChange={handlePlainInputChange}
             />
           </Col>
-          <Col span={3}>
+          <Col span={4}>
             {/* 聊天发送按钮 */}
             <ChatInterfacesViewSingleActionSend
               onChatMessageSend={handleChatMessageSend}

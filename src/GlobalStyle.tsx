@@ -63,6 +63,7 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
     border-spacing: 0;
   }
 
+
   /*
     ??? 重置 antd 样式
   */
@@ -179,7 +180,7 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
     left: 0;
     width: 100%;
     height: 0.128rem;
-    background-color: #1890ff;
+    background-color: #1da57a;
   }
 
   #nprogress .peg {
@@ -188,7 +189,7 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
     right: 0px;
     width: 6.25rem;
     height: 100%;
-    box-shadow: 0 0 0.625rem #1890ff, 0 0 0.3125rem #1890ff;
+    box-shadow: 0 0 0.625rem #1da57a, 0 0 0.3125rem #1da57a;
     opacity: 1.0;
     transform: rotate(3deg) translate(0px, -4px);
   }
@@ -206,8 +207,8 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
     width: 1.125rem;
     height: 1.125rem;
     border: solid 2px transparent;
-    border-top-color: #1890ff;
-    border-left-color: #1890ff;
+    border-top-color: #1da57a;
+    border-left-color: #1da57a;
     border-radius: 50%;
     animation: nprogress-spinner 400ms linear infinite;
   }

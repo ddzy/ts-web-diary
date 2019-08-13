@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom';
 import {
   notification,
+  Spin,
+  Icon,
 } from 'antd';
 
 import {
@@ -50,6 +52,9 @@ const initialState = {
     },
     message: [],
   },
+  // ? 整体loading状态
+  // * 只在第一次获取数据时有效
+  loading: false,
 };
 
 
@@ -61,6 +66,11 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
   });
 
   React.useEffect(() => {
+    setState({
+      ...state,
+      loading: true,
+    });
+
     _getSingleChatMessageInfo();
   }, [props.match.params.id]);
 
@@ -103,6 +113,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
           setState({
             ...state,
             singleChatInfo,
+            loading: false,
           });
         });
       }
@@ -137,6 +148,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       type: string,
       content: string,
     },
+    callback?: () => void,
   ) {
     // TODO 组装聊天消息
     const chatId = props.match.params.id;
@@ -180,6 +192,8 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       contentType,
       content,
     });
+
+    callback && callback();
   }
 
   return (
@@ -189,9 +203,15 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         <ChatInterfacesViewSingleTitle singleChatInfo={state.singleChatInfo} />
 
         {/* 中部消息栏 */}
-        <ChatInterfacesViewSingleContent
-          singleChatMessage={state.singleChatInfo.message}
-        />
+        <Spin
+          size={'large'}
+          indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
+          spinning={state.loading}
+        >
+          <ChatInterfacesViewSingleContent
+            singleChatMessage={state.singleChatInfo.message}
+          />
+        </Spin>
 
         {/* 底部操作栏 */}
         <ChatInterfacesViewSingleAction
