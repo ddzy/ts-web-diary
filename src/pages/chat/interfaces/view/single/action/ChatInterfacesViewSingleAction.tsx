@@ -23,8 +23,8 @@ export interface IChatInterfacesViewSingleActionProps {
 export interface IChatInterfacesViewSingleActionState {
   // ? 聊天消息
   messageInfo: {
-    // ? 消息类型
-    // ? 目前只计划实现三种, plain(普通文本)、image(图片)、文件(file)
+    // * 消息类型
+    // * 目前只计划实现三种, plain(普通文本)、image(图片)、文件(file)
     type: 'plain' | 'image' | 'file',
     content: string,
   };
@@ -69,6 +69,15 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
       message.error('输入内容不能为空!');
     } else {
       props.onChatMessageSend(state.messageInfo);
+
+      // 清空输入框
+      setState({
+        ...state,
+        messageInfo: {
+          ...state.messageInfo,
+          content: '',
+        },
+      });
     }
   }
 
@@ -83,6 +92,7 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
           <Col span={16}>
             {/* 聊天输入框 */}
             <ChatInterfacesViewSingleActionInput
+              plainInputValue={state.messageInfo.content}
               onPlainInputChange={handlePlainInputChange}
             />
           </Col>

@@ -11,6 +11,8 @@ import {
 
 
 export interface IChatInterfacesViewSingleActionInputProps {
+  // ? 输入框value
+  plainInputValue: string;
   // ? 输入框onChange
   onPlainInputChange: (e: React.ChangeEvent) => void;
 };
@@ -22,6 +24,7 @@ const ChatInterfacesViewSingleActionInput = React.memo((props: IChatInterfacesVi
         <InputMainContent>
           <Input
             placeholder={'说点什么吧...'}
+            value={props.plainInputValue}
             onChange={props.onPlainInputChange}
           />
         </InputMainContent>
