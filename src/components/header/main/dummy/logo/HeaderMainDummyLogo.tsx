@@ -1,8 +1,12 @@
 import * as React from 'react';
+import {
+  Icon,
+} from 'antd';
 
 import {
   LogoWrapper,
   LogoMain,
+  LogoMainLink,
 } from './style';
 
 
@@ -15,7 +19,13 @@ const HeaderMainDummyLogo = React.memo((
   return (
     <LogoWrapper>
       <LogoMain>
-        <a href="https://github.com/ddzy">ddzy</a>
+        <LogoMainLink href="https://github.com/ddzy" target="_blank">
+          <Icon
+            type="github"
+            theme="filled"
+            title={'github'}
+          />
+        </LogoMainLink>
       </LogoMain>
     </LogoWrapper>
   );
