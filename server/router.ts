@@ -46,6 +46,8 @@ import uploadControllerNew from './controller/upload/upload';
 import chatController from './controller/chat/chat';
 import chatInfoController from './controller/chat/info/chatInfo';
 import chatCreateController from './controller/chat/create/chatCreate';
+import statusController from './controller/status/status';
+import statusCreateController from './controller/status/create/statusCreate';
 
 
 const router: Router = new Router({
@@ -103,6 +105,8 @@ collectionControllerNew
 chatController
   .use('/info', chatInfoController.routes(), chatInfoController.allowedMethods())
   .use('/create', chatCreateController.routes(), chatCreateController.allowedMethods());
+statusController
+  .use('/create', statusCreateController.routes(), statusCreateController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!
@@ -117,5 +121,8 @@ router
   .use('/reply', replyControllerNew.routes(), replyControllerNew.allowedMethods())
   .use('/collection', collectionControllerNew.routes(), collectionControllerNew.allowedMethods())
   .use('/upload', uploadControllerNew.routes(), uploadControllerNew.allowedMethods())
-export default router
-  .use('/chat', chatController.routes(), chatController.allowedMethods());
+  .use('/chat', chatController.routes(), chatController.allowedMethods())
+  .use('/status', statusController.routes(), statusController.allowedMethods());
+
+
+export default router;

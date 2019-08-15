@@ -51,6 +51,10 @@ const LoadableChat = Loadable({
   loader: () => import('pages/chat/Chat'),
   loading: () => null,
 });
+const LoadableStatus = Loadable({
+  loader: () => import('components/status/Status'),
+  loading: () => null,
+});
 
 
 
@@ -149,6 +153,9 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <Route exact path="/publish" component={LoadablePublish} />
             <Route component={LoadableNotFound} />
           </Switch>
+
+          {/* 全局右侧状态栏 */}
+          <LoadableStatus />
         </AdminContent>
       </AdminWrapper>
     );
