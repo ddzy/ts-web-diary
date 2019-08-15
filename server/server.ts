@@ -11,7 +11,12 @@ import {
   SECRET_FOR_TOKEN,
 } from './constants/constants';
 import router from './router';
-import { handleChat } from './controller/chat/create/chatCreate';
+import {
+  handleChat,
+} from './controller/chat/create/chatCreate';
+import {
+  handleStatus,
+} from './controller/status/create/statusCreate';
 
 const app: Koa = new Koa();
 const server: Http.Server = Http.createServer(app.callback());
@@ -63,5 +68,11 @@ const chatIO = io.of('/chat');
 chatIO.on('connection', (socket) => {
   handleChat(socket, chatIO);
 });
+
+// ? 处理状态相关Websocket
+const statusIO = io.of('/status');
+statusIO.on('connection', (socket) => {
+  handleStatus(socket, statusIO);
+})
 
 server.listen(8888);

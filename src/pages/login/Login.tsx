@@ -1,4 +1,7 @@
 import * as React from 'react';
+// import * as IO from 'socket.io-client';
+// import * as SocketIOClient from 'socket.io-client';
+import * as IO from 'socket.io-client';
 import {
   Form,
   Icon,
@@ -13,6 +16,7 @@ import { History } from 'history';
 import { hot } from 'react-hot-loader';
 
 import bg_img from '../../static/images/bg_img.png';
+import { query } from 'services/request';
 import {
   LoginWrapper,
   LoginContent,
@@ -20,10 +24,6 @@ import {
   FormTitle,
   FormFriendLink,
 } from './style';
-import {
-  IStaticOptions,
-  serviceHandleLogin,
-} from './Login.service';
 
 
 export interface ILoginProps extends FormComponentProps {
@@ -31,66 +31,90 @@ export interface ILoginProps extends FormComponentProps {
   location: Location;
   match: match<any>;
 };
-interface ILoginState {
-  serviceState: IStaticOptions;
+export interface ILoginState {
+  serviceState: {
+    userid: string;
+    username: string;
+    message: string;
+  };
+  statusIO: SocketIOClient.Socket,
 };
 
 
 class Login extends React.PureComponent<ILoginProps, ILoginState> {
 
-  public readonly state = {
+  public readonly state: ILoginState = {
     serviceState: {
       userid: '',
       username: '',
       message: '',
     },
+    statusIO: IO('ws://localhost:8888/status'),
   }
 
+  public componentWillUnmount() {
+    this.state.statusIO.close();
+  }
+
+  /**
+   * [处理] - 登录
+   */
   public handleSubmit: React.FormEventHandler = (e: React.FormEvent): void => {
     e.preventDefault();
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        serviceHandleLogin(values, (data) => {
-          if (data.code === 0) {
-            this.setState((prevState) => {
-              return {
-                ...prevState,
-                serviceState: {
-                  ...prevState.serviceState,
-                  ...data,
-                },
-              };
-            }, () => {
-              // ** 存储token **
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('userid', data.userid);
+        query({
+          url: '/api/login',
+          method: 'POST',
+          data: values,
+          jsonp: false
+        })
+          .then((data) => {
+            if (data.code === 0) {
+              this.setState((prevState) => {
+                return {
+                  ...prevState,
+                  serviceState: {
+                    ...prevState.serviceState,
+                    ...data,
+                  },
+                };
+              }, () => {
+                // ** 存储token **
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userid', data.userid);
 
-              // ** 页面跳转,提示信息 **
-              this.props.history.push('/home/frontend');
-              message.info(
-                <React.Fragment>
-                  欢迎进入
-                  <span style={{ color: '#1890ff' }}>
-                    --Gayhub
-                  </span>
-                </React.Fragment>
-              );
-            });
-          } else {
-            this.setState((prevState) => {
-              return {
-                ...prevState,
-                serviceState: {
-                  ...prevState.serviceState,
-                  ...data,
-                },
-              };
-            }, () => {
+                // ** socket处理用户在线状态 **
+                this.state.statusIO.emit('sendUserOnLine', {
+                  userId: data.userid,
+                });
+
+                // ** 页面跳转,提示信息 **
+                this.props.history.push('/home/frontend');
+                message.info(
+                  <React.Fragment>
+                    点击右侧查看
+                    <span style={{ color: '#1890ff' }}>
+                      --在线人数
+                    </span>
+                  </React.Fragment>
+                );
+              });
+            } else {
+              this.setState((prevState) => {
+                return {
+                  ...prevState,
+                  serviceState: {
+                    ...prevState.serviceState,
+                    ...data,
+                  },
+                };
+              }, () => {
                 message.error(this.state.serviceState.message);
-            });
-          }
-        });
+              });
+            }
+          })
       }
     });
   }
@@ -158,7 +182,6 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
       </LoginWrapper>
     );
   }
-
 }
 
 
