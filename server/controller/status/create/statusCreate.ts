@@ -25,7 +25,7 @@ export function handleStatus(socket: IO.Socket, io: IO.Namespace) {
     // redis统计在线用户总数
     const foundUserOnLineTotal = await redis.zcard(IOREDIS_USER_ONLINE);
 
-    io.emit('receiveUserOnLineInfo', {
+    io.emit('receiveUserOnLineTotal', {
       online_total: foundUserOnLineTotal,
     });
   });

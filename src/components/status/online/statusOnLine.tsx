@@ -13,6 +13,7 @@ import {
 
 
 export interface IStatusOnLineProps {
+  // ? 在线用户总数
   userOnLineTotal: number;
 };
 export interface IStatusOnLineState {
