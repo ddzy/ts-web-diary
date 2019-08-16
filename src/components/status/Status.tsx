@@ -14,6 +14,7 @@ import {
   MainPopContentInnerItem,
 } from './style';
 import StatusOnLine from './online/statusOnLine';
+import { query } from 'services/request';
 
 
 export interface IStatusProps { };
@@ -22,6 +23,7 @@ export interface IStatusState {
 
   // ? 在线用户各种信息
   userOnLineInfo: {
+    // * 当前在线用户总数
     online_total: number,
   };
 };
@@ -35,8 +37,11 @@ const Status = React.memo((props: IStatusProps) => {
   });
 
   React.useEffect(() => {
-    // socket获取实时的在线用户信息
-    state.statusIO.on('receiveUserOnLineInfo', (userOnLineInfo: {
+    // 首次获取各种状态信息
+    _getStatusInfo();
+
+    // socket获取实时的在线用户数量
+    state.statusIO.on('receiveUserOnLineTotal', (userOnLineInfo: {
       online_total: number;
     }) => {
       setState({
@@ -71,6 +76,28 @@ const Status = React.memo((props: IStatusProps) => {
         </MainPopContentInner>
       </MainPopContent>
     );
+  }
+
+  /**
+   * [后台] - 获取所有的站点状态信息
+   */
+  function _getStatusInfo() {
+    query({
+      method: 'GET',
+      jsonp: false,
+      url: '/api/status/info/all',
+      data: {},
+    }).then((res) => {
+      const { user_online_total } = res.data;
+
+      setState({
+        ...state,
+        userOnLineInfo: {
+          ...state.userOnLineInfo,
+          online_total: user_online_total,
+        },
+      });
+    });
   }
 
   return (

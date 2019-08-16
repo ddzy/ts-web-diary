@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const StatusWrapper = styled.div`
   position: fixed;
   right: 0;
-  top: 50%;
+  top: 35%;
   padding: 12px;
   background-color: #fff;
   border-radius: 12px 0 0 12px;

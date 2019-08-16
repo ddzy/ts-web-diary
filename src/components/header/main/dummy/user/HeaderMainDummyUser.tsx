@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as IO from 'socket.io-client';
 import {
   withRouter,
   Link,
@@ -27,18 +28,33 @@ import {
 
 
 export interface IHeaderMainDummyUserProps extends RouteComponentProps {
+  // ? 应用用户token验证信息
   authInfo: {
     isAuth: boolean;
     useravatar: string;
     username: string;
   },
 };
+export interface IHeaderMainDummyUserState {
+  statusIO: SocketIOClient.Socket;
+};
+
 
 const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
   props: IHeaderMainDummyUserProps,
 ): JSX.Element => {
+  const [state] = React.useState<IHeaderMainDummyUserState>({
+    statusIO: IO('ws://localhost:8888/status'),
+  });
+
+  React.useEffect(() => {
+    return () => {
+      state.statusIO.close();
+    }
+  }, []);
+
   /**
-   * 初始化 - 气泡框内容
+   * [初始化] - 气泡框内容
    */
   function _initPopoverContent(): JSX.Element {
     return (
@@ -76,7 +92,7 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
   }
 
   /**
-   * 处理 - 跳转至主页
+   * [处理] - 跳转至主页
    */
   function handleToUserPage(): void {
     const userId: string = localStorage.getItem('userid') || '';
@@ -84,15 +100,25 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
   }
 
   /**
-   * 处理 - 退出登录
+   * [处理] - 退出登录
    */
   function handleLogout(): void {
     Modal.confirm({
       content: '确定要退出登录吗?',
       onOk: () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userid');
-        props.history.push('/login');
+        const userId = localStorage.getItem('userid');
+
+        if (userId) {
+          // socket处理用户登录(离线)
+          state.statusIO.emit('sendUserOffLine', {
+            userId,
+          });
+
+          // 清除用户相关信息
+          localStorage.removeItem('token');
+          localStorage.removeItem('userid');
+          props.history.push('/login');
+        }
       },
     });
   }

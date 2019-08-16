@@ -48,7 +48,7 @@ import chatInfoController from './controller/chat/info/chatInfo';
 import chatCreateController from './controller/chat/create/chatCreate';
 import statusController from './controller/status/status';
 import statusCreateController from './controller/status/create/statusCreate';
-
+import statusInfoController from './controller/status/info/statusInfo';
 
 const router: Router = new Router({
   prefix: '/api',
@@ -106,7 +106,8 @@ chatController
   .use('/info', chatInfoController.routes(), chatInfoController.allowedMethods())
   .use('/create', chatCreateController.routes(), chatCreateController.allowedMethods());
 statusController
-  .use('/create', statusCreateController.routes(), statusCreateController.allowedMethods());
+  .use('/create', statusCreateController.routes(), statusCreateController.allowedMethods())
+  .use('/info', statusInfoController.routes(), statusInfoController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!
