@@ -1,10 +1,12 @@
 import * as React from 'react';
+import {
+  Statistic,
+  Icon,
+} from 'antd';
 
 import {
   OnLineWrapper,
   OnLineMain,
-  OnLineMainTitle,
-  OnLineMainTitleText,
   OnLineMainContent,
   OnLineMainContentText,
 } from './style';
@@ -21,14 +23,13 @@ const StatusOnLine = React.memo((props: IStatusOnLineProps) => {
   return (
     <OnLineWrapper>
       <OnLineMain>
-        <OnLineMainTitle>
-          <OnLineMainTitleText>
-            站内实时在线人数
-          </OnLineMainTitleText>
-        </OnLineMainTitle>
         <OnLineMainContent>
           <OnLineMainContentText>
-            {props.userOnLineTotal}
+            <Statistic
+              title={'实时在线人数'}
+              value={props.userOnLineTotal}
+              prefix={<Icon type="user" />}
+            />
           </OnLineMainContentText>
         </OnLineMainContent>
       </OnLineMain>
