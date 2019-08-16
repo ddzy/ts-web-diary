@@ -222,4 +222,4 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
 });
 
 
-export default withRouter(Form.create()(DetailsControlCollection));
+export default withRouter((Form.create() as any)(DetailsControlCollection));
