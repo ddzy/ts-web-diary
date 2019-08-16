@@ -4,6 +4,7 @@ import * as IO from 'socket.io';
 import redis from '../../../redis/redis';
 import {
   IOREDIS_USER_ONLINE,
+  IOREDIS_USER_ON_WHICH_CHAT,
 } from '../../../redis/keys/redisKeys';
 
 
@@ -44,6 +45,17 @@ export function handleStatus(socket: IO.Socket, io: IO.Namespace) {
     io.emit('receiveUserOnLineTotal', {
       online_total: foundUserOnLineTotal,
     });
+  });
+
+  // ? 用户正处于哪个会话状态
+  socket.on('sendUserOnWhichChat', async (
+    userInfo: {
+      userId: string,
+      chatId: string,
+    },
+  ) => {
+    // redis设置用户当前处于哪个会话
+    redis.hset(IOREDIS_USER_ON_WHICH_CHAT, userInfo.userId, userInfo.chatId);
   })
 }
 
