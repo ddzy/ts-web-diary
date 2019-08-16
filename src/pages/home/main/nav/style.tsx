@@ -9,9 +9,6 @@ export const GlobalStyle = createGlobalStyle`
   .home-nav-link-default {
     color: initial;
   }
-  .home-nav-bar-scrolled {
-    transform: translateY(-100%);
-  }
 `;
 
 

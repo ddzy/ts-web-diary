@@ -49,7 +49,7 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
   return (
     <React.Fragment>
       <Affix>
-        <NavWrapper id="home-nav-bar">
+        <NavWrapper>
           <NavContent>
             <NavContentList>
               {handleInitNavItem()}
