@@ -120,8 +120,14 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
         last_message_member_name: string;
         last_message_content_type: string;
         last_message_content: string;
+
+        to_user_id: string;
+        to_member_id: string;
+        unread_message_total: number;
       },
     ) => {
+      const userId = localStorage.getItem('userid') || '';
+
       setState({
         ...state,
         chatMemoryList: state.chatMemoryList.map((v) => {
@@ -131,6 +137,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
               last_message_member_name: newChatMemoryItemInfo.last_message_member_name,
               last_message_content_type: newChatMemoryItemInfo.last_message_content_type,
               last_message_content: newChatMemoryItemInfo.last_message_content,
+              unread_message_total: newChatMemoryItemInfo.to_user_id === userId ? newChatMemoryItemInfo.unread_message_total : 0,
             };
           }
 

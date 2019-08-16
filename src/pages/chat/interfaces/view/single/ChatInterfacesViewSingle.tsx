@@ -31,6 +31,7 @@ type IChatInterfacesViewSingleState = typeof initialState;
 
 
 const chatSocket = IO('http://localhost:8888/chat');
+const statusSocket = IO('http://localhost:8888/status');
 const initialState = {
   // ? 单聊信息
   singleChatInfo: {
@@ -54,8 +55,7 @@ const initialState = {
   },
   // ? 整体loading状态
   // * 只在第一次获取数据时有效
-  loading: false,
-};
+  loading: false,};
 
 
 const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSingleProps) => {
@@ -66,12 +66,32 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
   });
 
   React.useEffect(() => {
+    return () => {
+      // * socket处理用户正处于哪个会话状态
+      // 单聊组件`componentWillUnmount`之后, 需要进行一次重置
+      // 避免上一次的会话状态遗留
+      statusSocket.emit('sendUserOnWhichChat', {
+        userId: localStorage.getItem('userid') || '',
+        chatId: '',
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
     setState({
       ...state,
       loading: true,
     });
 
+    // * 获取单聊信息
     _getSingleChatMessageInfo();
+
+    // * socket处理发送用户处于会话状态
+    // ? 正处于哪个会话
+    statusSocket.emit('sendUserOnWhichChat', {
+      userId: localStorage.getItem('userid') || '',
+      chatId: props.match.params.id || '',
+    });
   }, [props.match.params.id]);
 
   /**
@@ -127,7 +147,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     // ? 先移除所有的监听器, 避免出现指数增长的情况
     chatSocket.removeAllListeners();
 
-    // * 接收聊天信息
+    // * socket处理接收聊天信息
     // ? 不能在componentDidMount时监听, 只会监听一个聊天会话
     chatSocket.on('receiveChatSingleMessage', (message: any) => {
       setState({

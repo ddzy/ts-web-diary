@@ -86,6 +86,10 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
     width: 160px !important;
     height: 160px !important;
   }
+  .ant-input-group-wrapper {
+    vertical-align: middle !important;
+  }
+
 
   /*
     ??? 路由过渡效果 - 1

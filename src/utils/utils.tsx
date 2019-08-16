@@ -111,7 +111,7 @@ export function setRange(
   ref: HTMLElement,
   callback?: () => void
 ) {
-  const sel: Selection = window.getSelection();
+  const sel = window.getSelection();
   const range: Range = document.createRange();
 
   callback && callback();
@@ -119,8 +119,8 @@ export function setRange(
   range.setStart(ref, ref.childNodes.length);
   range.setEndAfter(ref);
 
-  sel.removeAllRanges();
-  sel.addRange(range);
+  sel && sel.removeAllRanges();
+  sel && sel.addRange(range);
 }
 
 

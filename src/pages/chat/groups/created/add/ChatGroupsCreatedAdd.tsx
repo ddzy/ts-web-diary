@@ -98,4 +98,4 @@ const ChatGroupsCreatedAdd = React.memo((props: IChatGroupsCreatedAddProps) => {
   );
 });
 
-export default Form.create()(ChatGroupsCreatedAdd);
+export default (Form.create() as any)(ChatGroupsCreatedAdd);

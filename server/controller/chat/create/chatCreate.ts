@@ -9,6 +9,11 @@
 import * as Router from 'koa-router';
 import * as IO from 'socket.io';
 
+import redis from '../../../redis/redis';
+import {
+  IOREDIS_USER_ON_WHICH_CHAT,
+  IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL,
+} from '../../../redis/keys/redisKeys';
 import {
   User,
   ChatMemory,
@@ -18,6 +23,7 @@ import {
 } from '../../../model/model';
 
 const chatCreateController = new Router();
+
 
 /**
  * 处理 - 创建新的单聊
@@ -282,14 +288,30 @@ export function handleChat(socket: IO.Socket, io: IO.Namespace) {
         },
       ]);
 
+    // 查找接收方当前处于哪个会话
+    const foundToMemberInWhichChat = await redis.hget(IOREDIS_USER_ON_WHICH_CHAT, foundChatSingleMessage.to_member_id.user_id._id);
+    let saveToMemberUnreadMessageTotal = 0;
+
+    if (foundToMemberInWhichChat !== messageInfo.chatId) {
+      // 如果接收方不位于当前会话界面
+      // redis更新接收方的未读消息总数
+      // 由于单聊的两个成员都是唯一的
+      // 所以直接使用Hash存储
+      saveToMemberUnreadMessageTotal = await redis.hincrby(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMessage.to_member_id._id, 1);
+    }
+
     // 同步更新单个聊天消息
     io.emit('receiveChatSingleMessage', foundChatSingleMessage);
     // 同步更新聊天历史列表
     io.emit('updateChatMemoryItem', {
-      chat_id: updatedChatSingleMessage.chat_id,
+      chat_id: foundChatSingleMessage.chat_id,
       last_message_member_name: foundChatSingleMessage.from_member_id.user_id.username,
-      last_message_content_type: updatedChatSingleMessage.content_type,
-      last_message_content: updatedChatSingleMessage.content,
+      last_message_content_type: foundChatSingleMessage.content_type,
+      last_message_content: foundChatSingleMessage.content,
+
+      to_member_id: foundChatSingleMessage.to_member_id._id,
+      to_user_id: foundChatSingleMessage.to_member_id.user_id._id,
+      unread_message_total: saveToMemberUnreadMessageTotal,
     });
   });
 };
