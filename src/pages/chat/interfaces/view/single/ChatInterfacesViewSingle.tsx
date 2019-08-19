@@ -135,6 +135,12 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
             singleChatInfo,
             loading: false,
           });
+
+          // socket处理同步重置聊天历史列表单个条目未读消息总数为0
+          chatSocket.emit('sendResetChatMemoryItemUnreadMessageTotal', {
+            chatId,
+            userId,
+          });
         });
       }
     }
@@ -150,11 +156,17 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     // * socket处理接收聊天信息
     // ? 不能在componentDidMount时监听, 只会监听一个聊天会话
     chatSocket.on('receiveChatSingleMessage', (message: any) => {
+      // 过滤当前chatId的会话消息
+      const chatId = props.match.params.id;
+      const newMessage = message.chat_id === chatId
+        ? state.singleChatInfo.message.concat(message)
+        : state.singleChatInfo.message;
+
       setState({
         ...state,
         singleChatInfo: {
           ...state.singleChatInfo,
-          message: state.singleChatInfo.message.concat(message),
+          message: newMessage,
         },
       });
     });

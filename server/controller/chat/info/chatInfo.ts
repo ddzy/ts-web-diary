@@ -69,12 +69,36 @@ chatInfoController.get('/memory/list', async (ctx) => {
       },
     ]);
   const filteredChatMemoryList = await foundUserInfo.chat_memory;
+  // 遍历单聊历史列表, 更新列表的未读消息总数
+  const updatedChatMemoryListByUnreadMessageTotal = await Promise.all(
+    filteredChatMemoryList.map(async (memoryInfo: any) => {
+        // 查找单聊用户
+        const foundChatSingleMember = await ChatSingleMember
+        .findOne({
+          chat_id: memoryInfo.chat_id,
+          user_id: userId,
+        });
+
+      // redis根据单聊用户查找未读消息数
+      let finalUnreadMessageTotal = 0;
+      if (foundChatSingleMember) {
+        const foundUnreadMessageTotal = await redis.hget(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMember._id);
+
+        finalUnreadMessageTotal = Number(foundUnreadMessageTotal);
+      }
+
+      return {
+        ...memoryInfo._doc,
+        unread_message_total: finalUnreadMessageTotal,
+      };
+    })
+  );
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
-      chatMemoryList: filteredChatMemoryList,
+      chat_memory_list: updatedChatMemoryListByUnreadMessageTotal,
     },
   };
 })
@@ -92,17 +116,7 @@ chatInfoController.get('/single', async (ctx) => {
 
   const {
     chatId,
-    userId,
   } = ctx.request.query as IQueryParams;
-
-  // ? 查询指定单聊成员
-  const foundChatSingleMember = await ChatSingleMember.findOne({
-    user_id: userId,
-    chat_id: chatId,
-  });
-
-  // ? redis更新重置当前单聊成员的未读消息数
-  await redis.hset(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMember._id, 0);
 
   // ? 查询指定单聊信息
   const foundChatSingleInfo = await ChatSingle
