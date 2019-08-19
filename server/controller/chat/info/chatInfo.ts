@@ -11,7 +11,12 @@ import * as Router from 'koa-router';
 import {
   User,
   ChatSingle,
+  ChatSingleMember,
 } from '../../../model/model';
+import redis from '../../../redis/redis';
+import {
+  IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL,
+} from '../../../redis/keys/redisKeys';
 
 const chatInfoController = new Router();
 
@@ -64,12 +69,36 @@ chatInfoController.get('/memory/list', async (ctx) => {
       },
     ]);
   const filteredChatMemoryList = await foundUserInfo.chat_memory;
+  // 遍历单聊历史列表, 更新列表的未读消息总数
+  const updatedChatMemoryListByUnreadMessageTotal = await Promise.all(
+    filteredChatMemoryList.map(async (memoryInfo: any) => {
+        // 查找单聊用户
+        const foundChatSingleMember = await ChatSingleMember
+        .findOne({
+          chat_id: memoryInfo.chat_id,
+          user_id: userId,
+        });
+
+      // redis根据单聊用户查找未读消息数
+      let finalUnreadMessageTotal = 0;
+      if (foundChatSingleMember) {
+        const foundUnreadMessageTotal = await redis.hget(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMember._id);
+
+        finalUnreadMessageTotal = Number(foundUnreadMessageTotal);
+      }
+
+      return {
+        ...memoryInfo._doc,
+        unread_message_total: finalUnreadMessageTotal,
+      };
+    })
+  );
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
-      chatMemoryList: filteredChatMemoryList,
+      chat_memory_list: updatedChatMemoryListByUnreadMessageTotal,
     },
   };
 })

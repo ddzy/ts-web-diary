@@ -94,11 +94,11 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
           userId,
         },
       }).then((res) => {
-        const { chatMemoryList } = res.data;
+        const { chat_memory_list } = res.data;
 
         setState({
           ...state,
-          chatMemoryList,
+          chatMemoryList: chat_memory_list,
           loading: false,
         });
       });
