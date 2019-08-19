@@ -113,6 +113,11 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
           state.statusIO.emit('sendUserOffLine', {
             userId,
           });
+          // socket处理用户正处于哪个会话状态
+          state.statusIO.emit('sendUserOnWhichChat', {
+            userId,
+            chatId: '',
+          });
 
           // 清除用户相关信息
           localStorage.removeItem('token');
