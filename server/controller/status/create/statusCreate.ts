@@ -37,9 +37,9 @@ export function handleStatus(socket: IO.Socket, io: IO.Namespace) {
       userId: string,
     },
   ) => {
-    // redis移除当前用户
+    // redis处理在线用户有序集合中移除当前用户
     await redis.zrem(IOREDIS_USER_ONLINE, userInfo.userId);
-    // redis查找当前在线用户总数
+    // redis处理查找当前在线用户总数
     const foundUserOnLineTotal = await redis.zcard(IOREDIS_USER_ONLINE);
 
     io.emit('receiveUserOnLineTotal', {

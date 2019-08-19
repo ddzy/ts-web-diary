@@ -94,11 +94,11 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
           userId,
         },
       }).then((res) => {
-        const { chatMemoryList } = res.data;
+        const { chat_memory_list } = res.data;
 
         setState({
           ...state,
-          chatMemoryList,
+          chatMemoryList: chat_memory_list,
           loading: false,
         });
       });
@@ -106,7 +106,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   }
 
   /**
-   * [更新] - 聊天历史列表
+   * [更新] - socket更新聊天历史列表相关内容
    */
   function _setChatMemoryList() {
     // ? 先移除所有的监听器, 避免出现指数增长的情况
@@ -114,7 +114,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
 
     // * 接收聊天信息
     // ? 不能在componentDidMount时监听, 那样做只会监听一个聊天会话
-    chatSocket.on('updateChatMemoryItem', (
+    chatSocket.on('receiveChatMemoryItem', (
       newChatMemoryItemInfo: {
         chat_id: string;
         last_message_member_name: string;
@@ -138,6 +138,29 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
               last_message_content_type: newChatMemoryItemInfo.last_message_content_type,
               last_message_content: newChatMemoryItemInfo.last_message_content,
               unread_message_total: newChatMemoryItemInfo.to_user_id === userId ? newChatMemoryItemInfo.unread_message_total : 0,
+            };
+          }
+
+          return v;
+        }),
+      });
+    });
+
+    // * 重置单个单聊的未读消息数量
+    chatSocket.on('receiveResetChatMemoryItemUnreadMessageTotal', (memoryInfo: {
+      unread_message_total: number;
+      chat_id: string;
+      user_id: string;
+    }) => {
+      const userId = localStorage.getItem('userid');
+
+      setState({
+        ...state,
+        chatMemoryList: state.chatMemoryList.map((v) => {
+          if (v.chat_id === memoryInfo.chat_id && memoryInfo.user_id === userId) {
+            return {
+              ...v,
+              unread_message_total: memoryInfo.unread_message_total,
             };
           }
 

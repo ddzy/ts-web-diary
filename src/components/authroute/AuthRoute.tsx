@@ -50,8 +50,13 @@ const AuthRoute = React.memo<IAuthRouteProps>((
           state.statusIO.emit('sendUserOffLine', {
             userId,
           });
+          // socket处理重置用户处于哪个会话
+          state.statusIO.emit('sendUserOnWhichChat', {
+            userId,
+            chatId: '',
+          });
 
-          // 清楚用户相关信息
+          // 清除用户相关信息
           localStorage.removeItem('userid');
           notification.error({
             message: '错误',
