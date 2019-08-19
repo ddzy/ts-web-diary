@@ -183,7 +183,12 @@ export function handleChat(socket: IO.Socket, io: IO.Namespace) {
     contentType: 'plain' | 'image' | 'file';
     content: string;
   };
+  interface ISingleChatMemoryProps {
+    chatId: string;
+    userId: string;
+  };
 
+  // 处理同步更新在单聊会话中发送消息
   socket.on('sendChatSingleMessage', async (messageInfo: ISingleChatMessageProps) => {
     // 更新单聊消息表
     const updatedChatSingleMessage = await ChatSingleMessage.create({
@@ -300,10 +305,10 @@ export function handleChat(socket: IO.Socket, io: IO.Namespace) {
       saveToMemberUnreadMessageTotal = await redis.hincrby(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMessage.to_member_id._id, 1);
     }
 
-    // 同步更新单个聊天消息
+    // socket同步更新单个聊天消息
     io.emit('receiveChatSingleMessage', foundChatSingleMessage);
-    // 同步更新聊天历史列表
-    io.emit('updateChatMemoryItem', {
+    // socket同步更新聊天历史列表
+    io.emit('receiveChatMemoryItem', {
       chat_id: foundChatSingleMessage.chat_id,
       last_message_member_name: foundChatSingleMessage.from_member_id.user_id.username,
       last_message_content_type: foundChatSingleMessage.content_type,
@@ -314,6 +319,28 @@ export function handleChat(socket: IO.Socket, io: IO.Namespace) {
       unread_message_total: saveToMemberUnreadMessageTotal,
     });
   });
+
+  // 处理同步重置聊天历史列表单个条目未读消息总数为0
+  socket.on('sendResetChatMemoryItemUnreadMessageTotal', async (memoryInfo: ISingleChatMemoryProps) => {
+    // ? 查询指定单聊成员
+    const foundChatSingleMember = await ChatSingleMember
+      .findOne({
+        chat_id: memoryInfo.chatId,
+        user_id: memoryInfo.userId,
+      })
+
+    // ? redis重置当前单聊成员的未读消息数
+    await redis.hset(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMember._id, 0);
+
+    // ? redis获取当前单聊成员的未读消息数
+    const updatedChatSingleMemberUnreadMessageTotal = await redis.hget(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMember._id);
+
+    io.emit('receiveResetChatMemoryItemUnreadMessageTotal', {
+      chat_id: memoryInfo.chatId,
+      user_id: memoryInfo.userId,
+      unread_message_total: Number(updatedChatSingleMemberUnreadMessageTotal),
+    });
+  })
 };
 
 export default chatCreateController;

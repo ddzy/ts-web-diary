@@ -135,6 +135,12 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
             singleChatInfo,
             loading: false,
           });
+
+          // socket处理同步重置聊天历史列表单个条目未读消息总数为0
+          chatSocket.emit('sendResetChatMemoryItemUnreadMessageTotal', {
+            chatId,
+            userId,
+          });
         });
       }
     }

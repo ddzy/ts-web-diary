@@ -11,12 +11,7 @@ import * as Router from 'koa-router';
 import {
   User,
   ChatSingle,
-  ChatSingleMember,
 } from '../../../model/model';
-import redis from '../../../redis/redis';
-import {
-  IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL,
-} from '../../../redis/keys/redisKeys';
 
 const chatInfoController = new Router();
 
@@ -92,17 +87,7 @@ chatInfoController.get('/single', async (ctx) => {
 
   const {
     chatId,
-    userId,
   } = ctx.request.query as IQueryParams;
-
-  // ? 查询指定单聊成员
-  const foundChatSingleMember = await ChatSingleMember.findOne({
-    user_id: userId,
-    chat_id: chatId,
-  });
-
-  // ? redis更新重置当前单聊成员的未读消息数
-  await redis.hset(IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL, foundChatSingleMember._id, 0);
 
   // ? 查询指定单聊信息
   const foundChatSingleInfo = await ChatSingle
