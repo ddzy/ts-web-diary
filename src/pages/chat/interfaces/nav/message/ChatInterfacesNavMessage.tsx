@@ -20,6 +20,9 @@ import {
   MessageMainItemInner,
 } from './style';
 import { query } from 'services/request';
+import {
+  formatChatMemoryContent,
+} from 'utils/utils';
 
 const chatSocket = IO('http://localhost:8888/chat');
 
@@ -191,7 +194,9 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
                     </Badge>
                   }
                   title={item.chat_name}
-                  description={`${item.last_message_member_name}: ${item.last_message_content}` || '暂无消息记录'}
+                  description={
+                    `${item.last_message_member_name ? (item.last_message_member_name + ':') : ''} ${item.last_message_content ? formatChatMemoryContent(item.last_message_content_type, item.last_message_content) : '暂无消息记录'}`
+                  }
                 />
               </List.Item>
             </MessageMainItemInner>
