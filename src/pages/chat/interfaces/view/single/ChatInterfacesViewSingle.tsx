@@ -55,7 +55,8 @@ const initialState = {
   },
   // ? 整体loading状态
   // * 只在第一次获取数据时有效
-  loading: false,};
+  loading: false,
+};
 
 
 const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSingleProps) => {

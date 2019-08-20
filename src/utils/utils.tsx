@@ -209,3 +209,27 @@ export function getAnyRandom(
 ) {
   return Math.random() * (max - min) + min;
 }
+
+/**
+ * 将指定时间戳转化为年-月-日格式
+ * @param timestamp 时间戳
+ * @param separator 分隔符
+ * @example
+ * // 2019-8-20
+ * formatTimeByYYYYMD(Date.now());
+ * @example
+ * // 2019/8/20
+ * formatTimeByYYYYMD(Date.now(), '/')
+ */
+export function formatTimeByYYYYMMDD(
+  timestamp: number,
+  separator: string = '-'
+): string {
+  const processedDate = new Date(timestamp);
+
+  const year = processedDate.getFullYear();
+  const month = processedDate.getMonth() + 1;
+  const day = processedDate.getDate();
+
+  return `${year}${separator}${month}${separator}${day}`;
+}

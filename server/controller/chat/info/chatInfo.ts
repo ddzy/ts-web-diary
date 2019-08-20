@@ -72,8 +72,8 @@ chatInfoController.get('/memory/list', async (ctx) => {
   // 遍历单聊历史列表, 更新列表的未读消息总数
   const updatedChatMemoryListByUnreadMessageTotal = await Promise.all(
     filteredChatMemoryList.map(async (memoryInfo: any) => {
-        // 查找单聊用户
-        const foundChatSingleMember = await ChatSingleMember
+      // 查找单聊用户
+      const foundChatSingleMember = await ChatSingleMember
         .findOne({
           chat_id: memoryInfo.chat_id,
           user_id: userId,
@@ -172,5 +172,60 @@ chatInfoController.get('/single', async (ctx) => {
     },
   };
 });
+
+/**
+ * [单聊] - 获取指定单聊的详细信息
+ * @todo 拆分single & group
+ */
+chatInfoController.get('/single/detail', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    chatId: string;
+  };
+
+  const {
+    chatId,
+  }: IRequestParams = ctx.request.query;
+
+  // ? 查询指定单聊的详细信息
+  const foundChatSingleInfo = await ChatSingle
+    .findOne(
+      { chat_id: chatId },
+    )
+    .populate([
+      {
+        path: 'from_member_id',
+        select: ['chat_id', 'user_id'],
+        populate: {
+          path: 'user_id',
+          select: ['username'],
+        },
+      },
+      {
+        path: 'to_member_id',
+        select: ['chat_id', 'user_id'],
+        populate: {
+          path: 'user_id',
+          select: ['username'],
+        },
+      },
+    ]);
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      chat_single_detail: {
+        chat_id: foundChatSingleInfo.chat_id,
+        create_by_user: foundChatSingleInfo.from_member_id.user_id.username,
+        message_total: foundChatSingleInfo.message_total,
+        create_time: foundChatSingleInfo.create_time,
+        last_message_time: foundChatSingleInfo.last_message_time,
+        update_time: foundChatSingleInfo.update_time,
+      },
+    },
+  };
+})
+
 
 export default chatInfoController;
