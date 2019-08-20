@@ -19,6 +19,9 @@ import ChatInterfacesViewSingleTitle from './title/ChatInterfacesViewSingleTitle
 import ChatInterfacesViewSingleContent from './content/ChatInterfacesViewSingleContent';
 import ChatInterfacesViewSingleAction from './action/ChatInterfacesViewSingleAction';
 import { query } from 'services/request';
+import {
+  PAGE_SIZE,
+} from 'constants/constants';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -127,6 +130,8 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
             userId,
             chatId,
             chatType,
+            pageSize: PAGE_SIZE,
+            page: 1,
           },
         }).then((res) => {
           const { singleChatInfo } = res.data;

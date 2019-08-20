@@ -112,10 +112,14 @@ chatInfoController.get('/single', async (ctx) => {
     userId: string;
     chatId: string;
     chatType: string;
+    pageSize: number;
+    page: number;
   };
 
   const {
     chatId,
+    pageSize,
+    page,
   } = ctx.request.query as IQueryParams;
 
   // ? 查询指定单聊信息
@@ -161,14 +165,24 @@ chatInfoController.get('/single', async (ctx) => {
             },
           },
         ],
+        options: {
+          sort: {
+            create_time: -1,
+          },
+          limit: Number(pageSize),
+          skip: (Number(page) - 1) * Number(pageSize),
+        },
       },
-    ]);
+    ])
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
-      singleChatInfo: foundChatSingleInfo,
+      singleChatInfo: {
+        ...foundChatSingleInfo._doc,
+        message: foundChatSingleInfo.message.reverse(),
+      },
     },
   };
 });
@@ -225,7 +239,71 @@ chatInfoController.get('/single/detail', async (ctx) => {
       },
     },
   };
-})
+});
+
+/**
+ * [单聊] - 分页获取指定单聊的消息列表
+ * @todo 拆分single & group
+ */
+chatInfoController.get('/single/message/list', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    chatId: string;
+    page: number;
+    pageSize: number;
+  };
+
+  const {
+    chatId,
+    page,
+    pageSize,
+  }: IRequestParams = ctx.request.query;
+
+  const foundChatSingleInfo = await ChatSingle
+    .findOne({
+      chat_id: chatId,
+    })
+    .select('message')
+    .populate([
+      {
+        path: 'message',
+        populate: [
+          {
+            path: 'from_member_id',
+            select: ['user_id'],
+            populate: {
+              path: 'user_id',
+              select: ['username', 'useravatar'],
+            },
+          },
+          {
+            path: 'to_member_id',
+            select: ['user_id'],
+            populate: {
+              path: 'user_id',
+              select: ['username', 'useravatar'],
+            },
+          },
+        ],
+        options: {
+          sort: {
+            create_time: -1,
+          },
+          limit: Number(pageSize),
+          skip: (Number(page) - 1) * Number(pageSize),
+        },
+      },
+    ]);
+  const foundChatSingleMessage = await foundChatSingleInfo.message;
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      single_chat_message: foundChatSingleMessage.reverse(),
+    },
+  };
+});
 
 
 export default chatInfoController;
