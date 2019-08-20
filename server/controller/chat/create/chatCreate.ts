@@ -84,6 +84,7 @@ chatCreateController.post('/single', async (ctx) => {
       message_total: 0,
       last_message_time: Date.now(),
       create_time: Date.now(),
+      update_time: Date.now(),
     });
   }
 

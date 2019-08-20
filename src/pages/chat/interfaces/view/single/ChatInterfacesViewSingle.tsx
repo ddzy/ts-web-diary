@@ -19,6 +19,9 @@ import ChatInterfacesViewSingleTitle from './title/ChatInterfacesViewSingleTitle
 import ChatInterfacesViewSingleContent from './content/ChatInterfacesViewSingleContent';
 import ChatInterfacesViewSingleAction from './action/ChatInterfacesViewSingleAction';
 import { query } from 'services/request';
+import {
+  PAGE_SIZE,
+} from 'constants/constants';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -55,7 +58,8 @@ const initialState = {
   },
   // ? 整体loading状态
   // * 只在第一次获取数据时有效
-  loading: false,};
+  loading: false,
+};
 
 
 const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSingleProps) => {
@@ -126,6 +130,8 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
             userId,
             chatId,
             chatType,
+            pageSize: PAGE_SIZE,
+            page: 1,
           },
         }).then((res) => {
           const { singleChatInfo } = res.data;

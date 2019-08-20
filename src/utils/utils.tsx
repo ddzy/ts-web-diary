@@ -1,5 +1,3 @@
-
-
 /**
  * 格式化时间
  * @param time 时间
@@ -26,7 +24,6 @@ export function formatTime(time: string | number): string {
   }
 }
 
-
 /**
  * 获取图片base64码
  * @param img 图片
@@ -42,8 +39,6 @@ export function getBase64(
     callback(reader.result);
   });
 }
-
-
 
 /**
  * 获取window内宽高
@@ -62,8 +57,6 @@ export function getWindowWH() {
   };
 }
 
-
-
 /**
  * 判断是否数组
  * @param obj 任意参数
@@ -73,7 +66,6 @@ export function isArray(obj: any) {
     && ({}).toString.call(null, obj) === '[object Array]'
     || Array.isArray(obj);
 }
-
 
 /**
  * 两个数组对应的位置分别为对象的键和值
@@ -101,7 +93,6 @@ export function mixinObj(
   return resultObj;
 }
 
-
 /**
  * 设置光标位置
  * @param ref 目标对象
@@ -123,7 +114,6 @@ export function setRange(
   sel && sel.addRange(range);
 }
 
-
 /**
  * base64转blob
  * @param url base64图片
@@ -141,7 +131,6 @@ export function convertBase64UrlToBlob(
     type: url.split(',')[0].split(':')[1].split(';')[0],
   });
 }
-
 
 /**
  * 自定义模拟鼠标事件
@@ -167,4 +156,80 @@ export function customMouseEvent(
   element.addEventListener(type, (e) => {
     callback && callback(e as MouseEvent);
   });
+}
+
+/**
+ * 格式化聊天消息在聊天历史列表的展示格式
+ * @param type 消息类型
+ * @param content 消息内容
+ */
+export function formatChatMemoryContent(
+  type: string,
+  content: any,
+): string {
+  const categoryDesign = {
+    // 普通文本
+    plain() {
+      // 截取随机10 - 15个字符
+      const len = content.length;
+      const minLength = 10;
+      const maxLength = 15;
+
+      return len <= 10
+        ? content
+        : `${content.substring(0, getFullRandom(minLength, maxLength))}...`;
+    },
+    // 图片
+    // 文件
+  };
+
+  return categoryDesign[type] ? categoryDesign[type]() : '未知的消息类型';
+}
+
+/**
+ * 获取指定边界的随机整数
+ * @param min 下边界
+ * @param max 上边界
+ */
+export function getFullRandom(
+  min: number,
+  max: number,
+) {
+  return ~~(Math.random() * (max - min) + min);
+}
+
+/**
+ * 获取指定边界的随机任意数
+ * @param min 下边界
+ * @param max 上边界
+ */
+export function getAnyRandom(
+  min: number,
+  max: number,
+) {
+  return Math.random() * (max - min) + min;
+}
+
+/**
+ * 将指定时间戳转化为年-月-日格式
+ * @param timestamp 时间戳
+ * @param separator 分隔符
+ * @example
+ * // 2019-8-20
+ * formatTimeByYYYYMD(Date.now());
+ * @example
+ * // 2019/8/20
+ * formatTimeByYYYYMD(Date.now(), '/')
+ */
+export function formatTimeByYYYYMMDD(
+  timestamp: number,
+  separator: string = '-'
+): string {
+  const processedDate = new Date(timestamp);
+
+  const year = processedDate.getFullYear();
+  const month = processedDate.getMonth() + 1;
+  const day = processedDate.getDate();
+
+  return `${year}${separator}${month}${separator}${day}`;
 }
