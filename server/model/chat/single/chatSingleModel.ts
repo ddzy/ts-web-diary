@@ -17,13 +17,13 @@ const ChatSingleSchema: mongoose.Schema = new Schema({
     type: String,
     required: true,
   },
-  // ? 发送方
+  // ? 发起方
   from_member_id: {
     type: Schema.Types.ObjectId,
     ref: 'ChatSingleMember',
     required: true,
   },
-  // ? 接收方
+  // ? 被发起方
   to_member_id: {
     type: Schema.Types.ObjectId,
     ref: 'ChatSingleMember',
