@@ -87,7 +87,7 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
   React.useEffect(() => {
     setState({
       ...state,
-      singleChatMessage: state.singleChatMessage.concat(props.singleChatMessage),
+      singleChatMessage: props.singleChatMessage,
     });
   }, [props.singleChatMessage]);
 
