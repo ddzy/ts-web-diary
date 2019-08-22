@@ -6,7 +6,6 @@ import {
   match,
 } from 'react-router-dom';
 import {
-  notification,
 } from 'antd';
 import {
   TransitionGroup,
@@ -20,10 +19,6 @@ import {
   ContentMainItem,
 } from './style';
 import { formatTime } from 'utils/utils';
-import {
-  PAGE_SIZE,
-} from 'constants/constants';
-import { query } from 'services/request';
 import BaseChatMessage from 'components/widget/base_chat_message/BaseChatMessage';
 
 
@@ -35,16 +30,14 @@ export interface IChatInterfacesViewSingleContentProps extends RouteComponentPro
 
   // ? 单聊消息列表
   singleChatMessage: IStaticChatSingleMessageParams[];
-};
-export interface IChatInterfacesViewSingleContentState {
-  // ? 单聊消息列表
-  // * 为了方便分页, 将其存储为state
-  // * props.singleChatMessage只获取首屏单聊消息
-  singleChatMessage: IStaticChatSingleMessageParams[];
-
-  // ? 是否还有更多消息
+  // ? 分页相关: 标识是否处于发送状态, 便于进行吸顶处理
+  isMessageSend: boolean;
+  // ? 分页相关: 是否还有更多消息
   hasMoreMessage: boolean;
+  // ? 分页相关: 处理消息分页
+  onLoadMore: (page: number) => void;
 };
+export interface IChatInterfacesViewSingleContentState {};
 // ? 单聊消息格式
 export interface IStaticChatSingleMessageParams {
   _id: string;
@@ -75,28 +68,15 @@ export interface IStaticChatSingleMessageParams {
 const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSingleContentProps) => {
   const $scrollWrapper = React.useRef(null);
 
-  const [state, setState] = React.useState<IChatInterfacesViewSingleContentState>({
-    singleChatMessage: [],
-    hasMoreMessage: true,
-  });
-
   React.useEffect(() => {
     _setScrollWrapperToAffixBottom();
-  }, [props.singleChatMessage]);
-
-  React.useEffect(() => {
-    setState({
-      ...state,
-      hasMoreMessage: true,
-      singleChatMessage: props.singleChatMessage,
-    });
-  }, [props.singleChatMessage]);
+  }, [props.isMessageSend]);
 
   /**
    * [初始化] - 单聊消息列表
    */
   function _initMessageList() {
-    const { singleChatMessage } = state;
+    const { singleChatMessage } = props;
     const userId = localStorage.getItem('userid');
 
     if (singleChatMessage.length) {
@@ -150,55 +130,17 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
     }
   }
 
-  /**
-   * 分页获取单聊记录
-   * @param page 当前页数
-   */
-  function handleLoadMore(page: number) {
-    const userId = localStorage.getItem('userid');
-    const chatId = props.match.params.id;
-
-    if (!userId || typeof userId !== 'string') {
-      props.history.push('/login');
-
-      notification.error({
-        message: '错误',
-        description: 'token已过期, 请重新登录!',
-      });
-    } else {
-      query({
-        jsonp: false,
-        method: 'GET',
-        url: '/api/chat/info/single/message/list',
-        data: {
-          userId,
-          chatId,
-          pageSize: PAGE_SIZE,
-          page,
-        },
-      }).then((res) => {
-        const { single_chat_message } = res.data;
-
-        setState({
-          ...state,
-          hasMoreMessage: single_chat_message.length !== 0,
-          singleChatMessage: single_chat_message.concat(state.singleChatMessage),
-        });
-      });
-    }
-  }
-
   return (
     <ContentWrapper>
       <ContentMain ref={$scrollWrapper}>
         <InfiniteScroll
           isReverse={true}
           useWindow={false}
-          hasMore={state.hasMoreMessage}
+          hasMore={props.hasMoreMessage}
           pageStart={1}
           initialLoad={false}
           getScrollParent={() => $scrollWrapper.current}
-          loadMore={handleLoadMore}
+          loadMore={props.onLoadMore}
         >
           <ContentMainList>
             <TransitionGroup>
