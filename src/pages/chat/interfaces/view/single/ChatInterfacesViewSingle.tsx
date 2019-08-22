@@ -22,6 +22,7 @@ import { query } from 'services/request';
 import {
   PAGE_SIZE,
 } from 'constants/constants';
+import { vigenere } from 'utils/utils';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -35,6 +36,7 @@ type IChatInterfacesViewSingleState = typeof initialState;
 
 const chatSocket = IO('http://localhost:8888/chat');
 const statusSocket = IO('http://localhost:8888/status');
+
 const initialState = {
   // ? 单聊信息
   singleChatInfo: {
@@ -59,6 +61,10 @@ const initialState = {
   // ? 整体loading状态
   // * 只在第一次获取数据时有效
   loading: false,
+  // ? 消息列表分页——是否还有更多消息
+  hasMoreMessage: true,
+  // ? 消息列表分页——修复聊天记录吸顶bug
+  isMessageSend: false,
 };
 
 
@@ -85,6 +91,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     setState({
       ...state,
       loading: true,
+      hasMoreMessage: true,
     });
 
     // * 获取单聊信息
@@ -174,6 +181,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
           ...state.singleChatInfo,
           message: newMessage,
         },
+        isMessageSend: true,
       });
     });
   }
@@ -220,6 +228,8 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         ? fromMemberId
         : '';
 
+    console.log(vigenere.encrypt('fox', 'flower'));
+
     chatSocket.emit('sendChatSingleMessage', {
       chatId,
       chatType,
@@ -232,6 +242,54 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     });
 
     callback && callback();
+
+    setState({
+      ...state,
+      isMessageSend: false,
+    });
+  }
+
+  /**
+   * [处理] - 单聊消息分页
+   * @param page 当前页数
+   * @description 由`子组件`自行管理单聊消息列表并进行分页处理, 会出现无法吸顶的BUG, 已尝试
+   * 无法修复, 故移至父级管理, 并使用`isMessageSend`来通知子组件进行吸顶
+   */
+  function handleChatMessageLoadMore(page: number) {
+    const userId = localStorage.getItem('userid');
+    const chatId = props.match.params.id;
+
+    if (!userId || typeof userId !== 'string') {
+      props.history.push('/login');
+
+      notification.error({
+        message: '错误',
+        description: 'token已过期, 请重新登录!',
+      });
+    } else {
+      query({
+        jsonp: false,
+        method: 'GET',
+        url: '/api/chat/info/single/message/list',
+        data: {
+          userId,
+          chatId,
+          pageSize: PAGE_SIZE,
+          page,
+        },
+      }).then((res) => {
+        const { single_chat_message } = res.data;
+
+        setState({
+          ...state,
+          hasMoreMessage: single_chat_message.length !== 0,
+          singleChatInfo: {
+            ...state.singleChatInfo,
+            message: single_chat_message.concat(state.singleChatInfo.message),
+          },
+        });
+      });
+    }
   }
 
   return (
@@ -248,6 +306,9 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         >
           <ChatInterfacesViewSingleContent
             singleChatMessage={state.singleChatInfo.message}
+            isMessageSend={state.isMessageSend}
+            hasMoreMessage={state.hasMoreMessage}
+            onLoadMore={handleChatMessageLoadMore}
           />
         </Spin>
 
