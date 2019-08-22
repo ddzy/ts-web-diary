@@ -4,8 +4,8 @@ import styled from 'styled-components';
 export const ContentWrapper = styled.div``;
 export const ContentMain = styled.div`
   overflow: auto;
-  height: 450px;
-  max-height: 450px;
+  height: 500px;
+  max-height: 420px;
   padding: 12px;
 
   /* 滚动槽 */
