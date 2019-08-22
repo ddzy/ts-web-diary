@@ -87,6 +87,7 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
   React.useEffect(() => {
     setState({
       ...state,
+      hasMoreMessage: true,
       singleChatMessage: props.singleChatMessage,
     });
   }, [props.singleChatMessage]);
@@ -196,6 +197,7 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
           hasMore={state.hasMoreMessage}
           pageStart={1}
           initialLoad={false}
+          getScrollParent={() => $scrollWrapper.current}
           loadMore={handleLoadMore}
         >
           <ContentMainList>
