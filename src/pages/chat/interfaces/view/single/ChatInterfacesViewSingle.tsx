@@ -22,7 +22,6 @@ import { query } from 'services/request';
 import {
   PAGE_SIZE,
 } from 'constants/constants';
-import { vigenere } from 'utils/utils';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -227,8 +226,6 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       : userId === toUserId
         ? fromMemberId
         : '';
-
-    console.log(vigenere.encrypt('fox', 'flower'));
 
     chatSocket.emit('sendChatSingleMessage', {
       chatId,

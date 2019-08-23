@@ -299,6 +299,102 @@ export const vigenere = {
   ]),
 
   /**
+   * 判断是否特殊字符(emoji、半角字符、全角字符)
+   * @param text 任意字符
+   */
+  isSpecialCharacter(
+    text: string,
+  ): boolean {
+    const reg = /\W/;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否半角字符
+   * @param text 任意字符
+   */
+  isSemiangleCharacter(
+    text: string,
+  ): boolean {
+    const reg = /[\u0000-\u00ff]/g;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否全角字符
+   * @param text 任意字符
+   */
+  isFullangleCharacter(
+    text: string,
+  ): boolean {
+    const reg = /[\uff00-\uffff]/g;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否emoji字符
+   * @param text 任意字符
+   */
+  isEmojiCharacter(
+    text: string,
+  ): boolean {
+    const reg = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否数字字符
+   * @param text 任意字符
+   */
+  isNumberCharacter(
+    text: string,
+  ): boolean {
+    const reg = /\d/g;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否中文字符
+   * @param text 任意字符
+   */
+  isChineseCharacter(
+    text: string,
+  ): boolean {
+    const reg = /[\u4e00-\u9fa5]/g;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否大写字母字符
+   * @param text 任意字符
+   */
+  isUpperCaseCharacter(
+    text: string,
+  ): boolean {
+    const reg = /[A-Z]/g;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否下划线
+   * @param text 任意字符
+   */
+  isUnderLineCharacter(
+    text: string,
+  ): boolean {
+    const reg = /_/g;
+
+    return reg.test(text);
+  },
+
+  /**
    * 加密
    * @param secret 密钥
    * @param plain 明文
@@ -325,20 +421,98 @@ export const vigenere = {
     }
 
     do {
-      const plainKey = this.characterToNumberMap.get(plain[countPlain]);
-      const secretKey = this.characterToNumberMap.get(secret[countPlain % secretLength]);
+      // 特殊字符
+      if (this.isSpecialCharacter(plain[countPlain])) {
+        // 半角字符
+        if (this.isSemiangleCharacter(plain[countPlain])) {
+          // 添加辅助空格, 避免半角字符连带字母的bug
+          plain = plain.replace(plain[countPlain], plain[countPlain] + ' ');
 
-      if (!plainKey || !secretKey) {
-        return result;
+          // 转化为全角字符
+          plain = plain.replace(plain[countPlain], String.fromCharCode(plain[countPlain].charCodeAt(0) + 65248));
+
+          // 去除空格
+          plain = plain.replace(
+            plain[countPlain] + ' ',
+            plain[countPlain],
+          );
+        }
+
+        // 全角字符
+        if (this.isFullangleCharacter(plain[countPlain])) {
+          result += plain[countPlain];
+
+          countSecret = countSecret - 1;
+
+          continue;
+        }
+
+        // emoji表情字符
+        if (!this.isFullangleCharacter(plain[countPlain])) {
+          const emojiCharacter = plain.substring(
+            countPlain,
+            countPlain + plain[countPlain].length + 1,
+          );
+
+          if (this.isEmojiCharacter(emojiCharacter)) {
+            result += emojiCharacter;
+
+            countPlain = countPlain + plain[countPlain].length;
+            countSecret = countSecret - 1;
+
+            continue;
+          }
+        }
       }
 
-      const processedKey = (plainKey + secretKey) % 26;
-      const processedValue = this.numberToCharacterMap.get(processedKey);
+      // 数字字符
+      if (this.isNumberCharacter(plain[countPlain])) {
+        result += plain[countPlain];
 
-      result += processedValue
+        countPlain = countPlain + plain[countPlain].length;
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 中文字符
+      if (this.isChineseCharacter(plain[countPlain])) {
+        result += plain[countPlain];
+
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 普通大写字母
+      if (this.isUpperCaseCharacter(plain[countPlain])) {
+        result += plain[countPlain];
+
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 下划线
+      if (this.isUnderLineCharacter(plain[countPlain])) {
+        result += plain[countPlain];
+
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 普通小写字母
+      const plainKey = this.characterToNumberMap.get(plain[countPlain]) as number;
+      const secretKey = this.characterToNumberMap.get(secret[countSecret]) as number;
+
+      const reflectKey = (plainKey + secretKey) % 26;
+      const reflectValue = this.numberToCharacterMap.get(reflectKey);
+
+      result += reflectValue;
 
       countSecret = countSecret === secretLength - 1
-        ? 0
+        ? -1
         : countSecret;
     } while ((countSecret++ < secretLength - 1) && (countPlain++ < plainLength - 1));
 
@@ -355,10 +529,120 @@ export const vigenere = {
    * // ddzy
    * vigenere.decrypt('fox', 'irwd');
    */
-  // decrypt(
-  //   secret: string,
-  //   plain: string,
-  // ): string {
+  decrypt(
+    secret: string,
+    plain: string,
+  ): string {
+    const secretLength = secret.length;
+    const plainLength = plain.length;
+    let countSecret = 0;
+    let countPlain = 0;
 
-  // },
+    let result = '';
+
+    // 空的密钥或明文
+    if (!secretLength || !plainLength) {
+      return result;
+    }
+
+    do {
+      // 处理特殊字符
+      if (this.isSpecialCharacter(plain[countPlain])) {
+        // 半角字符
+        if (this.isSemiangleCharacter(plain[countPlain])) {
+          // 添加辅助空格, 避免半角字符连带字母的bug
+          plain = plain.replace(plain[countPlain], plain[countPlain] + ' ');
+
+          // 转化为全角字符
+          plain = plain.replace(plain[countPlain], String.fromCharCode(plain[countPlain].charCodeAt(0) + 65248));
+
+          // 去除空格
+          plain = plain.replace(
+            plain[countPlain] + ' ',
+            plain[countPlain],
+          );
+        }
+
+        // 全角字符
+        if (this.isFullangleCharacter(plain[countPlain])) {
+          result += plain[countPlain];
+
+          countSecret = countSecret - 1;
+
+          continue;
+        }
+
+        // emoji表情字符
+        if (!this.isFullangleCharacter(plain[countPlain])) {
+          const emojiCharacter = plain.substring(
+            countPlain,
+            countPlain + plain[countPlain].length + 1,
+          );
+
+          if (this.isEmojiCharacter(emojiCharacter)) {
+            result += emojiCharacter;
+
+            countPlain = countPlain + plain[countPlain].length;
+            countSecret = countSecret - 1;
+
+            continue;
+          }
+        }
+      }
+
+      // 处理数字字符
+      if (this.isNumberCharacter(plain[countPlain])) {
+        result += plain[countPlain];
+
+        countPlain = countPlain + plain[countPlain].length;
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 处理中文字符
+      if (this.isChineseCharacter(plain[countPlain])) {
+        result += plain[countPlain];
+
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 普通大写字母
+      if (this.isUpperCaseCharacter(plain[countPlain])) {
+        result += plain[countPlain];
+
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 下划线
+      if (this.isUnderLineCharacter(plain[countPlain])) {
+        result += plain[countPlain];
+
+        countSecret = countSecret - 1;
+
+        continue;
+      }
+
+      // 普通小写字母
+      const plainKey = this.characterToNumberMap.get(plain[countPlain]) as number;
+      const secretKey = this.characterToNumberMap.get(secret[countSecret]) as number;
+
+      const reflectKey = plainKey - secretKey > 0
+        ? (plainKey - secretKey) % 26
+        : 26 + (plainKey - secretKey) % 26;
+      const reflectValue = this.numberToCharacterMap.get(reflectKey);
+
+      result += reflectValue;
+
+      countSecret = countSecret === secretLength - 1
+        ? -1
+        : countSecret;
+    } while ((countSecret++ < secretLength - 1) && (countPlain++ < plainLength - 1));
+
+    return result;
+  },
 };
