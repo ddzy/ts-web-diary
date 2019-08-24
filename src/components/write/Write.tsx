@@ -4,7 +4,11 @@ import {
   Row,
   Col,
   Button,
+  message,
 } from 'antd';
+import {
+  withRouter,
+} from 'react-router-dom';
 
 import {
   WriteWrapper,
@@ -13,11 +17,8 @@ import {
 import WriteEdit from './edit/WriteEdit';
 import WriteUpload from './upload/WriteUpload';
 import WriteExtra from './extra/WriteExtra';
+import WriteTitle from './title/WriteTitle';
 import { getBase64 } from '../../utils/utils';
-import {
-  IGetQiniuTokenReturns,
-  serviceHandleGetQiniuToken,
-} from './Write.service';
 
 
 export interface IWriteProps {
@@ -26,184 +27,192 @@ export interface IWriteProps {
   ) => void;
   username: string;
 
-  defaultEditValue?: any;
+  // ? 默认文章信息
+  // * 据此来判断是发表新文章还是编辑文章
+  defaultArticleInfo?: typeof initialState.articleInfo;
 };
-interface IWriteState {
-  editTitle?: string;
-  editContent?: any;
-  article_title_image?: string;
-  extraContent?: {
-    article_mode: { value: string },
-    article_type: { value: string },
-    article_tag: { value: string[] },
-  };
-
-  // ** delta数据, 解决光标跳动bug **
-  editContentWithDelta?: object,
-};
+export type IWriteState = typeof initialState;
 
 
-/**
- * 写文章
- */
-class Write extends React.PureComponent<
-  IWriteProps,
-  IWriteState
-  > {
-  public readonly state = {
-    editTitle: '',
-    editContent: {},
-    article_title_image: '',
-    extraContent: {
-      article_mode: {
-        value: ''
-      },
-      article_type: {
-        value: '',
-      },
-      article_tag: {
-        value: [],
-      },
+const initialState = {
+  // ? 文章相关信息
+  articleInfo: {
+    // 文章标题
+    title: '',
+    // 文章内容
+    content: {
+      ops: [],
     },
-  }
+    // 文章主题图片
+    cover_img: '',
+    // 文章模式
+    mode: '',
+    // 文章分类
+    type: '',
+    // 文章标签
+    tag: [],
+  },
+};
 
-  public componentWillReceiveProps(nextProps: any) {
-    if (nextProps.defaultEditValue) {
-      this.setState({
-        editTitle: nextProps.defaultEditValue.title,
-        editContent: nextProps.defaultEditValue.content,
-        article_title_image: nextProps.defaultEditValue.img,
-        extraContent: {
-          article_mode: {
-            value: nextProps.defaultEditValue.mode,
-          },
-          article_type: {
-            value: nextProps.defaultEditValue.type,
-          },
-          article_tag: {
-            value: nextProps.defaultEditValue.tag,
-          },
-        },
+
+const Write = React.memo((props: IWriteProps) => {
+  const [state, setState] = React.useState<IWriteState>(initialState);
+
+  React.useEffect(() => {
+    // 编辑文章
+    if (props.defaultArticleInfo) {
+      setState({
+        ...state,
+        articleInfo: props.defaultArticleInfo,
       });
     }
-  }
+  }, [props.defaultArticleInfo]);
 
   /**
-   * 处理标题栏表单
+   * [处理] - 文章标题更新
    */
-  public handleEditFormChange = (changedFields: any): void => {
-    this.setState({ editTitle: changedFields.editTitle.value });
-  }
-
-  /**
-   * 处理富文本编辑
-   */
-  public handleEditContentChange = (
-    content: string,
-    delta: any,
-  ) => {
-    this.setState({
-      editContent: content,
-      editContentWithDelta: delta,
+  function handleArticleTitleChange(
+    changedFields: {
+      article_title: string,
+    },
+  ) {
+    setState({
+      ...state,
+      articleInfo: {
+        ...state.articleInfo,
+        title: changedFields.article_title,
+      },
     });
   }
 
   /**
-   * 处理上传主题图片
+   * [处理] - 文章内容更新
    */
-  public handleTitleImageChange = (file: any): void => {
-    const img = file.article_title_image.value.file;
+  function handleArticleContentChange(
+    content: any,
+    deltaContent: any,
+  ){
+    setState({
+      ...state,
+      articleInfo: {
+        ...state.articleInfo,
+        content: deltaContent,
+      },
+    });
+  }
+
+  /**
+   * [处理] - 上传文章主题图片
+   */
+  function handleArticleCoverImageChange(
+    changedFields: {
+      article_cover_img: {
+        file: File,
+      },
+    },
+  ) {
+    const img = changedFields.article_cover_img.file;
+
+    const isJpgOrPng = img.type === 'image/jpeg' || img.type === 'image/png';
+
+    if (!isJpgOrPng) {
+      message.error('目前只支持上传`JPG`和`PNG`格式的图片!');
+
+      return;
+    }
+
+    const isLt1M = img.size / 1024 / 1024 < 1;
+
+    if (!isLt1M) {
+      message.error('目前只支持上传小于`1MB`的图片!');
+
+      return;
+    }
 
     getBase64(img, (result) => {
-      this.setState({ article_title_image: result });
-    });
-  }
-
-  /**
-   * 处理附加栏表单
-   */
-   public handleExtraFormChange = (changedFields: any): void => {
-    this.setState((prevState) => {
-      return {
-        extraContent: {
-          ...prevState.extraContent,
-          ...changedFields,
+      setState({
+        ...state,
+        articleInfo: {
+          ...state.articleInfo,
+          cover_img: result,
         },
-      };
+      });
     });
   }
 
   /**
-   * 提交文章
+   * [处理] - 文章附加信息更新
    */
-  public handleSend: React.MouseEventHandler = () => {
-    this.props.onSendArticle(
-      this.state,
-    );
-  }
-
-  /**
-   * 处理 富文本上传图片
-   */
-  public handleEditContentImageUpload = (
-    callback: (
-      data: IGetQiniuTokenReturns,
-    ) => void,
-  ): void => {
-    serviceHandleGetQiniuToken({}, (data) => {
-      callback(data);
+  function handleArticleExtraChange(
+    changedFields: any,
+  ) {
+    setState({
+      ...state,
+      articleInfo: {
+        ...state.articleInfo,
+        mode: changedFields.article_mode || state.articleInfo.mode,
+        type: changedFields.article_type || state.articleInfo.type,
+        tag: changedFields.article_tag || state.articleInfo.tag,
+      },
     });
   }
 
-  public render(): JSX.Element {
-    return (
-      <React.Fragment>
-        <WriteWrapper>
-          <WriteContent>
-            {/* 编辑器 */}
-            <WriteEdit
-              username={this.props.username}
-              editTitle={this.state.editTitle}
-              editContent={this.state.editContent}
-              onEditTitleChange={this.handleEditFormChange}
-              onEditContentChange={this.handleEditContentChange}
-              onEditContentImageUpload={this.handleEditContentImageUpload}
-            />
-
-            {/* 上传图片 */}
-            <WriteUpload
-              article_title_image={
-                this.state.article_title_image
-              }
-              onTitleImageChange={this.handleTitleImageChange}
-            />
-
-            {/* 附加信息 */}
-            <WriteExtra
-              onChange={this.handleExtraFormChange}
-              {...this.state.extraContent}
-            />
-
-            {/* 提交按钮 */}
-            <Row style={{ marginTop: '15px' }}>
-              <Col>
-                <Card>
-                  <Button
-                    htmlType="button"
-                    type="primary"
-                    block
-                    onClick={this.handleSend}
-                  >提交</Button>
-                </Card>
-              </Col>
-            </Row>
-          </WriteContent>
-        </WriteWrapper>
-      </React.Fragment>
+  /**
+   * [处理] - 提交文章
+   */
+  function handleSend() {
+    props.onSendArticle(
+      state.articleInfo,
     );
   }
 
-}
+  return (
+    <React.Fragment>
+      <WriteWrapper>
+        <WriteContent>
+          {/* 标题区块 */}
+          <WriteTitle
+            {...state}
+            onArticleTitleChange={handleArticleTitleChange}
+          />
+
+          {/* 编辑器区块 */}
+          <WriteEdit
+            {...state}
+            username={props.username}
+            onArticleContentChange={handleArticleContentChange}
+          />
+
+          {/* 上传封面图片区块 */}
+          <WriteUpload
+            {...state.articleInfo}
+            onArticleCoverImageChange={handleArticleCoverImageChange}
+          />
+
+          {/* 附加信息区块 */}
+          <WriteExtra
+            {...state}
+            onArticleExtraChange={handleArticleExtraChange}
+          />
+
+          {/* 提交按钮区块 */}
+          <Row style={{ marginTop: '15px' }}>
+            <Col>
+              <Card>
+                <Button
+                  htmlType="button"
+                  type="primary"
+                  block
+                  onClick={handleSend}
+                >提交</Button>
+              </Card>
+            </Col>
+          </Row>
+        </WriteContent>
+      </WriteWrapper>
+    </React.Fragment>
+  );
+});
 
 
-export default Write;
+export default withRouter(Write as any) as any;

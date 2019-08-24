@@ -128,11 +128,11 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             )} />
             <Route path="/home" component={LoadableHome} />
             <Route path="/chat" component={LoadableChat} />
+            <Route path="/publish" component={LoadablePublish} />
             <Route path="/user/:id" component={LoadableUser} />
             <Route exact path="/collection/:id" component={LoadableCollection} />
             <Route exact path="/details/:id" component={LoadableDetails} />
             <Route exact path="/edit/:id" component={LoadableEdit} />
-            <Route exact path="/publish" component={LoadablePublish} />
             <Route component={LoadableNotFound} />
           </Switch>
 

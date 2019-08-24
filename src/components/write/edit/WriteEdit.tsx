@@ -1,59 +1,56 @@
 import * as React from 'react';
+import * as qiniu from 'qiniu-js';
+import Quill, { Sources, Delta } from 'quill';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import {
   Row,
   Col,
   Card,
-  Input,
-  Icon,
-  Form,
-  Popover
+  notification,
 } from 'antd';
 import 'react-quill/dist/quill.snow.css';
-import * as qiniu from 'qiniu-js';
-import { FormComponentProps } from 'antd/lib/form';
-import Quill, { Sources, Delta } from 'quill';
 
 import {
   WriteEditWrapper,
 } from './style';
+import { query } from 'services/request';
 import BaseLoading from 'components/widget/base_loading/BaseLoading';
 import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
 import {
   quillModuleConfig,
   quillFormatConfig,
 } from 'config/quill.config';
-import {
-  IGetQiniuTokenReturns,
-} from '../Write.service';
 
 Quill.register(BaseQuillImageBlot, true);
 
 
-export interface IWriteEditProps extends FormComponentProps {
+export interface IWriteEditProps extends RouteComponentProps {
   username: string;
 
-  editTitle: string;
-  editContent: any;
-  onEditTitleChange: (data: any) => void;
-  onEditContentChange: (
+  // ? 文章相关信息
+  articleInfo: {
+    title: string,
+    content: any,
+  },
+  onArticleContentChange: (
     content: string,
-    delta: any,
-  ) => void;
-  onEditContentImageUpload: (
-    callback: (info: IGetQiniuTokenReturns) => void,
+    deltaContent: Delta,
   ) => void;
 };
 interface IWriteEditState {
-  loadingVisible: boolean;
+  // ? 编辑器内上传图片时的loading状态
+  isLoading: boolean;
 };
 
 
-/**
- * 富文本编辑
- */
-class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
-
+class WriteEdit extends React.Component<IWriteEditProps, IWriteEditState> {
+  /**
+   * [辅助] - 创建普通的输入框
+   */
   public static _createFileInput = (): HTMLInputElement => {
     const oInput: HTMLInputElement = document.createElement('input');
     oInput.setAttribute('type', 'file');
@@ -65,14 +62,17 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     return oInput;
   }
 
-  public inputRef: Input;
+  // 编辑器ref
   public editorRef: ReactQuill;
 
   public readonly state = {
-    loadingVisible: false,
+    isLoading: false,
   }
 
-  public initModules = (): object => {
+  /**
+   * [初始化] - 编辑器的模块
+   */
+  public _initEditorModules = (): object => {
     return {
       ...quillModuleConfig,
       toolbar: {
@@ -84,32 +84,35 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
     };
   }
 
-  public componentDidMount(): void {
-    this.inputRef.focus();
+  /**
+   * [处理] - 获取editor的ref
+   */
+  public handleGetEditorRef = (el: ReactQuill): void => {
+    this.editorRef = el;
   }
 
   /**
-   * 处理富文本
+   * [处理] - 富文本更新
    */
-  public handleChange = (
+  public handleEditorChange = (
     content: string,
     _delta: Delta,
     _source: Sources,
     editor: any,
   ): void => {
-    this.props.onEditContentChange(
+    this.props.onArticleContentChange(
       content,
       editor.getContents(),
     );
   }
 
   /**
-   * 处理富文本图片上传
+   * [处理] - 富文本图片上传
    */
   public handleEditorImageUpload = (): void => {
     const editor: Quill = this.editorRef.getEditor();
     const editorSelRange = editor.getSelection();
-    const oInput = WriteEditForm._createFileInput();
+    const oInput = WriteEdit._createFileInput();
 
     oInput.click();
 
@@ -118,14 +121,39 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
       const files = target.files as FileList;
       const file = files.item(0) as File;
 
-      this.props.onEditContentImageUpload(async (data) => {
-        const date: string = new Date().toLocaleDateString();
-        const username: string = this.props.username;
-        const key: string = `${date}/${username}/posts/${Date.now()}`;
-        const { uploadToken, domain } = data.info.qiniuInfo;
+      const userId = localStorage.getItem('userid');
 
-        // loading
-        this.setState({ loadingVisible: true });
+      if (!userId || typeof userId !== 'string') {
+        notification.error({
+          message: '错误',
+          description: 'token已过期, 请登录后再试!',
+        });
+
+        this.props.history.push('/login');
+
+        return;
+      }
+
+      // 上传图片时的loading状态
+      this.setState({
+        isLoading: true,
+      });
+
+      query({
+        url: '/api/upload/qiniu/info',
+        method: 'GET',
+        data: {
+          userId,
+        },
+        jsonp: false,
+      }).then(async (res) => {
+        const date: string = new Date().toLocaleDateString();
+        const username = this.props.username;
+        const {
+          uploadToken,
+          domain,
+        } = res.data.qiniuInfo;
+        const key: string = `${date}/${userId}/posts/images/${Date.now()}`;
 
         const $qiniu: qiniu.Observable = qiniu.upload(
           file,
@@ -135,150 +163,102 @@ class WriteEditForm extends React.Component<IWriteEditProps, IWriteEditState> {
           {},
         );
 
-        $qiniu.subscribe(() => {
-          const processedImgUrl: string = qiniu.pipeline([
-            {
-              fop: 'watermark',
-              mode: 2,
-              text: `gayhub@${username}`,
-              dissolve: 99,
-              gravity: 'SouthEast',
-              fontsize: 18,
-              font: '微软雅黑',
-              dx: 10,
-              dy: 10,
-              fill: '#ffffff',
-            }, {
-              fop: 'imageView2',
-              mode: 3,
-              w: 600,
-              h: 600,
-              q: 100,
-              format: 'png'
-            }
-          ], key, domain);
-          const finalProcessedImgUrl: string = `http://${processedImgUrl}`;
-          const finalOriginImgUrl: string = `http://${domain}/${key}`;
+        $qiniu.subscribe({
+          next: () => (null),
+          error: () => {
+            notification.error({
+              message: '错误',
+              description: '上传至七牛云时出现问题, 请稍后重试!',
+            });
 
-          // 插入editor
-          editor.insertEmbed(
-            editorSelRange.index,
-            'image',
-            {
-              src: finalProcessedImgUrl,
-              'data-src': finalOriginImgUrl,
-              alt: key,
-            },
-            'user',
-          );
+            this.setState({
+              ...this.state,
+              isLoading: false,
+            });
+          },
+          complete: () => {
+            const processedImgUrl: string = qiniu.pipeline([
+              {
+                fop: 'watermark',
+                mode: 2,
+                text: `gayhub@${username}`,
+                dissolve: 99,
+                gravity: 'SouthEast',
+                fontsize: 18,
+                font: '微软雅黑',
+                dx: 10,
+                dy: 10,
+                fill: '#ffffff',
+              }, {
+                fop: 'imageView2',
+                mode: 3,
+                w: 600,
+                h: 600,
+                q: 100,
+                format: 'png'
+              }
+            ], key, domain);
+            const finalProcessedImgUrl: string = `https://${processedImgUrl}.png`;
+            const finalOriginImgUrl: string = `https://${domain}/${key}.png`;
 
-          // fix_bug: 每次会插入两次图片
-          editor.deleteText(
-            editorSelRange.index + 1,
-            1,
-          );
+            // 插入editor
+            editor.insertEmbed(
+              editorSelRange.index,
+              'image',
+              {
+                src: finalProcessedImgUrl,
+                'data-src': finalOriginImgUrl,
+                alt: key,
+              },
+              'user',
+            );
 
-          // 光标位置调整
-          editor.setSelection(
-            editorSelRange.index + 1,
-            editor.getLength() - 1,
-            'user',
-          );
+            // fix_bug: 每次会插入两次图片
+            editor.deleteText(
+              editorSelRange.index + 1,
+              1,
+            );
 
-          // loading
-          this.setState({ loadingVisible: false });
+            // 光标位置调整
+            editor.setSelection(
+              editorSelRange.index + 1,
+              editor.getLength() - 1,
+              'user',
+            );
+
+            // loading
+            this.setState({ isLoading: false });
+          },
         });
       });
     });
   }
 
-  /**
-   * 获取input的ref
-   */
-  public getInputinputRef = (el: Input): void => {
-    this.inputRef = el;
-  }
-
-  /**
-   * 获取editor的ref
-   */
-  public getEditorRef = (el: ReactQuill): void => {
-    this.editorRef = el;
-  }
-
   public render(): JSX.Element {
-    const { getFieldDecorator } = this.props.form;
-
     return (
       <React.Fragment>
         <WriteEditWrapper>
           <Row style={{ marginTop: '15px' }}>
             <Col>
               <Card
-                title={
-                  <Form>
-                    <Form.Item>
-                      {getFieldDecorator('editTitle', {
-                        rules: [{ required: true, message: '标题一定要填!' }],
-                      })(
-                        <Input
-                          ref={this.getInputinputRef}
-                          type="text"
-                          prefix={
-                            <Popover
-                              title="警告信息"
-                              content={
-                                <p>给你的文章取个响亮的标题, 必填项!</p>
-                              }
-                            >
-                              <Icon
-                                type="exclamation-circle"
-                                style={{ color: '#d50' }}
-                              />
-                            </Popover>
-                          }
-                          placeholder="文章标题, 此为必填项!"
-                        />
-                      )}
-                    </Form.Item>
-                  </Form>
-                }
+                title={'文章内容'}
               >
                 <ReactQuill
-                  ref={this.getEditorRef}
-                  value={this.props.editContent}
-                  modules={this.initModules()}
-                  formats={quillFormatConfig}
                   placeholder="创作您的文章..."
-                  onChange={this.handleChange}
+                  ref={this.handleGetEditorRef}
+                  value={this.props.articleInfo.content}
+                  modules={this._initEditorModules()}
+                  formats={quillFormatConfig}
+                  onChange={this.handleEditorChange}
                 />
               </Card>
             </Col>
           </Row>
         </WriteEditWrapper>
-        <BaseLoading visible={this.state.loadingVisible} />
+        <BaseLoading visible={this.state.isLoading} />
       </React.Fragment>
     );
   }
 }
 
-
-const WriteEdit = Form.create({
-  onFieldsChange(props: any, changedFields) {
-    props.onEditTitleChange(changedFields);
-  },
-
-  mapPropsToFields(props) {
-    return {
-      editTitle: Form.createFormField({
-        ...props.editTitle,
-        value: props.editTitle,
-      }),
-    };
-  },
-
-})(WriteEditForm);
-
-
-
-export default WriteEdit as React.ComponentClass<any>;
+export default withRouter(WriteEdit);
