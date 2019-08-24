@@ -1,19 +1,25 @@
 import * as React from 'react';
-import { Row, Col, Card, Icon, Upload, Form } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Icon,
+  Upload,
+  Form,
+} from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
 import { WriteUploadWrapper } from './style';
 
 
 export interface IWriteUploadProps extends FormComponentProps {
-  article_title_image: string;
-  onTitleImageChange: (imageUrl: string) => void;
+  // ? 文章主题图片
+  cover_img: string;
+
+  onArticleCoverImageChange: (imageUrl: string) => void;
 };
 
 
-/**
- * 上传主题图片
- */
 const WriteUploadForm = React.memo<IWriteUploadProps>((
   props: IWriteUploadProps,
 ): JSX.Element => {
@@ -25,7 +31,12 @@ const WriteUploadForm = React.memo<IWriteUploadProps>((
   );
   const { getFieldDecorator } = props.form;
 
-  function handleBeforeUpload(file: Blob): boolean {
+  /**
+   * [处理] - 文章主题图片上传前预处理
+   * @param file 文件对象
+   * @description 直接返回false, 自定义上传
+   */
+  function handleBeforeUpload(): boolean {
     return false;
   }
 
@@ -38,10 +49,10 @@ const WriteUploadForm = React.memo<IWriteUploadProps>((
           >
             <Form>
               <Form.Item>
-                {getFieldDecorator('article_title_image', {
+                {getFieldDecorator('article_cover_img', {
                 })(
                   <Upload
-                    name="article_title_image"
+                    name="article_cover_img"
                     listType="picture-card"
                     className="avatar-uploader"
                     style={{ height: '160px' }}
@@ -49,15 +60,15 @@ const WriteUploadForm = React.memo<IWriteUploadProps>((
                     beforeUpload={handleBeforeUpload}
                   >
                     {
-                      props.article_title_image
+                      props.cover_img
                         ? (
                           <img
                             src={
-                              props.article_title_image
+                              props.cover_img
                             }
                             width="160"
                             height="160"
-                            alt="article_title_image"
+                            alt="cover_img"
                           />
                         )
                         : (
@@ -77,15 +88,14 @@ const WriteUploadForm = React.memo<IWriteUploadProps>((
 
 
 const WriteUpload = Form.create({
-  onFieldsChange(props: any, changedFields) {
-    props.onTitleImageChange(changedFields);
+  onValuesChange(props: any, changedFields) {
+    props.onArticleCoverImageChange(changedFields);
   },
 
   mapPropsToFields(props) {
     return {
-      article_title_image: Form.createFormField({
-        ...props.article_title_image,
-        value: props.article_title_image,
+      article_cover_img: Form.createFormField({
+        value: props.cover_img,
       }),
     };
   },

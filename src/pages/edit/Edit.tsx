@@ -8,9 +8,10 @@ import { hot } from 'react-hot-loader';
 import Header from '../../components/header/Header';
 import Write from '../../components/write/Write';
 import {
-  serviceHandleGetEditArticleInfo,
+  // serviceHandleGetEditArticleInfo,
   serviceHandleSendEditArticleInfo,
 } from './Edit.service';
+import { Delta } from 'quill';
 
 
 export interface IEditProps {
@@ -19,26 +20,40 @@ export interface IEditProps {
 
   AuthRoueReducer: { username: string };
 };
-interface IEditState {
-  articleInfo: any;
+type IEditState = typeof initialState;
+
+
+const initialState = {
+  articleInfo: {
+    // 文章标题
+    title: '',
+    // 文章内容
+    content: new Delta(),
+    // 文章主题图片
+    cover_img: '',
+    // 文章模式
+    mode: '',
+    // 文章分类
+    type: '',
+    // 文章标签
+    tag: [],
+  },
 };
 
 
 @(connect(mapStateToProps) as any)
 class Edit extends React.PureComponent<IEditProps, IEditState> {
 
-  public readonly state = {
-    articleInfo: {},
-  }
+  public readonly state = initialState;
 
-  public componentDidMount(): void {
-    // ** 要编辑的文章id **
-    const { id } = this.props.match.params;
+  // public componentDidMount(): void {
+  //   // ** 要编辑的文章id **
+  //   const { id } = this.props.match.params;
 
-    serviceHandleGetEditArticleInfo(id, (data) => {
-      this.setState({ articleInfo: data.articleInfo });
-    });
-  }
+  //   // serviceHandleGetEditArticleInfo(id, (data) => {
+  //   //   this.setState({ articleInfo: data.articleInfo });
+  //   // });
+  // }
 
   /**
    * 提交编辑后的文章
@@ -70,7 +85,7 @@ class Edit extends React.PureComponent<IEditProps, IEditState> {
         <Write
           username={this.props.AuthRoueReducer.username}
           onSendArticle={this.handleSendArticle}
-          defaultEditValue={this.state.articleInfo}
+          defaultArticleInfo={this.state.articleInfo}
         />
       </React.Fragment>
     );

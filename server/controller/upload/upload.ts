@@ -8,15 +8,24 @@ import {
 const uploadController: Router = new Router();
 
 
-uploadController.get('/qiniu', async (ctx) => {
-  const { userid } = await ctx.request.query;
+/**
+ * [七牛云] - 获取七牛云SDK
+ */
+uploadController.get('/qiniu/info', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+  };
+
+  const {
+    userId,
+  }: IRequestParams = await ctx.request.query;
 
   const mac = await new qiniu.auth.digest.Mac(
     QINIU_KEY.AccessKey,
     QINIU_KEY.SecretKey,
   );
   const putPolicy = await new qiniu.rs.PutPolicy({
-    scope: 'duan',
+    scope: QINIU_KEY.Bucket,
   });
   const uploadToken = await putPolicy.uploadToken(mac);
   const domain = await QINIU_KEY.Domain;
@@ -25,10 +34,10 @@ uploadController.get('/qiniu', async (ctx) => {
     ctx.body = {
       code: 0,
       message: 'Success',
-      info: {
+      data: {
         qiniuInfo: {
           uploadToken,
-          userid,
+          userId,
           domain,
         },
       },
