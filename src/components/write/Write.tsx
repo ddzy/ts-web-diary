@@ -4,6 +4,7 @@ import {
   Row,
   Col,
   Button,
+  message,
 } from 'antd';
 import {
   withRouter,
@@ -111,6 +112,22 @@ const Write = React.memo((props: IWriteProps) => {
     },
   ) {
     const img = changedFields.article_cover_img.file;
+
+    const isJpgOrPng = img.type === 'image/jpeg' || img.type === 'image/png';
+
+    if (!isJpgOrPng) {
+      message.error('目前只支持上传`JPG`和`PNG`格式的图片!');
+
+      return;
+    }
+
+    const isLt1M = img.size / 1024 / 1024 < 1;
+
+    if (!isLt1M) {
+      message.error('目前只支持上传小于`1MB`的图片!');
+
+      return;
+    }
 
     getBase64(img, (result) => {
       setState({

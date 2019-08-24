@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Row, Col, Card, Icon, Upload, Form } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Icon,
+  Upload,
+  Form,
+} from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 
 import { WriteUploadWrapper } from './style';
@@ -27,8 +34,9 @@ const WriteUploadForm = React.memo<IWriteUploadProps>((
   /**
    * [处理] - 文章主题图片上传前预处理
    * @param file 文件对象
+   * @description 直接返回false, 自定义上传
    */
-  function handleBeforeUpload(file: Blob): boolean {
+  function handleBeforeUpload(): boolean {
     return false;
   }
 
