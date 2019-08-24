@@ -23,10 +23,14 @@ import {
 
 
 export interface IWriteExtraProps extends FormComponentProps {
-  onChange: (data: any) => void;
-  article_mode: { value: string };
-  article_type: { value: string };
-  article_tag: { value: any };
+  // ? 文章相关信息
+  articleInfo: {
+    mode: string,
+    type: string,
+    tag: string[],
+  },
+
+  onArticleExtraChange: (data: any) => void;
 };
 interface IWriteExtraState {
   selectedTags: any[];
@@ -50,8 +54,23 @@ const WriteExtraForm = React.memo<IWriteExtraProps>((
     });
   }, [state]);
 
-  // ** 处理初始化标签 **
-  function initTags(): any[] {
+
+  /**
+   * [初始化] - 文章类型
+   */
+  function _initArticleType(): JSX.Element[] {
+    return ARTICLE_TYPE_PICKER.map((v: string, index: number) => (
+      <Radio.Button
+        key={index}
+        value={ARTICLE_TYPE_WITH_ENGLISH_PICKER[index]}
+      >{v}</Radio.Button>
+    ));
+  }
+
+  /**
+   * [初始化] - 文章标签
+   */
+  function _initArticleTag(): any[] {
     return ARTICLE_TAG_PICKER
       .map((item: never) => {
         return (
@@ -66,23 +85,17 @@ const WriteExtraForm = React.memo<IWriteExtraProps>((
       });
   }
 
-  // ** 处理标签点击, 添加至输入框 **
+  /**
+   * [处理] - 选择文章标签
+   * @param item 标签名称
+   * @param checked 是否选中
+   */
   function handleTagChange(item: string, checked: boolean) {
     setState({
       selectedTags: checked
         ? state.selectedTags.concat(item)
         : state.selectedTags.filter((v) => v !== item),
     });
-  }
-
-  // ** 处理初始化文章类型 **
-  function handleInitArticleType(): JSX.Element[] {
-    return ARTICLE_TYPE_PICKER.map((v: string, index: number) => (
-      <Radio.Button
-        key={index}
-        value={ARTICLE_TYPE_WITH_ENGLISH_PICKER[index]}
-      >{v}</Radio.Button>
-    ));
   }
 
   return (
@@ -95,7 +108,11 @@ const WriteExtraForm = React.memo<IWriteExtraProps>((
             <Form layout="vertical" id="write-extra-form">
               <Form.Item label="文章形式">
                 {getFieldDecorator('article_mode', {
-                  rules: [{ required: true, message: '文章形式一定要选' }],
+                  rules: [{
+                    required: true,
+                    message: '文章形式一定要选',
+                  }],
+                  validateTrigger: 'onBlur',
                 })(
                   <Radio.Group buttonStyle="solid">
                     <Radio.Button value="原创">原创</Radio.Button>
@@ -105,12 +122,16 @@ const WriteExtraForm = React.memo<IWriteExtraProps>((
               </Form.Item>
               <Form.Item label="文章类型">
                 {getFieldDecorator('article_type', {
-                    rules: [{ required: true, message: '文章类型一定要选' }],
-                  })(
-                    <Radio.Group buttonStyle="solid">
-                      {handleInitArticleType()}
-                    </Radio.Group>
-                  )}
+                  rules: [{
+                    required: true,
+                    message: '文章类型一定要选'
+                  }],
+                  validateTrigger: 'onBlur',
+                })(
+                  <Radio.Group buttonStyle="solid">
+                    {_initArticleType()}
+                  </Radio.Group>
+                )}
               </Form.Item>
               <Form.Item label="标签">
                 {getFieldDecorator('article_tag', {
@@ -118,6 +139,7 @@ const WriteExtraForm = React.memo<IWriteExtraProps>((
                     required: true,
                     message: '至少选择一个标签'
                   }],
+                  validateTrigger: 'onBlur',
                 })(
                   <Input
                     type="text"
@@ -128,9 +150,9 @@ const WriteExtraForm = React.memo<IWriteExtraProps>((
                       />
                     }
                   />
-                  )}
+                )}
                 <TagWrapper>
-                  {initTags()}
+                  {_initArticleTag()}
                 </TagWrapper>
               </Form.Item>
             </Form>
@@ -143,25 +165,22 @@ const WriteExtraForm = React.memo<IWriteExtraProps>((
 
 
 const WriteExtra = Form.create({
-  onFieldsChange(props: any, changedFields) {
-    props.onChange(changedFields);
+  onValuesChange(props: any, changedFields) {
+    props.onArticleExtraChange(changedFields);
   },
 
   mapPropsToFields(props) {
     return {
       article_mode: Form.createFormField({
-        ...props.article_mode,
-        value: props.article_mode.value,
+        value: props.articleInfo.mode,
       }),
 
       article_type: Form.createFormField({
-        ...props.article_type,
-        value: props.article_type.value,
+        value: props.articleInfo.type,
       }),
 
       article_tag: Form.createFormField({
-        ...props.article_tag,
-        value: props.article_tag.value,
+        value: props.articleInfo.tag,
       }),
     };
   },

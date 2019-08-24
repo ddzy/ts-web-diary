@@ -4,10 +4,6 @@ const { Schema } = mongoose;
 
 
 const UserSchema: mongoose.Schema = new Schema({
-  articles: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Post',
-  }],
   username: {
     type: String,
     require: true,
@@ -37,12 +33,17 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Number,
     default: new Date().getTime(),
   },
-  // ** 关注 **
+  // ? 发布的文章
+  articles: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
+  }],
+  // ? 我关注的
   attentions: {
     type: Schema.Types.ObjectId,
     ref: 'Attentions',
   },
-  // ** 被关注 **
+  // ? 关注我的
   followers: [{
     type: Schema.Types.ObjectId,
     ref: 'Followers',
@@ -50,6 +51,13 @@ const UserSchema: mongoose.Schema = new Schema({
 
   // ? 我的好友
   friend: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }],
+
+  // TODO 重构我的好友
+  friends: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,

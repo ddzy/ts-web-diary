@@ -17,7 +17,7 @@ const PostsSchema: mongoose.Schema = new Schema({
     default: new Date().getTime(),
   },
   // ** 封面图片 **
-  img: {
+  cover_img: {
     type: String,
   },
   update_time: {
@@ -50,18 +50,38 @@ const PostsSchema: mongoose.Schema = new Schema({
     type: String,
   },
   // ** 浏览量 **
-  watch: {
-    type: Number,
-    default: 0,
-  },
+  // watch: {
+  //   type: Number,
+  //   default: 0,
+  // },
   // ** 点赞 **
-  star: {
-    type: Number,
-    default: 0,
-  },
+  // star: {
+  //   type: Number,
+  //   default: 0,
+  // },
   // ** 点过赞的集合 **
-  stared: [{
-    type: String,
+  // stared: [{
+  //   type: String,
+  // }],
+
+  // ! 重构
+  // ? 看过文章的用户
+  watch_user_id: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    require: true,
+  }],
+  // ? 赞过文章的用户
+  star_user_id: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    require: true,
+  }],
+  // ? 踩过文章的用户
+  unstar_user_id: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    require: true,
   }],
 });
 

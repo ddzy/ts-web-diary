@@ -1,14 +1,15 @@
 import * as React from 'react';
-import {  Modal, notification } from 'antd';
+import {
+  Modal,
+} from 'antd';
 import { connect } from 'react-redux';
 import { History } from 'history';
-import { hot } from 'react-hot-loader';
 
 import Write from '../../components/write/Write';
 import {
   IStaticOptions,
-  serviceHandleSendArticle,
 } from './Publish.service';
+import { withRouter } from 'react-router';
 
 
 export interface IPublishProps {
@@ -20,7 +21,6 @@ interface IPublishState {
 };
 
 
-@(connect(mapStateToProps) as any)
 class Publish extends React.PureComponent<IPublishProps, IPublishState> {
 
   public readonly state = {
@@ -60,24 +60,26 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
   public handleSendArticle = (
     data: any,
   ): void => {
-    serviceHandleSendArticle(data, (v) => {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          serviceState: {
-            ...prevState.serviceState,
-            message: data.message,
-          },
-        };
-      }, () => {
-          notification.success({
-            message: '提示',
-            description: this.state.serviceState.message || '成功发布了文章!!!',
-          });
+    // serviceHandleSendArticle(data, (v) => {
+    //   this.setState((prevState) => {
+    //     return {
+    //       ...prevState,
+    //       serviceState: {
+    //         ...prevState.serviceState,
+    //         message: data.message,
+    //       },
+    //     };
+    //   }, () => {
+    //       notification.success({
+    //         message: '提示',
+    //         description: this.state.serviceState.message || '成功发布了文章!!!',
+    //       });
 
-          this.props.history.push('/home/frontend');
-      });
-    });
+    //       this.props.history.push('/home/frontend');
+    //   });
+    // });
+
+    console.log('Publish page: ', data);
   }
 
   public render(): JSX.Element {
@@ -100,4 +102,4 @@ function mapStateToProps(state: any) {
 }
 
 
-export default hot(module)(Publish);
+export default withRouter(connect(mapStateToProps)(Publish) as any);
