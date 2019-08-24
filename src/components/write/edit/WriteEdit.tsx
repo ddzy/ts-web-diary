@@ -1,11 +1,16 @@
 import * as React from 'react';
 import * as qiniu from 'qiniu-js';
 import Quill, { Sources, Delta } from 'quill';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import {
   Row,
   Col,
   Card,
+  notification,
 } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 
@@ -23,7 +28,7 @@ import {
 Quill.register(BaseQuillImageBlot, true);
 
 
-export interface IWriteEditProps {
+export interface IWriteEditProps extends RouteComponentProps {
   username: string;
 
   // ? 文章相关信息
@@ -116,21 +121,39 @@ class WriteEdit extends React.Component<IWriteEditProps, IWriteEditState> {
       const files = target.files as FileList;
       const file = files.item(0) as File;
 
+      const userId = localStorage.getItem('userid');
+
+      if (!userId || typeof userId !== 'string') {
+        notification.error({
+          message: '错误',
+          description: 'token已过期, 请登录后再试!',
+        });
+
+        this.props.history.push('/login');
+
+        return;
+      }
+
+      // 上传图片时的loading状态
+      this.setState({
+        isLoading: true,
+      });
+
       query({
-        url: '/api/upload/qiniu',
+        url: '/api/upload/qiniu/info',
         method: 'GET',
         data: {
-          userId: localStorage.getItem('userid'),
+          userId,
         },
         jsonp: false,
-      }).then(async (data) => {
+      }).then(async (res) => {
         const date: string = new Date().toLocaleDateString();
-        const username: string = this.props.username;
-        const key: string = `${date}/${username}/posts/${Date.now()}`;
-        const { uploadToken, domain } = data.info.qiniuInfo;
-
-        // loading
-        this.setState({ isLoading: true });
+        const username = this.props.username;
+        const {
+          uploadToken,
+          domain,
+        } = res.data.qiniuInfo;
+        const key: string = `${date}/${userId}/posts/images/${Date.now()}`;
 
         const $qiniu: qiniu.Observable = qiniu.upload(
           file,
@@ -140,58 +163,72 @@ class WriteEdit extends React.Component<IWriteEditProps, IWriteEditState> {
           {},
         );
 
-        $qiniu.subscribe(() => {
-          const processedImgUrl: string = qiniu.pipeline([
-            {
-              fop: 'watermark',
-              mode: 2,
-              text: `gayhub@${username}`,
-              dissolve: 99,
-              gravity: 'SouthEast',
-              fontsize: 18,
-              font: '微软雅黑',
-              dx: 10,
-              dy: 10,
-              fill: '#ffffff',
-            }, {
-              fop: 'imageView2',
-              mode: 3,
-              w: 600,
-              h: 600,
-              q: 100,
-              format: 'png'
-            }
-          ], key, domain);
-          const finalProcessedImgUrl: string = `http://${processedImgUrl}`;
-          const finalOriginImgUrl: string = `http://${domain}/${key}`;
+        $qiniu.subscribe({
+          next: () => (null),
+          error: () => {
+            notification.error({
+              message: '错误',
+              description: '上传至七牛云时出现问题, 请稍后重试!',
+            });
 
-          // 插入editor
-          editor.insertEmbed(
-            editorSelRange.index,
-            'image',
-            {
-              src: finalProcessedImgUrl,
-              'data-src': finalOriginImgUrl,
-              alt: key,
-            },
-            'user',
-          );
+            this.setState({
+              ...this.state,
+              isLoading: false,
+            });
+          },
+          complete: () => {
+            const processedImgUrl: string = qiniu.pipeline([
+              {
+                fop: 'watermark',
+                mode: 2,
+                text: `gayhub@${username}`,
+                dissolve: 99,
+                gravity: 'SouthEast',
+                fontsize: 18,
+                font: '微软雅黑',
+                dx: 10,
+                dy: 10,
+                fill: '#ffffff',
+              }, {
+                fop: 'imageView2',
+                mode: 3,
+                w: 600,
+                h: 600,
+                q: 100,
+                format: 'png'
+              }
+            ], key, domain);
+            const finalProcessedImgUrl: string = `https://${processedImgUrl}.png`;
+            const finalOriginImgUrl: string = `https://${domain}/${key}.png`;
 
-          // fix_bug: 每次会插入两次图片
-          editor.deleteText(
-            editorSelRange.index + 1,
-            1,
-          );
+            // 插入editor
+            editor.insertEmbed(
+              editorSelRange.index,
+              'image',
+              {
+                src: finalProcessedImgUrl,
+                'data-src': finalOriginImgUrl,
+                alt: key,
+              },
+              'user',
+            );
 
-          // 光标位置调整
-          editor.setSelection(
-            editorSelRange.index + 1,
-            editor.getLength() - 1,
-            'user',
-          );
+            // fix_bug: 每次会插入两次图片
+            editor.deleteText(
+              editorSelRange.index + 1,
+              1,
+            );
 
-          // loading
-          this.setState({ isLoading: false });
+            // 光标位置调整
+            editor.setSelection(
+              editorSelRange.index + 1,
+              editor.getLength() - 1,
+              'user',
+            );
+
+            // loading
+            this.setState({ isLoading: false });
+          },
         });
       });
     });
@@ -224,4 +261,4 @@ class WriteEdit extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 }
 
-export default WriteEdit;
+export default withRouter(WriteEdit);
