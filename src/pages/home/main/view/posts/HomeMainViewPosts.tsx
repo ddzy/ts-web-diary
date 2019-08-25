@@ -46,7 +46,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
           classNames={'fadeTranslateZ'}
           timeout={1000}
         >
-          <Switch>
+          <Switch location={props.location}>
             <Route exact path="/home" render={() => <Redirect to="/home/frontend" />} />
             <Route path="/home/frontend" component={LoadableHomeMainViewPostsFrontend} />
             <Route path="/home/backend" component={LoadableHomeMainViewPostsBackend} />

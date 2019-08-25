@@ -7,6 +7,7 @@ export interface ICommonBaseUserInfo {
 
 // ? 文章基本信息接口
 export interface ICommonBaseArticleInfo {
+  _id: string,
   // 文章的作者
   author: ICommonBaseUserInfo,
   // 文章下的评论
@@ -37,6 +38,7 @@ export interface ICommonBaseArticleInfo {
 
 // ? 文章评论基本信息接口
 export interface ICommonBaseArticleCommentInfo {
+  _id: string,
   // 评论人
   from: ICommonBaseUserInfo,
   // 评论的内容
@@ -55,6 +57,7 @@ export interface ICommonBaseArticleCommentInfo {
 
 // ? 文章评论的回复基本信息接口
 export interface ICommonBaseArticleCommentReplyInfo {
+  _id: string,
   // 回复的创建者
   from: ICommonBaseUserInfo,
   // 回复的对象

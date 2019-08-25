@@ -2,6 +2,8 @@ import * as React from 'react';
 // import * as InfiniteScroll from 'react-infinite-scroller';
 import {
   withRouter,
+  RouteComponentProps,
+  Link,
 } from 'react-router-dom';
 import {
   Icon,
@@ -9,6 +11,7 @@ import {
   Skeleton,
   Empty,
   Avatar,
+  notification,
 } from 'antd';
 
 import {
@@ -16,44 +19,40 @@ import {
   FrontendMain,
 } from './style';
 import { formatTime } from 'utils/utils';
+import {
+  ICommonBaseArticleInfo,
+} from 'pages/home/Home.types';
+import { PAGE_SIZE } from 'constants/constants';
+import { query } from 'services/request';
 
 
-export interface IHomeMainViewPostsFrontendProps { };
+export interface IHomeMainViewPostsFrontendProps extends RouteComponentProps {
+
+};
 export interface IHomeMainViewPostsFrontendState {
   // ? 加载文章时的loading状态
   isLoading: boolean;
 
   // ? 文章列表
-  // TODO 提取所有的公共接口到types.ts
-  articleList: any[]
+  articleList: ICommonBaseArticleInfo[],
 };
 
 
-const HomeMainViewPostsFrontend = React.memo(() => {
-  const [state] = React.useState<IHomeMainViewPostsFrontendState>({
+const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendProps) => {
+  const [state, setState] = React.useState<IHomeMainViewPostsFrontendState>({
     isLoading: false,
-    articleList: [1],
+    articleList: [],
   });
 
-  function initListData() {
-    const listData = [];
+  React.useEffect(() => {
+    _getArticleList();
+  }, []);
 
-    for (let i = 0; i < 23; i++) {
-      listData.push({
-        href: 'http://ant.design',
-        title: `ant design part ${i}`,
-        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-        description:
-          'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-        content:
-          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      });
-    }
-
-    return listData;
-  }
-
-  function initIcon(options: {
+  /**
+   * [初始化] - 文章列表项的图标
+   * @param options 配置项
+   */
+  function _initIcon(options: {
     type: string,
     text: string,
     key: string,
@@ -71,6 +70,51 @@ const HomeMainViewPostsFrontend = React.memo(() => {
     );
   }
 
+  /**
+   * [获取] - 文章列表(分页)
+   */
+  function _getArticleList() {
+    setState({
+      ...state,
+      isLoading: true,
+    });
+
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '鉴权信息已丢失, 请重新登录!',
+      });
+
+      props.history.push('/login');
+
+      return;
+    }
+
+    const type = 'frontend';
+
+    query({
+      url: '/api/article/info/list',
+      jsonp: false,
+      method: 'GET',
+      data: {
+        type,
+        userId,
+        pageSize: PAGE_SIZE,
+        page: 1,
+      },
+    }).then((res) => {
+      const { articleList } = res.data;
+
+      setState({
+        ...state,
+        isLoading: false,
+        articleList,
+      });
+    });
+  }
+
   return (
     <FrontendWrapper>
       <FrontendMain>
@@ -81,64 +125,69 @@ const HomeMainViewPostsFrontend = React.memo(() => {
         >
           {
             state.articleList.length === 0
-              ? <Empty description="没有数据..." />
+              ? <Empty description="此分类下暂时没有文章..." />
               : (
                 <List
                   itemLayout="vertical"
                   size="default"
-                  dataSource={initListData()}
+                  dataSource={state.articleList}
                   footer={
                     <div>
-                      <b>ant design</b> footer part
+                      <p style={{
+                        textAlign: 'center',
+                      }}>
+                        <b>滚动以加载更多文章↓↓↓</b>
+                      </p>
                     </div>
                   }
                   renderItem={item => (
                     <List.Item
                       key={item.title}
                       actions={[
-                        initIcon({
+                        _initIcon({
                           type: 'eye-o',
                           text: '156',
                           key: 'list-vertical-eye-o',
                         }),
-                        initIcon({
+                        _initIcon({
                           type: 'like-o',
                           text: '108',
                           key: 'list-vertical-like-o',
                         }),
-                        initIcon({
+                        _initIcon({
                           type: 'info-circle',
                           text: 'duan',
                           key: 'list-vertical-info-circle',
                         }),
-                        initIcon({
+                        _initIcon({
                           type: 'clock-circle-o',
-                          text: String(formatTime(Date.now())),
+                          text: String(formatTime(item.create_time)),
                           key: 'list-vertical-clock-circle-o',
                         }),
                       ]}
                       extra={
                         <img
                           width={272}
-                          alt="logo"
-                          src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                          height={168}
+                          alt="cover_img"
+                          src={item.cover_img ? item.cover_img : '默认图片'}
                         />
                       }
                     >
                       <List.Item.Meta
-                        avatar={<Avatar src={item.avatar} />}
+                        avatar={<Avatar src={item.author.useravatar} />}
                         title={
                           <p
                             style={{
                               fontSize: '18px',
                             }}
                           >
-                            <a href={item.href}>{item.title}</a>
+                            <Link to={`/details/${item._id}`}>{item.title}</Link>
                           </p>
                         }
-                        // description={item.description}
                       />
-                      {item.content}
+                      {item.description}
+                      <Link to={`/details/${item._id}`}>...阅读原文</Link>
                     </List.Item>
                   )}
                 >
