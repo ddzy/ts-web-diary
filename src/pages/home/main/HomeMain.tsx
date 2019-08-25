@@ -9,14 +9,9 @@ import {
   MainWrapper,
   MainContent,
 } from './style';
-import {
-  IStaticArticleListOptions
-} from '../Home.service';
 
 
 export interface IHomeMainProps extends RouteComponentProps {
-  articleList: IStaticArticleListOptions[];
-  globalLoading: boolean;
 };
 
 
@@ -27,11 +22,11 @@ const HomeMain = React.memo<IHomeMainProps>((
     <React.Fragment>
       <MainWrapper>
         <MainContent>
-          <HomeMainNav/>
-          <HomeMainView
-            articleList={props.articleList}
-            globalLoading={props.globalLoading}
-          />
+          {/* 首页二级导航 */}
+          <HomeMainNav />
+
+          {/* 首页文章展示 */}
+          <HomeMainView />
         </MainContent>
       </MainWrapper>
     </React.Fragment>
