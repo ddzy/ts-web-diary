@@ -13,7 +13,7 @@ export interface ICommentListItemProps {
   isReply: boolean;
   commentInfo: {
     _id: string;
-    value: string;
+    content: string;
     create_time: number | string;
     from: {
       _id: string,

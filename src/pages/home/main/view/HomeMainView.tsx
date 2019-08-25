@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   ViewWrapper,
@@ -10,8 +13,6 @@ import HomeMainViewExtra from './extra/HomeMainViewExtra';
 
 
 export interface IHomeMainViewProps extends RouteComponentProps {
-  articleList: any[];
-  globalLoading: boolean;
 };
 
 
@@ -23,10 +24,7 @@ const HomeMainView = React.memo<IHomeMainViewProps>((
       <ViewWrapper>
         <ViewContent>
           {/* 文章展示 */}
-          <HomeMainViewPosts
-            articleList={props.articleList}
-            globalLoading={props.globalLoading}
-          />
+          <HomeMainViewPosts />
           {/* 额外信息 */}
           <HomeMainViewExtra />
         </ViewContent>

@@ -11,16 +11,17 @@ import {
   FixedControlList,
   FixedControlListItem,
 } from './style';
+import {
+  ICommonBaseArticleInfo,
+} from '../Details.types';
 import DetailsControlCollection from './collection/DetailsControlCollection';
 import DetailsControlComment from './comment/DetailsControlComment';
 import DetailsControlStar from './star/DetailsControlStar';
 
 
 export interface IDetailsControlProps {
-  controlStarAreaState: {
-    author: string;
-    isLiked: boolean;
-  };
+  // ? 文章信息
+  articleInfo: ICommonBaseArticleInfo,
 };
 
 
@@ -39,7 +40,7 @@ const DetailsControl = React.memo<IDetailsControlProps>((
               {/* 点赞 */}
               <FixedControlListItem>
                 <DetailsControlStar
-                  {...props.controlStarAreaState}
+                  {...props}
                 />
               </FixedControlListItem>
               {/* 评论 */}

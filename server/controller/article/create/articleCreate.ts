@@ -1,54 +1,64 @@
 import * as Router from 'koa-router';
 
-import { getRandom } from '../../../utils/utils';
+import {
+  getFullRandom,
+  filterTabAndEnterCharacter,
+} from '../../../utils/utils';
 import {
   Posts,
-  changeId,
   User,
 } from '../../../model/model';
 
 const articleCreateController: Router = new Router();
 
 
-// ** Define Interface **
-interface IRouteInsertPrdeltaOps {
-  userid: string;
-  articleid: string;
-  editTitle: string;
-  editContent: string;
-  editContentWithDelta: any;
-  extraContent: any;
-  article_title_image: string;
-};
-
-
 /**
- * 写文章
+ * [创建] - 新的文章
  */
 articleCreateController.post('/', async (ctx) => {
-  const body = ctx.request.body as IRouteInsertPrdeltaOps;
+  interface IRequestParams {
+    userId: string,
+    title: string,
+    content: {
+      ops: any[],
+    },
+    cover_img: string,
+    mode: string,
+    type: string,
+    tag: string[],
+  };
+
   const {
-    userid,
-    editContentWithDelta,
-    extraContent,
-    editTitle,
-    article_title_image,
-  } = body;
+    userId,
+    title,
+    content,
+    cover_img,
+    mode,
+    type,
+    tag,
+  } = ctx.request.body as IRequestParams;
 
-  // ** 提取description **
-  const deltaOps = editContentWithDelta.ops;
-  let descNum = getRandom(50, 70);
-  let filteredDesc: string = '';
+  // ? 提取文章描述 - description
+  const contentDelta = content.ops;
+  const minDescriptionLength = 90;
+  const maxDescriptionLength = 120;
+  const countDescriptionLength = getFullRandom(minDescriptionLength, maxDescriptionLength);
+  let description: string = '';
 
-  for (const v of deltaOps) {
+  for (const v of contentDelta) {
+    if (description.length >= countDescriptionLength) {
+      break;
+    }
+
     if (typeof v.insert === 'string') {
-      if (v.insert.length >= descNum) {
-        filteredDesc = v.insert.slice(0, descNum);
-        descNum = v.insert.length - descNum;
+      if (v.insert.length >= minDescriptionLength) {
+        description = v.insert.slice(0, countDescriptionLength);
+
         break;
       }
       else {
-        filteredDesc += v.insert;
+        description += v.insert;
+
         continue;
       }
     } else {
@@ -56,36 +66,36 @@ articleCreateController.post('/', async (ctx) => {
     }
   }
 
-  // ** 存储文章 **
-  const saveArticle = await Posts.create({
-    // ??? BUG
-    author: userid,
-    title: editTitle,
-    description: filteredDesc,
-    content: JSON.stringify(editContentWithDelta),
-    mode: extraContent.article_mode.value,
-    type: extraContent.article_type.value,
-    tag: extraContent.article_tag.value,
-    img: article_title_image,
-    create_time: new Date().getTime(),
+  // ? 存储文章
+  const savedArticle = await Posts.create({
+    author: userId,
+    comments: [],
+    create_time: Date.now(),
+    update_time: Date.now(),
+    cover_img,
+    mode,
+    type,
+    title,
+    description: filterTabAndEnterCharacter(description, ''),
+    content: JSON.stringify(content),
+    tag: '' + tag,
+    watched_user: [],
+    collected_user: [],
   });
 
-  // ** 同步到User **
-  await User
-    .findByIdAndUpdate(
-      changeId(body.userid),
-      { '$push': { articles: saveArticle } },
-      { new: true },
-    )
+  // ? 同步更新User
+  await User.findByIdAndUpdate(userId, {
+    '$push': {
+      articles: savedArticle,
+    },
+  });
 
   ctx.body = {
     code: 0,
-    userid,
-    articleid: saveArticle._id,
-    message: '发布文章成功!',
+    message: 'Success!',
+    data: {},
   };
 });
-
 
 
 export default articleCreateController;

@@ -4,7 +4,6 @@ import {
   WEBSITE,
 } from '../constants/constants';
 
-
 /**
  * 加密
  * @param {string} pwd 密码
@@ -16,7 +15,6 @@ export function md5(
 
   return utility.md5(utility.md5(pwd));
 }
-
 
 /**
  * 格式化静态资源路径
@@ -40,19 +38,17 @@ export function formatPath(
     .replace(/\\/g, '/')
 }
 
-
 /**
- * 取随机数
+ * 取随机整数
  * @param {number} min 最小值
  * @param {number} max 最大值
  */
-export function getRandom(
+export function getFullRandom(
   min: number,
   max: number,
 ): number {
   return ~~(Math.random()*(max-min)+min);
 }
-
 
 /**
  * 判断是否数组
@@ -62,4 +58,18 @@ export function isArray(
   obj: any,
 ): boolean {
   return ({}).toString.call(null, obj) === '[object Array]';
+}
+
+/**
+ * 过滤字符串中的换行和回车符号(不包括空格)
+ * @param text 需要处理的文本
+ * @param replacement 替换符
+ */
+export function filterTabAndEnterCharacter(
+  text: string,
+  replacement: string,
+): string {
+  const reg = /[\r\n]/g;
+
+  return text.replace(reg, replacement);
 }

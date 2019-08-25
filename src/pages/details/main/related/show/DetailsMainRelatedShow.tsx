@@ -13,7 +13,6 @@ import {
   ShowMain,
 } from './style';
 import {
-  IStaticArticleInfoRelatedArticlesOptions,
   serviceHandleGetMoreRelatedArticles,
 } from 'pages/details/Details.service';
 import {
@@ -25,10 +24,12 @@ import DetailsMainRelatedShowItem from './item/DetailsMainRelatedShowItem';
 export interface IDetailsMainRelatedShowProps extends RouteComponentProps<{
   id: string,
 }> {
-  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+  articleInfo: {
+    related_article: any[];
+  },
 };
 interface IDetailsMainRelatedShowState {
-  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+  relatedArticles: any[];
   loading: boolean;
   hasMore: boolean;
 };
@@ -50,9 +51,9 @@ const DetailsMainRelatedShow = React.memo((
   React.useEffect(() => {
     setState({
       ...state,
-      relatedArticles: props.relatedArticles,
+      relatedArticles: props.articleInfo.related_article,
     });
-  }, [props.relatedArticles]);
+  }, [props.articleInfo.related_article]);
 
   function handleInitArticleList(): JSX.Element[] {
     const { relatedArticles } = state;

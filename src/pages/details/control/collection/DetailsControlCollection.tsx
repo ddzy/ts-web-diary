@@ -16,6 +16,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import {
   withRouter,
   RouteComponentProps,
+  match,
 } from 'react-router';
 
 import {
@@ -32,7 +33,11 @@ import {
 } from '../../Details.service';
 
 
-export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps<any> { };
+export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps {
+  match: match<{
+    id: string,
+  }>;
+};
 interface IDetailsControlCollectionState {
   collectionList: IStaticCollectionItem[];
 };

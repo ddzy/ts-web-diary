@@ -5,7 +5,7 @@ import {
   Posts,
 } from '../model/model';
 import {
-  getRandom,
+  getFullRandom,
 } from '../utils/utils';
 
 const writeController: Router = new Router();
@@ -65,7 +65,7 @@ writeController.post('/insert', async (ctx) => {
 
   // ** 提取description **
   const deltaOps = editContentWithDelta.ops;
-  let descNum = getRandom(50, 70);
+  let descNum = getFullRandom(50, 70);
   let filteredDesc: string = '';
 
   for (const v of deltaOps) {

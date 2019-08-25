@@ -22,29 +22,35 @@ import {
   NewArticleList,
   NewArticleListItem,
 } from './style';
+import {
+  ICommonBaseArticleInfo
+} from '../Details.types';
 
 
 export interface IDetailsActionProps {
   globalLoading: boolean;
 
-  author: string | '';
-  authorAvatar: string | '';
-  newArticle: object[];
-  articleCount: number | '';
-  watchCount: number | 0;
+  // author: string | '';
+  // authorAvatar: string | '';
+  // newArticle: object[];
+  // articleCount: number | '';
+  // watchCount: number | 0;
+
+  articleInfo: ICommonBaseArticleInfo & {
+    new_article: ICommonBaseArticleInfo[],
+    created_article_total: number,
+  },
 };
 interface IDetailsActionState {};
 
 
 class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionState> {
 
-
   public readonly state = {}
-
 
   //// 初始化最新文章
   public initNewArticleList = (): any[] => {
-    const newArticle = this.props.newArticle;
+    const newArticle = this.props.articleInfo.new_article;
 
     return newArticle.length === 0
       ? []
@@ -82,7 +88,7 @@ class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionS
                   <MeInfoAvatar>
                     {/* 头像 */}
                     <img
-                      src={this.props.authorAvatar}
+                      src={this.props.articleInfo.author.useravatar}
                       alt="作者头像"
                     />
                   </MeInfoAvatar>
@@ -90,7 +96,7 @@ class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionS
                 <Col span={24}>
                   {/* 用户名 */}
                   <MeInfoName>
-                    {this.props.author}
+                    {this.props.articleInfo.author.username}
                   </MeInfoName>
                 </Col>
                 <Col span={24}>
@@ -98,7 +104,7 @@ class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionS
                   <MeInfoCount>
                     <MeInfoCountItem>
                       <MeInfoCountItemNumber>
-                        {this.props.articleCount}
+                        {this.props.articleInfo.created_article_total}
                       </MeInfoCountItemNumber>
                       <MeInfoCountItemText>
                         文章数
@@ -106,7 +112,7 @@ class DetailsAction extends React.Component<IDetailsActionProps, IDetailsActionS
                     </MeInfoCountItem>
                     <MeInfoCountItem>
                       <MeInfoCountItemNumber>
-                        {this.props.watchCount || 0}
+                        {this.props.articleInfo.watched_user.length}
                       </MeInfoCountItemNumber>
                       <MeInfoCountItemText>
                         阅读量

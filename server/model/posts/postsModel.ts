@@ -49,36 +49,14 @@ const PostsSchema: mongoose.Schema = new Schema({
   tag: {
     type: String,
   },
-  // ** 浏览量 **
-  // watch: {
-  //   type: Number,
-  //   default: 0,
-  // },
-  // ** 点赞 **
-  // star: {
-  //   type: Number,
-  //   default: 0,
-  // },
-  // ** 点过赞的集合 **
-  // stared: [{
-  //   type: String,
-  // }],
-
-  // ! 重构
   // ? 看过文章的用户
-  watch_user_id: [{
+  watched_user: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
     require: true,
   }],
-  // ? 赞过文章的用户
-  star_user_id: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    require: true,
-  }],
-  // ? 踩过文章的用户
-  unstar_user_id: [{
+  // ? 收藏过文章的用户
+  collected_user: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
     require: true,
