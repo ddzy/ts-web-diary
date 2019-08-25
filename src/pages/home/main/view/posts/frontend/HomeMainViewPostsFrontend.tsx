@@ -65,7 +65,6 @@ const HomeMainViewPostsFrontend = React.memo(() => {
           style={{
             marginRight: 8,
           }}
-          theme={'filled'}
         />
         {options.text}
       </span>
@@ -129,9 +128,13 @@ const HomeMainViewPostsFrontend = React.memo(() => {
                       <List.Item.Meta
                         avatar={<Avatar src={item.avatar} />}
                         title={
-                          <h3>
+                          <p
+                            style={{
+                              fontSize: '18px',
+                            }}
+                          >
                             <a href={item.href}>{item.title}</a>
-                          </h3>
+                          </p>
                         }
                         // description={item.description}
                       />
