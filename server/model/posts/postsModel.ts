@@ -55,14 +55,8 @@ const PostsSchema: mongoose.Schema = new Schema({
     ref: 'User',
     require: true,
   }],
-  // ? 赞过文章的用户
-  stared_user: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    require: true,
-  }],
-  // ? 踩过文章的用户
-  unstared_user: [{
+  // ? 收藏过文章的用户
+  collected_user: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
     require: true,

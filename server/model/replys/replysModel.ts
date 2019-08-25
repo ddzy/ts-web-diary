@@ -12,8 +12,13 @@ const ReplySchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
-  value: {
+  content: {
     type: String,
+    required: true,
+  },
+  content_type: {
+    type: String,
+    required: true,
   },
   article: {
     type: Schema.Types.ObjectId,
@@ -23,9 +28,6 @@ const ReplySchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Comments',
   },
-  replyValue: {
-    type: String,
-  },
   create_time: {
     type: Number,
     default: new Date().getTime(),
@@ -33,10 +35,6 @@ const ReplySchema: mongoose.Schema = new Schema({
   update_time: {
     type: Number,
     default: new Date().getTime(),
-  },
-  star: {
-    type: Number,
-    default: 0,
   },
 });
 
