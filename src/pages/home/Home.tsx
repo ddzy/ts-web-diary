@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   withRouter,
+  RouteComponentProps,
 } from 'react-router-dom';
 
 import HomeMain from './main/HomeMain';
@@ -9,7 +10,7 @@ import {
 } from './style';
 
 
-export interface IHomeProps {
+export interface IHomeProps extends RouteComponentProps {
 };
 export interface IHomeState {
 };
