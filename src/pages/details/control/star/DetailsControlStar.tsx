@@ -13,6 +13,9 @@ import {
 import {
   serviceHandleFixedControlBarStar,
 } from '../../Details.service';
+import {
+  ICommonBaseArticleInfo,
+} from '../../Details.types';
 
 
 export interface IDetailsControlStarProps extends RouteComponentProps {
@@ -21,9 +24,7 @@ export interface IDetailsControlStarProps extends RouteComponentProps {
   }>;
 
   // ? 文章信息
-  articleInfo: {
-    author: any,
-  };
+  articleInfo: ICommonBaseArticleInfo;
 };
 interface IDetailsControlStarState {
   isLiked: boolean;

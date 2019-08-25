@@ -16,23 +16,17 @@ import {
 } from './style';
 // import QuillImageBlot from 'components/write/write_edit/QuillImageBlot';
 import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
+import {
+  ICommonBaseArticleInfo,
+} from '../Details.types';
 
 Quill.register(BaseQuillImageBlot, true);
 
 
 export interface IDetailsMainProps {
   // ? 文章信息
-  articleInfo: {
-    content: string,
-    title: string;
-    mode: string;
-    author: any;
-    type: string;
-    tag: string;
-    create_time: number;
-    cover_img: string;
-    comments: any[];
-    related_article: any[];
+  articleInfo: ICommonBaseArticleInfo & {
+    related_article: ICommonBaseArticleInfo[],
   };
 
   // ? 当前用户的头像

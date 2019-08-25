@@ -22,6 +22,9 @@ import {
   NewArticleList,
   NewArticleListItem,
 } from './style';
+import {
+  ICommonBaseArticleInfo
+} from '../Details.types';
 
 
 export interface IDetailsActionProps {
@@ -33,10 +36,8 @@ export interface IDetailsActionProps {
   // articleCount: number | '';
   // watchCount: number | 0;
 
-  articleInfo: {
-    author: any,
-    new_article: any[],
-    watched_user: any[],
+  articleInfo: ICommonBaseArticleInfo & {
+    new_article: ICommonBaseArticleInfo[],
     created_article_total: number,
   },
 };

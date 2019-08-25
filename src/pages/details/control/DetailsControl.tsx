@@ -11,6 +11,9 @@ import {
   FixedControlList,
   FixedControlListItem,
 } from './style';
+import {
+  ICommonBaseArticleInfo,
+} from '../Details.types';
 import DetailsControlCollection from './collection/DetailsControlCollection';
 import DetailsControlComment from './comment/DetailsControlComment';
 import DetailsControlStar from './star/DetailsControlStar';
@@ -18,9 +21,7 @@ import DetailsControlStar from './star/DetailsControlStar';
 
 export interface IDetailsControlProps {
   // ? 文章信息
-  articleInfo: {
-    author: any,
-  },
+  articleInfo: ICommonBaseArticleInfo,
 };
 
 

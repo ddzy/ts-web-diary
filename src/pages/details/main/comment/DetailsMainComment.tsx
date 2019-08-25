@@ -16,7 +16,6 @@ import {
   ISendReplyParams,
   serviceHandleSendReply,
   serviceHandleSendComment,
-  IStaticArticleInfoCommentsOptions,
   serviceHandleGetMoreComments,
   serviceHandleGetMoreReplys,
 } from '../../Details.service';
@@ -24,15 +23,20 @@ import {
   COMMENT_PAGE_SIZE,
   REPLY_PAGE_SIZE,
 } from 'constants/constants';
+import {
+  ICommonBaseArticleCommentInfo,
+} from '../../Details.types';
 
 
-export interface IDetailsMainCommentProps extends RouteComponentProps<any> {
+export interface IDetailsMainCommentProps extends RouteComponentProps<{
+  id: string
+}> {
   useravatar: string;
 
-  comments: IStaticArticleInfoCommentsOptions[];
+  comments: ICommonBaseArticleCommentInfo[];
 };
 interface IDetailsMainCommentState {
-  comments: IStaticArticleInfoCommentsOptions[];
+  comments: ICommonBaseArticleCommentInfo[];
   commentHasMore: boolean;
   replyHasMore: boolean;
 }
@@ -72,7 +76,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
         value,
         articleId: id || '',
         from: localStorage.getItem('userid') || '',
-      }, (data) => {
+      }, (data: any) => {
         const {
           commentInfo
         } = data.info;
@@ -113,14 +117,14 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
           ...v,
           articleId: id,
         },
-        (data) => {
+        (data: any) => {
           const {
             replyInfo,
           } = data.info;
 
           setState({
             ...state,
-            comments: state.comments.map((item) => {
+            comments: state.comments.map((item: any) => {
               if (
                 item._id === replyInfo.comment
               ) {
@@ -162,7 +166,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
 
     serviceHandleGetMoreComments(
       { articleId: id, ...v, commentPageSize: COMMENT_PAGE_SIZE, replyPageSize: REPLY_PAGE_SIZE },
-      (data) => {
+      (data: any) => {
         const {
           hasMore,
           comments,
@@ -191,7 +195,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   ) {
     serviceHandleGetMoreReplys(
       { ...v, replyPageSize: REPLY_PAGE_SIZE, },
-      (data) => {
+      (data: any) => {
         const {
           hasMore,
           replys,
@@ -200,7 +204,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
         setState({
           ...state,
           replyHasMore: hasMore,
-          comments: state.comments.map((comment) => {
+          comments: state.comments.map((comment: any) => {
             if (comment._id === v.commentId) {
               return {
                 ...comment,

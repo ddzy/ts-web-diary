@@ -4,13 +4,16 @@ import {
   RelatedWrapper,
   RelatedMain,
 } from './style';
+import {
+  ICommonBaseArticleInfo,
+} from 'pages/details/Details.types';
 import DetailsMainRelatedTitle from './title/DetailsMainRelatedTitle';
 import DetailsMainRelatedShow from './show/DetailsMainRelatedShow';
 
 
 export interface IDetailsMainRelatedProps {
   articleInfo: {
-    related_article: any[],
+    related_article: ICommonBaseArticleInfo[],
   },
 };
 

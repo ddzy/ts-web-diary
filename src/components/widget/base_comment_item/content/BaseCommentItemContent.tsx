@@ -35,7 +35,7 @@ const BaseCommentItemContent = React.memo<IBaseCommentItemContentProps>((
       </ContentommentReplyRange>
       <ContentCommentText
         dangerouslySetInnerHTML={{
-          __html: props.commentInfo.value || '',
+          __html: props.commentInfo.content || '',
         }}
       />
     </ContentContainer>

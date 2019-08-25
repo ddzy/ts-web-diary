@@ -19,6 +19,10 @@ import {
   REPLY_PAGE_SIZE,
 } from 'constants/constants';
 import { query } from 'services/request';
+import {
+  ICommonBaseArticleInfo,
+  ICommonBaseUserInfo,
+} from './Details.types';
 
 
 export interface IDetailsProps extends RouteComponentProps<{
@@ -26,40 +30,52 @@ export interface IDetailsProps extends RouteComponentProps<{
 }> {
   AuthRouteReducer: { useravatar: string, };
 };
-export type IDetailsState = typeof initialState;
-
-
-const initialState = {
-  // ? 文章相关信息
-  articleInfo: {
-    author: {},
-    comments: [],
-    create_time: Date.now(),
-    cover_img: '',
-    update_time: Date.now(),
-    mode: '',
-    type: '',
-    title: '',
-    description: '',
-    content: '',
-    tag: '',
-    watched_user: [],
-    stared_user: [],
-    unstared_user: [],
-    related_article: [],
-    new_article: [],
-    created_article_total: 0,
+export interface IDetailsState {
+  // ? 文章详细信息
+  articleInfo: ICommonBaseArticleInfo & {
+    stared_user: ICommonBaseUserInfo[],
+    unstared_user: ICommonBaseUserInfo[],
+    related_article: ICommonBaseArticleInfo[],
+    new_article: ICommonBaseArticleInfo[],
+    created_article_total: number,
   },
 
-  // ? 全局loading
-  globalLoading: false,
+  // ? 全局loading状态
+  globalLoading: boolean,
 };
 
 
 @(connect(mapStateToProps) as any)
 class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
-  public readonly state = initialState;
+  public readonly state: IDetailsState = {
+    articleInfo: {
+      _id: '',
+      author: {
+        _id: '',
+        username: '',
+        useravatar: '',
+      },
+      create_time: Date.now(),
+      cover_img: '',
+      update_time: Date.now(),
+      mode: '',
+      type: '',
+      tag: '',
+      title: '',
+      description: '',
+      content: '',
+      watched_user: [],
+      comments: [],
+      collected_user: [],
+      stared_user: [],
+      unstared_user: [],
+      related_article: [],
+      new_article: [],
+      created_article_total: 0,
+    },
+    globalLoading: false,
+  };
 
   public componentDidMount(): void {
     this._getArticleInfo();
