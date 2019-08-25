@@ -7,6 +7,7 @@ import {
 import {
   withRouter,
   RouteComponentProps,
+  match,
 } from 'react-router-dom';
 
 import {
@@ -14,9 +15,15 @@ import {
 } from '../../Details.service';
 
 
-export interface IDetailsControlStarProps extends RouteComponentProps<any> {
-  author: string;
-  isLiked: boolean;
+export interface IDetailsControlStarProps extends RouteComponentProps {
+  match: match<{
+    id: string,
+  }>;
+
+  // ? 文章信息
+  articleInfo: {
+    author: any,
+  };
 };
 interface IDetailsControlStarState {
   isLiked: boolean;
@@ -30,15 +37,15 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
   let saveStarIcon: any = document
     .createElement('div');
 
-  const [state, setState] = React.useState<IDetailsControlStarState>({
+  const [state] = React.useState<IDetailsControlStarState>({
     isLiked: false,
   });
 
-  React.useEffect(() => {
-    setState({
-      isLiked: props.isLiked,
-    });
-  }, [props.isLiked]);
+  // React.useEffect(() => {
+  //   setState({
+  //     isLiked: props.isLiked,
+  //   });
+  // }, [props.isLiked]);
 
   /**
    * 处理固钉栏 点赞
@@ -66,7 +73,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
         },
         () => {
           saveStarIcon.classList.add('fixed-control-bar-star-active');
-          message.success(`你赞了 ${props.author} 的文章`);
+          message.success(`你赞了 ${props.articleInfo.author.username} 的文章`);
         },
       );
   }

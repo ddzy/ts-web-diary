@@ -24,15 +24,19 @@ import { formatTime } from 'utils/utils';
 
 
 export interface IDetailsMainTitleProps {
+  // ? 全局loading状态
   globalLoading: boolean;
 
-  articleTitle: string;
-  mode: string;
-  author: string;
-  type: string;
-  tag: string;
-  create_time: number;
-  img: string;
+  // ? 文章信息
+  articleInfo: {
+    title: string;
+    mode: string;
+    author: any;
+    type: string;
+    tag: string;
+    create_time: number;
+    cover_img: string;
+  },
 };
 
 
@@ -41,7 +45,7 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
 ): JSX.Element => {
 
   const initArticleTag = (): JSX.Element[] => {
-    return props.tag
+    return props.articleInfo.tag
       .split(',')
       .map((item) => {
         return (
@@ -63,7 +67,7 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
         {/* 标题 */}
         <LeftTitleBox>
           <LeftTitle>
-            {props.articleTitle}
+            {props.articleInfo.title}
           </LeftTitle>
         </LeftTitleBox>
 
@@ -71,17 +75,17 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
         <LeftInfoBox>
           <LeftInfoList>
             <LeftInfoListItem>
-              {props.mode}
+              {props.articleInfo.mode}
             </LeftInfoListItem>
             <Divider type="vertical" />
             <LeftInfoListItem>
-              {props.author}
+              {props.articleInfo.author.username}
             </LeftInfoListItem>
             <Divider type="vertical" />
             <LeftInfoListItem>
               {/* {props.type} */}
               {
-                ARTICLE_TYPE_PICKER[ARTICLE_TYPE_WITH_ENGLISH_PICKER.indexOf(props.type)]
+                ARTICLE_TYPE_PICKER[ARTICLE_TYPE_WITH_ENGLISH_PICKER.indexOf(props.articleInfo.type)]
               }
             </LeftInfoListItem>
             <Divider type="vertical" />
@@ -90,13 +94,13 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
             </LeftInfoListItem>
             <Divider type="vertical" />
             <LeftInfoListItem>
-              {formatTime(props.create_time)}
+              {formatTime(props.articleInfo.create_time)}
             </LeftInfoListItem>
           </LeftInfoList>
         </LeftInfoBox>
         <LeftImgBox>
           <LeftImgInner
-            imgUrl={props.img}
+            imgUrl={props.articleInfo.cover_img}
           />
         </LeftImgBox>
       </Skeleton>

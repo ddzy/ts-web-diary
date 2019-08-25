@@ -4,15 +4,14 @@ import {
   RelatedWrapper,
   RelatedMain,
 } from './style';
-import {
-  IStaticArticleInfoRelatedArticlesOptions,
-} from '../../Details.service';
 import DetailsMainRelatedTitle from './title/DetailsMainRelatedTitle';
 import DetailsMainRelatedShow from './show/DetailsMainRelatedShow';
 
 
 export interface IDetailsMainRelatedProps {
-  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+  articleInfo: {
+    related_article: any[],
+  },
 };
 
 

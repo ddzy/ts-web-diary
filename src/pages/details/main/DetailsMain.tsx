@@ -14,10 +14,6 @@ import DetailsMainRelated from './related/DetailsMainRelated';
 import {
   DetailsLeftWrapper,
 } from './style';
-import {
-  IStaticArticleInfoCommentsOptions,
-  IStaticArticleInfoRelatedArticlesOptions,
-} from '../Details.service';
 // import QuillImageBlot from 'components/write/write_edit/QuillImageBlot';
 import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
 
@@ -25,18 +21,24 @@ Quill.register(BaseQuillImageBlot, true);
 
 
 export interface IDetailsMainProps {
-  author: string;
-  articleContent: string;
-  articleTitle: string;
-  create_time: number;
-  mode: string;
-  tag: string;
-  type: string;
-  comments: IStaticArticleInfoCommentsOptions[];
-  img: string;
-  useravatar: string;
-  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+  // ? 文章信息
+  articleInfo: {
+    content: string,
+    title: string;
+    mode: string;
+    author: any;
+    type: string;
+    tag: string;
+    create_time: number;
+    cover_img: string;
+    comments: any[];
+    related_article: any[];
+  };
 
+  // ? 当前用户的头像
+  useravatar: string;
+
+  // ? 全局loading状态
   globalLoading: boolean;
 };
 
@@ -47,11 +49,13 @@ export interface IDetailsMainProps {
 const DetailsMain = React.memo<IDetailsMainProps>((
   props: IDetailsMainProps,
 ): JSX.Element => {
-  // ** 初始化富文本editor内容 **
+  /**
+   * [初始化] - 编辑器的内容
+   */
   function initArticleContent(): string {
-    const { articleContent } = props;
-    const parsedArticleContent = articleContent
-      ? JSON.parse(articleContent)
+    const { content } = props.articleInfo;
+    const parsedArticleContent = content
+      ? JSON.parse(content)
       : { ops: [] };
 
     // ** delta-to-html暂时使用这种方式替代 **
@@ -96,7 +100,7 @@ const DetailsMain = React.memo<IDetailsMainProps>((
       <React.Fragment>
         <DetailsMainComment
           useravatar={props.useravatar}
-          comments={props.comments}
+          comments={props.articleInfo.comments}
         />
         <Divider />
       </React.Fragment>

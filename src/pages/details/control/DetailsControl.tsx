@@ -17,10 +17,10 @@ import DetailsControlStar from './star/DetailsControlStar';
 
 
 export interface IDetailsControlProps {
-  controlStarAreaState: {
-    author: string;
-    isLiked: boolean;
-  };
+  // ? 文章信息
+  articleInfo: {
+    author: any,
+  },
 };
 
 
@@ -39,7 +39,7 @@ const DetailsControl = React.memo<IDetailsControlProps>((
               {/* 点赞 */}
               <FixedControlListItem>
                 <DetailsControlStar
-                  {...props.controlStarAreaState}
+                  {...props}
                 />
               </FixedControlListItem>
               {/* 评论 */}

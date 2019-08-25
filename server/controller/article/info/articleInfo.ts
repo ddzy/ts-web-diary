@@ -111,5 +111,31 @@ articleInfoController.get('/edit', async (ctx) => {
   };
 });
 
+/**
+ * 获取单个文章的详细信息
+ */
+articleInfoController.get('/all', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    articleId: string;
+  };
+
+  const {
+    userId,
+    articleId,
+  }: IRequestParams = ctx.request.query;
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      articleInfo: {
+        userId,
+        articleId,
+      },
+    },
+  };
+})
+
 
 export default articleInfoController;

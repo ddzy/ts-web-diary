@@ -2,10 +2,10 @@ import * as React from 'react';
 import {
   Row,
   Col,
+  notification,
 } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { hot } from 'react-hot-loader';
 
 import DetailsMain from './main/DetailsMain';
 import DetailsAction from './action/DetailsAction';
@@ -15,13 +15,10 @@ import {
   DetailsContent,
 } from './style';
 import {
-  serviceHandleGetOneArticleInfo,
-  IServiceState,
-} from './Details.service';
-import {
   COMMENT_PAGE_SIZE,
   REPLY_PAGE_SIZE,
 } from 'constants/constants';
+import { query } from 'services/request';
 
 
 export interface IDetailsProps extends RouteComponentProps<{
@@ -29,68 +26,80 @@ export interface IDetailsProps extends RouteComponentProps<{
 }> {
   AuthRouteReducer: { useravatar: string, };
 };
-interface IDetailsState extends IServiceState {
-  // ** 全局loading **
-  globalLoading: boolean;
+export type IDetailsState = typeof initialState;
+
+
+const initialState = {
+  // ? 文章相关信息
+  articleInfo: {
+    author: {},
+    comments: [],
+    create_time: Date.now(),
+    cover_img: '',
+    update_time: Date.now(),
+    mode: '',
+    type: '',
+    title: '',
+    description: '',
+    content: '',
+    tag: '',
+    watched_user: [],
+    stared_user: [],
+    unstared_user: [],
+    related_article: [],
+    new_article: [],
+    created_article_total: 0,
+  },
+
+  // ? 全局loading
+  globalLoading: false,
 };
 
 
-/**
- * 单个文章详情页
- */
 @(connect(mapStateToProps) as any)
 class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
-  public readonly state = {
-    globalLoading: false,
-
-    articleInfo: {
-      author: '',
-      articleContent: '',
-      articleTitle: '',
-      articleCount: 0,
-      authorAvatar: '',
-      create_time: 0,
-      mode: '',
-      newArticle: [],
-      tag: '',
-      type: '',
-      watchCount: 0,
-      img: '',
-      isLiked: false,
-      comments: [],
-      collectionName: '',
-      relatedArticles: [],
-    },
-  }
+  public readonly state = initialState;
 
   public componentDidMount(): void {
-    this.handleInitLoading();
-
-    serviceHandleGetOneArticleInfo({
-      articleId: this.props.match.params.id,
-      commentPageSize: COMMENT_PAGE_SIZE,
-      replyPageSize: REPLY_PAGE_SIZE,
-    }, (data) => {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          globalLoading: false,
-          articleInfo: {
-            ...prevState.articleInfo,
-            ...data.info.articleInfo,
-          },
-        };
-      });
-    });
+    this._getArticleInfo();
   }
 
   /**
-   * 处理loading状态
+   * [获取] - 文章详细信息
    */
-  public handleInitLoading = (): void => {
-    this.setState({
-      globalLoading: true,
+  public _getArticleInfo = () => {
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: 'token已过期, 请登录后再试!',
+      });
+
+      this.props.history.push('/login');
+    }
+
+    const articleId = this.props.match.params.id;
+
+    query({
+      method: 'GET',
+      url: '/api/article/info/all',
+      data: {
+        userId: localStorage.getItem('userid'),
+        articleId,
+        commentPageSize: COMMENT_PAGE_SIZE,
+        replyPageSize: REPLY_PAGE_SIZE,
+      },
+      jsonp: false,
+    }).then((res) => {
+      const { articleInfo } = res.data;
+
+      this.setState({
+        ...this.state,
+        articleInfo,
+        globalLoading: false,
+      });
     });
   }
 
@@ -103,17 +112,13 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
               <Col span={2}>
                 {/* 左侧固钉控制栏 */}
                 <DetailsControl
-                  controlStarAreaState={{
-                    isLiked: this.state.articleInfo.isLiked,
-                    author: this.state.articleInfo.author,
-                  }}
+                  {...this.state}
                 />
               </Col>
               <Col span={15}>
                 {/* 左边内容区域 */}
                 <DetailsMain
                   {...this.state}
-                  {...this.state.articleInfo}
                   {...this.props.AuthRouteReducer}
                 />
               </Col>
@@ -121,18 +126,14 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
                 {/* 右边侧边栏区域 */}
                 <DetailsAction
                   {...this.state}
-                  {...this.state.articleInfo}
                 />
               </Col>
-
             </Row>
           </DetailsContent>
         </DetailsWrapper>
-
       </React.Fragment>
     );
   }
-
 }
 
 
@@ -142,4 +143,4 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default hot(module)(Details);
+export default Details;
