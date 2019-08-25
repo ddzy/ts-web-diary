@@ -18,13 +18,15 @@ import {
 } from 'react-transition-group';
 import {
   ISendReplyParams,
-  IStaticArticleInfoCommentsOptions,
 } from 'pages/details/Details.service';
+import {
+  ICommonBaseArticleCommentInfo,
+} from 'pages/details/Details.types';
 
 
 export interface IDetailsMainCommentShowItemProps {
   currentMainUserAvatar: string;
-  singleCommentInfo: IStaticArticleInfoCommentsOptions;
+  singleCommentInfo: ICommonBaseArticleCommentInfo;
   replyHasMore: boolean;
 
   onSend: (

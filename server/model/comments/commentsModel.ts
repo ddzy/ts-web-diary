@@ -8,8 +8,13 @@ const CommentsSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
-  value: {
+  content: {
     type: String,
+    required: true,
+  },
+  content_type: {
+    type: String,
+    required: true,
   },
   article: {
     type: Schema.Types.ObjectId,
@@ -23,9 +28,6 @@ const CommentsSchema: mongoose.Schema = new Schema({
     type: Number,
     default: new Date().getTime(),
   },
-  // commentValue: {
-  //   type: String,
-  // },
   replys: [{
     type: Schema.Types.ObjectId,
     ref: 'Replys',

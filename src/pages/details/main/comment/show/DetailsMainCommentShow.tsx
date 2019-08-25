@@ -17,12 +17,14 @@ import { isArray } from 'utils/utils';
 import DetailsMainCommentsShowItem from './item/DetailsMainCommentShowItem';
 import {
   ISendReplyParams,
-  IStaticArticleInfoCommentsOptions,
 } from 'pages/details/Details.service';
+import {
+  ICommonBaseArticleCommentInfo,
+} from 'pages/details/Details.types';
 
 
 export interface IDetailsMainCommentShowProps {
-  comments: IStaticArticleInfoCommentsOptions[];
+  comments: ICommonBaseArticleCommentInfo[];
   useravatar: string;
   onSendReply: (
     inputEl: HTMLElement,

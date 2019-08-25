@@ -1,32 +1,28 @@
 import * as React from 'react';
 import {
   Modal,
+  notification,
 } from 'antd';
 import { connect } from 'react-redux';
-import { History } from 'history';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import Write from '../../components/write/Write';
-import {
-  IStaticOptions,
-} from './Publish.service';
-import { withRouter } from 'react-router';
+import { query } from 'services/request';
 
 
-export interface IPublishProps {
-  history: History;
+export interface IPublishProps extends RouteComponentProps {
   AuthRouteReducer: { isAuth: boolean, username: string };
 };
 interface IPublishState {
-  serviceState: IStaticOptions;
 };
 
 
 class Publish extends React.PureComponent<IPublishProps, IPublishState> {
 
-  public readonly state = {
-    serviceState: {
-      message: '',
-    },
+  public readonly state: IPublishState = {
   }
 
   public componentDidMount(): void {
@@ -34,7 +30,7 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
   }
 
   /**
-   * 显示写作规范
+   * [处理] - 显示写作规范
    */
   public handleShowTipModal = (): void => {
     this.props.AuthRouteReducer.isAuth
@@ -55,31 +51,49 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
   }
 
   /**
-   * 提交文章
+   * [处理] - 提交文章
    */
   public handleSendArticle = (
     data: any,
   ): void => {
-    // serviceHandleSendArticle(data, (v) => {
-    //   this.setState((prevState) => {
-    //     return {
-    //       ...prevState,
-    //       serviceState: {
-    //         ...prevState.serviceState,
-    //         message: data.message,
-    //       },
-    //     };
-    //   }, () => {
-    //       notification.success({
-    //         message: '提示',
-    //         description: this.state.serviceState.message || '成功发布了文章!!!',
-    //       });
+    const userId = localStorage.getItem('userid');
 
-    //       this.props.history.push('/home/frontend');
-    //   });
-    // });
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '鉴权信息已失效, 请登录后再发表!',
+      });
 
-    console.log('Publish page: ', data);
+      this.props.history.push('/login');
+
+      return;
+    }
+
+    query({
+      url: '/api/article/create',
+      method: 'POST',
+      jsonp: false,
+      data: {
+        ...data,
+        userId,
+      },
+    }).then((res) => {
+      const { code } = res;
+
+      if (code === 0) {
+        notification.success({
+          message: '成功',
+          description: '成功发表文章, 稍后直接进入首页查看',
+        });
+
+        this.props.history.push(`/home/${data.type}`);
+      } else {
+        notification.error({
+          message: '失败',
+          description: '发表文章时, 遇到了难以预计的错误, 请稍后重试!',
+        });
+      }
+    });
   }
 
   public render(): JSX.Element {

@@ -5,14 +5,16 @@ import {
   RelatedMain,
 } from './style';
 import {
-  IStaticArticleInfoRelatedArticlesOptions,
-} from '../../Details.service';
+  ICommonBaseArticleInfo,
+} from 'pages/details/Details.types';
 import DetailsMainRelatedTitle from './title/DetailsMainRelatedTitle';
 import DetailsMainRelatedShow from './show/DetailsMainRelatedShow';
 
 
 export interface IDetailsMainRelatedProps {
-  relatedArticles: IStaticArticleInfoRelatedArticlesOptions[];
+  articleInfo: {
+    related_article: ICommonBaseArticleInfo[],
+  },
 };
 
 
