@@ -10,6 +10,8 @@ export const COLOR_PICKER: string[] = [
   '#d50', '#09c', 'yellow', 'darkred',
   'yellowgreen', 'aqua', 'aquamarine', 'skyblue',
   '#84bf96', '#fedcbd', '#2a5caa', '#b7ba6b', 'darkkhaki', '#1890ff',
+  '#32CCBC', '#F6416C', '#0396FF', '#F8D800', '#9F44D3',
+  '#0E197D', '#D939CD',
 ];
 
 /**
@@ -22,7 +24,8 @@ export const ARTICLE_TAG_PICKER: string[] = [
   'Go', 'OS', 'Redis', 'NodeJS',
   '架构', '运营', '安全', 'MongoDB',
   'Mysql', '面试', 'C#', '云计算',
-  '浏览器', 'JavaScript',
+  '浏览器', 'JavaScript', 'CSS', 'Git',
+  'VSCode', 'Vim', 'HTML5', 'Terminal',
 ];
 
 /**
