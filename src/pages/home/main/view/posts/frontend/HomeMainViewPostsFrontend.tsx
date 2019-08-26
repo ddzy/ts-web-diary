@@ -166,16 +166,34 @@ const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendP
                         }),
                       ]}
                       extra={
-                        <img
-                          width={272}
-                          height={168}
-                          alt="cover_img"
-                          src={item.cover_img ? item.cover_img : '默认图片'}
-                        />
+                        item.cover_img
+                          ? (
+                            <img
+                              width={272}
+                              height={168}
+                              alt="cover_img"
+                              src={item.cover_img}
+                            />
+                          )
+                          : (
+                            <div
+                              style={{
+                                width: 272,
+                                height: 168,
+                                border: '1px solid #f6f6f6',
+                              }}
+                            />
+                          )
                       }
                     >
                       <List.Item.Meta
-                        avatar={<Avatar src={item.author.useravatar} />}
+                        avatar={
+                          <Avatar
+                            icon="user"
+                            size="large"
+                            src={item.author.useravatar}
+                          />
+                        }
                         title={
                           <p
                             style={{
