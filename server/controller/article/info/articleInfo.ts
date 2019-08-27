@@ -133,6 +133,12 @@ articleInfoController.get('/single/detail', async (ctx) => {
         },
       },
     )
+    .populate([
+      {
+        path: 'author',
+        select: ['username', 'useravatar', 'articles'],
+      },
+    ])
     .sort({
       create_time: -1,
     })
@@ -144,6 +150,12 @@ articleInfoController.get('/single/detail', async (ctx) => {
     .find(
       {},
     )
+    .populate([
+      {
+        path: 'author',
+        select: ['username', 'useravatar', 'articles'],
+      },
+    ])
     .sort({
       create_time: -1,
     })

@@ -4,8 +4,9 @@ import styled from 'styled-components';
 export const DetailsRightWrapper = styled.div`
   margin-left: 1.25rem;
   padding: 1.25rem 0.625rem;
-  // background-color: #f2f2f2;
   background-color: #fff;
+  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.09);
+  border-color: rgba(0, 0, 0, 0.09);
 `;
 
 export const RightMain = styled.div`
@@ -62,6 +63,7 @@ export const MeInfoCountItemText = styled.p`
 // 右侧最新文章框
 export const RightNewArticleBox = styled.div`
   margin-top: 0.625rem;
+  padding: 1.5rem;
 `;
 
 export const NewArticleTip = styled.div`
@@ -72,12 +74,10 @@ export const NewArticleTip = styled.div`
 
 export const NewArticleList = styled.ul`
   list-style-type: lower-roman;
-  padding-top: 0.3125rem;
-  padding-left: 1.25rem;
+  padding: 1rem;
 `;
 
 export const NewArticleListItem = styled.li`
-  height: 1.75rem;
   line-height: 1.75rem;
   a {
     transition: color .5s ease;

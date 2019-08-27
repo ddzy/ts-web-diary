@@ -37,6 +37,9 @@ export const LeftContent = styled.article`
     padding: 0 2rem;
     line-height: 1.5rem;
   }
+  li {
+    margin-top: 0.5rem;
+  }
   h3 {
     margin-top: 2.1875rem;
     margin-bottom: 0.625rem;
@@ -53,7 +56,7 @@ export const LeftContent = styled.article`
     border-bottom: 1px solid #d9dce1;
   }
   blockquote {
-    padding: 0.625rem 1.4375rem;
+    padding: 1.5rem 1.4375rem;
     border-left: 4px solid #cbcbcb;
     background-color: #f8f8f8;
     color: #666;

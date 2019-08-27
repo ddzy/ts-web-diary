@@ -82,6 +82,9 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   .ant-anchor .ant-anchor-link {
     padding: 0;
   }
+  .ant-anchor-ink {
+    height: 0 !important;
+  }
   .ant-upload {
     width: 160px !important;
     height: 160px !important;

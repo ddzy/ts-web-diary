@@ -1,8 +1,4 @@
 import * as React from 'react';
-import * as InfiniteScroll from 'react-infinite-scroller';
-import {
-  Skeleton,
-} from 'antd';
 import {
   withRouter,
   RouteComponentProps,
@@ -13,55 +9,37 @@ import {
   ShowMain,
 } from './style';
 import {
-  serviceHandleGetMoreRelatedArticles,
-} from 'pages/details/Details.service';
-import {
-  PAGE_SIZE,
-} from 'constants/constants';
+  ICommonBaseArticleInfo,
+} from 'pages/details/Details.types';
 import DetailsMainRelatedShowItem from './item/DetailsMainRelatedShowItem';
 
 
 export interface IDetailsMainRelatedShowProps extends RouteComponentProps<{
   id: string,
 }> {
+  // ? 文章相关信息
   articleInfo: {
-    related_article: any[];
+    // * 推荐的文章
+    related_article: ICommonBaseArticleInfo[];
   },
 };
-interface IDetailsMainRelatedShowState {
-  relatedArticles: any[];
-  loading: boolean;
-  hasMore: boolean;
+export interface IDetailsMainRelatedShowState {
 };
 
 
 const DetailsMainRelatedShow = React.memo((
   props: IDetailsMainRelatedShowProps,
 ): JSX.Element => {
-
-  const [
-    state,
-    setState,
-  ] = React.useState<IDetailsMainRelatedShowState>({
-    relatedArticles: [],
-    loading: false,
-    hasMore: true,
-  });
-
-  React.useEffect(() => {
-    setState({
-      ...state,
-      relatedArticles: props.articleInfo.related_article,
-    });
-  }, [props.articleInfo.related_article]);
-
-  function handleInitArticleList(): JSX.Element[] {
-    const { relatedArticles } = state;
-    const { length } = relatedArticles;
+  /**
+   * [初始化] - 推荐文章列表
+   */
+  function _initArticleList(): JSX.Element[] {
+    const { related_article } = props.articleInfo;
+    const { length } = related_article;
 
     return length === 0
       ? []
-      : relatedArticles.map((v, i) => {
+      : related_article.map((v, i) => {
         return (
           <DetailsMainRelatedShowItem
             key={i}
@@ -71,52 +49,10 @@ const DetailsMainRelatedShow = React.memo((
       });
   }
 
-  /**
-   * 处理加载更多
-   */
-  function handleLoadMore(page: number) {
-    const { id } = props.match.params;
-
-    setState({
-      ...state,
-      loading: true,
-    });
-
-    serviceHandleGetMoreRelatedArticles(
-      { articleId: id, pageSize: PAGE_SIZE, page },
-      (data) => {
-        const {
-          articles,
-          hasMore,
-        } = data.info.relatedArticlesInfo;
-
-        setState({
-          ...state,
-          loading: false,
-          hasMore,
-          relatedArticles: state.relatedArticles.concat(...articles),
-        });
-      },
-    );
-  }
-
   return (
     <ShowWrapper>
       <ShowMain>
-        <InfiniteScroll
-          loadMore={handleLoadMore}
-          hasMore={state.hasMore && !state.loading}
-          pageStart={1}
-          initialLoad={false}
-        >
-          {handleInitArticleList()}
-        </InfiniteScroll>
-        <Skeleton
-          loading={state.loading}
-          active={true}
-        >
-          <div />
-        </Skeleton>
+        {_initArticleList()}
       </ShowMain>
     </ShowWrapper>
   );

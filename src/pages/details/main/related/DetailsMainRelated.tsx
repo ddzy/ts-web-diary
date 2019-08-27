@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {
+  withRouter, RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   RelatedWrapper,
@@ -11,7 +14,8 @@ import DetailsMainRelatedTitle from './title/DetailsMainRelatedTitle';
 import DetailsMainRelatedShow from './show/DetailsMainRelatedShow';
 
 
-export interface IDetailsMainRelatedProps {
+export interface IDetailsMainRelatedProps extends RouteComponentProps {
+  // ? 文章相关信息
   articleInfo: {
     related_article: ICommonBaseArticleInfo[],
   },
@@ -35,4 +39,4 @@ const DetailsMainRelated = React.memo<IDetailsMainRelatedProps>((
 });
 
 
-export default DetailsMainRelated;
+export default withRouter(DetailsMainRelated);

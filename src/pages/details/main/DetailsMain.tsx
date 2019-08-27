@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Divider } from 'antd';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
+import {
+  Divider,
+} from 'antd';
 import 'react-quill/dist/quill.snow.css';
 import 'highlight.js/styles/atom-one-light.css';
 
@@ -15,7 +21,7 @@ import {
 } from '../Details.types';
 
 
-export interface IDetailsMainProps {
+export interface IDetailsMainProps extends RouteComponentProps {
   // ? 文章信息
   articleInfo: ICommonBaseArticleInfo & {
     // * 相关文章推荐
@@ -77,4 +83,4 @@ const DetailsMain = React.memo<IDetailsMainProps>((
 });
 
 
-export default DetailsMain;
+export default withRouter(DetailsMain);

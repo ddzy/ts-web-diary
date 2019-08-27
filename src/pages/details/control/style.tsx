@@ -22,10 +22,12 @@ export const GlobalStyleSet = createGlobalStyle`
 
 // ** 文章详情页 => 左侧固钉控制栏 **
 export const FixedControlContainer = styled.div`
-  width: 2.5rem;
+  width: 3.0rem;
   background-color: #fff;
   font-size: 1.25rem;
   text-align: center;
+  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.09);
+  border-color: rgba(0, 0, 0, 0.09);
 `;
 
 export const FixedControlContent = styled.div``;

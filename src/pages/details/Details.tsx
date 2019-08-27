@@ -4,7 +4,10 @@ import {
   Col,
   notification,
 } from 'antd';
-import { RouteComponentProps } from 'react-router';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import DetailsMain from './main/DetailsMain';
@@ -50,10 +53,8 @@ export interface IDetailsState {
 };
 
 
-@(connect(mapStateToProps) as any)
-class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
-
-  public readonly state: IDetailsState = {
+const Details = React.memo((props: IDetailsProps) => {
+  const [state, setState] = React.useState<IDetailsState>({
     articleInfo: {
       _id: '',
       author: {
@@ -80,21 +81,16 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       stared_user: [],
     },
     globalLoading: false,
-  };
+  });
 
-  public componentDidMount(): void {
-    this._getArticleInfo();
-  }
+  React.useEffect(() => {
+    _getArticleInfo();
+  }, [props.match.params.id]);
 
-  /**
-   * [获取] - 文章详细信息
-   */
-  public _getArticleInfo = () => {
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-        globalLoading: true,
-      };
+  function _getArticleInfo() {
+    setState({
+      ...state,
+      globalLoading: true,
     });
 
     const userId = localStorage.getItem('userid');
@@ -105,10 +101,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
         description: 'token已过期, 请登录后再试!',
       });
 
-      this.props.history.push('/login');
+      props.history.push('/login');
     }
 
-    const articleId = this.props.match.params.id;
+    const articleId = props.match.params.id;
 
     query({
       method: 'GET',
@@ -129,46 +125,44 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
     }).then((res) => {
       const { articleInfo } = res.data;
 
-      this.setState({
-        ...this.state,
+      setState({
+        ...state,
         articleInfo,
         globalLoading: false,
       });
     });
   }
 
-  public render(): JSX.Element {
-    return (
-      <React.Fragment>
-        <DetailsWrapper>
-          <DetailsContent>
-            <Row gutter={16}>
-              <Col span={2}>
-                {/* 左侧固钉控制栏 */}
-                <DetailsControl
-                  {...this.state}
-                />
-              </Col>
-              <Col span={15}>
-                {/* 左边内容区域 */}
-                <DetailsMain
-                  {...this.state}
-                  {...this.props.AuthRouteReducer}
-                />
-              </Col>
-              <Col span={5}>
-                {/* 右边侧边栏区域 */}
-                <DetailsAction
-                  {...this.state}
-                />
-              </Col>
-            </Row>
-          </DetailsContent>
-        </DetailsWrapper>
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <DetailsWrapper>
+        <DetailsContent>
+          <Row gutter={16}>
+            <Col span={2}>
+              {/* 左侧固钉控制栏 */}
+              <DetailsControl
+                {...state}
+              />
+            </Col>
+            <Col span={15}>
+              {/* 左边内容区域 */}
+              <DetailsMain
+                {...state}
+                {...props.AuthRouteReducer}
+              />
+            </Col>
+            <Col span={7}>
+              {/* 右边侧边栏区域 */}
+              <DetailsAction
+                {...state}
+              />
+            </Col>
+          </Row>
+        </DetailsContent>
+      </DetailsWrapper>
+    </React.Fragment>
+  );
+});
 
 
 function mapStateToProps(state: any) {
@@ -177,4 +171,4 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default Details;
+export default withRouter(connect(mapStateToProps)(Details) as any);
