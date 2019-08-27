@@ -198,8 +198,8 @@ class WriteEdit extends React.Component<IWriteEditProps, IWriteEditState> {
                 format: 'png'
               }
             ], key, domain);
-            const finalProcessedImgUrl: string = `https://${processedImgUrl}.png`;
-            const finalOriginImgUrl: string = `https://${domain}/${key}.png`;
+            const finalProcessedImgUrl: string = `https://${processedImgUrl}`;
+            const finalOriginImgUrl: string = `https://${domain}/${key}`;
 
             // 插入editor
             editor.insertEmbed(

@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Divider } from 'antd';
 import {
-  highlightBlock,
-} from 'highlight.js';
-import Quill from 'quill';
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
+import {
+  Divider,
+} from 'antd';
 import 'react-quill/dist/quill.snow.css';
 import 'highlight.js/styles/atom-one-light.css';
 
@@ -14,19 +16,22 @@ import DetailsMainRelated from './related/DetailsMainRelated';
 import {
   DetailsLeftWrapper,
 } from './style';
-// import QuillImageBlot from 'components/write/write_edit/QuillImageBlot';
-import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
 import {
   ICommonBaseArticleInfo,
 } from '../Details.types';
 
-Quill.register(BaseQuillImageBlot, true);
 
-
-export interface IDetailsMainProps {
+export interface IDetailsMainProps extends RouteComponentProps {
   // ? 文章信息
   articleInfo: ICommonBaseArticleInfo & {
+    // * 相关文章推荐
     related_article: ICommonBaseArticleInfo[],
+    // * 最新文章推荐
+    new_article: ICommonBaseArticleInfo[],
+    // * 作者创建的文章总数
+    created_article_total: number,
+    // * 文章的获赞总数
+    stared_total: number,
   };
 
   // ? 当前用户的头像
@@ -37,40 +42,9 @@ export interface IDetailsMainProps {
 };
 
 
-/**
- * 左侧文章信息区域
- */
 const DetailsMain = React.memo<IDetailsMainProps>((
   props: IDetailsMainProps,
 ): JSX.Element => {
-  /**
-   * [初始化] - 编辑器的内容
-   */
-  function initArticleContent(): string {
-    const { content } = props.articleInfo;
-    const parsedArticleContent = content
-      ? JSON.parse(content)
-      : { ops: [] };
-
-    // ** delta-to-html暂时使用这种方式替代 **
-    const tempCont = document
-      .createElement("div");
-    (new Quill(tempCont))
-      .setContents(parsedArticleContent);
-    const tempContPres = tempCont
-      .querySelectorAll('pre') as NodeListOf<HTMLPreElement>;
-
-    // ** 代码高亮 **
-    tempContPres.forEach((element) => {
-      const elementTagname = element.localName as string;
-      elementTagname === 'pre'
-        && highlightBlock(element);
-    });
-
-    return tempCont
-      .getElementsByClassName("ql-editor")[0].innerHTML;
-  }
-
   return (
     <DetailsLeftWrapper>
       {/* 标题文章信息展示区 */}
@@ -78,19 +52,17 @@ const DetailsMain = React.memo<IDetailsMainProps>((
         <DetailsMainTitle
           {...props}
         />
-        <Divider />
       </React.Fragment>
 
-      {/* 富文本展示区 */}
+      {/* 文章内容展示区 */}
       <React.Fragment>
         <DetailsMainRich
           {...props}
-          html={initArticleContent()}
         />
         <Divider />
       </React.Fragment>
 
-      {/* 评论区 */}
+      {/* 文章评论区 */}
       <React.Fragment>
         <DetailsMainComment
           useravatar={props.useravatar}
@@ -99,7 +71,7 @@ const DetailsMain = React.memo<IDetailsMainProps>((
         <Divider />
       </React.Fragment>
 
-      {/* 相关推荐区 */}
+      {/* 文章相关推荐区 */}
       <React.Fragment>
         <DetailsMainRelated
           {...props}
@@ -111,4 +83,4 @@ const DetailsMain = React.memo<IDetailsMainProps>((
 });
 
 
-export default DetailsMain;
+export default withRouter(DetailsMain);

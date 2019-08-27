@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 
 export const ViewWrapper = styled.article`
-  width: 60rem;
+  width: 55rem;
   margin: 2rem auto 0;
   padding: 0.625rem 1.25rem;
   background-color: #fff;

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
   Link,
+  withRouter,
+  RouteComponentProps,
 } from 'react-router-dom';
 import {
   Row,
@@ -22,27 +24,25 @@ import {
   ContentTitle,
 } from './style';
 import {
-  IStaticArticleInfoRelatedArticlesOptions,
-} from 'pages/details/Details.service';
-import {
   MERGED_ARTICLE_TAG,
   ARTICLE_TYPE_EN_TO_CN,
 } from 'constants/constants';
 import { formatTime } from 'utils/utils';
+import { ICommonBaseArticleInfo } from 'pages/details/Details.types';
 
 
-export interface IDetailsMainRelatedShowItemProps extends IStaticArticleInfoRelatedArticlesOptions {
+export interface IDetailsMainRelatedShowItemProps extends ICommonBaseArticleInfo, RouteComponentProps {
+
 };
 
 
 const DetailsMainRelatedShowItem = React.memo<IDetailsMainRelatedShowItemProps>((
   props: IDetailsMainRelatedShowItemProps,
 ): JSX.Element => {
-
   /**
-   * 初始化列表 标签数据
+   * [初始化] - 文章标签
    */
-  function handleInitItemTag(
+  function _initArticleTag(
     tag: string,
   ): JSX.Element[] {
     return tag
@@ -89,22 +89,21 @@ const DetailsMainRelatedShowItem = React.memo<IDetailsMainRelatedShowItemProps>(
               </Link>
             </ContentTitle>
             <ContentTag>
-              {handleInitItemTag(props.tag)}
+              {_initArticleTag(props.tag)}
             </ContentTag>
           </ItemContentBox>
         </Col>
         <Col span={6}>
           <ItemExtraBox>
             <ExtraImageShow
-              extraBgImg={props.img}
+              extraBgImg={props.cover_img}
             />
           </ItemExtraBox>
         </Col>
       </Card>
     </Row>
   );
-
 });
 
 
-export default DetailsMainRelatedShowItem;
+export default withRouter(DetailsMainRelatedShowItem);

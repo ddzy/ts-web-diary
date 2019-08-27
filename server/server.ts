@@ -17,6 +17,10 @@ import {
 import {
   handleStatus,
 } from './controller/status/create/statusCreate';
+import {
+  handleStarArticle,
+} from './controller/action/star/article/actionStarArticle';
+
 
 const app: Koa = new Koa();
 const server: Http.Server = Http.createServer(app.callback());
@@ -74,5 +78,11 @@ const statusIO = io.of('/status');
 statusIO.on('connection', (socket) => {
   handleStatus(socket, statusIO);
 })
+
+// ? 处理文章点赞相关Websocket
+const starArticleIO = io.of('/star/article');
+starArticleIO.on('connection', (socket) => {
+  handleStarArticle(socket, starArticleIO);
+});
 
 server.listen(8888);
