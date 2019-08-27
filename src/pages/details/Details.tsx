@@ -41,6 +41,8 @@ export interface IDetailsState {
     created_article_total: number,
     // * 文章的获赞总数
     stared_total: number,
+    // * 文章的获赞用户列表
+    stared_user: string[],
   },
 
   // ? 全局loading状态
@@ -75,6 +77,7 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       new_article: [],
       created_article_total: 0,
       stared_total: 0,
+      stared_user: [],
     },
     globalLoading: false,
   };

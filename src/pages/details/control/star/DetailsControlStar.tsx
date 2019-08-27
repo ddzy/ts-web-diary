@@ -1,7 +1,9 @@
 import * as React from 'react';
+import * as IO from 'socket.io-client';
 import {
   Tooltip,
   Icon,
+  notification,
   message,
 } from 'antd';
 import {
@@ -11,12 +13,11 @@ import {
 } from 'react-router-dom';
 
 import {
-  serviceHandleFixedControlBarStar,
-} from '../../Details.service';
-import {
   ICommonBaseArticleInfo,
 } from '../../Details.types';
 
+
+const starArticleSocket = IO('ws://localhost:8888/star/article');
 
 export interface IDetailsControlStarProps extends RouteComponentProps {
   match: match<{
@@ -25,18 +26,15 @@ export interface IDetailsControlStarProps extends RouteComponentProps {
 
   // ? 文章信息
   articleInfo: ICommonBaseArticleInfo & {
-    // * 相关文章推荐
-    related_article: ICommonBaseArticleInfo[],
-    // * 最新文章推荐
-    new_article: ICommonBaseArticleInfo[],
-    // * 作者创建的文章总数
-    created_article_total: number,
     // * 文章的获赞总数
     stared_total: number,
+    // * 文章的点赞用户列表
+    stared_user: string[],
   };
 };
-interface IDetailsControlStarState {
-  isLiked: boolean;
+export interface IDetailsControlStarState {
+  // ? 是否点赞
+  isStar: boolean;
 };
 
 
@@ -44,59 +42,116 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
   props: IDetailsControlStarProps,
 ): JSX.Element => {
 
-  let saveStarIcon: any = document
-    .createElement('div');
-
-  const [state] = React.useState<IDetailsControlStarState>({
-    isLiked: false,
+  const [state, setState] = React.useState<IDetailsControlStarState>({
+    isStar: false,
   });
 
-  // React.useEffect(() => {
-  //   setState({
-  //     isLiked: props.isLiked,
-  //   });
-  // }, [props.isLiked]);
+  React.useEffect(() => {
+    starArticleSocket.removeAllListeners();
+
+    const authorId = props.articleInfo.author._id;
+    const authorName = props.articleInfo.author.username;
+    const userId = localStorage.getItem('userid');
+    // 判断当前文章的作者是否为当前点赞的用户
+    const isCurrentUserArticle = userId === authorId;
+
+    // socket处理点赞之后的逻辑
+    starArticleSocket.on('receiveStarArticle', (
+      starInfo: {
+        data: {
+          isStar: boolean,
+        },
+      },
+    ) => {
+      const isStar = starInfo.data.isStar;
+
+      if (isStar) {
+        const content = (
+          <span>
+            你赞了
+              <b
+                style={{
+                  color: '#1da57a',
+                }}
+              >
+                {
+                  isCurrentUserArticle ? '自己' : authorName
+                }
+              </b>
+             的文章!
+        </span>
+        );
+
+        message.info(content);
+      } else {
+        message.info('你取消了赞!');
+      }
+    });
+  }, [props.articleInfo]);
+
+  React.useEffect(() => {
+    // 首次加载, 获取文章的点赞状态
+    const staredUserList = props.articleInfo.stared_user;
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    const isStar = staredUserList.indexOf(userId) !== -1;
+
+    setState({
+      ...state,
+      isStar,
+    });
+  }, [props.articleInfo.stared_user]);
 
   /**
-   * 处理固钉栏 点赞
+   * [处理] - 文章点赞
    */
-  function handleControlBarStar(
+  function handleStar(
     e: React.MouseEvent,
   ): void {
-    saveStarIcon = e.currentTarget;
-    saveStarIcon.classList
-      .contains('fixed-control-bar-star-active')
-      ? serviceHandleFixedControlBarStar(
-        {
-          articleId: props.match.params.id,
-          liked: false,
-        },
-        () => {
-          saveStarIcon.classList.remove('fixed-control-bar-star-active');
-          message.info('取消了赞!');
-        },
-      )
-      : serviceHandleFixedControlBarStar(
-        {
-          articleId: props.match.params.id,
-          liked: true,
-        },
-        () => {
-          saveStarIcon.classList.add('fixed-control-bar-star-active');
-          message.success(`你赞了 ${props.articleInfo.author.username} 的文章`);
-        },
-      );
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '凭证已过期, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    setState({
+      ...state,
+      isStar: !state.isStar,
+    });
+
+    const articleId = props.match.params.id;
+
+    starArticleSocket.emit('sendStarArticle', {
+      userId,
+      articleId,
+      isStar: !state.isStar,
+    });
   }
 
   return (
-    <Tooltip title="赞一个" placement="right">
+    <Tooltip
+      title={state.isStar ? '取消赞' : '赞一个'}
+      placement="right"
+    >
       <Icon
-        className={`fixed-control-bar-star${
-          state.isLiked && ' fixed-control-bar-star-active'
-          }`}
         type="star"
-        theme="filled"
-        onClick={handleControlBarStar}
+        twoToneColor="#1da57a"
+        theme={state.isStar ? 'twoTone' : 'outlined'}
+        onClick={handleStar}
       />
     </Tooltip>
   );

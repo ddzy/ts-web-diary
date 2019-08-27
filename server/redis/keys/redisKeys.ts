@@ -17,3 +17,20 @@ export const IOREDIS_USER_ON_WHICH_CHAT = 'user_on_which_chat';
 // * 值域: chatSingleMemberId
 // * 值: un_read_message_total
 export const IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL = 'single_member_unread_message_total';
+
+
+// ? 文章点赞
+// * 存储方式: SortedSet
+// * Key: IOREDIS_STAR_ARTICLE:${articleId}
+// * 值: userId
+export const IOREDIS_STAR_ARTICLE = 'star_article';
+
+/**
+ * 生成存储文章点赞的key
+ * @param key 文章id
+ */
+export function generateStarArticleKey(
+  articleId: string,
+) {
+  return `${IOREDIS_STAR_ARTICLE}:${articleId}`;
+}

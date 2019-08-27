@@ -1,7 +1,12 @@
 import * as Router from 'koa-router';
+
+import redis from '../../../redis/redis';
 import {
   Posts,
 } from '../../../model/model';
+import {
+  generateStarArticleKey,
+} from '../../../redis/keys/redisKeys';
 
 
 const articleInfoController: Router = new Router();
@@ -118,9 +123,6 @@ articleInfoController.get('/single/detail', async (ctx) => {
     ])
     .lean(true);
 
-  // ? 获取文章的获赞总数
-  const foundArticleStaredTotal = await 0;
-
   // ? 获取相关文章推荐(首屏)
   const foundRelatedArticle = await Posts
     .find(
@@ -152,13 +154,18 @@ articleInfoController.get('/single/detail', async (ctx) => {
   // ? 获取文章作者创建的文章总数
   const foundAuthorCreatedArticleTotal = await foundAndUpdatedArticleInfo.author.articles.length;
 
+  // ? redis获取文章的点赞成员列表
+  const redisStarArticleKey = generateStarArticleKey(articleId);
+  const foundRedisStarArticleList = await redis.zrange(redisStarArticleKey, 0, -1);
+
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
       articleInfo: {
         ...foundAndUpdatedArticleInfo,
-        stared_total: foundArticleStaredTotal,
+        stared_user: foundRedisStarArticleList,
+        stared_total: foundRedisStarArticleList.length,
         new_article: foundLatestArticle,
         related_article: foundRelatedArticle,
         created_article_total: foundAuthorCreatedArticleTotal,

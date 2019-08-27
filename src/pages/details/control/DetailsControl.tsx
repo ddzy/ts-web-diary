@@ -30,6 +30,8 @@ export interface IDetailsControlProps {
     created_article_total: number,
     // * 文章的获赞总数
     stared_total: number,
+    // * 文章的获赞用户列表
+    stared_user: string[],
   },
 };
 
