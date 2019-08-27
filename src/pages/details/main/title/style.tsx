@@ -6,7 +6,8 @@ export interface ILeftImgInnerProps {
 
 
 export const LeftTitleContainer = styled.div`
-  padding: 0.625rem 0 0 3.125rem;
+  /* padding: 0.625rem 0 0 3.125rem; */
+  padding: 1.5rem;
 `;
 
 export const LeftTitleBox = styled.div``;
@@ -38,7 +39,7 @@ export const LeftInfoListItem = styled.li`
 `;
 
 export const LeftImgBox = styled.div`
-  padding-right: 2.5rem;
+  /* padding-right: 2.5rem; */
 `;
 export const LeftImgInner = styled('div')<ILeftImgInnerProps>`
   max-width: 40.625rem;
