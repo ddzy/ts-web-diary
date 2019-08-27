@@ -37,7 +37,10 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
   props
 ): JSX.Element => {
 
-  const initArticleTag = (): JSX.Element[] => {
+  /**
+   * [初始化] - 文章标签
+   */
+  const _initArticleTag = (): JSX.Element[] => {
     return props.articleInfo.tag
       .split(',')
       .map((item) => {
@@ -54,8 +57,11 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
   return (
     <LeftTitleContainer>
       <Skeleton
-        loading={props.globalLoading}
         active={true}
+        loading={props.globalLoading}
+        paragraph={{
+          rows: 6,
+        }}
       >
         {/* 标题 */}
         <LeftTitleBox>
@@ -76,14 +82,13 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
             </LeftInfoListItem>
             <Divider type="vertical" />
             <LeftInfoListItem>
-              {/* {props.type} */}
               {
                 ARTICLE_TYPE_PICKER[ARTICLE_TYPE_WITH_ENGLISH_PICKER.indexOf(props.articleInfo.type)]
               }
             </LeftInfoListItem>
             <Divider type="vertical" />
             <LeftInfoListItem>
-              {initArticleTag()}
+              {_initArticleTag()}
             </LeftInfoListItem>
             <Divider type="vertical" />
             <LeftInfoListItem>
@@ -91,6 +96,10 @@ const DetailsMainTitle: React.SFC<IDetailsMainTitleProps> = (
             </LeftInfoListItem>
           </LeftInfoList>
         </LeftInfoBox>
+
+        <Divider />
+
+        {/* 封面图片栏 */}
         <LeftImgBox>
           <LeftImgInner
             imgUrl={props.articleInfo.cover_img}

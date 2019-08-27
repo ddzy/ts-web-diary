@@ -2,12 +2,35 @@ import styled from 'styled-components';
 
 
 export const LeftContentContainer = styled.div``;
+export const LeftContentMain = styled.div`
+  padding: 0 1.875rem 2.5rem;
+`;
 
 export const LeftContent = styled.article`
-  padding: 0 1.875rem 2.5rem;
+  h1, h2, h3, h4, h5,h6 {
+    font-weight: bold;
+  }
+  a {
+    &:hover {
+      color: #1da57a;
+      opacity: .8;
+      text-decoration: underline;
+    }
+    &:visited {
+      color: #1da57a;
+      text-decoration: underline;
+    }
+  }
   p {
     margin: 1.375rem 0;
     line-height: 1.5rem;
+
+    img {
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+      cursor: zoom-in;
+    }
   }
   ul, ol {
     list-style-type: initial !important;
@@ -28,10 +51,6 @@ export const LeftContent = styled.article`
     content: ' ';
     margin-top: 0.9375rem;
     border-bottom: 1px solid #d9dce1;
-  }
-  img {
-    max-width: 42.5rem;
-    cursor: zoom-in;
   }
   blockquote {
     padding: 0.625rem 1.4375rem;
