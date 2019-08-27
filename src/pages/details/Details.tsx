@@ -17,11 +17,11 @@ import {
 import {
   COMMENT_PAGE_SIZE,
   REPLY_PAGE_SIZE,
+  PAGE_SIZE,
 } from 'constants/constants';
 import { query } from 'services/request';
 import {
   ICommonBaseArticleInfo,
-  ICommonBaseUserInfo,
 } from './Details.types';
 
 
@@ -33,11 +33,14 @@ export interface IDetailsProps extends RouteComponentProps<{
 export interface IDetailsState {
   // ? 文章详细信息
   articleInfo: ICommonBaseArticleInfo & {
-    stared_user: ICommonBaseUserInfo[],
-    unstared_user: ICommonBaseUserInfo[],
+    // * 相关文章推荐
     related_article: ICommonBaseArticleInfo[],
+    // * 最新文章推荐
     new_article: ICommonBaseArticleInfo[],
+    // * 作者创建的文章总数
     created_article_total: number,
+    // * 文章的获赞总数
+    stared_total: number,
   },
 
   // ? 全局loading状态
@@ -68,11 +71,10 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
       watched_user: [],
       comments: [],
       collected_user: [],
-      stared_user: [],
-      unstared_user: [],
       related_article: [],
       new_article: [],
       created_article_total: 0,
+      stared_total: 0,
     },
     globalLoading: false,
   };
@@ -85,6 +87,13 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
    * [获取] - 文章详细信息
    */
   public _getArticleInfo = () => {
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        globalLoading: true,
+      };
+    });
+
     const userId = localStorage.getItem('userid');
 
     if (!userId || typeof userId !== 'string') {
@@ -100,11 +109,17 @@ class Details extends React.PureComponent<IDetailsProps, IDetailsState> {
 
     query({
       method: 'GET',
-      url: '/api/article/info/all',
+      url: '/api/article/info/single/detail',
       data: {
-        userId: localStorage.getItem('userid'),
+        userId,
         articleId,
+        newArticlePage: 1,
+        newArticlePageSize: PAGE_SIZE,
+        relatedArticlePage: 1,
+        relatedArticlePageSize: PAGE_SIZE,
+        commentPage: 1,
         commentPageSize: COMMENT_PAGE_SIZE,
+        replyPage: 1,
         replyPageSize: REPLY_PAGE_SIZE,
       },
       jsonp: false,

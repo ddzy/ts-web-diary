@@ -21,6 +21,7 @@ import {
   ARTICLE_TYPE_WITH_ENGLISH_PICKER,
 } from 'constants/constants';
 import { formatTime } from 'utils/utils';
+import { ICommonBaseArticleInfo } from 'pages/details/Details.types';
 
 
 export interface IDetailsMainTitleProps {
@@ -28,15 +29,7 @@ export interface IDetailsMainTitleProps {
   globalLoading: boolean;
 
   // ? 文章信息
-  articleInfo: {
-    title: string;
-    mode: string;
-    author: any;
-    type: string;
-    tag: string;
-    create_time: number;
-    cover_img: string;
-  },
+  articleInfo: ICommonBaseArticleInfo,
 };
 
 

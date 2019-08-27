@@ -49,6 +49,124 @@ articleInfoController.get('/list', async (ctx) => {
   };
 });
 
+/**
+ * [获取] - 单个文章详细信息
+ */
+articleInfoController.get('/single/detail', async (ctx) => {
+  interface IRequestParams {
+    userId: string,
+    articleId: string,
+    newArticlePage: string,
+    newArticlePageSize: string,
+    relatedArticlePage: string,
+    relatedArticlePageSize: string,
+    commentPage: string,
+    commentPageSize: string,
+    replyPage: string,
+    replyPageSize: string,
+  };
+
+  const {
+    userId,
+    articleId,
+    newArticlePage,
+    newArticlePageSize,
+    relatedArticlePage,
+    relatedArticlePageSize,
+    commentPage,
+    commentPageSize,
+    replyPage,
+    replyPageSize,
+  }: IRequestParams = ctx.request.query;
+
+  // ? 更新文章的阅读数
+  const foundAndUpdatedArticleInfo = await Posts
+    .findByIdAndUpdate(
+      articleId,
+      {
+        '$addToSet': {
+          watched_user: userId,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+    .populate([
+      {
+        path: 'author',
+        select: ['username', 'useravatar', 'articles'],
+      },
+      {
+        path: 'comments',
+        options: {
+          sort: { create_time: -1 },
+          limit: Number(commentPageSize),
+          skip: ((Number(commentPage) - 1) * Number(commentPageSize)),
+        },
+        populate: [
+          {
+            path: 'replys',
+            options: {
+              sort: { create_time: -1 },
+              limit: Number(replyPageSize),
+              skip: ((Number(replyPage) - 1) * Number(replyPageSize)),
+            },
+          },
+        ],
+      },
+    ])
+    .lean(true);
+
+  // ? 获取文章的获赞总数
+  const foundArticleStaredTotal = await 0;
+
+  // ? 获取相关文章推荐(首屏)
+  const foundRelatedArticle = await Posts
+    .find(
+      {
+        type: foundAndUpdatedArticleInfo.type,
+        _id: {
+          '$ne': foundAndUpdatedArticleInfo._id,
+        },
+      },
+    )
+    .sort({
+      create_time: -1,
+    })
+    .limit(Number(relatedArticlePageSize))
+    .skip((Number(relatedArticlePage) - 1) * Number(relatedArticlePageSize));
+
+  // ? 获取最新文章
+  const foundLatestArticle = await Posts
+    .find(
+      {},
+    )
+    .sort({
+      create_time: -1,
+    })
+    .limit(Number(newArticlePageSize))
+    .skip((Number(newArticlePage) - 1) * Number(newArticlePageSize));
+
+
+  // ? 获取文章作者创建的文章总数
+  const foundAuthorCreatedArticleTotal = await foundAndUpdatedArticleInfo.author.articles.length;
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      articleInfo: {
+        ...foundAndUpdatedArticleInfo,
+        stared_total: foundArticleStaredTotal,
+        new_article: foundLatestArticle,
+        related_article: foundRelatedArticle,
+        created_article_total: foundAuthorCreatedArticleTotal,
+      },
+    },
+  };
+});
+
 
 /**
  * 首页 -> 获取文章列表 -> 加载更多

@@ -26,7 +26,15 @@ Quill.register(BaseQuillImageBlot, true);
 export interface IDetailsMainProps {
   // ? 文章信息
   articleInfo: ICommonBaseArticleInfo & {
+    // * 相关文章推荐
     related_article: ICommonBaseArticleInfo[],
+    // * 最新文章推荐
+    new_article: ICommonBaseArticleInfo[],
+    // * 作者创建的文章总数
+    created_article_total: number,
+    // * 文章的获赞总数
+    stared_total: number,
+
   };
 
   // ? 当前用户的头像

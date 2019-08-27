@@ -73,7 +73,7 @@ export const NewArticleTip = styled.div`
 export const NewArticleList = styled.ul`
   list-style-type: lower-roman;
   padding-top: 0.3125rem;
-  padding-left: 1.25rem;	
+  padding-left: 1.25rem;
 `;
 
 export const NewArticleListItem = styled.li`
