@@ -29,6 +29,7 @@ articleInfoController.get('/list', async (ctx) => {
     type,
   }: IRequestParams = ctx.request.query;
 
+  // ? 查找文章列表
   const foundArticleList = await Posts
     .find({
       type,
@@ -45,11 +46,22 @@ articleInfoController.get('/list', async (ctx) => {
     .limit(Number(pageSize))
     .skip((Number(page) - 1) * Number(pageSize));
 
+  // ? redis查询文章的获赞用户列表
+  const processedArticleList = await Promise.all(foundArticleList.map(async (v) => {
+    const redisStarArticleKey = generateStarArticleKey(v._id);
+    const foundStaredUserList = await redis.zrange(redisStarArticleKey, 0, -1);
+
+    return {
+      ...v._doc,
+      stared_user: foundStaredUserList,
+    };
+  }));
+
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
-      articleList: foundArticleList,
+      articleList: processedArticleList,
     },
   };
 });

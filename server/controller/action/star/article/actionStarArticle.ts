@@ -36,7 +36,7 @@ export function handleStarArticle(
       code: 0,
       message: 'Success!',
       data: {
-        isStar: starInfo.isStar,
+        starInfo,
       },
     });
   });
