@@ -66,7 +66,7 @@ export const RightNewArticleBox = styled.div`
 
 export const NewArticleTip = styled.div`
   padding-left: 10px;
-  border-left: 5px solid #1890ff;
+  border-left: 5px solid #1da57a;
   color: #999;
 `;
 
@@ -85,7 +85,7 @@ export const NewArticleListItem = styled.li`
   }
   &:hover {
     a {
-      color: #1890ff;
+      color: #1da57a;
     }
   }
 `;
