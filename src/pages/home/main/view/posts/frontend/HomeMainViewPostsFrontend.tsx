@@ -32,6 +32,9 @@ export interface IHomeMainViewPostsFrontendProps extends RouteComponentProps {
 
 };
 export interface IHomeMainViewPostsFrontendState {
+  // ? 文章点赞socket
+  starArticleSocket: SocketIOClient.Socket;
+
   // ? 首次加载文章时的loading状态
   isFirstLoading: boolean;
 
@@ -50,11 +53,9 @@ export interface IHomeMainViewPostsFrontendState {
 };
 
 
-const starArticleSocket = IO('ws://localhost:8888/star/article');
-
-
 const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendProps) => {
   const [state, setState] = React.useState<IHomeMainViewPostsFrontendState>({
+    starArticleSocket: IO('ws://localhost:8888/star/article'),
     isFirstLoading: false,
     isLoadMoreLoading: false,
     hasMoreArticle: true,
@@ -63,12 +64,21 @@ const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendP
   });
 
   React.useEffect(() => {
-    starArticleSocket.removeAllListeners();
+    return () => {
+      state.starArticleSocket.close();
+    }
+  }, []);
+
+  /**
+   * [处理] - socket点赞之后的逻辑
+   * @description redis已更新, 前台页面可以提示
+   */
+  React.useEffect(() => {
+    state.starArticleSocket.removeAllListeners();
 
     const userId = localStorage.getItem('userid');
 
-    // socket处理点赞之后的逻辑
-    starArticleSocket.on('receiveStarArticle', (
+    state.starArticleSocket.on('receiveStarArticle', (
       value: {
         data: {
           starInfo: {
@@ -85,8 +95,6 @@ const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendP
       const authorId = article ? article.author._id : '';
       const authorName = article ? article.author.username : '';
       const isCurrentUserArticle = userId === authorId;
-
-      console.log(isStar);
 
       if (isStar) {
         const content = (
@@ -289,7 +297,7 @@ const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendP
     });
 
     // socket处理点赞文章
-    starArticleSocket.emit('sendStarArticle', {
+    state.starArticleSocket.emit('sendStarArticle', {
       userId,
       articleId,
       isStar: newIsStar,
