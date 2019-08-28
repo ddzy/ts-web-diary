@@ -1,21 +1,18 @@
 import * as React from 'react';
 import {
-  notification,
-} from 'antd';
-import {
   withRouter,
   RouteComponentProps,
 } from 'react-router-dom';
+import {
+  notification,
+} from 'antd';
 
 import {
-  LeftCommentContainer,
+  CommentContainer,
 } from './style';
 import DetailsMainCommentTitle from './title/DetailsMainCommentTitle';
 import DetailsMainCommentShow from './show/DetailsMainCommentShow';
 import {
-  ISendReplyParams,
-  serviceHandleSendReply,
-  serviceHandleSendComment,
   serviceHandleGetMoreComments,
   serviceHandleGetMoreReplys,
 } from '../../Details.service';
@@ -25,25 +22,30 @@ import {
 } from 'constants/constants';
 import {
   ICommonBaseArticleCommentInfo,
+  ICommonBaseSendReplyParams,
 } from '../../Details.types';
+import { query } from 'services/request';
 
 
 export interface IDetailsMainCommentProps extends RouteComponentProps<{
   id: string
 }> {
+  // ? 当前登录的用户头像
   useravatar: string;
 
+  // ? 当前的评论列表
   comments: ICommonBaseArticleCommentInfo[];
 };
 interface IDetailsMainCommentState {
+  // ? 评论列表
   comments: ICommonBaseArticleCommentInfo[];
+  // ? 评论分页: 是否还有更多评论
   commentHasMore: boolean;
+  // ? 回复分页: 是否还有更多回复
   replyHasMore: boolean;
 }
 
-/**
- * 评论区域
- */
+
 const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   props: IDetailsMainCommentProps,
 ): JSX.Element => {
@@ -63,98 +65,101 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   }, [props.comments]);
 
   /**
-   * 处理评论提交
+   * [处理] - socket评论提交
+   * @param inputEl 输入框DOM元素
+   * @param value 参数
    */
   function handleSendComment(
     inputEl: HTMLElement,
-    value: string,
+    value: {
+      plainContent: string,
+      imageContent: string[],
+    },
   ): void {
-    const { id } = props.match.params;
+    const userId = localStorage.getItem('userid');
 
-    if (value) {
-      serviceHandleSendComment({
-        value,
-        articleId: id || '',
-        from: localStorage.getItem('userid') || '',
-      }, (data: any) => {
-        const {
-          commentInfo
-        } = data.info;
-
-          setState({
-          ...state,
-          comments: [
-            commentInfo,
-            ...state.comments,
-          ]
-        });
-
-        notification.success({
-          message: '提示',
-          description: '评论发表成功',
-        });
-      });
-    } else {
+    if (!userId || typeof userId !== 'string') {
       notification.error({
         message: '错误',
-        description: '评论内容不能为空!',
+        description: '用户凭证已过期, 请登录后再发表评论!',
       });
+
+      return props.history.push('/login');
     }
+
+    const articleId = props.match.params.id;
+
+    query({
+      method: 'POST',
+      jsonp: false,
+      url: '/api/comment/article/create',
+      data: {
+        userId,
+        articleId,
+        ...value,
+      },
+    }).then((res) => {
+      const { commentInfo } = res.data;
+
+      console.log(commentInfo);
+    });
   }
 
   /**
-   * 处理回复提交
+   * [处理] - 回复提交
    */
   function handleSendReply(
     inputEl: any,
-    v: ISendReplyParams,
+    value: ICommonBaseSendReplyParams,
   ): void {
-    const { id } = props.match.params;
+    console.log('reply: ', value);
 
-    if (v.value) {
-      serviceHandleSendReply(
-        {
-          ...v,
-          articleId: id,
-        },
-        (data: any) => {
-          const {
-            replyInfo,
-          } = data.info;
+    // const { id } = props.match.params;
 
-          setState({
-            ...state,
-            comments: state.comments.map((item: any) => {
-              if (
-                item._id === replyInfo.comment
-              ) {
-                return {
-                  ...item,
-                  replys: [
-                    replyInfo,
-                    ...item.replys,
-                  ],
-                };
-              }
-              return item;
-            }),
-          });
-          notification.success({
-            message: '提示',
-            description: `回复发表成功`,
-          });
-        },
-      );
-    } else {
-      notification.error({
-        message: '错误',
-        description: '回复信息不能为空!',
-      });
-    }
+    // if (v.value) {
+    //   serviceHandleSendReply(
+    //     {
+    //       ...v,
+    //       articleId: id,
+    //     },
+    //     (data: any) => {
+    //       const {
+    //         replyInfo,
+    //       } = data.info;
+
+    //       setState({
+    //         ...state,
+    //         comments: state.comments.map((item: any) => {
+    //           if (
+    //             item._id === replyInfo.comment
+    //           ) {
+    //             return {
+    //               ...item,
+    //               replys: [
+    //                 replyInfo,
+    //                 ...item.replys,
+    //               ],
+    //             };
+    //           }
+    //           return item;
+    //         }),
+    //       });
+    //       notification.success({
+    //         message: '提示',
+    //         description: `回复发表成功`,
+    //       });
+    //     },
+    //   );
+    // } else {
+    //   notification.error({
+    //     message: '错误',
+    //     description: '回复信息不能为空!',
+    //   });
+    // }
   }
 
   /**
-   * 处理分页获取评论
+   * [处理] - 分页获取评论
    */
   function handleLoadMoreComment(
     v: {
@@ -184,7 +189,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   }
 
   /**
-   * 处理分页获取回复
+   * [处理] - 分页获取回复
    */
   function handleLoadMoreReply(
     v: {
@@ -221,7 +226,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   }
 
   return (
-    <LeftCommentContainer
+    <CommentContainer
       id="left-comment-container"
     >
       {/* 根评论输入框 */}
@@ -240,7 +245,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
         onLoadMoreComment={handleLoadMoreComment}
         onLoadMoreReply={handleLoadMoreReply}
       />
-    </LeftCommentContainer>
+    </CommentContainer>
   );
 });
 

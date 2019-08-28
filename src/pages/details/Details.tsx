@@ -3,6 +3,7 @@ import {
   Row,
   Col,
   notification,
+  BackTop,
 } from 'antd';
 import {
   withRouter,
@@ -145,7 +146,7 @@ const Details = React.memo((props: IDetailsProps) => {
               />
             </Col>
             <Col span={15}>
-              {/* 左边内容区域 */}
+              {/* 中间内容区域 */}
               <DetailsMain
                 {...state}
                 {...props.AuthRouteReducer}
@@ -158,6 +159,9 @@ const Details = React.memo((props: IDetailsProps) => {
               />
             </Col>
           </Row>
+
+          {/* 右下角回到顶部按钮 */}
+          <BackTop />
         </DetailsContent>
       </DetailsWrapper>
     </React.Fragment>

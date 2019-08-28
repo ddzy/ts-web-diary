@@ -17,10 +17,8 @@ import {
   CSSTransition,
 } from 'react-transition-group';
 import {
-  ISendReplyParams,
-} from 'pages/details/Details.service';
-import {
   ICommonBaseArticleCommentInfo,
+  ICommonBaseSendReplyParams,
 } from 'pages/details/Details.types';
 
 
@@ -31,7 +29,7 @@ export interface IDetailsMainCommentShowItemProps {
 
   onSend: (
     inputEl: HTMLElement,
-    v: ISendReplyParams,
+    value: ICommonBaseSendReplyParams,
   ) => void;
   onLoadMoreReply: (
     v: {
@@ -58,7 +56,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
   });
 
   /**
-   * 初始化回复列表
+   * [初始化] - 回复列表
    */
   function initReplyList(): JSX.Element[] {
     if (Array.isArray(replys) && length !== 0) {
@@ -76,7 +74,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
                 }}
                 currentMainUserAvatar={props.currentMainUserAvatar}
                 isReply={true}
-                commentInfo={reply}
+                commentInfo={reply as any}
                 {...props}
                 onSend={handleSendReply}
               />
@@ -93,7 +91,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
    */
   function handleSendReply(
     el: HTMLElement,
-    v: ISendReplyParams,
+    v: ICommonBaseSendReplyParams,
   ): void {
     props.onSend(el, {
       ...v,

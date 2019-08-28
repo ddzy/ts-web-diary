@@ -41,10 +41,10 @@ export interface ICommonBaseArticleCommentInfo {
   _id: string,
   // 评论人
   from: ICommonBaseUserInfo,
-  // 评论的内容
-  content: string,
-  // 评论的类型
-  content_type: 'plain' | 'image' | 'file',
+  // 评论的普通文本内容
+  content_plain: string,
+  // 评论的图片内容
+  content_image: string[],
   // 评论的文章
   article: ICommonBaseArticleInfo,
   // 评论创建的时间
@@ -66,10 +66,10 @@ export interface ICommonBaseArticleCommentReplyInfo {
   article: ICommonBaseArticleInfo,
   // 回复所属的评论
   comment: ICommonBaseArticleCommentInfo,
-  // 回复的内容
-  content: string,
-  // 回复的内容类型
-  content_type: 'plain' | 'image' | 'file',
+  // 评论的普通文本内容
+  content_plain: string,
+  // 评论的图片内容
+  content_image: string[],
   // 回复的创建时间
   create_time: number,
   // 回复的更新时间
