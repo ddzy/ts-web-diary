@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 
-export const LeftCommentContainer = styled.div`
+export const CommentContainer = styled.div`
   margin-top: 0.625rem;
   padding: 0 3rem 1.25rem;
   background-color: #fff;

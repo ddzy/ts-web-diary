@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ContentEditable from 'react-contenteditable';
 import {
   Row,
   Col,
@@ -7,6 +8,7 @@ import {
   Icon,
   Popover,
 } from 'antd';
+
 import {
   GlobalStyleSet,
   CommentInputBox,
@@ -22,7 +24,6 @@ import { Emojify, emojify } from 'react-emojione';
 import {
   EMOJI_PICKER,
 } from 'constants/constants';
-import ContentEditable from 'react-contenteditable';
 
 
 export interface IBaseCommentInputProps {
@@ -33,12 +34,14 @@ export interface IBaseCommentInputProps {
   inputStyle?: React.CSSProperties;
   onSend: (
     inputEl: HTMLElement,
-    v: string,
+    plainContent: string,
+    imageContent: string[],
   ) => void;
 };
 interface IBaseCommentInputState {
   inputEl: HTMLElement;
   html: string;
+  image: string[];
 };
 
 
@@ -53,13 +56,14 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
     setState,
   ] = React.useState<IBaseCommentInputState>({
     html: '',
+    image: [],
     inputEl: document.createElement('div'),
   });
 
   /**
-   * 初始化表情
+   * [初始化] - emoji表情
    */
-  function initEmoji(): JSX.Element[] {
+  function _initEmoji(): JSX.Element[] {
     return EMOJI_PICKER.map((emoji: string, i: number) => (
       <EmojiItem
         key={i}
@@ -70,12 +74,17 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
   function handleGetRef(el: any): void {
     if (el && el.htmlEl && !state.inputEl) {
       setState({
+        ...state,
         html: state.html,
         inputEl: el.htmlEl,
       });
     }
   }
 
+  /**
+   * [处理] - 普通文本输入框更新
+   * @param e 输入框对象
+   */
   function handleChange(
     e: React.ChangeEvent,
   ): void {
@@ -83,6 +92,7 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
     const html = target.innerHTML as string;
 
     setState({
+      ...state,
       html,
       inputEl: state.inputEl,
     });
@@ -96,6 +106,7 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
     const emoji = emojify(tTitle, { output: 'unicode' });
 
     setState({
+      ...state,
       html: `${state.html}${emoji}`,
       inputEl: state.inputEl,
     });
@@ -104,7 +115,8 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
   function handleSend(): void {
     props.onSend(
       state.inputEl,
-      state.html
+      state.html,
+      state.image,
     );
   }
 
@@ -159,7 +171,7 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
                         }}
                         onClick={handleReplyEmojiChange}
                       >
-                        {initEmoji()}
+                        {_initEmoji()}
                       </Emojify>
                     </EmojiWrapper>
                   }

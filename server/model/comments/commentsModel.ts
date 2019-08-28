@@ -8,13 +8,13 @@ const CommentsSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
-  content: {
+  content_plain: {
     type: String,
-    required: true,
+    default: '',
   },
-  content_type: {
+  content_image: {
     type: String,
-    required: true,
+    default: '',
   },
   article: {
     type: Schema.Types.ObjectId,

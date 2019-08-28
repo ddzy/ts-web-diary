@@ -4,32 +4,25 @@ import BaseCommentItemTitle from './title/BaseCommentItemTitle';
 import BaseCommentItemContent from './content/BaseCommentItemContent';
 import BaseCommentItemAction from './action/BaseCommentItemAction';
 import BaseCommentItemReply from './reply/BaseCommentItemReply';
+import {
+  ICommonBaseArticleCommentInfo,
+  ICommonBaseArticleCommentReplyInfo,
+} from 'pages/details/Details.types';
 
 
 export interface ICommentListItemProps {
-  // ** 当前主用户 回复输入框统一头像 **
+  // ? 当前主用户 回复输入框统一头像
   currentMainUserAvatar: string;
-  // ** 评论回复判别 **
-  isReply: boolean;
-  commentInfo: {
-    _id: string;
-    content: string;
-    create_time: number | string;
-    from: {
-      _id: string,
-      username: string,
-      useravatar: string,
-    };
-    to?: {
-      _id: string,
-      username: string,
-      useravatar: string,
-    };
-  },
 
-  // ** 自定义回复模态框样式 **
+  // ? 评论回复判别
+  isReply: boolean;
+  // ? 单个评论或回复的详细信息
+  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo;
+
+  // ? 自定义回复模态框样式
   baseInputContainerStyle?: React.CSSProperties;
   baseInputStyle?: React.CSSProperties;
+
   onSend: (
     inputEl: HTMLElement,
     v: any,

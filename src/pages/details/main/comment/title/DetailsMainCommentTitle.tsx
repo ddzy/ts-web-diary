@@ -10,10 +10,16 @@ import BaseCommentInput from 'components/widget/base_comment_input/BaseCommentIn
 
 
 export interface IDetailsMainCommentTitleProps {
+  // ? 当前登录的用户头像
   useravatar: string;
+
+  // ? 提交评论
   onSendComment: (
     inputEl: HTMLElement,
-    v: string,
+    value: {
+      plainContent: string,
+      imageContent: string[],
+    },
   ) => void;
 };
 
@@ -21,6 +27,23 @@ export interface IDetailsMainCommentTitleProps {
 const DetailsMainCommentTitle = React.memo<IDetailsMainCommentTitleProps>((
   props: IDetailsMainCommentTitleProps,
 ): JSX.Element => {
+  /**
+   * [处理] - 发送评论
+   * @param inputEl 输入框元素
+   * @param plainContent 评论的普通文本内容
+   * @para imageContent 评论的图片列表
+   */
+  function handleSendComment(
+    inputEl: HTMLElement,
+    plainContent: string,
+    imageContent: string[],
+  ) {
+    props.onSendComment(inputEl, {
+      plainContent,
+      imageContent,
+    });
+  }
+
   return (
     <TitleWrapper id="comment-wrapper">
       {/* 提示文字 */}
@@ -34,7 +57,7 @@ const DetailsMainCommentTitle = React.memo<IDetailsMainCommentTitleProps>((
       <TitleInputBox>
         <BaseCommentInput
           useravatar={props.useravatar}
-          onSend={props.onSendComment}
+          onSend={handleSendComment}
         />
       </TitleInputBox>
     </TitleWrapper>
