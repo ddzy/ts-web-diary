@@ -16,10 +16,8 @@ import {
 import { isArray } from 'utils/utils';
 import DetailsMainCommentsShowItem from './item/DetailsMainCommentShowItem';
 import {
-  ISendReplyParams,
-} from 'pages/details/Details.service';
-import {
   ICommonBaseArticleCommentInfo,
+  ICommonBaseSendReplyParams,
 } from 'pages/details/Details.types';
 
 
@@ -28,7 +26,7 @@ export interface IDetailsMainCommentShowProps {
   useravatar: string;
   onSendReply: (
     inputEl: HTMLElement,
-    v: ISendReplyParams,
+    value: ICommonBaseSendReplyParams,
   ) => void;
   onLoadMoreComment: (
     v: {

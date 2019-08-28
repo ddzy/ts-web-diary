@@ -17,8 +17,6 @@ import {
 } from '../../Details.types';
 
 
-const starArticleSocket = IO('ws://localhost:8888/star/article');
-
 export interface IDetailsControlStarProps extends RouteComponentProps {
   match: match<{
     id: string,
@@ -33,6 +31,9 @@ export interface IDetailsControlStarProps extends RouteComponentProps {
   };
 };
 export interface IDetailsControlStarState {
+  // ? 文章点赞socket
+  starArticleSocket: SocketIOClient.Socket;
+
   // ? 是否点赞
   isStar: boolean;
 };
@@ -43,11 +44,47 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IDetailsControlStarState>({
+    starArticleSocket: IO('ws://localhost:8888/star/article'),
     isStar: false,
   });
 
   React.useEffect(() => {
-    starArticleSocket.removeAllListeners();
+    return () => {
+      state.starArticleSocket.close();
+    }
+  }, []);
+
+  /**
+   * [处理] - 页面首次加载完成后的点赞状态
+   */
+  React.useEffect(() => {
+    // 首次加载, 获取文章的点赞状态
+    const staredUserList = props.articleInfo.stared_user;
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    const isStar = staredUserList.indexOf(userId) !== -1;
+
+    setState({
+      ...state,
+      isStar,
+    });
+  }, [props.articleInfo]);
+
+  /**
+   * [处理] - socket点赞之后的逻辑
+   * @description redis已更新, 前台页面可以提示
+   */
+  React.useEffect(() => {
+    state.starArticleSocket.removeAllListeners();
 
     const authorId = props.articleInfo.author._id;
     const authorName = props.articleInfo.author.username;
@@ -56,14 +93,16 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
     const isCurrentUserArticle = userId === authorId;
 
     // socket处理点赞之后的逻辑
-    starArticleSocket.on('receiveStarArticle', (
-      starInfo: {
+    state.starArticleSocket.on('receiveStarArticle', (
+      value: {
         data: {
-          isStar: boolean,
+          starInfo: {
+            isStar: boolean,
+          },
         },
       },
     ) => {
-      const isStar = starInfo.data.isStar;
+      const isStar = value.data.starInfo.isStar;
 
       if (isStar) {
         const content = (
@@ -89,28 +128,6 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
     });
   }, [props.articleInfo]);
 
-  React.useEffect(() => {
-    // 首次加载, 获取文章的点赞状态
-    const staredUserList = props.articleInfo.stared_user;
-    const userId = localStorage.getItem('userid');
-
-    if (!userId || typeof userId !== 'string') {
-      notification.error({
-        message: '错误',
-        description: '用户凭证已过期, 请重新登录!',
-      });
-
-      return props.history.push('/login');
-    }
-
-    const isStar = staredUserList.indexOf(userId) !== -1;
-
-    setState({
-      ...state,
-      isStar,
-    });
-  }, [props.articleInfo.stared_user]);
-
   /**
    * [处理] - 文章点赞
    */
@@ -135,7 +152,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
 
     const articleId = props.match.params.id;
 
-    starArticleSocket.emit('sendStarArticle', {
+    state.starArticleSocket.emit('sendStarArticle', {
       userId,
       articleId,
       isStar: !state.isStar,

@@ -2,75 +2,115 @@ import * as Router from 'koa-router';
 
 import {
   Comments,
-  changeId,
   Posts,
 } from '../../../../model/model';
-import {
-  formatPath,
-} from '../../../../utils/utils';
+// import {
+//   formatPath,
+// } from '../../../../utils/utils';
 
-const commentController: Router = new Router();
-
+const commentArticleCreateController: Router = new Router();
 
 /**
- * 发表文章评论
+ * [处理] - 创建新的文章评论
  */
-commentController.post('/', async (ctx) => {
+commentArticleCreateController.post('/', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    articleId: string;
+    plainContent: string;
+    imageContent: string[];
+  };
 
   const {
-    from,
+    userId,
     articleId,
-    value,
-  }: any = ctx.request.body;
+    plainContent,
+    imageContent,
+  } = ctx.request.body as unknown as IRequestParams;
 
-  // ** 存储评论
-  const result = await Comments
-    .create({
-      article: articleId,
-      value,
-      from,
-      create_time: new Date().getTime(),
-    });
+  // ? 存储评论
+  const savedComment = await Comments.create({
+    from: userId,
+    content_plain: plainContent,
+    content_image: JSON.stringify(imageContent),
+    article: articleId,
+    replys: [],
+    create_time: Date.now(),
+    update_time: Date.now(),
+  });
 
-  // ** 同步到Posts
-  await Posts
-    .findByIdAndUpdate(
-      changeId(articleId),
-      { '$push': { comments: result } },
-      { new: true },
-    )
-    .populate({
-      path: 'comments',
-      populate: {
-        path: 'replys',
+  // ? 同步更新Posts
+  await Posts.findByIdAndUpdate(
+    articleId,
+    {
+      '$push': {
+        comments: savedComment,
       },
-    })
-
-  const commentInfo = await Comments
-    .findById(result._id, { '__v': 0 })
-    .populate([{
-      path: 'from',
-      select: ['_id', 'useravatar', 'username'],
-    }])
-    .lean();
+    },
+  )
 
   ctx.body = {
     code: 0,
     message: 'Success!',
-    info: {
-      commentInfo: {
-        ...commentInfo,
-        from: {
-          ...commentInfo.from,
-          useravatar: formatPath(
-            commentInfo.from.useravatar,
-          ),
-        },
-      },
+    data: {
+      commentInfo: savedComment,
     },
   };
+
+  // const {
+  //   from,
+  //   articleId,
+  //   value,
+  // }: any = ctx.request.body;
+
+  // // ** 存储评论
+  // const result = await Comments
+  //   .create({
+  //     article: articleId,
+  //     value,
+  //     from,
+  //     create_time: new Date().getTime(),
+  //   });
+
+  // // ** 同步到Posts
+  // await Posts
+  //   .findByIdAndUpdate(
+  //     changeId(articleId),
+  //     { '$push': { comments: result } },
+  //     { new: true },
+  //   )
+  //   .populate({
+  //     path: 'comments',
+  //     populate: {
+  //       path: 'replys',
+  //     },
+  //   })
+
+  // const commentInfo = await Comments
+  //   .findById(result._id, { '__v': 0 })
+  //   .populate([{
+  //     path: 'from',
+  //     select: ['_id', 'useravatar', 'username'],
+  //   }])
+  //   .lean();
+
+  // ctx.body = {
+  //   code: 0,
+  //   message: 'Success!',
+  //   info: {
+  //     commentInfo: {
+  //       ...commentInfo,
+  //       from: {
+  //         ...commentInfo.from,
+  //         useravatar: formatPath(
+  //           commentInfo.from.useravatar,
+  //         ),
+  //       },
+  //     },
+  //   },
+  // };
 
 });
 
 
-export default commentController;
+export default commentArticleCreateController;
