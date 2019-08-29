@@ -2,57 +2,60 @@ import * as Router from 'koa-router';
 
 import {
   Replys,
-  changeId,
   Comments,
 } from '../../../../model/model';
-import {
-  formatPath,
-} from '../../../../utils/utils';
+
 
 const replyArticleCreateController: Router = new Router();
 
 
 /**
- * 发表文章回复
+ * [处理] - 发表文章回复
  */
 replyArticleCreateController.post('/', async (ctx) => {
+  interface IRequestParams {
+    from: string;
+    to: string;
+    commentId: string;
+    articleId: string;
+    plainContent: string;
+    imageContent: string[];
+  };
+
   const {
-    commentId,
-    value,
     from,
     to,
+    commentId,
     articleId,
-  }: any = await ctx.request.body;
+    plainContent,
+    imageContent,
+  } = ctx.request.body as unknown as IRequestParams;
 
-  // ** 存储回复信息
-  const result = await Replys
-    .create({
-      comment: changeId(commentId),
-      article: changeId(articleId),
-      from: changeId(from),
-      to: changeId(to),
-      replyValue: value,
-      value,
-      create_time: new Date().getTime(),
-    });
+  // ? 存储回复
+  const savedReply = await Replys.create({
+    article: articleId,
+    comment: commentId,
+    from,
+    to,
+    content_plain: plainContent,
+    content_image: JSON.stringify(imageContent),
+    create_time: Date.now(),
+    update_time: Date.now(),
+  });
 
-  // ** 同步到Comments
-  await Comments
-    .findByIdAndUpdate(
-      changeId(commentId),
-      { '$push': { replys: result, } },
-      { new: true },
-    )
-    .populate({
-      path: 'replys',
-    });
+  // ? 同步到Comments
+  await Comments.findByIdAndUpdate(
+    commentId,
+    {
+      '$push': {
+        replys: savedReply,
+      },
+    },
+  );
 
-  // ** 获取&&返回回复信息
-  const replyInfo = await Replys
-    .findById(
-      changeId(result._id),
-      { '__v': 0 },
-    )
+  // ? 获取刚刚存储的回复
+  const foundReplyInfo = await Replys
+    .findById(savedReply._id)
     .populate([
       {
         path: 'from',
@@ -68,25 +71,13 @@ replyArticleCreateController.post('/', async (ctx) => {
   ctx.body = {
     code: 0,
     message: 'Success!',
-    info: {
+    data: {
       replyInfo: {
-        ...replyInfo,
-        from: {
-          ...replyInfo.from,
-          useravatar: formatPath(
-            replyInfo.from.useravatar,
-          ),
-        },
-        to: {
-          ...replyInfo.to,
-          useravatar: formatPath(
-            replyInfo.to.useravatar,
-          ),
-        },
+        ...foundReplyInfo,
+        content_image: JSON.parse(foundReplyInfo.content_image),
       },
     },
   };
-})
-
+});
 
 export default replyArticleCreateController;

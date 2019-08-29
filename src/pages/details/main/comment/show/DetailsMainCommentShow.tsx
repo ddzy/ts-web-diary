@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Divider,
+  Button,
 } from 'antd';
 import {
   TransitionGroup,
@@ -22,11 +23,14 @@ import {
 
 
 export interface IDetailsMainCommentShowProps {
-  comments: ICommonBaseArticleCommentInfo[];
+  // ? 当前登录用户的头像
   useravatar: string;
+  // ? 文章评论列表
+  comments: ICommonBaseArticleCommentInfo[];
+
   onSendReply: (
     inputEl: HTMLElement,
-    value: ICommonBaseSendReplyParams,
+    value: Partial<ICommonBaseSendReplyParams>,
   ) => void;
   onLoadMoreComment: (
     v: {
@@ -45,6 +49,7 @@ export interface IDetailsMainCommentShowProps {
   replyHasMore: boolean;
 };
 interface IDetailsMainCommentShowState {
+  // ? 加载更多回复的按钮
   loadMoreText: string;
 };
 
@@ -53,19 +58,18 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
   props: IDetailsMainCommentShowProps,
 ): JSX.Element => {
 
-  const { comments } = props;
-  const { length } = comments;
-
   const [state, setState] = React.useState<IDetailsMainCommentShowState>({
     loadMoreText: '加载更多>>',
   });
 
   /**
-   * 初始化评论列表
+   * [初始化] - 评论列表项
    */
-  function initCommentListItem(): JSX.Element[] | [] {
+  function _initCommentListItem(): JSX.Element[] | [] {
+    const comments = props.comments;
+
     return isArray(comments)
-      && length !== 0
+      && comments.length !== 0
       ? comments.map((item, index) => {
         return (
           <CSSTransition
@@ -75,15 +79,14 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
           >
             <React.Fragment>
               <DetailsMainCommentsShowItem
-                {...item}
                 replyHasMore={props.replyHasMore}
                 singleCommentInfo={item}
                 currentMainUserAvatar={props.useravatar}
-                onSend={props.onSendReply}
+                onSendReply={props.onSendReply}
                 onLoadMoreReply={props.onLoadMoreReply}
               />
               {
-                index !== length - 1 && <Divider />
+                index !== comments.length - 1 && <Divider />
               }
             </React.Fragment>
           </CSSTransition>
@@ -93,17 +96,24 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
   }
 
   /**
-   * 处理评论加载更多
+   * [处理] - 评论加载更多
    */
   function handleLoadMoreComments(): void {
-    const lastCommentId = comments[length - 1]._id;
+    const comments = props.comments;
+    const lastCommentId = comments[comments.length - 1]._id;
 
-    setState({ loadMoreText: '加载中...' });
+    setState({
+      ...state,
+      loadMoreText: '加载中...',
+    });
 
     props.onLoadMoreComment({
       lastCommentId,
     }, () => {
-      setState({ loadMoreText: '加载更多>>' });
+        setState({
+          ...state,
+          loadMoreText: '加载更多>>'
+        });
     });
   }
 
@@ -111,15 +121,18 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
     <ShowContainer>
       <ShowList>
         <TransitionGroup>
-          {initCommentListItem()}
+          {_initCommentListItem()}
         </TransitionGroup>
         {
           props.commentHasMore && (
             <ShowLoadMoreBox>
-              <ShowLoadMoreText
-                onClick={handleLoadMoreComments}
-              >
-                {state.loadMoreText}
+              <ShowLoadMoreText>
+                <Button
+                  type={'link'}
+                  onClick={handleLoadMoreComments}
+                >
+                  {state.loadMoreText}
+                </Button>
               </ShowLoadMoreText>
             </ShowLoadMoreBox>
           )

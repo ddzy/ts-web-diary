@@ -4,7 +4,7 @@ import {
   RouteComponentProps,
 } from 'react-router-dom';
 import {
-  notification,
+  notification, message,
 } from 'antd';
 
 import {
@@ -87,6 +87,13 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
       return props.history.push('/login');
     }
 
+    // TODO 过滤评论
+    if (value.plainContent === '') {
+      message.info('评论不能为空!');
+
+      return;
+    }
+
     const articleId = props.match.params.id;
 
     query({
@@ -99,7 +106,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
         ...value,
       },
     }).then((res) => {
-      const { commentInfo} = res.data;
+      const { commentInfo } = res.data;
 
       setState({
         ...state,
@@ -113,9 +120,66 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
    */
   function handleSendReply(
     inputEl: any,
-    value: ICommonBaseSendReplyParams,
+    value: Partial<ICommonBaseSendReplyParams>,
   ): void {
-    console.log('reply: ', value);
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请登录后再发表评论!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    // TODO 过滤回复
+    if (value.plainContent === '') {
+      message.info('回复不能为空!');
+
+      return;
+    }
+
+    const articleId = props.match.params.id;
+
+    query({
+      method: 'POST',
+      jsonp: false,
+      url: '/api/reply/article/create',
+      data: {
+        articleId,
+        commentId: value.commentId,
+        from: userId,
+        to: value.to,
+        plainContent: value.plainContent,
+        imageContent: value.imageContent,
+      },
+    }).then((res) => {
+      const { code } = res;
+      const { replyInfo } = res.data;
+
+      if (code === 0) {
+        // 更新本地回复列表
+        const newComments = state.comments.map((item) => {
+          if (item._id === replyInfo.comment) {
+            return {
+              ...item,
+              replys: [
+                replyInfo,
+                ...item.replys,
+              ],
+            };
+          }
+          return item;
+        })
+
+        setState({
+          ...state,
+          comments: newComments,
+        });
+      }
+    });
+
 
     // const { id } = props.match.params;
 

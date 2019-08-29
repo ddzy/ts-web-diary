@@ -23,16 +23,19 @@ import {
 
 
 export interface IDetailsMainCommentShowItemProps {
+  // ? 当前登录用户的头像
   currentMainUserAvatar: string;
+  // ? 单条评论的详细信息
   singleCommentInfo: ICommonBaseArticleCommentInfo;
+  // ? 回复分页: 是否还有更多回复
   replyHasMore: boolean;
 
-  onSend: (
+  onSendReply: (
     inputEl: HTMLElement,
-    value: ICommonBaseSendReplyParams,
+    value: Partial<ICommonBaseSendReplyParams>,
   ) => void;
   onLoadMoreReply: (
-    v: {
+    value: {
       lastReplyId: string,
       commentId: string,
     },
@@ -40,6 +43,7 @@ export interface IDetailsMainCommentShowItemProps {
   ) => void;
 };
 interface IDetailsMainCommentShowItemState {
+  // ? 更多回复按钮的内容
   loadMoreText: string;
 };
 
@@ -47,9 +51,6 @@ interface IDetailsMainCommentShowItemState {
 const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>((
   props: IDetailsMainCommentShowItemProps,
 ): JSX.Element => {
-
-  const { replys } = props.singleCommentInfo;
-  const { length } = replys;
 
   const [state, setState] = React.useState<IDetailsMainCommentShowItemState>({
     loadMoreText: '加载更多',
@@ -59,11 +60,14 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
    * [初始化] - 回复列表
    */
   function initReplyList(): JSX.Element[] {
-    if (Array.isArray(replys) && length !== 0) {
-      return replys.map((reply, index) => {
+    const replys = props.singleCommentInfo.replys;
+    const replysLength = replys.length;
+
+    if (Array.isArray(replys) && replysLength !== 0) {
+      return replys.map((reply) => {
         return (
           <CSSTransition
-            key={index}
+            key={reply._id}
             classNames="fadeTranslateZ"
             timeout={2000}
           >
@@ -87,30 +91,31 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
   }
 
   /**
-   * 处理提交回复
+   * [处理] - 提交回复
    */
   function handleSendReply(
     el: HTMLElement,
-    v: ICommonBaseSendReplyParams,
+    value: Partial<ICommonBaseSendReplyParams>,
   ): void {
-    props.onSend(el, {
-      ...v,
+    props.onSendReply(el, {
+      ...value,
       commentId: props.singleCommentInfo._id,
     });
   }
 
   /**
-   * 处理回复加载更多
+   * [处理] - 回复加载更多
    */
   function handleLoadMoreReplys(): void {
+    const replys = props.singleCommentInfo.replys;
     const lastReplyId = replys[length - 1]._id;
-    const { _id } = props.singleCommentInfo;
+    const commentId = props.singleCommentInfo._id;
 
     setState({ loadMoreText: '加载中' });
 
     props.onLoadMoreReply({
       lastReplyId,
-      commentId: _id,
+      commentId,
     }, () => {
         setState({
           loadMoreText: '加载更多',
