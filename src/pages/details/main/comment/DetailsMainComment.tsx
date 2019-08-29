@@ -4,7 +4,8 @@ import {
   RouteComponentProps,
 } from 'react-router-dom';
 import {
-  notification, message,
+  notification,
+  message,
 } from 'antd';
 
 import {
@@ -12,9 +13,6 @@ import {
 } from './style';
 import DetailsMainCommentTitle from './title/DetailsMainCommentTitle';
 import DetailsMainCommentShow from './show/DetailsMainCommentShow';
-import {
-  serviceHandleGetMoreReplys,
-} from '../../Details.service';
 import {
   COMMENT_PAGE_SIZE,
   REPLY_PAGE_SIZE,
@@ -280,37 +278,61 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
    * [处理] - 分页获取回复
    */
   function handleLoadMoreReply(
-    v: {
+    value: {
       lastReplyId: string,
       commentId: string,
     },
     callback?: () => void,
   ) {
-    serviceHandleGetMoreReplys(
-      { ...v, replyPageSize: REPLY_PAGE_SIZE, },
-      (data: any) => {
-        const {
-          hasMore,
-          replys,
-        } = data.info.replysInfo;
+    const userId = localStorage.getItem('userid');
 
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请登录后再查看更多评论!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    const articleId = props.match.params.id;
+    const commentId = value.commentId;
+    const lastReplyId = value.lastReplyId;
+    const replyPageSize = REPLY_PAGE_SIZE;
+
+    query({
+      url: '/api/reply/article/info/list',
+      method: 'GET',
+      jsonp: false,
+      data: {
+        userId,
+        articleId,
+        commentId,
+        lastReplyId,
+        replyPageSize,
+      },
+    }).then((res) => {
+      const { code } = res;
+      const { replyList } = res.data;
+
+      if (code === 0) {
         setState({
           ...state,
-          replyHasMore: hasMore,
-          comments: state.comments.map((comment: any) => {
-            if (comment._id === v.commentId) {
+          comments: state.comments.map((comment) => {
+            if (comment._id === commentId) {
               return {
                 ...comment,
-                replys: comment.replys.concat(...replys),
+                replys: comment.replys.concat(replyList),
               };
             }
             return comment;
           }),
+          replyHasMore: replyList.length !== 0,
         });
+      }
 
-        callback && callback();
-      },
-    );
+      callback && callback();
+    });
   }
 
   return (

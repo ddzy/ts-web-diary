@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {
+  Button,
+} from 'antd';
 
 import {
   ShowLoadMoreBox,
@@ -106,18 +109,22 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
   /**
    * [处理] - 回复加载更多
    */
-  function handleLoadMoreReplys(): void {
+  function handleLoadMoreReply(): void {
     const replys = props.singleCommentInfo.replys;
-    const lastReplyId = replys[length - 1]._id;
+    const lastReplyId = replys[replys.length - 1]._id;
     const commentId = props.singleCommentInfo._id;
 
-    setState({ loadMoreText: '加载中' });
+    setState({
+      ...state,
+      loadMoreText: '加载中',
+    });
 
     props.onLoadMoreReply({
       lastReplyId,
       commentId,
     }, () => {
         setState({
+          ...state,
           loadMoreText: '加载更多',
         });
     });
@@ -150,10 +157,13 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
             && props.replyHasMore
             && (
               <ShowLoadMoreBox>
-                <ShowLoadMoreText
-                  onClick={handleLoadMoreReplys}
-                >
-                  {state.loadMoreText}
+                <ShowLoadMoreText>
+                  <Button
+                    type="link"
+                    onClick={handleLoadMoreReply}
+                  >
+                    {state.loadMoreText}
+                  </Button>
                 </ShowLoadMoreText>
               </ShowLoadMoreBox>
             )
