@@ -38,8 +38,6 @@ interface IDetailsMainCommentState {
   comments: ICommonBaseArticleCommentInfo[];
   // ? 评论分页: 是否还有更多评论
   commentHasMore: boolean;
-  // ? 回复分页: 是否还有更多回复
-  replyHasMore: boolean;
 }
 
 
@@ -50,7 +48,6 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   const [state, setState] = React.useState<IDetailsMainCommentState>({
     comments: [],
     commentHasMore: true,
-    replyHasMore: true,
   });
 
   React.useEffect(() => {
@@ -316,18 +313,19 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
       const { replyList } = res.data;
 
       if (code === 0) {
+        const newComments = state.comments.map((comment) => {
+          if (comment._id === commentId) {
+            return {
+              ...comment,
+              replys: comment.replys.concat(replyList),
+            };
+          }
+          return comment;
+        });
+
         setState({
           ...state,
-          comments: state.comments.map((comment) => {
-            if (comment._id === commentId) {
-              return {
-                ...comment,
-                replys: comment.replys.concat(replyList),
-              };
-            }
-            return comment;
-          }),
-          replyHasMore: replyList.length !== 0,
+          comments: newComments,
         });
       }
 
@@ -348,7 +346,6 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
       {/* 根评论展示栏 */}
       <DetailsMainCommentShow
         commentHasMore={state.commentHasMore}
-        replyHasMore={state.replyHasMore}
         comments={state.comments}
         useravatar={props.useravatar}
         onSendReply={handleSendReply}

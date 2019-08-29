@@ -28,6 +28,9 @@ export interface IDetailsMainCommentShowProps {
   // ? 文章评论列表
   comments: ICommonBaseArticleCommentInfo[];
 
+  // ? 评论分页: 是否还有更多评论
+  commentHasMore: boolean;
+
   onSendReply: (
     inputEl: HTMLElement,
     value: Partial<ICommonBaseSendReplyParams>,
@@ -45,8 +48,6 @@ export interface IDetailsMainCommentShowProps {
     },
     callback?: () => void,
   ) => void;
-  commentHasMore: boolean;
-  replyHasMore: boolean;
 };
 interface IDetailsMainCommentShowState {
   // ? 加载更多回复的按钮
@@ -79,7 +80,6 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
           >
             <React.Fragment>
               <DetailsMainCommentsShowItem
-                replyHasMore={props.replyHasMore}
                 singleCommentInfo={item}
                 currentMainUserAvatar={props.useravatar}
                 onSendReply={props.onSendReply}
@@ -93,6 +93,32 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
         );
       })
       : [];
+  }
+
+  /**
+   * [初始化] - 评论加载更多按钮
+   */
+  function _initLoadMoreCommentButton(): JSX.Element {
+    const commentHasMore = props.commentHasMore;
+
+    const loadMoreCommentButton = commentHasMore
+      ? (
+        <ShowLoadMoreBox>
+          <ShowLoadMoreText>
+            <Button
+              type={'link'}
+              onClick={handleLoadMoreComment}
+            >
+              {state.loadMoreText}
+            </Button>
+          </ShowLoadMoreText>
+        </ShowLoadMoreBox>
+      )
+      : (
+        <React.Fragment />
+      );
+
+    return loadMoreCommentButton;
   }
 
   /**
@@ -110,10 +136,10 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
     props.onLoadMoreComment({
       lastCommentId,
     }, () => {
-        setState({
-          ...state,
-          loadMoreText: '加载更多>>'
-        });
+      setState({
+        ...state,
+        loadMoreText: '加载更多>>'
+      });
     });
   }
 
@@ -123,20 +149,8 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
         <TransitionGroup>
           {_initCommentListItem()}
         </TransitionGroup>
-        {
-          props.commentHasMore && (
-            <ShowLoadMoreBox>
-              <ShowLoadMoreText>
-                <Button
-                  type={'link'}
-                  onClick={handleLoadMoreComment}
-                >
-                  {state.loadMoreText}
-                </Button>
-              </ShowLoadMoreText>
-            </ShowLoadMoreBox>
-          )
-        }
+
+        {_initLoadMoreCommentButton()}
       </ShowList>
     </ShowContainer>
   );
