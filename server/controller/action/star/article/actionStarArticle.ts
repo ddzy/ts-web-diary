@@ -1,6 +1,4 @@
 import * as Router from 'koa-router';
-import * as IO from 'socket.io';
-
 
 import redis from '../../../../redis/redis';
 import {
@@ -12,35 +10,71 @@ const actionStarArticleController: Router = new Router();
 
 
 /**
- * [socket处理] - 文章点赞
+ * [处理] - 文章点赞
  */
-export function handleStarArticle(
-  socket: IO.Socket,
-  io: IO.Namespace,
-) {
-  socket.on('sendStarArticle', async (
-    starInfo: {
-      userId: string,
-      articleId: string,
-      isStar: string,
-    },
-  ) => {
-    // redis处理文章点赞
-    const redisKey = generateStarArticleKey(starInfo.articleId);
+actionStarArticleController.post('/', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    articleId: string;
+    isStar: boolean;
+  };
 
-    starInfo.isStar
-      ? await redis.zadd(redisKey, Date.now(), starInfo.userId)
-      : await redis.zrem(redisKey, starInfo.userId);
+  const {
+    userId,
+    articleId,
+    isStar,
+  } = ctx.request.body as unknown as IRequestParams;
 
-    io.emit('receiveStarArticle', {
-      code: 0,
-      message: 'Success!',
-      data: {
-        starInfo,
+  // redis处理文章点赞
+  const redisKey = generateStarArticleKey(articleId);
+
+  isStar
+    ? await redis.zadd(redisKey, Date.now(), userId)
+    : await redis.zrem(redisKey, userId);
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      starInfo: {
+        userId,
+        articleId,
+        isStar,
       },
-    });
-  });
-}
+    },
+  };
+});
+
+// /**
+//  * [socket处理] - 文章点赞
+//  */
+// export function handleStarArticle(
+//   socket: IO.Socket,
+//   io: IO.Namespace,
+// ) {
+//   socket.on('sendStarArticle', async (
+//     starInfo: {
+//       userId: string,
+//       articleId: string,
+//       isStar: string,
+//     },
+//   ) => {
+//     // redis处理文章点赞
+//     const redisKey = generateStarArticleKey(starInfo.articleId);
+
+//     starInfo.isStar
+//       ? await redis.zadd(redisKey, Date.now(), starInfo.userId)
+//       : await redis.zrem(redisKey, starInfo.userId);
+
+//     io.emit('receiveStarArticle', {
+//       code: 0,
+//       message: 'Success!',
+//       data: {
+//         starInfo,
+//       },
+//     });
+//   });
+// }
 
 
 

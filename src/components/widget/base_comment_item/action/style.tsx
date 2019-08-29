@@ -4,7 +4,7 @@ import styled, {
 
 export const GlobalStyle = createGlobalStyle`
   .comment-action-reply-btn-active {
-    color: #1890ff;
+    color: #1da57a;
   }
 `;
 
@@ -23,13 +23,13 @@ export const ActionRightBox = styled.div`
 export const ActionLikeIconBox = styled.div`
   display: inline-block;
   &:hover {
-    color: #1890ff;
+    color: #1da57a;
   }
 `;
 export const ActionReplyIconBox = styled.div`
   display: inline-block;
   &:hover {
-    color: #1890ff;
+    color: #1da57a;
   }
 `;
 export const ActionTimeIconBox = styled.span``;

@@ -63,10 +63,10 @@ class Register extends React.PureComponent<IRegisterProps, IRegisterState> {
             };
           }, () => {
             // 提示信息
-              message.info(this.state.serviceState.message, () => {
-                // 跳转至登录
-                this.state.serviceState.isAuth && this.props.history.push('/login');
-              });
+            message.info(this.state.serviceState.message, () => {
+              // 跳转至登录
+              this.state.serviceState.isAuth && this.props.history.push('/login');
+            });
           });
         });
       }

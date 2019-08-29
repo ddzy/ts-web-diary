@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IO from 'socket.io-client';
 import {
   Tooltip,
   Icon,
@@ -15,6 +14,7 @@ import {
 import {
   ICommonBaseArticleInfo,
 } from '../../Details.types';
+import { query } from 'services/request';
 
 
 export interface IDetailsControlStarProps extends RouteComponentProps {
@@ -31,9 +31,6 @@ export interface IDetailsControlStarProps extends RouteComponentProps {
   };
 };
 export interface IDetailsControlStarState {
-  // ? 文章点赞socket
-  starArticleSocket: SocketIOClient.Socket;
-
   // ? 是否点赞
   isStar: boolean;
 };
@@ -44,15 +41,8 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IDetailsControlStarState>({
-    starArticleSocket: IO('ws://localhost:8888/star/article'),
     isStar: false,
   });
-
-  React.useEffect(() => {
-    return () => {
-      state.starArticleSocket.close();
-    }
-  }, []);
 
   /**
    * [处理] - 页面首次加载完成后的点赞状态
@@ -80,55 +70,6 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
   }, [props.articleInfo]);
 
   /**
-   * [处理] - socket点赞之后的逻辑
-   * @description redis已更新, 前台页面可以提示
-   */
-  React.useEffect(() => {
-    state.starArticleSocket.removeAllListeners();
-
-    const authorId = props.articleInfo.author._id;
-    const authorName = props.articleInfo.author.username;
-    const userId = localStorage.getItem('userid');
-    // 判断当前文章的作者是否为当前点赞的用户
-    const isCurrentUserArticle = userId === authorId;
-
-    // socket处理点赞之后的逻辑
-    state.starArticleSocket.on('receiveStarArticle', (
-      value: {
-        data: {
-          starInfo: {
-            isStar: boolean,
-          },
-        },
-      },
-    ) => {
-      const isStar = value.data.starInfo.isStar;
-
-      if (isStar) {
-        const content = (
-          <span>
-            你赞了
-              <b
-                style={{
-                  color: '#1da57a',
-                }}
-              >
-                {
-                  isCurrentUserArticle ? '自己' : authorName
-                }
-              </b>
-             的文章!
-        </span>
-        );
-
-        message.info(content);
-      } else {
-        message.info('你取消了赞!');
-      }
-    });
-  }, [props.articleInfo]);
-
-  /**
    * [处理] - 文章点赞
    */
   function handleStar(
@@ -145,17 +86,55 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
       return props.history.push('/login');
     }
 
+    const articleId = props.match.params.id;
+    const newIsStar = !state.isStar;
+
     setState({
       ...state,
-      isStar: !state.isStar,
+      isStar: newIsStar,
     });
 
-    const articleId = props.match.params.id;
 
-    state.starArticleSocket.emit('sendStarArticle', {
-      userId,
-      articleId,
-      isStar: !state.isStar,
+    query({
+      method: 'POST',
+      jsonp: false,
+      url: '/api/action/star/article',
+      data: {
+        userId,
+        articleId,
+        isStar: newIsStar,
+      },
+    }).then((res) => {
+      // 点赞文章之后的处理逻辑
+      const { code } = res;
+      const { starInfo } = res.data;
+      const authorId = props.articleInfo.author._id;
+      const authorName = props.articleInfo.author.username;
+      const isCurrentUserArticle = authorId === starInfo.userId;
+
+      if (code === 0) {
+        if (starInfo.isStar) {
+          const content = (
+            <span>
+              你赞了
+                <b
+                style={{
+                  color: '#1da57a',
+                }}
+              >
+                {
+                  isCurrentUserArticle ? '自己' : authorName
+                }
+              </b>
+              的文章!
+          </span>
+          );
+
+          message.info(content);
+        } else {
+          message.info('你取消了赞!');
+        }
+      }
     });
   }
 

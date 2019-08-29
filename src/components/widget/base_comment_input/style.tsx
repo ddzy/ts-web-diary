@@ -24,7 +24,7 @@ export const GlobalStyleSet = createGlobalStyle`
     border-color: #8590a6;
   }
   .yyg-contenteditable:focus {
-    border: 1px solid #1890ff;
+    border: 1px solid #1da57a;
     background-color: #fff;
   }
   .yyg-contenteditable:empty::before {
