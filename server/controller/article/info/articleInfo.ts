@@ -123,6 +123,10 @@ articleInfoController.get('/single/detail', async (ctx) => {
         },
         populate: [
           {
+            path: 'from',
+            select: ['username', 'useravatar'],
+          },
+          {
             path: 'replys',
             options: {
               sort: { create_time: -1 },

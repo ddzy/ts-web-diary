@@ -37,7 +37,7 @@ export interface IDetailsMainCommentProps extends RouteComponentProps<{
   comments: ICommonBaseArticleCommentInfo[];
 };
 interface IDetailsMainCommentState {
-  // ? 评论列表
+  // ? 文章评论列表
   comments: ICommonBaseArticleCommentInfo[];
   // ? 评论分页: 是否还有更多评论
   commentHasMore: boolean;
@@ -99,9 +99,12 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
         ...value,
       },
     }).then((res) => {
-      const { commentInfo } = res.data;
+      const { commentInfo} = res.data;
 
-      console.log(commentInfo);
+      setState({
+        ...state,
+        comments: [commentInfo].concat(state.comments),
+      });
     });
   }
 

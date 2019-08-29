@@ -49,11 +49,25 @@ commentArticleCreateController.post('/', async (ctx) => {
     },
   )
 
+  // ? 获取刚刚存储的评论
+  const foundComment = await Comments
+    .findById(savedComment._id)
+    .populate([
+      {
+        path: 'from',
+        select: ['username', 'useravatar'],
+      },
+    ])
+    .lean()
+
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
-      commentInfo: savedComment,
+      commentInfo: {
+        ...foundComment,
+        content_image: JSON.parse(foundComment.content_image),
+      },
     },
   };
 
