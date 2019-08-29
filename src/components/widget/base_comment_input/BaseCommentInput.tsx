@@ -178,7 +178,7 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
                 >
                   <div
                     style={{
-                      width: '50px',
+                      width: '60px',
                       marginLeft: '16%',
                       cursor: 'pointer',
                     }}
@@ -186,6 +186,7 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
                     <Icon
                       type="smile"
                       theme="twoTone"
+                      twoToneColor="#1da57a"
                       style={{
                         fontSize: '18px',
                         display: 'inline-block',
@@ -193,8 +194,9 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
                       }}
                     />
                     <span style={{
-                      color: '#1890ff',
                       display: 'inline-block',
+                      marginLeft: '4px',
+                      color: '#1da57a',
                       verticalAlign: 'middle',
                     }}>表情</span>
                   </div>

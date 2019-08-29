@@ -45,7 +45,12 @@ const BaseCommentItemAction = React.memo<IBaseCommentItemActionProps>((
               data-id={props.commentInfo._id}
             >
               <Icon type="like-o" />
-              <span>999</span>
+              <span
+                style={{
+                  display: 'inline-block',
+                  marginLeft: '4px',
+                }}
+              >999</span>
               <Divider type="vertical" />
             </ActionLikeIconBox>
 
@@ -56,7 +61,12 @@ const BaseCommentItemAction = React.memo<IBaseCommentItemActionProps>((
               <Icon
                 type="message"
               />
-              <span>回复</span>
+              <span
+                style={{
+                  display: 'inline-block',
+                  marginLeft: '4px',
+                }}
+              >回复</span>
             </ActionReplyIconBox>
           </ActionRightBox>
         </Col>
