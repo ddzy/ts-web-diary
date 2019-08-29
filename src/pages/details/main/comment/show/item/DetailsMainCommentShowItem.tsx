@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {
+  Button,
+} from 'antd';
 
 import {
   ShowLoadMoreBox,
@@ -23,16 +26,17 @@ import {
 
 
 export interface IDetailsMainCommentShowItemProps {
+  // ? 当前登录用户的头像
   currentMainUserAvatar: string;
+  // ? 单条评论的详细信息
   singleCommentInfo: ICommonBaseArticleCommentInfo;
-  replyHasMore: boolean;
 
-  onSend: (
+  onSendReply: (
     inputEl: HTMLElement,
-    value: ICommonBaseSendReplyParams,
+    value: Partial<ICommonBaseSendReplyParams>,
   ) => void;
   onLoadMoreReply: (
-    v: {
+    value: {
       lastReplyId: string,
       commentId: string,
     },
@@ -40,6 +44,7 @@ export interface IDetailsMainCommentShowItemProps {
   ) => void;
 };
 interface IDetailsMainCommentShowItemState {
+  // ? 更多回复按钮的内容
   loadMoreText: string;
 };
 
@@ -48,9 +53,6 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
   props: IDetailsMainCommentShowItemProps,
 ): JSX.Element => {
 
-  const { replys } = props.singleCommentInfo;
-  const { length } = replys;
-
   const [state, setState] = React.useState<IDetailsMainCommentShowItemState>({
     loadMoreText: '加载更多',
   });
@@ -58,12 +60,15 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
   /**
    * [初始化] - 回复列表
    */
-  function initReplyList(): JSX.Element[] {
-    if (Array.isArray(replys) && length !== 0) {
-      return replys.map((reply, index) => {
+  function _initReplyList(): JSX.Element[] {
+    const replys = props.singleCommentInfo.replys;
+    const replysLength = replys.length;
+
+    if (Array.isArray(replys) && replysLength !== 0) {
+      return replys.map((reply) => {
         return (
           <CSSTransition
-            key={index}
+            key={reply._id}
             classNames="fadeTranslateZ"
             timeout={2000}
           >
@@ -87,34 +92,63 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
   }
 
   /**
-   * 处理提交回复
+   * [初始化] - 回复的加载更多按钮
+   */
+  function _initReplyLoadMoreButton(): JSX.Element {
+    const replys = props.singleCommentInfo.replys;
+
+    const loadMoreButton = replys.length !== 0
+      ? (
+        <ShowLoadMoreBox>
+          <ShowLoadMoreText>
+            <Button
+              type="link"
+              onClick={handleLoadMoreReply}
+            >
+              {state.loadMoreText}
+            </Button>
+          </ShowLoadMoreText>
+        </ShowLoadMoreBox>
+      )
+      : <React.Fragment />;
+
+    return loadMoreButton;
+  }
+
+  /**
+   * [处理] - 提交回复
    */
   function handleSendReply(
     el: HTMLElement,
-    v: ICommonBaseSendReplyParams,
+    value: Partial<ICommonBaseSendReplyParams>,
   ): void {
-    props.onSend(el, {
-      ...v,
+    props.onSendReply(el, {
+      ...value,
       commentId: props.singleCommentInfo._id,
     });
   }
 
   /**
-   * 处理回复加载更多
+   * [处理] - 回复加载更多
    */
-  function handleLoadMoreReplys(): void {
-    const lastReplyId = replys[length - 1]._id;
-    const { _id } = props.singleCommentInfo;
+  function handleLoadMoreReply(): void {
+    const replys = props.singleCommentInfo.replys;
+    const lastReplyId = replys[replys.length - 1]._id;
+    const commentId = props.singleCommentInfo._id;
 
-    setState({ loadMoreText: '加载中' });
+    setState({
+      ...state,
+      loadMoreText: '加载中',
+    });
 
     props.onLoadMoreReply({
       lastReplyId,
-      commentId: _id,
+      commentId,
     }, () => {
-        setState({
-          loadMoreText: '加载更多',
-        });
+      setState({
+        ...state,
+        loadMoreText: '加载更多',
+      });
     });
   }
 
@@ -138,21 +172,10 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
       <ReplyContainer>
         <ReplyList>
           <TransitionGroup>
-            {initReplyList()}
+            {_initReplyList()}
           </TransitionGroup>
-          {
-            props.singleCommentInfo.replys.length !== 0
-            && props.replyHasMore
-            && (
-              <ShowLoadMoreBox>
-                <ShowLoadMoreText
-                  onClick={handleLoadMoreReplys}
-                >
-                  {state.loadMoreText}
-                </ShowLoadMoreText>
-              </ShowLoadMoreBox>
-            )
-          }
+
+          {_initReplyLoadMoreButton()}
         </ReplyList>
       </ReplyContainer>
     </ItemContainer>

@@ -6,7 +6,7 @@ import {
 import {
   ICommentListItemProps,
 } from '../BaseCommentItem';
-import BaseCommentItemTitleAvatar from './base_comment_item_title_avatar/BaseCommentItemTitleAvatar';
+import BaseCommentItemTitleAvatar from './avatar/BaseCommentItemTitleAvatar';
 
 
 export interface IBaseCommentItemTitleProps extends ICommentListItemProps { };

@@ -7,6 +7,7 @@ import BaseCommentItemReply from './reply/BaseCommentItemReply';
 import {
   ICommonBaseArticleCommentInfo,
   ICommonBaseArticleCommentReplyInfo,
+  ICommonBaseSendReplyParams,
 } from 'pages/details/Details.types';
 
 
@@ -25,7 +26,7 @@ export interface ICommentListItemProps {
 
   onSend: (
     inputEl: HTMLElement,
-    v: any,
+    value: Partial<ICommonBaseSendReplyParams>,
   ) => void;
 };
 interface ICommentListItemState {
@@ -61,14 +62,15 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
 
   function handleSend(
     e: HTMLElement,
-    v: string,
+    plainContent: string,
+    imageContent: string[],
   ): void {
     props.onSend(
       e,
       {
-        from: localStorage.getItem('userid'),
         to: props.commentInfo.from._id,
-        value: v,
+        plainContent,
+        imageContent,
       },
     );
   }

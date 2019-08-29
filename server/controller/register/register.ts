@@ -18,7 +18,7 @@ registerController.post('/', async (ctx, next) => {
     username,
     userpwd,
     usergender,
-  }: any = await ctx.request.body;
+  }: any = ctx.request.body;
 
   // 查询
   const result = await User
@@ -33,6 +33,15 @@ registerController.post('/', async (ctx, next) => {
         usergender,
         useravatar: '',
         userpwd: md5(userpwd),
+        collections: [],
+        articles: [],
+        attentions: {
+          users: [],
+          topics: [],
+        },
+        followers: [],
+        friends: [],
+        chat_memory: [],
       });
       ctx.body = {
         code: 0,

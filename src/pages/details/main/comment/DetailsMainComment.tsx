@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import {
   notification,
+  message,
 } from 'antd';
 
 import {
@@ -12,10 +13,6 @@ import {
 } from './style';
 import DetailsMainCommentTitle from './title/DetailsMainCommentTitle';
 import DetailsMainCommentShow from './show/DetailsMainCommentShow';
-import {
-  serviceHandleGetMoreComments,
-  serviceHandleGetMoreReplys,
-} from '../../Details.service';
 import {
   COMMENT_PAGE_SIZE,
   REPLY_PAGE_SIZE,
@@ -37,12 +34,10 @@ export interface IDetailsMainCommentProps extends RouteComponentProps<{
   comments: ICommonBaseArticleCommentInfo[];
 };
 interface IDetailsMainCommentState {
-  // ? 评论列表
+  // ? 文章评论列表
   comments: ICommonBaseArticleCommentInfo[];
   // ? 评论分页: 是否还有更多评论
   commentHasMore: boolean;
-  // ? 回复分页: 是否还有更多回复
-  replyHasMore: boolean;
 }
 
 
@@ -53,7 +48,6 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
   const [state, setState] = React.useState<IDetailsMainCommentState>({
     comments: [],
     commentHasMore: true,
-    replyHasMore: true,
   });
 
   React.useEffect(() => {
@@ -87,6 +81,13 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
       return props.history.push('/login');
     }
 
+    // TODO 过滤评论
+    if (value.plainContent === '') {
+      message.info('评论不能为空!');
+
+      return;
+    }
+
     const articleId = props.match.params.id;
 
     query({
@@ -101,7 +102,10 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
     }).then((res) => {
       const { commentInfo } = res.data;
 
-      console.log(commentInfo);
+      setState({
+        ...state,
+        comments: [commentInfo].concat(state.comments),
+      });
     });
   }
 
@@ -110,9 +114,66 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
    */
   function handleSendReply(
     inputEl: any,
-    value: ICommonBaseSendReplyParams,
+    value: Partial<ICommonBaseSendReplyParams>,
   ): void {
-    console.log('reply: ', value);
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请登录后再发表回复!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    // TODO 过滤回复
+    if (value.plainContent === '') {
+      message.info('回复不能为空!');
+
+      return;
+    }
+
+    const articleId = props.match.params.id;
+
+    query({
+      method: 'POST',
+      jsonp: false,
+      url: '/api/reply/article/create',
+      data: {
+        articleId,
+        commentId: value.commentId,
+        from: userId,
+        to: value.to,
+        plainContent: value.plainContent,
+        imageContent: value.imageContent,
+      },
+    }).then((res) => {
+      const { code } = res;
+      const { replyInfo } = res.data;
+
+      if (code === 0) {
+        // 更新本地回复列表
+        const newComments = state.comments.map((item) => {
+          if (item._id === replyInfo.comment) {
+            return {
+              ...item,
+              replys: [
+                replyInfo,
+                ...item.replys,
+              ],
+            };
+          }
+          return item;
+        })
+
+        setState({
+          ...state,
+          comments: newComments,
+        });
+      }
+    });
+
 
     // const { id } = props.match.params;
 
@@ -160,69 +221,116 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
 
   /**
    * [处理] - 分页获取评论
+   * @param value 评论分页的相关信息
+   * @param callback 回调处理器
    */
   function handleLoadMoreComment(
-    v: {
+    value: {
       lastCommentId: string,
     },
     callback?: () => void,
   ): void {
-    const { id } = props.match.params;
+    const userId = localStorage.getItem('userid');
 
-    serviceHandleGetMoreComments(
-      { articleId: id, ...v, commentPageSize: COMMENT_PAGE_SIZE, replyPageSize: REPLY_PAGE_SIZE },
-      (data: any) => {
-        const {
-          hasMore,
-          comments,
-        } = data.info.commentsInfo;
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请登录后再查看更多评论!',
+      });
 
+      return props.history.push('/login');
+    }
+
+    const articleId = props.match.params.id;
+    const lastCommentId = value.lastCommentId;
+
+    query({
+      url: '/api/comment/article/info/list',
+      method: 'GET',
+      jsonp: false,
+      data: {
+        userId,
+        articleId,
+        lastCommentId,
+        commentPageSize: COMMENT_PAGE_SIZE,
+        replyPageSize: REPLY_PAGE_SIZE,
+      },
+    }).then((res) => {
+      const { code } = res;
+      const { commentList } = res.data;
+
+      if (code === 0) {
         setState({
           ...state,
-          comments: state.comments.concat(...comments),
-          commentHasMore: hasMore,
+          comments: state.comments.concat(commentList),
+          commentHasMore: commentList.length !== 0,
         });
+      }
 
-        callback && callback();
-      },
-    );
+      callback && callback();
+    });
   }
 
   /**
    * [处理] - 分页获取回复
    */
   function handleLoadMoreReply(
-    v: {
+    value: {
       lastReplyId: string,
       commentId: string,
     },
     callback?: () => void,
   ) {
-    serviceHandleGetMoreReplys(
-      { ...v, replyPageSize: REPLY_PAGE_SIZE, },
-      (data: any) => {
-        const {
-          hasMore,
-          replys,
-        } = data.info.replysInfo;
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请登录后再查看更多评论!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    const articleId = props.match.params.id;
+    const commentId = value.commentId;
+    const lastReplyId = value.lastReplyId;
+    const replyPageSize = REPLY_PAGE_SIZE;
+
+    query({
+      url: '/api/reply/article/info/list',
+      method: 'GET',
+      jsonp: false,
+      data: {
+        userId,
+        articleId,
+        commentId,
+        lastReplyId,
+        replyPageSize,
+      },
+    }).then((res) => {
+      const { code } = res;
+      const { replyList } = res.data;
+
+      if (code === 0) {
+        const newComments = state.comments.map((comment) => {
+          if (comment._id === commentId) {
+            return {
+              ...comment,
+              replys: comment.replys.concat(replyList),
+            };
+          }
+          return comment;
+        });
 
         setState({
           ...state,
-          replyHasMore: hasMore,
-          comments: state.comments.map((comment: any) => {
-            if (comment._id === v.commentId) {
-              return {
-                ...comment,
-                replys: comment.replys.concat(...replys),
-              };
-            }
-            return comment;
-          }),
+          comments: newComments,
         });
+      }
 
-        callback && callback();
-      },
-    );
+      callback && callback();
+    });
   }
 
   return (
@@ -238,7 +346,6 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
       {/* 根评论展示栏 */}
       <DetailsMainCommentShow
         commentHasMore={state.commentHasMore}
-        replyHasMore={state.replyHasMore}
         comments={state.comments}
         useravatar={props.useravatar}
         onSendReply={handleSendReply}

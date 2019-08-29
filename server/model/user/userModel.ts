@@ -49,25 +49,22 @@ const UserSchema: mongoose.Schema = new Schema({
     ref: 'Followers',
   }],
 
-  // ? 我的好友
-  friend: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  }],
+  // // ? 我的好友
+  // friend: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  // }],
 
   // TODO 重构我的好友
   friends: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
   }],
 
   // ? 聊天列表
   chat_memory: [{
     type: Schema.Types.ObjectId,
     ref: 'ChatMemory',
-    required: true,
   }],
 });
 

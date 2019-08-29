@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as InfiniteScroll from 'react-infinite-scroller';
-import * as IO from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -32,9 +31,6 @@ export interface IHomeMainViewPostsFrontendProps extends RouteComponentProps {
 
 };
 export interface IHomeMainViewPostsFrontendState {
-  // ? 文章点赞socket
-  starArticleSocket: SocketIOClient.Socket;
-
   // ? 首次加载文章时的loading状态
   isFirstLoading: boolean;
 
@@ -55,70 +51,12 @@ export interface IHomeMainViewPostsFrontendState {
 
 const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendProps) => {
   const [state, setState] = React.useState<IHomeMainViewPostsFrontendState>({
-    starArticleSocket: IO('ws://localhost:8888/star/article'),
     isFirstLoading: false,
     isLoadMoreLoading: false,
     hasMoreArticle: true,
     starHashMap: new Map(),
     articleList: [],
   });
-
-  React.useEffect(() => {
-    return () => {
-      state.starArticleSocket.close();
-    }
-  }, []);
-
-  /**
-   * [处理] - socket点赞之后的逻辑
-   * @description redis已更新, 前台页面可以提示
-   */
-  React.useEffect(() => {
-    state.starArticleSocket.removeAllListeners();
-
-    const userId = localStorage.getItem('userid');
-
-    state.starArticleSocket.on('receiveStarArticle', (
-      value: {
-        data: {
-          starInfo: {
-            userId: string,
-            articleId: string,
-            isStar: string,
-          },
-        },
-      },
-    ) => {
-      const isStar = value.data.starInfo.isStar;
-      const articleId = value.data.starInfo.articleId;
-      const article = state.articleList.find((v) => v._id === articleId);
-      const authorId = article ? article.author._id : '';
-      const authorName = article ? article.author.username : '';
-      const isCurrentUserArticle = userId === authorId;
-
-      if (isStar) {
-        const content = (
-          <span>
-            你赞了
-              <b
-              style={{
-                color: '#1da57a',
-              }}
-            >
-              {
-                isCurrentUserArticle ? '自己' : authorName
-              }
-            </b>
-            的文章!
-        </span>
-        );
-
-        message.info(content);
-      } else {
-        message.info('你取消了赞!');
-      }
-    });
-  }, [state.starHashMap]);
 
   /**
    * [初始化] - 文章列表项的图标
@@ -267,7 +205,6 @@ const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendP
     // 更新文章的对应用户的点赞状态
     const oldIsStar = state.starHashMap.get(articleId);
     state.starHashMap.set(articleId, !oldIsStar);
-
     const newIsStar = state.starHashMap.get(articleId);
 
     // 更新文章的点赞用户列表
@@ -296,11 +233,48 @@ const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendP
       articleList: newArticleList,
     });
 
-    // socket处理点赞文章
-    state.starArticleSocket.emit('sendStarArticle', {
-      userId,
-      articleId,
-      isStar: newIsStar,
+    query({
+      method: 'POST',
+      jsonp: false,
+      url: '/api/action/star/article',
+      data: {
+        userId,
+        articleId,
+        isStar: newIsStar,
+      },
+    }).then((res) => {
+      // 点赞文章之后的处理逻辑
+      const { code } = res;
+      const { starInfo } = res.data;
+
+      if (code === 0) {
+        const article = state.articleList.find((v) => v._id === starInfo.articleId);
+        const authorId = article ? article.author._id : '';
+        const authorName = article ? article.author.username : '';
+        const isCurrentUserArticle = userId === authorId;
+
+        if (starInfo.isStar) {
+          const content = (
+            <span>
+              你赞了
+                <b
+                style={{
+                  color: '#1da57a',
+                }}
+              >
+                {
+                  isCurrentUserArticle ? '自己' : authorName
+                }
+              </b>
+              的文章!
+          </span>
+          );
+
+          message.info(content);
+        } else {
+          message.info('你取消了赞!');
+        }
+      }
     });
   }
 
