@@ -13,7 +13,6 @@ import {
 import DetailsMainCommentTitle from './title/DetailsMainCommentTitle';
 import DetailsMainCommentShow from './show/DetailsMainCommentShow';
 import {
-  serviceHandleGetMoreComments,
   serviceHandleGetMoreReplys,
 } from '../../Details.service';
 import {
@@ -127,7 +126,7 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
     if (!userId || typeof userId !== 'string') {
       notification.error({
         message: '错误',
-        description: '用户凭证已过期, 请登录后再发表评论!',
+        description: '用户凭证已过期, 请登录后再发表回复!',
       });
 
       return props.history.push('/login');
@@ -227,32 +226,54 @@ const DetailsMainComment = React.memo<IDetailsMainCommentProps>((
 
   /**
    * [处理] - 分页获取评论
+   * @param value 评论分页的相关信息
+   * @param callback 回调处理器
    */
   function handleLoadMoreComment(
-    v: {
+    value: {
       lastCommentId: string,
     },
     callback?: () => void,
   ): void {
-    const { id } = props.match.params;
+    const userId = localStorage.getItem('userid');
 
-    serviceHandleGetMoreComments(
-      { articleId: id, ...v, commentPageSize: COMMENT_PAGE_SIZE, replyPageSize: REPLY_PAGE_SIZE },
-      (data: any) => {
-        const {
-          hasMore,
-          comments,
-        } = data.info.commentsInfo;
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请登录后再查看更多评论!',
+      });
 
+      return props.history.push('/login');
+    }
+
+    const articleId = props.match.params.id;
+    const lastCommentId = value.lastCommentId;
+
+    query({
+      url: '/api/comment/article/info/list',
+      method: 'GET',
+      jsonp: false,
+      data: {
+        userId,
+        articleId,
+        lastCommentId,
+        commentPageSize: COMMENT_PAGE_SIZE,
+        replyPageSize: REPLY_PAGE_SIZE,
+      },
+    }).then((res) => {
+      const { code } = res;
+      const { commentList } = res.data;
+
+      if (code === 0) {
         setState({
           ...state,
-          comments: state.comments.concat(...comments),
-          commentHasMore: hasMore,
+          comments: state.comments.concat(commentList),
+          commentHasMore: commentList.length !== 0,
         });
+      }
 
-        callback && callback();
-      },
-    );
+      callback && callback();
+    });
   }
 
   /**

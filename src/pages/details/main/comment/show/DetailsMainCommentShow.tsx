@@ -33,7 +33,7 @@ export interface IDetailsMainCommentShowProps {
     value: Partial<ICommonBaseSendReplyParams>,
   ) => void;
   onLoadMoreComment: (
-    v: {
+    value: {
       lastCommentId: string,
     },
     callback?: () => void,
@@ -98,7 +98,7 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
   /**
    * [处理] - 评论加载更多
    */
-  function handleLoadMoreComments(): void {
+  function handleLoadMoreComment(): void {
     const comments = props.comments;
     const lastCommentId = comments[comments.length - 1]._id;
 
@@ -129,7 +129,7 @@ const DetailsMainCommentShow = React.memo<IDetailsMainCommentShowProps>((
               <ShowLoadMoreText>
                 <Button
                   type={'link'}
-                  onClick={handleLoadMoreComments}
+                  onClick={handleLoadMoreComment}
                 >
                   {state.loadMoreText}
                 </Button>
