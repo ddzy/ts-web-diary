@@ -16,8 +16,12 @@ import {
 } from './style';
 import {
   NOTIFICATION_MAKE_FRIEND_REQUEST,
+  NOTIFICATION_MAKE_FRIEND_AGREE,
+  NOTIFICATION_MAKE_FRIEND_REFUSE,
 } from 'constants/constants';
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
+import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
+import HeaderMainDummyNotificationNoticeFriendRefuse from './friend/refuse/HeaderMainDummyNotificationNoticeFriendRefuse';
 
 
 export interface IHeaderMainDummyNotificationNoticeProps { };
@@ -46,6 +50,34 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
               HeaderMainDummyNotificationNoticeFriendRequest,
               {
                 notificationInfo: action.payload,
+              },
+            ),
+            ...prevState.notificationList
+          ],
+        };
+      };
+      case NOTIFICATION_MAKE_FRIEND_AGREE: {
+        return {
+          ...prevState,
+          notificationList: [
+            React.createElement(
+              HeaderMainDummyNotificationNoticeFriendAgree,
+              {
+                notificationInfo: action.payload
+              },
+            ),
+            ...prevState.notificationList
+          ],
+        };
+      };
+      case NOTIFICATION_MAKE_FRIEND_REFUSE: {
+        return {
+          ...prevState,
+          notificationList: [
+            React.createElement(
+              HeaderMainDummyNotificationNoticeFriendRefuse,
+              {
+                notificationInfo: action.payload
               },
             ),
             ...prevState.notificationList
@@ -109,8 +141,41 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     });
 
     // ? 用户被成功加为好友时的通知socket
+    state.notificationUserIOClient.on('receiveMakeFriendAgree', (
+      data: {
+        from_user_id: string,
+        to_user_id: string,
+        to_user_name: string,
+      },
+    ) => {
+      const currentUserId = localStorage.getItem('userid');
+
+      if (data.from_user_id === currentUserId) {
+        dispatch({
+          type: NOTIFICATION_MAKE_FRIEND_AGREE,
+          payload: data,
+        });
+      }
+    });
 
     // ? 用户被拒绝加好友时的通知socket
+    state.notificationUserIOClient.on('receiveMakeFriendRefuse', (
+      data: {
+        from_user_id: string,
+        to_user_id: string,
+        to_user_name: string,
+        description: string,
+      },
+    ) => {
+      const currentUserId = localStorage.getItem('userid');
+
+      if (data.from_user_id === currentUserId) {
+        dispatch({
+          type: NOTIFICATION_MAKE_FRIEND_REFUSE,
+          payload: data,
+        });
+      }
+    });
 
     return () => {
       state.notificationUserIOClient.close();

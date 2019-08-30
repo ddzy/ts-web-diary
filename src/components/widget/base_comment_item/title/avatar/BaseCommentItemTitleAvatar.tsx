@@ -217,6 +217,21 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
   }
 
   /**
+   * [初始化] - 加好友备注模态框的标题
+   */
+  function _initMakeFriendModalTitle() {
+    const authorName = state.userProfileInfo.author_name;
+
+    return (
+      <p>
+        您正在申请加
+        <strong style={{ color: '#1da57a' }}>  {authorName}  </strong>
+        为好友.
+      </p>
+    );
+  }
+
+  /**
    * [初始化] - 加好友备注模态框的内容
    */
   function _initMakeFriendModalContent(): JSX.Element {
@@ -423,6 +438,9 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
       </AvatarNameBox>
 
       <Modal
+        centered={true}
+        closable={false}
+        title={_initMakeFriendModalTitle()}
         visible={state.isShowMakeFriendModal}
         onOk={handleMakeFriendSend}
         onCancel={hanldeMakeFriendModalHide}
