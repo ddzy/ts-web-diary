@@ -23,9 +23,11 @@ export const HeaderMainDummyNotification = React.memo((
       <NotificationMain>
         <Row>
           <Col span={12}>
+            {/* 应用通知(用户 + 管理员) */}
             <HeaderMainDummyNotificationNotice />
           </Col>
           <Col span={12}>
+            {/* 消息通知(聊天) */}
             <HeaderMainDummyNotificationMessage />
           </Col>
         </Row>
