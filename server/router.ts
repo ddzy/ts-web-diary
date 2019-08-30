@@ -23,6 +23,7 @@ import actionStarCommentControllerNew from './controller/action/star/comment/act
 import actionStarReplyControllerNew from './controller/action/star/reply/actionStarReply';
 import actionAvatarControllerNew from './controller/action/avatar/actionAvatar';
 import actionFollowControllerNew from './controller/action/follow/actionFollow';
+import actionFriendController from './controller/action/friend/actionFriend';
 import searchControllerNew from './controller/search/search';
 import pageControllerNew from './controller/page/page';
 import pageHomeControllerNew from './controller/page/home/pageHome';
@@ -51,6 +52,8 @@ import statusCreateController from './controller/status/create/statusCreate';
 import statusInfoController from './controller/status/info/statusInfo';
 import userController from './controller/user/user';
 import userInfoController from './controller/user/info/userInfo';
+import notificationController from './controller/notification/notification';
+import notificationUserController from './controller/notification/user/notificationUser';
 
 const router: Router = new Router({
   prefix: '/api',
@@ -92,6 +95,7 @@ actionControllerNew
   .use('/star', actionStarControllerNew.routes(), actionStarControllerNew.allowedMethods())
   .use('/avatar', actionAvatarControllerNew.routes(), actionAvatarControllerNew.allowedMethods())
   .use('/follow', actionFollowControllerNew.routes(), actionFollowControllerNew.allowedMethods())
+  .use('/friend', actionFriendController.routes(), actionFriendController.allowedMethods())
 pageControllerNew
   .use('/home', pageHomeControllerNew.routes(), pageHomeControllerNew.allowedMethods())
   .use('/details', pageDetailsControllerNew.routes(), pageDetailsControllerNew.allowedMethods())
@@ -112,6 +116,8 @@ statusController
   .use('/info', statusInfoController.routes(), statusInfoController.allowedMethods());
 userController
   .use('/info', userInfoController.routes(), userInfoController.allowedMethods());
+notificationController
+  .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!
@@ -128,7 +134,8 @@ router
   .use('/upload', uploadControllerNew.routes(), uploadControllerNew.allowedMethods())
   .use('/chat', chatController.routes(), chatController.allowedMethods())
   .use('/status', statusController.routes(), statusController.allowedMethods())
-  .use('/user', userController.routes(), userController.allowedMethods());
+  .use('/user', userController.routes(), userController.allowedMethods())
+  .use('/notification', notificationController.routes(), notificationController.allowedMethods());
 
 
 export default router;
