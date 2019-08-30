@@ -16,3 +16,11 @@ export const NoticeMain = styled.div`
     }
   }
 `;
+
+export const MainContent = styled.div`
+  width: 280px;
+  max-height: 300px;
+  overflow-y: auto;
+`;
+export const MainContentList = styled.ul``;
+export const MainContentItem = styled.li``;

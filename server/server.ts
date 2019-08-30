@@ -17,6 +17,9 @@ import {
 import {
   handleStatus,
 } from './controller/status/create/statusCreate';
+import {
+  handleNotificationUser,
+} from './controller/notification/user/notificationUser';
 
 
 const app: Koa = new Koa();
@@ -75,5 +78,11 @@ const statusIO = io.of('/status');
 statusIO.on('connection', (socket) => {
   handleStatus(socket, statusIO);
 })
+
+// ? 处理用户通知的相关Websocket
+const notificationUserIO = io.of('/notification/user');
+notificationUserIO.on('connection', (socket) => {
+  handleNotificationUser(socket, notificationUserIO);
+});
 
 server.listen(8888);
