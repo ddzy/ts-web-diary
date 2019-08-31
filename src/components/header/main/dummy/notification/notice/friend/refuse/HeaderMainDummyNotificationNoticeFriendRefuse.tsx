@@ -13,16 +13,14 @@ import {
   MainTitleText,
   MainDescription,
 } from './style';
+import {
+  IBaseNotificationUserFriendRefuseParams,
+} from 'components/header/Header.types';
 
 
 export interface IHeaderMainDummyNotificationNoticeFriendRefuseProps {
   // ? 拒绝加好友的相关信息
-  notificationInfo: {
-    from_user_id: string;
-    to_user_id: string;
-    to_user_name: string;
-    description: string;
-  };
+  notificationInfo: IBaseNotificationUserFriendRefuseParams;
 };
 
 
@@ -35,8 +33,8 @@ const HeaderMainDummyNotificationNoticeFriendRefuse = React.memo((props: IHeader
           <MainTitleText>
             用户
             <NavLink
-              to={`/user/${props.notificationInfo.to_user_id}`}
-            >  {props.notificationInfo.to_user_name}</NavLink>  拒绝了你的好友申请!
+              to={`/user/${props.notificationInfo.from._id}`}
+            >  {props.notificationInfo.from.username}</NavLink>  拒绝了你的好友申请!
           </MainTitleText>
         </MainTitle>
 

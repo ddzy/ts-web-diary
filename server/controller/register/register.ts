@@ -42,6 +42,15 @@ registerController.post('/', async (ctx, next) => {
         followers: [],
         friends: [],
         chat_memory: [],
+        notification: {
+          user: {
+            friend: {
+              request: [],
+              agree: [],
+              refuse: [],
+            },
+          },
+        },
       });
       ctx.body = {
         code: 0,

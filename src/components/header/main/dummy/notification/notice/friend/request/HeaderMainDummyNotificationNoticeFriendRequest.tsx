@@ -19,20 +19,14 @@ import {
   MainDescription,
   MainControl,
 } from './style';
+import {
+  IBaseNoficationUserFriendRequestParams,
+} from 'components/header/Header.types';
 
 
 export interface IHeaderMainDummyNotificationNoticeFriendRequestProps {
   // ? 加好友相关信息
-  notificationInfo: {
-    // * 发送方id
-    from_user_id: string,
-    // * 发送方用户名
-    from_user_name: string,
-    // * 接收方id
-    to_user_id: string,
-    // * 备注信息
-    description: string,
-  };
+  notificationInfo: IBaseNoficationUserFriendRequestParams;
 };
 export interface IHeaderMainDummyNotificationNoticeFriendRequestState {
   // ? 用户通知的socket
@@ -60,10 +54,42 @@ const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: 
   });
 
   React.useEffect(() => {
-    return () => {
-      state.notificationUserIOClient.close();
-    };
-  }, []);
+    // ? 根据好友申请通知的状态, 来初始化控制栏的状态
+    const agreeState = props.notificationInfo.agree_state;
+
+    let isShowControl = false;
+    let controlTextWhenHiden = '';
+
+    switch (agreeState) {
+      // 等待状态
+      case 0: {
+        isShowControl = true;
+        controlTextWhenHiden = '';
+        break;
+      };
+      // 同意状态
+      case 1: {
+        isShowControl = false;
+        controlTextWhenHiden = '已同意该用户的好友申请!';
+        break;
+      };
+      // 拒绝状态
+      case -1: {
+        isShowControl = false;
+        controlTextWhenHiden = '已拒绝该用户的好友申请!';
+        break;
+      };
+      default: {
+        break;
+      };
+    }
+
+    setState({
+      ...state,
+      isShowControl,
+      controlTextWhenHiden,
+    });
+  }, [props.notificationInfo]);
 
   /**
    * [初始化] - 拒绝加好友请求的备注模态框的内容
@@ -151,12 +177,13 @@ const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: 
    * [处理] - 同意加好友请求
    */
   function handleAgree() {
-    const fromUserId = props.notificationInfo.from_user_id;
-    const toUserId = props.notificationInfo.to_user_id;
+    const fromUserId = props.notificationInfo.from._id;
+    const toUserId = props.notificationInfo.to._id;
 
     state.notificationUserIOClient.emit('sendMakeFriendAgree', {
-      from: fromUserId,
-      to: toUserId,
+      notificationId: props.notificationInfo._id,
+      from: toUserId,
+      to: fromUserId,
     });
 
     setState({
@@ -177,13 +204,14 @@ const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: 
    * [处理] - 发送拒绝加好友的请求
    */
   function handleRefuseSend() {
-    const fromUserId = props.notificationInfo.from_user_id;
-    const toUserId = props.notificationInfo.to_user_id;
+    const fromUserId = props.notificationInfo.from._id;
+    const toUserId = props.notificationInfo.to._id;
     const refuseDescription = state.refuseDescription;
 
     state.notificationUserIOClient.emit('sendMakeFriendRefuse', {
-      from: fromUserId,
-      to: toUserId,
+      notificationId: props.notificationInfo._id,
+      from: toUserId,
+      to: fromUserId,
       description: refuseDescription,
     });
 
@@ -203,8 +231,8 @@ const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: 
           <MainTitleText>
             用户
             <NavLink
-              to={`/user/${props.notificationInfo.from_user_id}`}
-            >  {props.notificationInfo.from_user_name}</NavLink>  申请加你为好友.
+              to={`/user/${props.notificationInfo.from._id}`}
+            >  {props.notificationInfo.from.username}</NavLink>  申请加你为好友.
           </MainTitleText>
         </MainTitle>
 
