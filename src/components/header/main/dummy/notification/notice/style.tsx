@@ -23,4 +23,16 @@ export const MainContent = styled.div`
   overflow-y: auto;
 `;
 export const MainContentList = styled.ul``;
-export const MainContentItem = styled.li``;
+export const MainContentItem = styled.li`
+`;
+// 通知主内容区域
+export const MainContentItemContentBox = styled.div``;
+export const MainContentItemContentInner = styled.div``;
+// 通知时间展示区域
+export const MainContentItemTimeBox = styled.div`
+`;
+export const MainContentItemTimeInner = styled.div`
+  color: #999;
+  font-size: 12px;
+  text-align: right;
+`;

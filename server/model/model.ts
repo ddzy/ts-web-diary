@@ -21,6 +21,9 @@ import ChatGroupMember from './chat/group/member/chatGroupMemberModel';
 import ChatGroupMessage from './chat/group/message/chatGroupMessageModel';
 import ChatStatus from './chat/status/chatStatusModel';
 import ChatMemory from './chat/memory/chatMemoryModel';
+import NotificationUserFriendRequest from './notification/user/friend/request/notificationUserFriendRequestModel';
+import NotificationUserFriendAgree from './notification/user/friend/agree/notificationUserFriendAgreeModel';
+import NotificationUserFriendRefuse from './notification/user/friend/refuse/notificationUserFriendRefuseModel';
 
 
 mongoose.set('useFindAndModify', false);
@@ -61,4 +64,7 @@ export {
   ChatGroupMessage,
   ChatStatus,
   ChatMemory,
+  NotificationUserFriendRequest,
+  NotificationUserFriendAgree,
+  NotificationUserFriendRefuse,
 };
