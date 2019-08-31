@@ -49,13 +49,7 @@ const UserSchema: mongoose.Schema = new Schema({
     ref: 'Followers',
   }],
 
-  // // ? 我的好友
-  // friend: [{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User',
-  // }],
-
-  // TODO 重构我的好友
+  // ? 我的好友
   friends: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -66,6 +60,32 @@ const UserSchema: mongoose.Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'ChatMemory',
   }],
+
+  // ? 应用通知(用户 + 管理员)
+  notification: {
+    user: {
+      friend: {
+        agree: [{
+          type: Schema.Types.ObjectId,
+          ref: 'notificationUserFriendAgree',
+          default: [],
+        }],
+        refuse: [{
+          type: Schema.Types.ObjectId,
+          ref: 'notificationUserFriendRefuse',
+          default: [],
+        }],
+        request: [{
+          type: Schema.Types.ObjectId,
+          ref: 'notificationUserFriendRequest',
+          default: [],
+        }],
+      },
+    },
+    admin: {
+
+    },
+  },
 });
 
 const User: mongoose.Model<any> = mongoose

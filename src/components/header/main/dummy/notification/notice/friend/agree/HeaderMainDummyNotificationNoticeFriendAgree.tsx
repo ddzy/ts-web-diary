@@ -8,15 +8,14 @@ import {
   AgreeMain,
   MainText,
 } from './style';
+import {
+  IBaseNotificationUserFriendAgreeParams,
+} from 'components/header/Header.types';
 
 
 export interface IHeaderMainDummyNotificationNoticeFriendAgreeProps {
   // ? 同意加好友的相关信息
-  notificationInfo: {
-    from_user_id: string;
-    to_user_id: string;
-    to_user_name: string;
-  };
+  notificationInfo: IBaseNotificationUserFriendAgreeParams;
 };
 
 
@@ -27,8 +26,8 @@ const HeaderMainDummyNotificationNoticeFriendAgree = React.memo((props: IHeaderM
         <MainText>
           用户
           <NavLink
-            to={`/user/${props.notificationInfo.to_user_id}`}
-          >  {props.notificationInfo.to_user_name}</NavLink>  同意了你的好友申请, 现在可以开始聊天了!
+            to={`/user/${props.notificationInfo.from._id}`}
+          >  {props.notificationInfo.from.username}</NavLink>  同意了你的好友申请, 现在可以开始聊天了!
         </MainText>
       </AgreeMain>
     </AgreeWrapper>
