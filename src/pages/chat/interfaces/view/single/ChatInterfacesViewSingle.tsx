@@ -39,7 +39,7 @@ export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
 type IChatInterfacesViewSingleState = typeof initialState;
 
 
-const chatIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat`);
+const chatIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat/single`);
 const statusIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`);
 
 const initialState = {
@@ -135,7 +135,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         props.history.push('/chat/friends');
       } else {
         query({
-          url: '/api/chat/info/single',
+          url: '/api/chat/single/info',
           method: 'GET',
           jsonp: false,
           data: {
@@ -274,7 +274,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       query({
         jsonp: false,
         method: 'GET',
-        url: '/api/chat/info/single/message/list',
+        url: '/api/chat/single/info/message/list',
         data: {
           userId,
           chatId,

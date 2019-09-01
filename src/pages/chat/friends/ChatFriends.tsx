@@ -46,7 +46,7 @@ export interface IStaticFriendListItem {
 
 const ChatFriends = React.memo((props: IChatFriendsProps) => {
   const [state, setState] = React.useState<IChatFriendsState>({
-    chatIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat`),
+    chatIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat/single`),
     friendList: [],
   });
 
@@ -70,7 +70,7 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
     } else {
       query({
         method: 'GET',
-        url: '/api/chat/info/friend/list',
+        url: '/api/chat/single/info/friend/list',
         jsonp: false,
         data: {
           userId,
@@ -166,18 +166,6 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
 
       return props.history.push('/login');
     } else {
-      // query({
-      //   method: 'POST',
-      //   url: '/api/chat/create/single',
-      //   jsonp: false,
-      //   data: {
-      //     fromId,
-      //     toId,
-      //   },
-      // }).then(() => {
-      //   props.onTabsPaneAdaptPathname('interfaces');
-      // });
-
       state.chatIOClient.emit('sendChatSingleCreateMemory', {
         fromId,
         toId,

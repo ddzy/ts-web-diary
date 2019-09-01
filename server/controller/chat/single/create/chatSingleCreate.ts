@@ -1,179 +1,25 @@
-/**
- * @name chatCreate
- * @description 创建聊天相关信息
- * @name ddzy
- * @since 2019-7-27
- * @license MIT
- */
-
+import * as IOServer from 'socket.io';
 import * as Router from 'koa-router';
-import * as IO from 'socket.io';
 
-import redis from '../../../redis/redis';
 import {
-  IOREDIS_USER_ON_WHICH_CHAT,
-  IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL,
-} from '../../../redis/keys/redisKeys';
-import {
-  User,
-  ChatMemory,
-  ChatSingle,
-  ChatSingleMember,
-  ChatSingleMessage,
-} from '../../../model/model';
+  User, ChatSingleMember, ChatSingle, ChatMemory, ChatSingleMessage,
+} from '../../../../model/model';
+import redis from '../../../../redis/redis';
+import { IOREDIS_USER_ON_WHICH_CHAT, IOREDIS_SINGLE_MEMBER_UNREAD_MESSAGE_TOTAL } from '../../../../redis/keys/redisKeys';
 
-const chatCreateController = new Router();
+
+const chatSingleCreateController = new Router();
 
 
 /**
- * [单聊] - 创建新的单聊
+ * [单聊] - 处理有关单聊的websocket
+ * @param socket 客户端连接
+ * @param io 服务端连接
  */
-chatCreateController.post('/single', async (ctx) => {
-  const {
-    fromId,
-    toId,
-  } = ctx.request.body as {
-    fromId: string,
-    toId: string,
-  };
-
-  // ? 创建唯一聊天标识ID
-  const uniqueChatID = [fromId, toId].sort().join('_');
-
-  // ? 创建新的单聊成员
-  // * 单聊成员按照单聊划分
-  // * 每个单聊有两个不同的成员, 但是user是相同的
-  // * 考虑到以后的拓展
-  let isExistChatSingleMember = await ChatSingleMember.find({
-    chat_id: uniqueChatID,
-  });
-  if (!isExistChatSingleMember.length) {
-    isExistChatSingleMember = await ChatSingleMember.create([
-      {
-        chat_id: uniqueChatID,
-        user_id: fromId,
-        create_message: [],
-        create_message_total: 0,
-        last_create_message_time: Date.now(),
-        create_time: Date.now(),
-      },
-      {
-        chat_id: uniqueChatID,
-        user_id: toId,
-        create_message: [],
-        create_message_total: 0,
-        last_create_message_time: Date.now(),
-        create_time: Date.now(),
-      },
-    ]);
-  }
-
-  // ? 创建新的单聊
-  // * 唯一的聊天历史对应一个单聊
-  // * chat_id唯一标识一个单聊
-  let isExistChatSingle = await ChatSingle.findOne(
-    { chat_id: uniqueChatID },
-  );
-  if (!isExistChatSingle) {
-    // 创建单聊信息
-    isExistChatSingle = await ChatSingle.create({
-      chat_id: uniqueChatID,
-      from_member_id: isExistChatSingleMember[0],
-      to_member_id: isExistChatSingleMember[1],
-      message: [],
-      message_total: 0,
-      last_message_time: Date.now(),
-      create_time: Date.now(),
-      update_time: Date.now(),
-    });
-  }
-
-  // ? 创建新的聊天历史
-  // * 聊天历史有两个, 分别对应发送方和接收方
-  // * 但是两者有共同的聊天标识(chat_id)
-  const isExistChatMemory = await ChatMemory.find(
-    { chat_id: uniqueChatID },
-  );
-  if (!isExistChatMemory.length) {
-    // ? 分别查找接收方、发送方名称, 头像信息
-    // ? 同时更新发送方、接收方的chat_memory信息
-    // TODO 目前为了方便, 聊天室的用户信息暂时和应用的登录用户相同, 日后可能会分开.
-    const foundToSingleMember = await ChatSingleMember
-      .findById(isExistChatSingleMember[1], 'user_id')
-      .populate([
-        {
-          path: 'user_id',
-          select: ['useravatar', 'username'],
-        },
-      ]);
-    const foundFromSingleMember = await ChatSingleMember
-      .findById(isExistChatSingleMember[0], 'user_id')
-      .populate([
-        {
-          path: 'user_id',
-          select: ['useravatar', 'username'],
-        },
-      ]);
-
-    const createdFromChatMemory = await ChatMemory.create({
-      chat_type: 'single',
-      chat_id: uniqueChatID,
-      is_from_member: true,
-      from_member_id: foundFromSingleMember._id,
-      to_member_id: foundToSingleMember._id,
-      chat_name: foundToSingleMember.user_id.username,
-      chat_avatar: foundToSingleMember.user_id.useravatar,
-      last_message_content: '',
-      last_message_member_name: '',
-      last_message_content_type: 'plain',
-      unread_message_total: 0,
-      create_time: Date.now(),
-      update_time: Date.now(),
-    });
-
-    const createdToChatMemory = await ChatMemory.create({
-      chat_type: 'single',
-      chat_id: uniqueChatID,
-      is_from_member: false,
-      from_member_id: foundFromSingleMember._id,
-      to_member_id: foundToSingleMember._id,
-      chat_name: foundFromSingleMember.user_id.username,
-      chat_avatar: foundFromSingleMember.user_id.useravatar,
-      last_message_content: '',
-      last_message_member_name: '',
-      last_message_content_type: 'plain',
-      unread_message_total: 0,
-      create_time: createdFromChatMemory.update_time,
-      update_time: createdFromChatMemory.update_time,
-    });
-
-    // 更新发送方, 聊天历史列表
-    await User.findByIdAndUpdate(fromId, {
-      '$addToSet': {
-        chat_memory: createdFromChatMemory,
-      },
-    }, { new: true });
-
-    // 更新接收方, 聊天历史列表
-    await User.findByIdAndUpdate(toId, {
-      '$addToSet': {
-        chat_memory: createdToChatMemory,
-      },
-    }, { new: true });
-  }
-
-  ctx.body = {
-    code: 0,
-    message: 'Success!',
-    data: {
-    },
-  };
-});
-
-/**
- * [单聊] - 开始聊天
- */
-export function handleChat(socket: IO.Socket, io: IO.Namespace) {
+export function handleSingleChat(
+  socket: IOServer.Socket,
+  io: IOServer.Namespace,
+) {
   interface ISingleChatMessageProps {
     chatId: string;
     chatType: string;
@@ -485,4 +331,4 @@ export function handleChat(socket: IO.Socket, io: IO.Namespace) {
   })
 };
 
-export default chatCreateController;
+export default chatSingleCreateController;

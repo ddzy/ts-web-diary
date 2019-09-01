@@ -32,7 +32,7 @@ import {
 } from 'constants/constants';
 
 
-const chatSocket = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat`);
+const chatSocket = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat/single`);
 
 
 export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };
@@ -82,7 +82,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     } else {
       query({
         method: 'GET',
-        url: '/api/chat/info/memory/list',
+        url: '/api/chat/common/info/memory/list',
         jsonp: false,
         data: {
           userId,

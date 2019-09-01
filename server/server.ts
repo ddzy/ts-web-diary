@@ -12,14 +12,17 @@ import {
 } from './constants/constants';
 import router from './router';
 import {
-  handleChat,
-} from './controller/chat/create/chatCreate';
-import {
   handleStatus,
 } from './controller/status/create/statusCreate';
 import {
   handleNotificationUser,
 } from './controller/notification/user/notificationUser';
+import {
+  handleSingleChat,
+} from './controller/chat/single/create/chatSingleCreate';
+import {
+  handleGroupChat,
+} from './controller/chat/group/create/chatGroupCreate';
 
 
 const app: Koa = new Koa();
@@ -67,12 +70,6 @@ app
   .use(router.allowedMethods())
 
 
-// ? 处理聊天相关Websocket
-const chatIO = io.of('/chat');
-chatIO.on('connection', (socket) => {
-  handleChat(socket, chatIO);
-});
-
 // ? 处理状态相关Websocket
 const statusIO = io.of('/status');
 statusIO.on('connection', (socket) => {
@@ -84,5 +81,18 @@ const notificationUserIO = io.of('/notification/user');
 notificationUserIO.on('connection', (socket) => {
   handleNotificationUser(socket, notificationUserIO);
 });
+
+// ? 处理单聊的相关Websocket
+const singleChatIO = io.of('/chat/single');
+singleChatIO.on('connection', (socket) => {
+  handleSingleChat(socket, singleChatIO);
+});
+
+// ? 处理群聊的相关Websocket
+const groupChatIO = io.of('/chat/group');
+groupChatIO.on('connection', (socket) => {
+  handleGroupChat(socket, groupChatIO);
+});
+
 
 server.listen(8888);
