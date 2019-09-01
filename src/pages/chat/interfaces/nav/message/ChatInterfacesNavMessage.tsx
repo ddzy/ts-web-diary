@@ -23,6 +23,11 @@ import { query } from 'services/request';
 import {
   formatChatMemoryContent,
 } from 'utils/utils';
+import {
+  IBaseCommonChatMessgaeType,
+  IBaseCommonChatMemoryInfo,
+} from 'pages/chat/Chat.types';
+
 
 const chatSocket = IO('ws://localhost:8888/chat');
 
@@ -30,30 +35,12 @@ const chatSocket = IO('ws://localhost:8888/chat');
 export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };
 export interface IChatInterfacesNavMessageState {
   // ? 聊天历史列表
-  chatMemoryList: IStaticChatMemoryListItem[];
+  chatMemoryList: IBaseCommonChatMemoryInfo[];
   // ? loading状态
   // * 只在首次获取数据时有效
   loading: boolean;
 };
-export interface IStaticChatMemoryListItem {
-  // ? 聊天类型 single | group
-  chat_type: string;
-  // ? 聊天唯一标识id
-  // ? single状态下为自定义id, group则为自增id
-  chat_id: string;
-  // ? 聊天名称
-  chat_name: string;
-  // ? 聊天头像
-  chat_avatar: string;
-  // ? 最新的聊天内容
-  last_message_content: string;
-  // ? 最新的聊天内容类型
-  last_message_content_type: string;
-  // ? 最新的发言人名称
-  last_message_member_name: string;
-  // ? 未读消息总数
-  unread_message_total: number;
-};
+
 
 const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessageProps) => {
   const [state, setState] = React.useState<IChatInterfacesNavMessageState>({
@@ -121,7 +108,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
       data: {
         from_user_id: string,
         to_user_id: string,
-        chat_memory: IStaticChatMemoryListItem,
+        chat_memory: IBaseCommonChatMemoryInfo,
       },
     ) => {
       // 由于socket的广播性
@@ -146,7 +133,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
       newChatMemoryItemInfo: {
         chat_id: string;
         last_message_member_name: string;
-        last_message_content_type: string;
+        last_message_content_type: IBaseCommonChatMessgaeType;
         last_message_content: string;
 
         to_user_id: string;
@@ -202,11 +189,10 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
    * [初始化] - 聊天历史列表
    */
   function _initChatMemoryList() {
-
     return (
       <List
         dataSource={state.chatMemoryList}
-        renderItem={(item: IStaticChatMemoryListItem) => (
+        renderItem={(item: IBaseCommonChatMemoryInfo) => (
           <MessageMainItem onClick={() => {
             handleToSingleOrGroupClick(item.chat_type, item.chat_id);
           }}>

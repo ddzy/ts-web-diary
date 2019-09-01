@@ -22,6 +22,9 @@ import { query } from 'services/request';
 import {
   PAGE_SIZE,
 } from 'constants/constants';
+import {
+  IBaseCommonChatMessgaeType,
+} from 'pages/chat/Chat.types';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -190,7 +193,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
    */
   function handleChatMessageSend(
     messageInfo: {
-      type: string,
+      type: IBaseCommonChatMessgaeType,
       content: string,
     },
     callback?: () => void,
@@ -227,6 +230,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         ? fromMemberId
         : '';
 
+    // socket发送单聊消息
     chatSocket.emit('sendChatSingleMessage', {
       chatId,
       chatType,
@@ -293,7 +297,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     <SingleWrapper>
       <SingleMain>
         {/* 顶部标题栏 */}
-        <ChatInterfacesViewSingleTitle singleChatInfo={state.singleChatInfo} />
+        <ChatInterfacesViewSingleTitle singleChatInfo={state.singleChatInfo as any} />
 
         {/* 中部消息栏 */}
         <Spin

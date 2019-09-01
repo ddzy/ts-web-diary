@@ -140,7 +140,7 @@ chatInfoController.get('/single', async (ctx) => {
         select: ['chat_id', 'user_id'],
         populate: {
           path: 'user_id',
-          select: ['username'],
+          select: ['username, useravatar'],
         },
       },
       {
@@ -148,7 +148,7 @@ chatInfoController.get('/single', async (ctx) => {
         select: ['chat_id', 'user_id'],
         populate: {
           path: 'user_id',
-          select: ['username'],
+          select: ['username, useravatar'],
         },
       },
       {
