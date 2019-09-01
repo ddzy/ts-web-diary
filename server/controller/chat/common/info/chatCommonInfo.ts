@@ -1,7 +1,8 @@
 import * as Router from 'koa-router';
 
 import {
-  User, ChatSingleMember,
+  User,
+  ChatSingleMember,
 } from '../../../../model/model';
 import redis from '../../../../redis/redis';
 import {

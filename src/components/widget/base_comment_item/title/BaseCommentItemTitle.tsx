@@ -1,26 +1,48 @@
 import * as React from 'react';
+import {
+  Divider,
+} from 'antd';
 
 import {
-  TitleContainer,
+  TitleWrapper,
+  TitleMain,
 } from './style';
-import {
-  ICommentListItemProps,
-} from '../BaseCommentItem';
 import BaseCommentItemTitleAvatar from './avatar/BaseCommentItemTitleAvatar';
+import BaseCommentItemTitleName from './name/BaseCommentItemTitleName';
+import {
+  ICommonBaseArticleCommentInfo,
+  ICommonBaseArticleCommentReplyInfo,
+} from 'pages/details/Details.types';
 
 
-export interface IBaseCommentItemTitleProps extends ICommentListItemProps { };
+export interface IBaseCommentItemTitleProps {
+  // ? 判断是评论还是回复
+  isReply: boolean;
+  // ? 单个评论或回复的详细信息
+  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo;
+};
 
 
 const BaseCommentItemTitle = React.memo((
   props: IBaseCommentItemTitleProps,
 ): JSX.Element => {
   return (
-    <TitleContainer>
-      <BaseCommentItemTitleAvatar
-        {...props}
-      />
-    </TitleContainer>
+    <TitleWrapper>
+      <TitleMain>
+        {/* 左边头像框 */}
+        <BaseCommentItemTitleAvatar
+          isReply={props.isReply}
+          commentInfo={props.commentInfo}
+        />
+
+        <Divider type="vertical" />
+
+        {/* 右边名称框 */}
+        <BaseCommentItemTitleName
+          commentInfo={props.commentInfo}
+        />
+      </TitleMain>
+    </TitleWrapper>
   );
 });
 
