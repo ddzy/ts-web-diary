@@ -116,3 +116,12 @@ export const NOTIFICATION_MAKE_FRIEND_REFUSE = 'NOTIFICATION_MAKE_FRIEND_REFUSE'
 export const NOTIFICATION_STAR_ARTICLE = 'NOTIFICATION_STAR_ARTICLE';
 // ? 用户点赞我的评论时的通知
 export const NOTIFICATION_STAR_COMMENT = 'NOTIFICATION_STAR_COMMENT';
+
+/**
+ * socket端口信息
+ */
+export const SOCKET_CONNECTION_INFO = {
+  schema: 'ws',
+  domain: 'localhost',
+  port: 8888,
+};

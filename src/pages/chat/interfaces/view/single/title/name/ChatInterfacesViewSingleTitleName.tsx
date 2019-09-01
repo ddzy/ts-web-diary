@@ -8,28 +8,14 @@ import {
   NameMain,
   NameMainText,
 } from './style';
+import {
+  IBaseChatSingleInfo,
+} from 'pages/chat/Chat.types';
 
 
 export interface IChatInterfacesViewSingleTitleNameProps {
   // ? 单聊信息
-  singleChatInfo: {
-    from_member_id: {
-      _id: string,
-      chat_id: string,
-      user_id: {
-        _id: string,
-        username: string,
-      },
-    },
-    to_member_id: {
-      _id: string,
-      chat_id: string,
-      user_id: {
-        _id: string,
-        username: string,
-      },
-    },
-  },
+  singleChatInfo: IBaseChatSingleInfo;
 };
 
 

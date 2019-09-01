@@ -1,7 +1,5 @@
 import * as React from 'react';
-// import * as IO from 'socket.io-client';
-// import * as SocketIOClient from 'socket.io-client';
-import * as IO from 'socket.io-client';
+import * as IOClient from 'socket.io-client';
 import {
   Form,
   Icon,
@@ -24,6 +22,9 @@ import {
   FormTitle,
   FormFriendLink,
 } from './style';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface ILoginProps extends FormComponentProps {
@@ -37,7 +38,7 @@ export interface ILoginState {
     username: string;
     message: string;
   };
-  statusIO: SocketIOClient.Socket,
+  statusIOClient: SocketIOClient.Socket,
 };
 
 
@@ -49,11 +50,11 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
       username: '',
       message: '',
     },
-    statusIO: IO('ws://localhost:8888/status'),
+    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
   }
 
   public componentWillUnmount() {
-    this.state.statusIO.close();
+    this.state.statusIOClient.close();
   }
 
   /**
@@ -86,7 +87,7 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
                 localStorage.setItem('userid', data.userid);
 
                 // ** socket处理用户在线状态 **
-                this.state.statusIO.emit('sendUserOnLine', {
+                this.state.statusIOClient.emit('sendUserOnLine', {
                   userId: data.userid,
                 });
 

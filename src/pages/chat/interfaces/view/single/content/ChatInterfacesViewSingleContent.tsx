@@ -20,6 +20,9 @@ import {
 } from './style';
 import { formatTime } from 'utils/utils';
 import BaseChatMessage from 'components/widget/base_chat_message/BaseChatMessage';
+import {
+  IBaseChatSingleMessageInfo,
+} from 'pages/chat/Chat.types';
 
 
 export interface IChatInterfacesViewSingleContentProps extends RouteComponentProps {
@@ -29,7 +32,7 @@ export interface IChatInterfacesViewSingleContentProps extends RouteComponentPro
   }>;
 
   // ? 单聊消息列表
-  singleChatMessage: IStaticChatSingleMessageParams[];
+  singleChatMessage: IBaseChatSingleMessageInfo[];
   // ? 分页相关: 标识是否处于发送状态, 便于进行吸顶处理
   isMessageSend: boolean;
   // ? 分页相关: 是否还有更多消息
@@ -38,31 +41,6 @@ export interface IChatInterfacesViewSingleContentProps extends RouteComponentPro
   onLoadMore: (page: number) => void;
 };
 export interface IChatInterfacesViewSingleContentState {};
-// ? 单聊消息格式
-export interface IStaticChatSingleMessageParams {
-  _id: string;
-  chat_id: string;
-  from_member_id: {
-    _id: string,
-    user_id: {
-      _id: string,
-      useravatar: string,
-      username: string,
-    },
-  },
-  to_member_id: {
-    _id: string,
-    user_id: {
-      _id: string,
-      useravatar: string,
-      username: string,
-    },
-  },
-  content_type: string;
-  content: string;
-  create_time: number;
-  update_time: number;
-};
 
 
 const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSingleContentProps) => {

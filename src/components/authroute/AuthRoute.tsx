@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as IO from 'socket.io-client';
+import * as IOClient from 'socket.io-client';
 import {
   notification,
 } from 'antd';
@@ -16,7 +16,9 @@ import {
   IInitialState,
   reduxHandleCheckAuth,
 } from './AuthRoute.redux';
-
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface IAuthRouteProps extends RouteComponentProps<any> {
@@ -34,7 +36,7 @@ const AuthRoute = React.memo<IAuthRouteProps>((
   props: IAuthRouteProps,
 ): JSX.Element => {
   const [state] = React.useState<IAuthRouteState>({
-    statusIO: IO('ws://localhost:8888/status'),
+    statusIO: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
   });
 
   React.useEffect(() => {

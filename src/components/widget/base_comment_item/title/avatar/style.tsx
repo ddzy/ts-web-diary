@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 
-export const AvatarWrapper = styled.div``;
+export const AvatarWrapper = styled.div`
+  display: inline-block;
+`;
+export const AvatarMain = styled.div``;
 
 // 评论者信息popover框
 export const PopoverTitleContainer = styled.div``;

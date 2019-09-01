@@ -11,28 +11,14 @@ import {
 } from './style';
 import ChatInterfacesViewSingleTitleName from './name/ChatInterfacesViewSingleTitleName';
 import ChatInterfacesViewSingleTitleInfo from './info/ChatInterfacesViewSingleTitleInfo';
+import {
+  IBaseChatSingleInfo,
+} from 'pages/chat/Chat.types';
 
 
 export interface IChatInterfacesViewSingleTitleProps {
   // ? 单聊信息
-  singleChatInfo: {
-    from_member_id: {
-      _id: string,
-      chat_id: string,
-      user_id: {
-        _id: string,
-        username: string,
-      },
-    },
-    to_member_id: {
-      _id: string,
-      chat_id: string,
-      user_id: {
-        _id: string,
-        username: string,
-      },
-    },
-  },
+  singleChatInfo: IBaseChatSingleInfo,
 };
 
 const ChatInterfacesViewSingleTitle = React.memo((props: IChatInterfacesViewSingleTitleProps) => {

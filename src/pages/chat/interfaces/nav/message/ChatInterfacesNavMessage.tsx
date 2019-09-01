@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as IO from 'socket.io-client';
+import * as IOClient from 'socket.io-client';
 import {
   List,
   Avatar,
@@ -23,37 +23,27 @@ import { query } from 'services/request';
 import {
   formatChatMemoryContent,
 } from 'utils/utils';
+import {
+  IBaseCommonChatMessgaeType,
+  IBaseCommonChatMemoryInfo,
+} from 'pages/chat/Chat.types';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
-const chatSocket = IO('http://localhost:8888/chat');
+
+const chatSocket = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat/single`);
 
 
 export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };
 export interface IChatInterfacesNavMessageState {
   // ? 聊天历史列表
-  chatMemoryList: IStaticChatMemoryListItem[];
+  chatMemoryList: IBaseCommonChatMemoryInfo[];
   // ? loading状态
   // * 只在首次获取数据时有效
   loading: boolean;
 };
-export interface IStaticChatMemoryListItem {
-  // ? 聊天类型 single | group
-  chat_type: string;
-  // ? 聊天唯一标识id
-  // ? single状态下为自定义id, group则为自增id
-  chat_id: string;
-  // ? 聊天名称
-  chat_name: string;
-  // ? 聊天头像
-  chat_avatar: string;
-  // ? 最新的聊天内容
-  last_message_content: string;
-  // ? 最新的聊天内容类型
-  last_message_content_type: string;
-  // ? 最新的发言人名称
-  last_message_member_name: string;
-  // ? 未读消息总数
-  unread_message_total: number;
-};
+
 
 const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessageProps) => {
   const [state, setState] = React.useState<IChatInterfacesNavMessageState>({
@@ -72,6 +62,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
       loading: true,
     });
 
+    // 获取聊天历史列表
     _getChatMemoryList();
   }, []);
 
@@ -91,7 +82,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     } else {
       query({
         method: 'GET',
-        url: '/api/chat/info/memory/list',
+        url: '/api/chat/common/info/memory/list',
         jsonp: false,
         data: {
           userId,
@@ -115,13 +106,37 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     // ? 先移除所有的监听器, 避免出现指数增长的情况
     chatSocket.removeAllListeners();
 
+    // * socket监听实时创建的新的单聊会话
+    chatSocket.on('receiveChatMemoryCreate', (
+      data: {
+        from_user_id: string,
+        to_user_id: string,
+        chat_memory: IBaseCommonChatMemoryInfo,
+      },
+    ) => {
+      // 由于socket的广播性
+      // 需要过滤当前用户
+      const currentUserId = localStorage.getItem('userid');
+
+      if (data.to_user_id === currentUserId) {
+        // 将创建的新的聊天历史追加到列表
+        setState({
+          ...state,
+          chatMemoryList: [
+            data.chat_memory,
+            ...state.chatMemoryList,
+          ],
+        });
+      }
+    });
+
     // * 接收聊天信息
     // ? 不能在componentDidMount时监听, 那样做只会监听一个聊天会话
-    chatSocket.on('receiveChatMemoryItem', (
+    chatSocket.on('receiveChatMemoryUpdate', (
       newChatMemoryItemInfo: {
         chat_id: string;
         last_message_member_name: string;
-        last_message_content_type: string;
+        last_message_content_type: IBaseCommonChatMessgaeType;
         last_message_content: string;
 
         to_user_id: string;
@@ -177,11 +192,10 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
    * [初始化] - 聊天历史列表
    */
   function _initChatMemoryList() {
-
     return (
       <List
         dataSource={state.chatMemoryList}
-        renderItem={(item: IStaticChatMemoryListItem) => (
+        renderItem={(item: IBaseCommonChatMemoryInfo) => (
           <MessageMainItem onClick={() => {
             handleToSingleOrGroupClick(item.chat_type, item.chat_id);
           }}>

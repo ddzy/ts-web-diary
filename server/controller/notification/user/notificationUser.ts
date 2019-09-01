@@ -73,6 +73,18 @@ export function handleNotificationUser(
       to: string,
     },
   ) => {
+    // ? 更新双方的好友列表
+    await User.findByIdAndUpdate(data.from, {
+      '$addToSet': {
+        friends: data.to,
+      },
+    });
+    await User.findByIdAndUpdate(data.to, {
+      '$addToSet': {
+        friends: data.from,
+      },
+    });
+
     // ? 创建新的通知
     const createdReceiverNotification = await NotificationUserFriendAgree.create({
       from: data.from,

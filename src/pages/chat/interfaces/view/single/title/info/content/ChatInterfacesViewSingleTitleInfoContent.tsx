@@ -66,7 +66,7 @@ const ChatInterfacesViewSingleTitleInfoContent = React.memo((props: IChatInterfa
     } else {
       query({
         jsonp: false,
-        url: '/api/chat/info/single/detail',
+        url: '/api/chat/single/info/detail',
         method: 'GET',
         data: {
           userId,
