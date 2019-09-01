@@ -197,8 +197,8 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
                     state.userProfileInfo.user_is_current_author
                       ? true
                       : state.userProfileInfo.user_is_friend
-                        ? true
-                        : false
+                        ? false
+                        : true
                   }
                   onClick={
                     state.userProfileInfo.user_is_friend ? handleChat : handleMakeFriend
