@@ -24,7 +24,7 @@ import {
   formatChatMemoryContent,
 } from 'utils/utils';
 
-const chatSocket = IO('http://localhost:8888/chat');
+const chatSocket = IO('ws://localhost:8888/chat');
 
 
 export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };
@@ -72,6 +72,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
       loading: true,
     });
 
+    // 获取聊天历史列表
     _getChatMemoryList();
   }, []);
 
@@ -115,9 +116,33 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     // ? 先移除所有的监听器, 避免出现指数增长的情况
     chatSocket.removeAllListeners();
 
+    // * socket监听实时创建的新的单聊会话
+    chatSocket.on('receiveChatMemoryCreate', (
+      data: {
+        from_user_id: string,
+        to_user_id: string,
+        chat_memory: IStaticChatMemoryListItem,
+      },
+    ) => {
+      // 由于socket的广播性
+      // 需要过滤当前用户
+      const currentUserId = localStorage.getItem('userid');
+
+      if (data.to_user_id === currentUserId) {
+        // 将创建的新的聊天历史追加到列表
+        setState({
+          ...state,
+          chatMemoryList: [
+            data.chat_memory,
+            ...state.chatMemoryList,
+          ],
+        });
+      }
+    });
+
     // * 接收聊天信息
     // ? 不能在componentDidMount时监听, 那样做只会监听一个聊天会话
-    chatSocket.on('receiveChatMemoryItem', (
+    chatSocket.on('receiveChatMemoryUpdate', (
       newChatMemoryItemInfo: {
         chat_id: string;
         last_message_member_name: string;

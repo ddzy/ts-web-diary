@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import * as IOClient from 'socket.io-client';
 import {
   Table,
   Divider,
@@ -15,7 +16,10 @@ import {
   Popconfirm,
   notification,
 } from 'antd';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   FriendsWrapper,
@@ -34,6 +38,8 @@ export interface IChatFriendsProps extends RouteComponentProps {
   ) => void;
 };
 export interface IChatFriendsState {
+  // ? 聊天相关的Websocket
+  chatIOClient: SocketIOClient.Socket;
   // ? 好友列表
   friendList: IStaticFriendListItem[];
 };
@@ -45,6 +51,7 @@ export interface IStaticFriendListItem {
 
 const ChatFriends = React.memo((props: IChatFriendsProps) => {
   const [state, setState] = React.useState<IChatFriendsState>({
+    chatIOClient: IOClient('ws://localhost:8888/chat'),
     friendList: [],
   });
 
@@ -74,7 +81,10 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
           userId,
         },
       }).then(({ data: { friendList } }) => {
-        setState({ friendList });
+        setState({
+          ...state,
+          friendList
+        });
       });
     }
   }
@@ -140,7 +150,7 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
   }
 
   /**
-   * 处理 - 发起好友单聊
+   * [处理] - 发起好友单聊
    * @param value 表格每一行的数据
    */
   function handleChat(
@@ -148,9 +158,9 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
       key: string,
     },
   ) {
-    // 接收方
+    // 单聊接收方
     const toId = value.key;
-    // 发送方
+    // 单聊发起方
     const fromId = localStorage.getItem('userid');
 
     if (!fromId) {
@@ -159,19 +169,26 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
         description: '登录凭证已过期, 请重新登录',
       });
 
-      props.history.push('/login');
+      return props.history.push('/login');
     } else {
-      query({
-        method: 'POST',
-        url: '/api/chat/create/single',
-        jsonp: false,
-        data: {
-          fromId,
-          toId,
-        },
-      }).then(() => {
-        props.onTabsPaneAdaptPathname('interfaces');
+      // query({
+      //   method: 'POST',
+      //   url: '/api/chat/create/single',
+      //   jsonp: false,
+      //   data: {
+      //     fromId,
+      //     toId,
+      //   },
+      // }).then(() => {
+      //   props.onTabsPaneAdaptPathname('interfaces');
+      // });
+
+      state.chatIOClient.emit('sendChatSingleCreateMemory', {
+        fromId,
+        toId,
       });
+
+      props.onTabsPaneAdaptPathname('interfaces');
     }
   }
 

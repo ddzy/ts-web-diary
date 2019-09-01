@@ -22,38 +22,16 @@ const chatInfoController = new Router();
 
 
 /**
- * 获取好友列表
- */
-chatInfoController.get('/friend/list', async (ctx) => {
-  const {
-    userId,
-  } = ctx.request.query;
-
-  const foundUserList = await User
-    .findById(userId, 'friends')
-    .populate([
-      {
-        path: 'friends',
-        select: ['username', 'useravatar'],
-      },
-    ])
-
-  ctx.body = {
-    code: 0,
-    message: 'Success!',
-    data: {
-      friendList: foundUserList.friends,
-    },
-  };
-})
-
-/**
- * 获取聊天历史列表
+ * [公共] - 获取聊天历史列表
  */
 chatInfoController.get('/memory/list', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+  };
+
   const {
-    userId
-  } = ctx.request.query;
+    userId,
+  } = ctx.request.query as IRequestParams;
 
   // ? 查找聊天历史列表
   const foundUserInfo = await User
@@ -102,6 +80,34 @@ chatInfoController.get('/memory/list', async (ctx) => {
     },
   };
 })
+
+
+/**
+ * [单聊] - 获取好友列表
+ */
+chatInfoController.get('/friend/list', async (ctx) => {
+  const {
+    userId,
+  } = ctx.request.query;
+
+  const foundUserList = await User
+    .findById(userId, 'friends')
+    .populate([
+      {
+        path: 'friends',
+        select: ['username', 'useravatar'],
+      },
+    ])
+
+  ctx.body = {
+    code: 0,
+    message: 'Success!',
+    data: {
+      friendList: foundUserList.friends,
+    },
+  };
+})
+
 
 /**
  * [单聊] - 获取指定单聊信息
@@ -187,6 +193,7 @@ chatInfoController.get('/single', async (ctx) => {
   };
 });
 
+
 /**
  * [单聊] - 获取指定单聊的详细信息
  * @todo 拆分single & group
@@ -240,6 +247,7 @@ chatInfoController.get('/single/detail', async (ctx) => {
     },
   };
 });
+
 
 /**
  * [单聊] - 分页获取指定单聊的消息列表
