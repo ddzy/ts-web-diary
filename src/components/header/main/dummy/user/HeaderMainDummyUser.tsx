@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as IO from 'socket.io-client';
+import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   Link,
@@ -25,6 +25,9 @@ import {
   UserMainPopoverItemText,
   UserMainPopoverListItem,
 } from './style';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface IHeaderMainDummyUserProps extends RouteComponentProps {
@@ -36,7 +39,7 @@ export interface IHeaderMainDummyUserProps extends RouteComponentProps {
   },
 };
 export interface IHeaderMainDummyUserState {
-  statusIO: SocketIOClient.Socket;
+  statusIOClient: SocketIOClient.Socket;
 };
 
 
@@ -44,12 +47,12 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
   props: IHeaderMainDummyUserProps,
 ): JSX.Element => {
   const [state] = React.useState<IHeaderMainDummyUserState>({
-    statusIO: IO('ws://localhost:8888/status'),
+    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
   });
 
   React.useEffect(() => {
     return () => {
-      state.statusIO.close();
+      state.statusIOClient.close();
     }
   }, []);
 
@@ -110,11 +113,11 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
 
         if (userId) {
           // socket处理用户登录(离线)
-          state.statusIO.emit('sendUserOffLine', {
+          state.statusIOClient.emit('sendUserOffLine', {
             userId,
           });
           // socket处理用户正处于哪个会话状态
-          state.statusIO.emit('sendUserOnWhichChat', {
+          state.statusIOClient.emit('sendUserOnWhichChat', {
             userId,
             chatId: '',
           });

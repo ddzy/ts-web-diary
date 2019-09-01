@@ -44,9 +44,6 @@ import collectionUpdateControllerNew from './controller/collection/update/collec
 import collectionInfoControllerNew from './controller/collection/info/collectionInfo';
 import collectionDeleteControllerNew from './controller/collection/delete/collectionDelete';
 import uploadControllerNew from './controller/upload/upload';
-import chatController from './controller/chat/chat';
-import chatInfoController from './controller/chat/info/chatInfo';
-import chatCreateController from './controller/chat/create/chatCreate';
 import statusController from './controller/status/status';
 import statusCreateController from './controller/status/create/statusCreate';
 import statusInfoController from './controller/status/info/statusInfo';
@@ -54,6 +51,17 @@ import userController from './controller/user/user';
 import userInfoController from './controller/user/info/userInfo';
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
+import chatController from './controller/chat/chat';
+import chatSingleController from './controller/chat/single/chatSingle';
+import chatSingleInfoController from './controller/chat/single/info/chatSingleInfo';
+import chatSingleCreateController from './controller/chat/single/create/chatSingleCreate';
+import chatCommonController from './controller/chat/common/chatCommon';
+import chatCommonInfoController from './controller/chat/common/info/chatCommonInfo';
+import chatGroupController from './controller/chat/group/chatGroup';
+import chatGroupCreateController from './controller/chat/group/create/chatGroupCreate';
+import chatGroupInfoController from './controller/chat/group/info/chatGroupInfo';
+
+
 
 const router: Router = new Router({
   prefix: '/api',
@@ -82,7 +90,15 @@ replyArticleControllerNew
 actionStarControllerNew
   .use('/article', actionStarArticleControllerNew.routes(), actionStarArticleControllerNew.allowedMethods())
   .use('/comment', actionStarCommentControllerNew.routes(), actionStarCommentControllerNew.allowedMethods())
-  .use('/reply', actionStarReplyControllerNew.routes(), actionStarReplyControllerNew.allowedMethods())
+  .use('/reply', actionStarReplyControllerNew.routes(), actionStarReplyControllerNew.allowedMethods());
+chatSingleController
+  .use('/info', chatSingleInfoController.routes(), chatSingleInfoController.allowedMethods())
+  .use('/create', chatSingleCreateController.routes(), chatSingleCreateController.allowedMethods());
+chatGroupController
+  .use('/info', chatGroupInfoController.routes(), chatGroupInfoController.allowedMethods())
+  .use('/create', chatGroupCreateController.routes(), chatGroupCreateController.allowedMethods());
+chatCommonController
+  .use('/info', chatCommonInfoController.routes(), chatCommonInfoController.allowedMethods());
 
 
 // !! 二级路由 !!
@@ -109,8 +125,9 @@ collectionControllerNew
   .use('/info', collectionInfoControllerNew.routes(), collectionInfoControllerNew.allowedMethods())
   .use('/delete', collectionDeleteControllerNew.routes(), collectionDeleteControllerNew.allowedMethods())
 chatController
-  .use('/info', chatInfoController.routes(), chatInfoController.allowedMethods())
-  .use('/create', chatCreateController.routes(), chatCreateController.allowedMethods());
+  .use('/single', chatSingleController.routes(), chatSingleController.allowedMethods())
+  .use('/common', chatCommonController.routes(), chatCommonController.allowedMethods())
+  .use('/group', chatGroupController.routes(), chatGroupController.allowedMethods());
 statusController
   .use('/create', statusCreateController.routes(), statusCreateController.allowedMethods())
   .use('/info', statusInfoController.routes(), statusInfoController.allowedMethods());

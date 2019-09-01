@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as IO from 'socket.io-client';
+import * as IOClient from 'socket.io-client';
 import {
   Popover,
   Icon,
@@ -15,11 +15,14 @@ import {
 } from './style';
 import StatusOnLine from './online/statusOnLine';
 import { query } from 'services/request';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface IStatusProps { };
 export interface IStatusState {
-  statusIO: SocketIOClient.Socket;
+  statusIOClient: SocketIOClient.Socket;
 
   // ? 在线用户各种信息
   userOnLineInfo: {
@@ -30,7 +33,7 @@ export interface IStatusState {
 
 const Status = React.memo((props: IStatusProps) => {
   const [state, setState] = React.useState<IStatusState>({
-    statusIO: IO('ws://localhost:8888/status'),
+    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
     userOnLineInfo: {
       online_total: 0,
     },
@@ -41,7 +44,7 @@ const Status = React.memo((props: IStatusProps) => {
     _getStatusInfo();
 
     // socket获取实时的在线用户数量
-    state.statusIO.on('receiveUserOnLineTotal', (userOnLineInfo: {
+    state.statusIOClient.on('receiveUserOnLineTotal', (userOnLineInfo: {
       online_total: number;
     }) => {
       setState({
@@ -54,7 +57,7 @@ const Status = React.memo((props: IStatusProps) => {
     });
 
     return () => {
-      state.statusIO.close();
+      state.statusIOClient.close();
     }
   }, []);
 

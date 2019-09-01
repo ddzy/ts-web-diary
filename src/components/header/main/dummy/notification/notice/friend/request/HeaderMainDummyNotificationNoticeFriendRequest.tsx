@@ -22,6 +22,9 @@ import {
 import {
   IBaseNoficationUserFriendRequestParams,
 } from 'components/header/Header.types';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface IHeaderMainDummyNotificationNoticeFriendRequestProps {
@@ -46,7 +49,7 @@ export interface IHeaderMainDummyNotificationNoticeFriendRequestState {
 
 const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: IHeaderMainDummyNotificationNoticeFriendRequestProps) => {
   const [state, setState] = React.useState<IHeaderMainDummyNotificationNoticeFriendRequestState>({
-    notificationUserIOClient: IOClient('ws://localhost:8888/notification/user'),
+    notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`),
     isShowRefuseModal: false,
     refuseDescription: '',
     isShowControl: true,

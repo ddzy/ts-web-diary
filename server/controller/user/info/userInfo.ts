@@ -58,22 +58,23 @@ userInfoController.post('/article/comment', async (ctx) => {
   // ? 查询评论或回复的作者信息
   const foundCommentOrReplyAuthorInfo = await foundCommentOrReplyInfo.from;
   // ? 查询当前登录用户的信息
-  const foundCurrentUserInfo = await User.findById(
-    userId,
-  );
+  const foundCurrentUserInfo = await User
+    .findById(userId)
+    .lean();
 
   // ? 统计评论人的文章数
   const computedAuthorArticleTotal = await foundCommentOrReplyAuthorInfo.articles.length;
 
   // ? 统计评论人的文章获赞总数
-  const computedArticleStarCountArr = await Promise.all(foundCommentOrReplyAuthorInfo.articles.map(async (article: any) => {
+  const computedArticleStarCountArr = await Promise
+    .all(foundCommentOrReplyAuthorInfo.articles.map(async (article: any) => {
     const articleId = article._id;
     const redisStarArticleKey = generateStarArticleKey(articleId);
 
     const starCount = await redis.zcard(redisStarArticleKey);
 
     return starCount;
-  }));
+    }));
   const computedArticleStarTotal = await computedArticleStarCountArr.reduce((total: number, current: number) => {
     total += current;
 
@@ -81,15 +82,26 @@ userInfoController.post('/article/comment', async (ctx) => {
   }, 0);
 
   // ? 统计评论人的被关注数
-  const computedAuthorFollowerTotal = await foundCommentOrReplyAuthorInfo.followers.length;
+  const computedAuthorFollowerTotal = await foundCommentOrReplyAuthorInfo
+    .followers
+    .length;
 
   // ? 计算当前用户是否已经关注了评论人
-  const computeIsAttention = await foundCommentOrReplyAuthorInfo.followers.indexOf(userId) !== -1;
+  const computeIsAttention = await foundCommentOrReplyAuthorInfo.followers
+    .indexOf(userId) !== -1;
 
   // ? 计算评论人与当前用户是否互为好友
   // * 单方的好友目前排除在外
-  const computeUserIsAuthorFriend = await foundCommentOrReplyAuthorInfo.friends.indexOf(userId) !== -1;
-  const computeAuthorIsUserFriend = await foundCurrentUserInfo.friends.indexOf(_id) !== -1;
+  const computeUserIsAuthorFriend = await foundCommentOrReplyAuthorInfo
+    .friends
+    .some((id: any) => {
+      return id.equals(userId);
+    })
+  const computeAuthorIsUserFriend = await foundCurrentUserInfo
+    .friends
+    .some((id: any) => {
+      return id.equals(foundCommentOrReplyAuthorInfo._id);
+    });
 
   // ? 计算评论人是否当前用户
   const computeIsAuthorEqualUser = await userId === String(foundCommentOrReplyAuthorInfo._id);

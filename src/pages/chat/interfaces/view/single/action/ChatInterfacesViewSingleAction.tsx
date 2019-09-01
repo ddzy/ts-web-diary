@@ -12,6 +12,9 @@ import {
 import ChatInterfacesViewSingleActionExtra from './extra/ChatInterfacesViewSingleActionExtra';
 import ChatInterfacesViewSingleActionInput from './input/ChatInterfacesViewSingleActionInput';
 import ChatInterfacesViewSingleActionSend from './send/ChatInterfacesViewSingleActionSend';
+import {
+  IBaseCommonChatMessgaeType,
+} from 'pages/chat/Chat.types';
 
 
 export interface IChatInterfacesViewSingleActionProps {
@@ -26,7 +29,7 @@ export interface IChatInterfacesViewSingleActionState {
   messageInfo: {
     // * 消息类型
     // * 目前只计划实现三种, plain(普通文本)、image(图片)、文件(file)
-    type: 'plain' | 'image' | 'file',
+    type: IBaseCommonChatMessgaeType,
     content: string,
   };
 };
