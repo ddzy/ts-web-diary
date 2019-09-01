@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as IO from 'socket.io-client';
+import * as IOClient from 'socket.io-client';
 import {
   List,
   Avatar,
@@ -27,9 +27,12 @@ import {
   IBaseCommonChatMessgaeType,
   IBaseCommonChatMemoryInfo,
 } from 'pages/chat/Chat.types';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
-const chatSocket = IO('ws://localhost:8888/chat');
+const chatSocket = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat`);
 
 
 export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };

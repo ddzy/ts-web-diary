@@ -41,6 +41,9 @@ import {
   ICommentListItemProps,
 } from '../../BaseCommentItem';
 import { query } from 'services/request';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface IBaseCommentItemTitleAvatarProps extends ICommentListItemProps, RouteComponentProps { };
@@ -78,7 +81,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IBaseCommentItemTitleAvatarState>({
-    notificationUserIOClient: IOClient('ws://localhost:8888/notification/user'),
+    notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`),
     loading: false,
     userProfileInfo: {
       author_id: '',

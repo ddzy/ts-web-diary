@@ -1,11 +1,3 @@
-/**
- * @name ChatFriends
- * @description 好友列表区块
- * @author ddzy
- * @since 2019-7-27
- * @license MIT
- */
-
 import * as React from 'react';
 import * as IOClient from 'socket.io-client';
 import {
@@ -29,6 +21,9 @@ import {
   FriendsMainTitleInnerText,
 } from './style';
 import { query } from 'services/request';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface IChatFriendsProps extends RouteComponentProps {
@@ -51,7 +46,7 @@ export interface IStaticFriendListItem {
 
 const ChatFriends = React.memo((props: IChatFriendsProps) => {
   const [state, setState] = React.useState<IChatFriendsState>({
-    chatIOClient: IOClient('ws://localhost:8888/chat'),
+    chatIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat`),
     friendList: [],
   });
 

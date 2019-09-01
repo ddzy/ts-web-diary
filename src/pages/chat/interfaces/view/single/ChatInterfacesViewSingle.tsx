@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as IO from 'socket.io-client';
+import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -25,6 +25,9 @@ import {
 import {
   IBaseCommonChatMessgaeType,
 } from 'pages/chat/Chat.types';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -36,8 +39,8 @@ export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
 type IChatInterfacesViewSingleState = typeof initialState;
 
 
-const chatSocket = IO('http://localhost:8888/chat');
-const statusSocket = IO('http://localhost:8888/status');
+const chatIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat`);
+const statusIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`);
 
 const initialState = {
   // ? 单聊信息
@@ -82,7 +85,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
       // * socket处理用户正处于哪个会话状态
       // 单聊组件`componentWillUnmount`之后, 需要进行一次重置
       // 避免上一次的会话状态遗留
-      statusSocket.emit('sendUserOnWhichChat', {
+      statusIOClient.emit('sendUserOnWhichChat', {
         userId: localStorage.getItem('userid') || '',
         chatId: '',
       });
@@ -101,7 +104,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
 
     // * socket处理发送用户处于会话状态
     // ? 正处于哪个会话
-    statusSocket.emit('sendUserOnWhichChat', {
+    statusIOClient.emit('sendUserOnWhichChat', {
       userId: localStorage.getItem('userid') || '',
       chatId: props.match.params.id || '',
     });
@@ -152,7 +155,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
           });
 
           // socket处理同步重置聊天历史列表单个条目未读消息总数为0
-          chatSocket.emit('sendResetChatMemoryItemUnreadMessageTotal', {
+          chatIOClient.emit('sendResetChatMemoryItemUnreadMessageTotal', {
             chatId,
             userId,
           });
@@ -166,11 +169,11 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
    */
   function _setSingleChatMessageInfo() {
     // ? 先移除所有的监听器, 避免出现指数增长的情况
-    chatSocket.removeAllListeners();
+    chatIOClient.removeAllListeners();
 
     // * socket处理接收聊天信息
     // ? 不能在componentDidMount时监听, 只会监听一个聊天会话
-    chatSocket.on('receiveChatSingleMessage', (message: any) => {
+    chatIOClient.on('receiveChatSingleMessage', (message: any) => {
       // 过滤当前chatId的会话消息
       const chatId = props.match.params.id;
       const newMessage = message.chat_id === chatId
@@ -231,7 +234,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         : '';
 
     // socket发送单聊消息
-    chatSocket.emit('sendChatSingleMessage', {
+    chatIOClient.emit('sendChatSingleMessage', {
       chatId,
       chatType,
       fromUserId: newFromUserId,

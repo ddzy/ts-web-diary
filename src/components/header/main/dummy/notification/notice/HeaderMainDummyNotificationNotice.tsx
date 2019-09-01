@@ -38,6 +38,9 @@ import {
   IBaseNotificationUserFriendAgreeParams,
   IBaseNotificationUserFriendRefuseParams,
 } from 'components/header/Header.types';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 
 // ? 追加通知列表
@@ -129,7 +132,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       };
     }
   }, {
-    notificationUserIOClient: IOClient('ws://localhost:8888/notification/user', {
+    notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`, {
       reconnectionAttempts: 2,
     }),
     notificationList: [],
