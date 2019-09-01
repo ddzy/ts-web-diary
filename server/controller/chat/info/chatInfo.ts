@@ -30,10 +30,10 @@ chatInfoController.get('/friend/list', async (ctx) => {
   } = ctx.request.query;
 
   const foundUserList = await User
-    .findById(userId, 'friend')
+    .findById(userId, 'friends')
     .populate([
       {
-        path: 'friend',
+        path: 'friends',
         select: ['username', 'useravatar'],
       },
     ])
@@ -42,7 +42,7 @@ chatInfoController.get('/friend/list', async (ctx) => {
     code: 0,
     message: 'Success!',
     data: {
-      friendList: foundUserList.friend,
+      friendList: foundUserList.friends,
     },
   };
 })
