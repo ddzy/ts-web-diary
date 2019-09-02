@@ -6,61 +6,78 @@ import {
 import {
   User,
 } from '../../model/model';
-import {
-  FILTER_SENSITIVE,
-} from '../../constants/constants';
+
 
 const registerController: Router = new Router();
 
 
-registerController.post('/', async (ctx, next) => {
+/**
+ * [处理] - 新用户注册
+ */
+registerController.post('/', async (ctx, ) => {
+  interface IRequestParams {
+    username: string;
+    userpwd: string;
+    usergender: string;
+  };
+
   const {
     username,
     userpwd,
     usergender,
-  }: any = ctx.request.body;
+  } = ctx.request.body as unknown as IRequestParams;
 
-  // 查询
+  // ? 查询用户名是否重复
   const result = await User
-    .findOne({ username }, { ...FILTER_SENSITIVE });
+    .findOne({ username });
 
-  try {
-    if(result) {
-      ctx.body = { code: 1, message: '用户名已经存在!' };
-    }else {
-      await User.create({
+  if (result) {
+    ctx.body = {
+      code: 1,
+      message: '用户名重复!',
+      data: {
         username,
-        usergender,
-        useravatar: '',
-        userpwd: md5(userpwd),
-        collections: [],
-        articles: [],
-        attentions: {
-          users: [],
-          topics: [],
-        },
-        followers: [],
-        friends: [],
-        chat_memory: [],
-        notification: {
-          user: {
-            friend: {
-              request: [],
-              agree: [],
-              refuse: [],
-            },
-          },
-        },
-      });
-      ctx.body = {
-        code: 0,
-        message: '注册成功!',
-      };
-    }
-  } catch (error) {
-    ctx.status = 401;
-    ctx.body = { code: 1, msg: '后端出了点小问题,稍后再试吧!' };
+      },
+    };
+
+    return;
   }
+
+  // ? 创建新的用户
+  await User.create({
+    username,
+    usergender,
+    userpwd: md5(userpwd),
+    useravatar: '',
+    collections: [],
+    articles: [],
+    attention: {
+      users: [],
+      topics: [],
+    },
+    followers: [],
+    friends: [],
+    chat_memory: [],
+    notification: {
+      user: {
+        friend: {
+          request: [],
+          agree: [],
+          refuse: [],
+        },
+      },
+      admin: {},
+    },
+  });
+
+  ctx.body = {
+    code: 0,
+    message: '注册成功!',
+    data: {
+      username,
+      userpwd,
+    },
+  };
 });
 
 

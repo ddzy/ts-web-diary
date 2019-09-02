@@ -15,7 +15,7 @@ export const RegisterWrapper = styled('div')<IRegisterWrapperProps>`
   background-size: cover;
 `;
 
-export const RegisterContent = styled.div`
+export const RegisterMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
