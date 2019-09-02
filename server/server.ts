@@ -54,7 +54,7 @@ app
     path: [
       /^\/api\/login$/,
       /^\/api\/register$/,
-      /^\/status/,
+      /^\/socket\.io/,
     ],
   }))
   .use(koaStatic(
