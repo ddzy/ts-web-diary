@@ -39,9 +39,15 @@ const UserSchema: mongoose.Schema = new Schema({
     ref: 'Post',
   }],
   // ? 我关注的
-  attentions: {
-    type: Schema.Types.ObjectId,
-    ref: 'Attentions',
+  attention: {
+    users: [{
+      type: Schema.Types.ObjectId,
+      ref: 'AttentionUsers',
+    }],
+    topics: [{
+      type: Schema.Types.ObjectId,
+      ref: 'AttentionTopics',
+    }],
   },
   // ? 关注我的
   followers: [{

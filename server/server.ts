@@ -52,14 +52,9 @@ app
   })
   .use(koaJwt({ secret: SECRET_FOR_TOKEN }).unless({
     path: [
-      /^\/api\/login/,
-      /^\/api\/register/,
-      /^\/api\/article/,
-      /^\/api\/details/,
-      /^\/images/,
-      /^\/api\/details\/mimicat\.ico/,
-      /^\/api\/edit\/mimicat\.ico/,
-      /^\/api\/collection\/mimicat\.ico/,
+      /^\/api\/login$/,
+      /^\/api\/register$/,
+      /^\/status/,
     ],
   }))
   .use(koaStatic(
