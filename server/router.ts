@@ -49,6 +49,7 @@ import statusCreateController from './controller/status/create/statusCreate';
 import statusInfoController from './controller/status/info/statusInfo';
 import userController from './controller/user/user';
 import userInfoController from './controller/user/info/userInfo';
+import userCreateController from './controller/user/create/userCreate';
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
 import chatController from './controller/chat/chat';
@@ -60,7 +61,6 @@ import chatCommonInfoController from './controller/chat/common/info/chatCommonIn
 import chatGroupController from './controller/chat/group/chatGroup';
 import chatGroupCreateController from './controller/chat/group/create/chatGroupCreate';
 import chatGroupInfoController from './controller/chat/group/info/chatGroupInfo';
-
 
 
 const router: Router = new Router({
@@ -132,7 +132,8 @@ statusController
   .use('/create', statusCreateController.routes(), statusCreateController.allowedMethods())
   .use('/info', statusInfoController.routes(), statusInfoController.allowedMethods());
 userController
-  .use('/info', userInfoController.routes(), userInfoController.allowedMethods());
+  .use('/info', userInfoController.routes(), userInfoController.allowedMethods())
+  .use('/create', userCreateController.routes(), userCreateController.allowedMethods());
 notificationController
   .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
 

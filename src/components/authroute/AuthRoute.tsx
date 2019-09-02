@@ -10,7 +10,6 @@ import {
   withRouter,
   RouteComponentProps,
 } from 'react-router-dom';
-import { History } from 'history';
 
 import {
   IInitialState,
@@ -21,14 +20,12 @@ import {
 } from 'constants/constants';
 
 
-export interface IAuthRouteProps extends RouteComponentProps<any> {
-  history: History;
-
+export interface IAuthRouteProps extends RouteComponentProps {
   AuthRouteReducer: IInitialState;
   reduxHandleCheckAuth: (callback: () => void) => void;
 };
 export interface IAuthRouteState {
-  statusIO: SocketIOClient.Socket;
+  statusIOClient: SocketIOClient.Socket;
 };
 
 
@@ -36,7 +33,7 @@ const AuthRoute = React.memo<IAuthRouteProps>((
   props: IAuthRouteProps,
 ): JSX.Element => {
   const [state] = React.useState<IAuthRouteState>({
-    statusIO: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
+    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
   });
 
   React.useEffect(() => {
@@ -49,11 +46,11 @@ const AuthRoute = React.memo<IAuthRouteProps>((
 
         if (userId) {
           // socket处理用户登出(离线)
-          state.statusIO.emit('sendUserOffLine', {
+          state.statusIOClient.emit('sendUserOffLine', {
             userId,
           });
           // socket处理重置用户处于哪个会话
-          state.statusIO.emit('sendUserOnWhichChat', {
+          state.statusIOClient.emit('sendUserOnWhichChat', {
             userId,
             chatId: '',
           });
@@ -70,7 +67,7 @@ const AuthRoute = React.memo<IAuthRouteProps>((
     });
 
     return () => {
-      state.statusIO.close();
+      state.statusIOClient.close();
     }
   }, []);
 

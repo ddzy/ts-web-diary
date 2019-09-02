@@ -47,6 +47,8 @@ import {
 const PRIVATE_CONCAT_NOTIFICATION_LIST = 'PRIVATE_CONCAT_NOTIFICATION_LIST';
 // ? 重置未读通知数量
 const PRIVATE_RESET_UNREAD_TOTAL = 'PRIVATE_RESET_UNREAD_TOTAL';
+// ? 用户拒绝好友申请
+const PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE = 'PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE';
 
 
 export interface IHeaderMainDummyNotificationNoticeProps extends RouteComponentProps { };
@@ -127,6 +129,22 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationList: prevState.notificationList.concat(action.payload),
         };
       };
+      case PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE: {
+        const newNotificationList = prevState.notificationList.map((v: React.FunctionComponentElement<any>) => {
+          if (v.props.notificationInfo._id === action.payload.notificationId) {
+            v.props.notificationInfo.agree_state = action.payload.agree_state;
+
+            return v;
+          }
+
+          return v;
+        });
+
+        return {
+          ...prevState,
+          notificationList: newNotificationList,
+        };
+      };
       default: {
         return prevState;
       };
@@ -173,14 +191,28 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
 
     // ? 用户被拒绝加好友时的通知socket
     state.notificationUserIOClient.on('receiveMakeFriendRefuse', (
-      data: IBaseNotificationUserFriendRefuseParams,
+      data: IBaseNotificationUserFriendRefuseParams & {
+        notificationId: string,
+      },
     ) => {
       const currentUserId = localStorage.getItem('userid');
 
+      // 更新接收方的状态
       if (data.to._id === currentUserId) {
         dispatch({
           type: NOTIFICATION_MAKE_FRIEND_REFUSE,
           payload: data,
+        });
+      }
+
+      // 由于数据只获取一次, 所以需要更新发送方的request请求的agree_state
+      if (data.from._id === currentUserId) {
+        dispatch({
+          type: PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE,
+          payload: {
+            notificationId: data.notificationId,
+            agree_state: -1,
+          },
         });
       }
     });
@@ -326,6 +358,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           trigger="click"
           placement="bottom"
           arrowPointAtCenter={true}
+          destroyTooltipOnHide={true}
           title={'通知'}
           content={_initNotificationContent()}
           onVisibleChange={handleNotificationVisible}

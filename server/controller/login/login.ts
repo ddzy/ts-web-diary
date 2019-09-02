@@ -9,39 +9,75 @@ import {
 } from '../../utils/utils';
 import {
   SECRET_FOR_TOKEN,
-  FILTER_SENSITIVE,
 } from '../../constants/constants';
 
 const loginController: Router = new Router();
 
 
 loginController.post('/', async (ctx) => {
-  const { username }: any = await ctx.request.body;
-  let { userpwd }: any = await ctx.request.body;
+  interface IRequestParams {
+    username: string;
+    userpwd: string;
+  };
 
-  // ** 加密 **
-  userpwd = md5(userpwd);
+  const {
+    username,
+    userpwd,
+  } = ctx.request.body as unknown as IRequestParams;
 
-  // ** 查询 **
-  const result = await User.findOne({ username }, { ...FILTER_SENSITIVE });
+  // ? 密码加密
+  const encryptUserPwd = md5(userpwd);
 
-  result
-    ? ctx.body = {
-        code: 0,
-        message: '登录成功!',
-        userid: result._id,
-        username: result.username,
+  // ? 查询用户名是否存在
+  const foundIsUserNameExist = await User.findOne({
+    username,
+  });
+
+  if (!foundIsUserNameExist) {
+    ctx.body = {
+      code: 1,
+      message: '用户名不存在!',
+      data: {
+        username,
+      },
+    };
+
+    return;
+  }
+
+  // ? 查询密码是否正确
+  const computeIsUserPwdTruthy = await foundIsUserNameExist.userpwd === encryptUserPwd;
+
+  if (!computeIsUserPwdTruthy) {
+    ctx.body = {
+      code: 1,
+      message: '密码错误!',
+      data: {
+        username,
+      },
+    };
+
+    return;
+  }
+
+  // ? 登录成功
+  ctx.body = {
+    code: 0,
+    message: '登录成功!',
+    data: {
+      userInfo: {
+        _id: foundIsUserNameExist._id,
+        username: foundIsUserNameExist.username,
         token: JsonWebToken.sign({
-          data: { userid: result._id },
+          data: {
+            userid: foundIsUserNameExist._id,
+          },
           exp: ~~(Date.now() / 1000) + (60 * 60),
         }, SECRET_FOR_TOKEN),
-      }
-    : ctx.body = {
-        code: 1,
-        message: '用户不存在!',
-      };
+      },
+    },
+  };
 });
-
 
 
 export default loginController;
