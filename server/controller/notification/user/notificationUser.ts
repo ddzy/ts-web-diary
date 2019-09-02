@@ -190,7 +190,10 @@ export function handleNotificationUser(
       ])
       .lean();
 
-    io.emit('receiveMakeFriendRefuse', foundNotificationInfo);
+    io.emit('receiveMakeFriendRefuse', {
+      ...foundNotificationInfo,
+      notificationId: data.notificationId,
+    });
   });
 }
 
