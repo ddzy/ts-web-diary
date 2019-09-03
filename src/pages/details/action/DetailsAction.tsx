@@ -11,7 +11,7 @@ import {
   ICommonBaseArticleInfo
 } from '../Details.types';
 import DetailsActionProfile from './profile/DetailsActionProfile';
-import DetailsActionLatest from './latest/DetailsActionLatest';
+import DetailsActionToc from './toc/DetailsActionToc';
 
 
 export interface IDetailsActionProps {
@@ -40,8 +40,8 @@ const DetailsAction = React.memo((props: IDetailsActionProps) => {
             articleInfo={props.articleInfo}
           />
 
-          {/* 最新文章区 */}
-          <DetailsActionLatest
+          {/* 文章目录区 */}
+          <DetailsActionToc
             globalLoading={props.globalLoading}
             articleInfo={props.articleInfo}
           />

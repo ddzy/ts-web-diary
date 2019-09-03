@@ -11,6 +11,7 @@ import {
   Col,
   Card,
   notification,
+  Spin,
 } from 'antd';
 import 'react-quill/dist/quill.snow.css';
 
@@ -18,12 +19,12 @@ import {
   WriteEditWrapper,
 } from './style';
 import { query } from 'services/request';
-import BaseLoading from 'components/widget/base_loading/BaseLoading';
 import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
 import {
   quillModuleConfig,
   quillFormatConfig,
 } from 'config/quill.config';
+
 
 Quill.register(BaseQuillImageBlot, true);
 
@@ -107,7 +108,7 @@ class WriteEdit extends React.Component<IWriteEditProps, IWriteEditState> {
   }
 
   /**
-   * [处理] - 富文本图片上传
+   * [处理] - 自定义react-quill的图片上传
    */
   public handleEditorImageUpload = (): void => {
     const editor: Quill = this.editorRef.getEditor();
@@ -243,19 +244,20 @@ class WriteEdit extends React.Component<IWriteEditProps, IWriteEditState> {
               <Card
                 title={'文章内容'}
               >
-                <ReactQuill
-                  placeholder="创作您的文章..."
-                  ref={this.handleGetEditorRef}
-                  value={this.props.articleInfo.content}
-                  modules={this._initEditorModules()}
-                  formats={quillFormatConfig}
-                  onChange={this.handleEditorChange}
-                />
+                <Spin spinning={this.state.isLoading}>
+                  <ReactQuill
+                    placeholder="创作您的文章..."
+                    ref={this.handleGetEditorRef}
+                    value={this.props.articleInfo.content}
+                    modules={this._initEditorModules()}
+                    formats={quillFormatConfig}
+                    onChange={this.handleEditorChange}
+                  />
+                </Spin>
               </Card>
             </Col>
           </Row>
         </WriteEditWrapper>
-        <BaseLoading visible={this.state.isLoading} />
       </React.Fragment>
     );
   }
