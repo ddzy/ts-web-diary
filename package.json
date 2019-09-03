@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hanyk/rc-viewer": "0.0.3",
     "antd": "^3.21.4",
     "axios": "^0.18.0",
     "draft-js-emoji-plugin": "^2.1.1",
