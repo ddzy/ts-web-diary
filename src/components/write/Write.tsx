@@ -161,9 +161,23 @@ const Write = React.memo((props: IWriteProps) => {
    * [处理] - 提交文章
    */
   function handleSend() {
-    props.onSendArticle(
-      state.articleInfo,
-    );
+    // ? 非空处理
+    const articleTitle = state.articleInfo.title;
+    const articleTag = state.articleInfo.tag;
+    const articleMode = state.articleInfo.mode;
+    const articleType = state.articleInfo.type;
+
+    if (!articleTitle) {
+      return message.error('文章标题不能为空!');
+    } else if (!articleTag.length) {
+      return message.error('最少选择一个文章标签!');
+    } else if (!articleMode) {
+      return message.error('文章必须为原创或转载!');
+    } else if (!articleType) {
+      return message.error('请为文章指定一个分类!');
+    } else {
+      return props.onSendArticle(state.articleInfo);
+    }
   }
 
   return (

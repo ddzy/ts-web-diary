@@ -1,4 +1,5 @@
 import * as React from 'react';
+import RcViewer from '@hanyk/rc-viewer';
 import {
   highlightBlock,
 } from 'highlight.js';
@@ -15,7 +16,6 @@ import {
 import {
   ICommonBaseArticleInfo,
 } from 'pages/details/Details.types';
-import BaseImagePreview from 'components/widget/base_image_preview/BaseImagePreview';
 import BaseQuillImageBlot from 'components/widget/base_quill_image_blot/BaseQuillImageBlot';
 
 // ? 注册自定义的react-quill图片上传
@@ -31,15 +31,6 @@ export interface IDetailsMainRichProps {
 
 
 const DetailsMainRich = React.memo((props: IDetailsMainRichProps) => {
-  const [articleImgPreviewInfo, setState] = React.useState({
-    previewBoxVisible: false,
-    previewImgUrl: '',
-  });
-
-  React.useEffect(() => {
-    handleArticleImagePreview();
-  }, [props.articleInfo]);
-
   /**
    * [初始化] - 编辑器的内容
    */
@@ -79,48 +70,18 @@ const DetailsMainRich = React.memo((props: IDetailsMainRichProps) => {
         && highlightBlock(element);
     });
 
+    // 初始化所有的小标题, 添加id、class, 便于生成目录
+    const tempContHeaders = tempCont.querySelectorAll('h1, h2, h3, h4') as NodeListOf<HTMLHeadingElement>;
+    tempContHeaders;
+    tempContHeaders.forEach((header) => {
+      const href = header.textContent || '';
+
+      header.setAttribute('id', href);
+      header.setAttribute('class', href);
+    });
+
     return tempCont
       .getElementsByClassName("ql-editor")[0].innerHTML;
-  }
-
-  /**
-   * [处理] - 富文本内部的图片预览
-   */
-  function handleArticleImagePreview() {
-    const oArticleEle = document
-      .querySelector('#article-detail-content') || document.createElement('div');
-
-    function aidedClick(e: MouseEvent): void {
-      const oTarget = e.target as HTMLElement;
-
-      if (oTarget.localName === 'img') {
-        if (oTarget.hasAttribute('data-src')) {
-          const sTargetUrl = oTarget
-            .getAttribute('data-src') || '';
-
-          setState({
-            previewBoxVisible: true,
-            previewImgUrl: sTargetUrl,
-          });
-        }
-      }
-    }
-
-    oArticleEle.addEventListener('click', aidedClick);
-
-    return () => {
-      oArticleEle.removeEventListener('click', aidedClick);
-    };
-  }
-
-  /**
-   * [处理] - 图片预览容器点击
-   */
-  function handleImagePreviewContainerClick() {
-    setState({
-      previewBoxVisible: false,
-      previewImgUrl: '',
-    });
   }
 
   return (
@@ -134,19 +95,19 @@ const DetailsMainRich = React.memo((props: IDetailsMainRichProps) => {
           loading={props.globalLoading}
         >
           {/* 内容区 */}
-          <LeftContent
-            id="article-detail-content"
-            dangerouslySetInnerHTML={{
-              __html: _initArticleContent(),
+          <RcViewer
+            options={{
+              url: 'data-src',
+              button: false,
             }}
-          />
-
-          {/* 图片预览 */}
-          <BaseImagePreview
-            visible={articleImgPreviewInfo.previewBoxVisible}
-            currentUrl={articleImgPreviewInfo.previewImgUrl}
-            onImagePreviewContainerClick={handleImagePreviewContainerClick}
-          />
+          >
+            <LeftContent
+              id="article-detail-content"
+              dangerouslySetInnerHTML={{
+                __html: _initArticleContent(),
+              }}
+            />
+          </RcViewer>
         </Skeleton>
       </LeftContentMain>
     </LeftContentContainer>
