@@ -70,6 +70,16 @@ const DetailsMainRich = React.memo((props: IDetailsMainRichProps) => {
         && highlightBlock(element);
     });
 
+    // 初始化所有的小标题, 添加id、class, 便于生成目录
+    const tempContHeaders = tempCont.querySelectorAll('h1, h2, h3, h4') as NodeListOf<HTMLHeadingElement>;
+    tempContHeaders;
+    tempContHeaders.forEach((header) => {
+      const href = header.textContent || '';
+
+      header.setAttribute('id', href);
+      header.setAttribute('class', href);
+    });
+
     return tempCont
       .getElementsByClassName("ql-editor")[0].innerHTML;
   }
