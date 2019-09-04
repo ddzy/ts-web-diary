@@ -180,7 +180,13 @@ export function formatChatMemoryContent(
         : `${content.substring(0, getFullRandom(minLength, maxLength))}...`;
     },
     // 图片
-    // 文件
+    image() {
+      return '图片消息';
+    },
+    // 代码
+    code() {
+      return '代码消息'
+    },
   };
 
   return categoryDesign[type] ? categoryDesign[type]() : '未知的消息类型';

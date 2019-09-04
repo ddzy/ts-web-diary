@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as InfiniteScroll from 'react-infinite-scroller';
+import RcViewer from '@hanyk/rc-viewer';
 import {
   withRouter,
   RouteComponentProps,
@@ -40,7 +41,7 @@ export interface IChatInterfacesViewSingleContentProps extends RouteComponentPro
   // ? 分页相关: 处理消息分页
   onLoadMore: (page: number) => void;
 };
-export interface IChatInterfacesViewSingleContentState {};
+export interface IChatInterfacesViewSingleContentState { };
 
 
 const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSingleContentProps) => {
@@ -65,6 +66,7 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
         const fromUserName = v.from_member_id.user_id.username;
         const fromUserAvatar = v.from_member_id.user_id.useravatar;
         const content = v.content;
+        const contentType = v.content_type;
         const time = formatTime(v.create_time);
 
         const isSend = userId === fromUserId;
@@ -74,6 +76,7 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
           avatar: fromUserAvatar,
           time,
           content,
+          content_type: contentType,
         };
 
         return (
@@ -111,21 +114,28 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
   return (
     <ContentWrapper>
       <ContentMain ref={$scrollWrapper}>
-        <InfiniteScroll
-          isReverse={true}
-          useWindow={false}
-          hasMore={props.hasMoreMessage}
-          pageStart={1}
-          initialLoad={false}
-          getScrollParent={() => $scrollWrapper.current}
-          loadMore={props.onLoadMore}
+        <RcViewer
+          options={{
+            url: 'data-src',
+            button: false,
+          }}
         >
-          <ContentMainList>
-            <TransitionGroup>
-              {_initMessageList()}
-            </TransitionGroup>
-          </ContentMainList>
-        </InfiniteScroll>
+          <InfiniteScroll
+            isReverse={true}
+            useWindow={false}
+            hasMore={props.hasMoreMessage}
+            pageStart={1}
+            initialLoad={false}
+            getScrollParent={() => $scrollWrapper.current}
+            loadMore={props.onLoadMore}
+          >
+            <ContentMainList>
+              <TransitionGroup>
+                {_initMessageList()}
+              </TransitionGroup>
+            </ContentMainList>
+          </InfiniteScroll>
+        </RcViewer>
       </ContentMain>
     </ContentWrapper>
   );

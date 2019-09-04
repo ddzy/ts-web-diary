@@ -6,6 +6,9 @@ import {
 } from './style';
 import BaseChatMessageAvatar from './avatar/BaseChatMessageAvatar';
 import BaseChatMessageInfo from './info/BaseChatMessageInfo';
+import {
+  IBaseCommonChatMessgaeType,
+} from 'pages/chat/Chat.types';
 
 
 export interface IBaseChatMessageProps {
@@ -18,6 +21,7 @@ export interface IBaseChatMessageProps {
     name: string,
     time: string,
     content: string,
+    content_type: IBaseCommonChatMessgaeType,
   };
 };
 
