@@ -180,6 +180,9 @@ export function formatChatMemoryContent(
         : `${content.substring(0, getFullRandom(minLength, maxLength))}...`;
     },
     // 图片
+    image() {
+      return '图片消息';
+    },
     // 文件
   };
 

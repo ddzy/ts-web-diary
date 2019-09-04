@@ -17,9 +17,20 @@ import {
 } from './style';
 import ChatInterfacesViewSingleActionExtraImage from './image/ChatInterfacesViewSingleActionExtraImage';
 import ChatInterfacesViewSingleActionExtraCode from './code/ChatInterfacesViewSingleActionExtraCode';
+import {
+  IBaseCommonChatMessgaeType,
+} from 'pages/chat/Chat.types';
 
 
-export interface IChatInterfacesViewSingleActionExtraProps { };
+export interface IChatInterfacesViewSingleActionExtraProps {
+  onChatMessageSend: (
+    messageInfo: {
+      type: IBaseCommonChatMessgaeType,
+      content: string,
+    },
+    callback?: () => void,
+  ) => void;
+};
 export interface IChatInterfacesViewSingleActionExtraState {
   // ? 聊天的消息类型
   messageType: string;
@@ -110,14 +121,30 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
   }
 
   /**
-   * [处理] - 重置子组件
+   * [处理] - 重置子组件, 并接收上传之后的图片链接数组
    * @description 首次打开并关闭子组件之后, 第二次无法打开同样的组件
    * @description 故需要父组件动态切换
+   * @description
    */
-  function handleResetMessageComponent() {
+  function handleResetMessageComponent(
+    messageInfo: {
+      type: IBaseCommonChatMessgaeType,
+      content: Array<{ origin: string, final: string }>,
+    },
+  ) {
     setState({
       ...state,
       messageComponent: null,
+    });
+
+    // 图片列表为空, 不作处理
+    if (!messageInfo.content.length) {
+      return;
+    }
+
+    props.onChatMessageSend({
+      type: messageInfo.type,
+      content: JSON.stringify(messageInfo.content),
     });
   }
 
@@ -129,12 +156,8 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
             <ExtraMainEmoji>
               <Icon
                 type="smile"
-                theme="filled"
-                style={{
-                  color: '#1da57a',
-                  fontSize: '28px',
-                  cursor: 'pointer',
-                }}
+                theme="outlined"
+                title="发送表情"
               />
             </ExtraMainEmoji>
           </Col>
@@ -149,12 +172,8 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
               >
                 <Icon
                   type="appstore"
-                  theme="filled"
-                  style={{
-                    color: '#1da57a',
-                    fontSize: '28px',
-                    cursor: 'pointer',
-                  }}
+                  theme="outlined"
+                  title="发送更多"
                 />
               </Popover>
             </ExtraMainApplication>

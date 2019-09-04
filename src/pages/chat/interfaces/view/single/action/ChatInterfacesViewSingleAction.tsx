@@ -64,9 +64,9 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
   }
 
   /**
-   * 处理 - 发送聊天消息
+   * 处理 - 发送普通文本消息
    */
-  function handleChatMessageSend(
+  function handleChatPlainMessageSend(
     callback?: () => void,
   ) {
     const { content } = state.messageInfo;
@@ -91,13 +91,30 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
     }
   }
 
+  /**
+   * [处理] - 发送图片消息
+   * @param messageInfo 图片消息信息
+   * @param callback 回调
+   */
+  function handleChatImageMessageSend(
+    messageInfo: {
+      type: IBaseCommonChatMessgaeType,
+      content: string,
+    },
+    callback?: () => void,
+  ) {
+    props.onChatMessageSend(messageInfo);
+  }
+
   return (
     <ActionWrapper>
       <ActionMain>
         <Row>
           <Col span={4}>
             {/* 聊天文件 */}
-            <ChatInterfacesViewSingleActionExtra />
+            <ChatInterfacesViewSingleActionExtra
+              onChatMessageSend={handleChatImageMessageSend}
+            />
           </Col>
           <Col span={16}>
             {/* 聊天输入框 */}
@@ -109,7 +126,7 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
           <Col span={4}>
             {/* 聊天发送按钮 */}
             <ChatInterfacesViewSingleActionSend
-              onChatMessageSend={handleChatMessageSend}
+              onChatMessageSend={handleChatPlainMessageSend}
             />
           </Col>
         </Row>
