@@ -107,6 +107,7 @@ const ChatInterfacesViewSingleActionExtraCode = React.memo((props: IChatInterfac
     setState({
       ...state,
       isShowCodeModal: false,
+      isSendBtnLoading: true,
       isSendBtn: true,
     });
   }

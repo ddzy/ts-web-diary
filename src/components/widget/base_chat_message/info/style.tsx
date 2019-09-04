@@ -81,3 +81,20 @@ export const InfoMainContentInnerTextImgContent = styled.img`
   max-width: 100%;
   cursor: zoom-in;
 `;
+
+// ? 代码消息容器
+export const InfoMainContentInnerTextCodeBox = styled.div``;
+export const InfoMainContentInnerTextCodeContent = styled('div')<ICommonProps>`
+  width: 160px;
+  padding: 8px;
+  background-color: ${(props) => props.isSend ? 'initial' : '#F2EFE6'};
+  cursor: pointer;
+`;
+export const InfoMainContentInnerTextCodeContentTitle = styled.div`
+  padding-bottom: 8px;
+  border-bottom: 1px solid #fff;
+`;
+export const InfoMainContentInnerTextCodeContentMain = styled.div`
+  padding-top: 8px;
+  text-align: center;
+`;

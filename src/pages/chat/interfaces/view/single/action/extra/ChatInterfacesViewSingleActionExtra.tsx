@@ -139,10 +139,8 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
       messageComponent: null,
     });
 
-    // props.onChatMessageSend(messageInfo);
-
     if (isSendState) {
-      console.log(messageInfo);
+      props.onChatMessageSend(messageInfo);
     }
   }
 

@@ -38,11 +38,12 @@ const ChatInterfacesViewSingleActionExtraCodeContent = React.memo((props: IChatI
       <ContentMain>
         <MonacoEditor
           theme="vs"
-          width="500"
+          width="450"
           height="600"
           options={{
             selectOnLineNumbers: true,
             codeLens: true,
+            overviewRulerBorder: false,
           }}
           defaultValue={props.codeInfo.code}
           value={props.codeInfo.code}
