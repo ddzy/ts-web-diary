@@ -57,7 +57,10 @@ const ChatInterfacesViewGroupContent = React.memo((props: IChatInterfacesViewGro
         <ContentMainItem key={v.id}>
           <BaseChatMessage
             isSend={true}
-            chatMessageInfo = {v}
+            chatMessageInfo={{
+              ...v,
+              content_type: 'plain',
+            }}
           />
         </ContentMainItem>
       );

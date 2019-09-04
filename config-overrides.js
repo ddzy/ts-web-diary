@@ -2,6 +2,7 @@ const tsImportPluginFactory = require('ts-import-plugin')
 const { getLoader } = require("react-app-rewired");
 const rewireReactHotLoader = require('react-app-rewire-hot-loader')
 const rewireLess = require('react-app-rewire-less');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 
 module.exports = function override(config, env) {
@@ -40,6 +41,16 @@ module.exports = function override(config, env) {
       '@link-color': '#000',
     },
   })(config, env);
+
+  config.plugins.push(
+    new MonacoWebpackPlugin({
+      languages: [
+        'html', 'css', 'javascript', 'typescript',
+        'less', 'json', 'xml', 'php',
+        'markdown', 'go', 'cpp', 'java',
+      ],
+    }),
+  );
 
   return config;
 }

@@ -17,19 +17,27 @@ import {
 } from './style';
 import ChatInterfacesViewSingleActionExtraImage from './image/ChatInterfacesViewSingleActionExtraImage';
 import ChatInterfacesViewSingleActionExtraCode from './code/ChatInterfacesViewSingleActionExtraCode';
+import {
+  IBaseCommonChatMessgaeType,
+} from 'pages/chat/Chat.types';
 
 
-export interface IChatInterfacesViewSingleActionExtraProps { };
+export interface IChatInterfacesViewSingleActionExtraProps {
+  onChatMessageSend: (
+    messageInfo: {
+      type: IBaseCommonChatMessgaeType,
+      content: string,
+    },
+    callback?: () => void,
+  ) => void;
+};
 export interface IChatInterfacesViewSingleActionExtraState {
-  // ? 聊天的消息类型
-  messageType: string;
   messageComponent: any;
 };
 
 
 const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesViewSingleActionExtraProps) => {
   const [state, setState] = React.useState<IChatInterfacesViewSingleActionExtraState>({
-    messageType: '',
     messageComponent: null,
   });
 
@@ -94,6 +102,9 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
           ...state,
           messageComponent: React.createElement(
             ChatInterfacesViewSingleActionExtraCode,
+            {
+              onResetMessageComponent: handleResetMessageComponent,
+            },
           ),
         });
         break;
@@ -110,15 +121,27 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
   }
 
   /**
-   * [处理] - 重置子组件
+   * [处理] - 重置子组件, 并接收上传的值(图片、文件、代码...)
    * @description 首次打开并关闭子组件之后, 第二次无法打开同样的组件
    * @description 故需要父组件动态切换
+   * @param isSendState 子组件是提交还是取消状态, 如果是提交, 则表明发送消息, 反之则不发送
+   * @param messageInfo 消息的内容
    */
-  function handleResetMessageComponent() {
+  function handleResetMessageComponent(
+    isSendState: boolean,
+    messageInfo: {
+      type: IBaseCommonChatMessgaeType,
+      content: string,
+    },
+  ) {
     setState({
       ...state,
       messageComponent: null,
     });
+
+    if (isSendState) {
+      props.onChatMessageSend(messageInfo);
+    }
   }
 
   return (
@@ -129,19 +152,15 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
             <ExtraMainEmoji>
               <Icon
                 type="smile"
-                theme="filled"
-                style={{
-                  color: '#1da57a',
-                  fontSize: '28px',
-                  cursor: 'pointer',
-                }}
+                theme="outlined"
+                title="发送表情"
               />
             </ExtraMainEmoji>
           </Col>
           <Col span={12}>
             <ExtraMainApplication>
               <Popover
-                trigger="click"
+                trigger="hover"
                 placement="top"
                 arrowPointAtCenter={true}
                 title={_initApplicationPopoverTitle()}
@@ -149,12 +168,8 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
               >
                 <Icon
                   type="appstore"
-                  theme="filled"
-                  style={{
-                    color: '#1da57a',
-                    fontSize: '28px',
-                    cursor: 'pointer',
-                  }}
+                  theme="outlined"
+                  title="发送更多"
                 />
               </Popover>
             </ExtraMainApplication>

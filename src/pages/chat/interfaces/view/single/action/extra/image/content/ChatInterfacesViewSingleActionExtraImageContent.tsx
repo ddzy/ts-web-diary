@@ -20,6 +20,8 @@ export interface IChatInterfacesViewSingleActionExtraImageContentProps extends F
 
   // ? 监听上传的图片更新
   onUploadChange: (data: UploadChangeParam) => void;
+  // ? 处理本地图片预览
+  onUploadPreview: (file: UploadFile) => void;
 };
 
 
@@ -52,6 +54,7 @@ const ChatInterfacesViewSingleActionExtraImageContent = React.memo((props: IChat
                 showUploadList={true}
                 fileList={props.imageList}
                 beforeUpload={handleBeforeUpload}
+                onPreview={props.onUploadPreview}
               >
                 {
                   props.imageList.length > 0 ? null : (
