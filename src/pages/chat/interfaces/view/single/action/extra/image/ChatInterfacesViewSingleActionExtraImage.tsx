@@ -33,9 +33,10 @@ export interface IChatInterfacesViewSingleActionExtraImageProps extends RouteCom
   // * 首次打开并关闭子组件之后, 第二次无法打开同样的组件
   // * 故需要父组件动态切换
   onResetMessageComponent: (
+    isSendState: boolean,
     messageInfo: {
       type: IBaseCommonChatMessgaeType,
-      content: Array<{ origin: string, final: string }>,
+      content: string,
     },
   ) => void;
 };
@@ -143,10 +144,18 @@ const ChatInterfacesViewSingleActionExtraImage = React.memo((props: IChatInterfa
    * @description 需要将数组转成字符串
    */
   function handleUploadModalAfterClose() {
+    // 图片列表为空, 不作处理
+    if (!state.imageUrlList.length) {
+      return props.onResetMessageComponent(false, {
+        type: 'image',
+        content: '',
+      });
+    }
+
     // 发送上传后的图片url列表
-    props.onResetMessageComponent({
+    props.onResetMessageComponent(true, {
       type: 'image',
-      content: state.imageUrlList,
+      content: JSON.stringify(state.imageUrlList),
     });
   }
 

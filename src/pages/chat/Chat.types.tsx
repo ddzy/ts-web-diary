@@ -1,5 +1,5 @@
 // ? 聊天消息基本类型接口
-export type IBaseCommonChatMessgaeType = 'plain' | 'image' | 'file';
+export type IBaseCommonChatMessgaeType = 'plain' | 'image' | 'file' | 'code';
 
 // ? 聊天历史项基本信息接口
 export interface IBaseCommonChatMemoryInfo {

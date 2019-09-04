@@ -125,3 +125,13 @@ export const SOCKET_CONNECTION_INFO = {
   domain: 'localhost',
   port: 8888,
 };
+
+
+/**
+ * [react-monaco-editor]
+ */
+export const MONACO_EDITOR_CODE_LANGUAGE_LIST = [
+  'html', 'css', 'javascript', 'typescript',
+  'less', 'json', 'xml', 'php',
+  'markdown', 'go', 'cpp', 'java',
+];

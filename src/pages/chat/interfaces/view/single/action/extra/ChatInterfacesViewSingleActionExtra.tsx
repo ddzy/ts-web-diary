@@ -32,15 +32,12 @@ export interface IChatInterfacesViewSingleActionExtraProps {
   ) => void;
 };
 export interface IChatInterfacesViewSingleActionExtraState {
-  // ? 聊天的消息类型
-  messageType: string;
   messageComponent: any;
 };
 
 
 const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesViewSingleActionExtraProps) => {
   const [state, setState] = React.useState<IChatInterfacesViewSingleActionExtraState>({
-    messageType: '',
     messageComponent: null,
   });
 
@@ -105,6 +102,9 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
           ...state,
           messageComponent: React.createElement(
             ChatInterfacesViewSingleActionExtraCode,
+            {
+              onResetMessageComponent: handleResetMessageComponent,
+            },
           ),
         });
         break;
@@ -121,15 +121,17 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
   }
 
   /**
-   * [处理] - 重置子组件, 并接收上传之后的图片链接数组
+   * [处理] - 重置子组件, 并接收上传的值(图片、文件、代码...)
    * @description 首次打开并关闭子组件之后, 第二次无法打开同样的组件
    * @description 故需要父组件动态切换
-   * @description
+   * @param isSendState 子组件是提交还是取消状态, 如果是提交, 则表明发送消息, 反之则不发送
+   * @param messageInfo 消息的内容
    */
   function handleResetMessageComponent(
+    isSendState: boolean,
     messageInfo: {
       type: IBaseCommonChatMessgaeType,
-      content: Array<{ origin: string, final: string }>,
+      content: string,
     },
   ) {
     setState({
@@ -137,15 +139,11 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
       messageComponent: null,
     });
 
-    // 图片列表为空, 不作处理
-    if (!messageInfo.content.length) {
-      return;
-    }
+    // props.onChatMessageSend(messageInfo);
 
-    props.onChatMessageSend({
-      type: messageInfo.type,
-      content: JSON.stringify(messageInfo.content),
-    });
+    if (isSendState) {
+      console.log(messageInfo);
+    }
   }
 
   return (
