@@ -160,7 +160,7 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
           <Col span={12}>
             <ExtraMainApplication>
               <Popover
-                trigger="click"
+                trigger="hover"
                 placement="top"
                 arrowPointAtCenter={true}
                 title={_initApplicationPopoverTitle()}

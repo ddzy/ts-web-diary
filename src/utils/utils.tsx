@@ -183,7 +183,10 @@ export function formatChatMemoryContent(
     image() {
       return '图片消息';
     },
-    // 文件
+    // 代码
+    code() {
+      return '代码消息'
+    },
   };
 
   return categoryDesign[type] ? categoryDesign[type]() : '未知的消息类型';
