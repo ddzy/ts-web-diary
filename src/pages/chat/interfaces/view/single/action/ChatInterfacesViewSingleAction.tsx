@@ -28,7 +28,7 @@ export interface IChatInterfacesViewSingleActionState {
   // ? 聊天消息
   messageInfo: {
     // * 消息类型
-    // * 目前只计划实现三种, plain(普通文本)、image(图片)、文件(file)
+    // * 目前只计划实现四种, plain(普通文本)、image(图片)、文件(file)、代码片段(code)
     type: IBaseCommonChatMessgaeType,
     content: string,
   };

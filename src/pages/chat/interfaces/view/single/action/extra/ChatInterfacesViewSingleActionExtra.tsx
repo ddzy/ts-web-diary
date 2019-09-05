@@ -17,6 +17,7 @@ import {
 } from './style';
 import ChatInterfacesViewSingleActionExtraImage from './image/ChatInterfacesViewSingleActionExtraImage';
 import ChatInterfacesViewSingleActionExtraCode from './code/ChatInterfacesViewSingleActionExtraCode';
+import ChatInterfacesViewSingleActionExtraFile from './file/ChatInterfacesViewSingleActionExtraFile';
 import {
   IBaseCommonChatMessgaeType,
 } from 'pages/chat/Chat.types';
@@ -68,6 +69,12 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
           >
             发代码
           </ExtraMainApplicationContentItem>
+          <ExtraMainApplicationContentItem
+            data-message-type="file"
+            onClick={handleApplicationItemClick}
+          >
+            发文件
+          </ExtraMainApplicationContentItem>
         </ExtraMainApplicationContentList>
       </ExtraMainApplicationContent>
     );
@@ -107,6 +114,19 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
             },
           ),
         });
+        break;
+      };
+      case 'file': {
+        setState({
+          ...state,
+          messageComponent: React.createElement(
+            ChatInterfacesViewSingleActionExtraFile,
+            {
+              onResetMessageComponent: handleResetMessageComponent,
+            },
+          ),
+        });
+
         break;
       };
       default: {

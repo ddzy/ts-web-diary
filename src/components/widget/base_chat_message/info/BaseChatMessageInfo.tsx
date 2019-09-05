@@ -21,10 +21,20 @@ import {
   InfoMainContentInnerTextCodeContent,
   InfoMainContentInnerTextCodeContentTitle,
   InfoMainContentInnerTextCodeContentMain,
+  InfoMainContentInnerTextFileBox,
+  InfoMainContentInnerTextFileContent,
+  InfoMainContentInnerTextFileContentTitle,
+  InfoMainContentInnerTextFileContentMain,
+  InfoMainContentInnerTextFileContentMainPreviewLink,
+  InfoMainContentInnerTextFileContentMainDownloadLink,
 } from './style';
 import {
   IBaseCommonChatMessgaeType,
 } from 'pages/chat/Chat.types';
+import {
+  getFileType,
+  validator,
+} from 'utils/utils';
 import BaseChatMessageInfoCode from './code/BaseChatMessageInfoCode';
 
 
@@ -114,6 +124,7 @@ const BaseChatMessageInfo = React.memo((props: IBaseChatMessageInfoProps) => {
                   <Col span={12}>
                     <Icon
                       type="code"
+                      theme="twoTone"
                       style={{
                         fontSize: 20,
                       }}
@@ -132,6 +143,62 @@ const BaseChatMessageInfo = React.memo((props: IBaseChatMessageInfoProps) => {
             </InfoMainContentInnerTextCodeContent>
           </InfoMainContentInnerTextCodeBox>
         );
+      },
+      // 文件
+      file() {
+        const parsedContent: Array<{
+          name: string,
+          url: string,
+        }> = JSON.parse(content);
+
+        return parsedContent.map((file, index) => {
+          return (
+            <InfoMainContentInnerTextFileBox key={index}>
+              <InfoMainContentInnerTextFileContent
+                isSend={props.isSend}
+              >
+                {/* 文件消息头部 */}
+                <InfoMainContentInnerTextFileContentTitle>
+                  <Row>
+                    <Col span={12}>
+                      <Icon
+                        type={`file-${getFileType(file.name)}`}
+                        theme="twoTone"
+                        style={{
+                          fontSize: 20,
+                        }}
+                      />
+                    </Col>
+                    <Col span={12}>
+                      {getFileType(file.name)}文件
+                    </Col>
+                  </Row>
+                </InfoMainContentInnerTextFileContentTitle>
+
+                {/* 文件消息尾部 */}
+                <InfoMainContentInnerTextFileContentMain>
+                  <Row>
+                    <Col span={12}>
+                      <InfoMainContentInnerTextFileContentMainPreviewLink
+                        isSend={props.isSend}
+                        target="_blank"
+                        href={handleGenerateFilePreviewLink(file.name, file.url)}
+                      >预览</InfoMainContentInnerTextFileContentMainPreviewLink>
+                    </Col>
+                    <Col span={12}>
+                      <InfoMainContentInnerTextFileContentMainDownloadLink
+                        isSend={props.isSend}
+                        target="_blank"
+                        download={true}
+                        href={file.url}
+                      >下载</InfoMainContentInnerTextFileContentMainDownloadLink>
+                    </Col>
+                  </Row>
+                </InfoMainContentInnerTextFileContentMain>
+              </InfoMainContentInnerTextFileContent>
+            </InfoMainContentInnerTextFileBox>
+          );
+        });
       },
     };
 
@@ -168,6 +235,32 @@ const BaseChatMessageInfo = React.memo((props: IBaseChatMessageInfoProps) => {
     });
   }
 
+  /**
+   * [处理] - 根据不同的文件类型生成在线预览路径
+   * @param path 文件地址
+   */
+  function handleGenerateFilePreviewLink(
+    name: string,
+    path: string
+  ): string {
+    // 微软全家桶
+    if (
+      validator.isMicrosoftWordFile(name)
+      || validator.isMicrosoftExcelFile(name)
+      || validator.isMicrosoftPPTFile(name)
+    ) {
+      // BUG1 微软在线预览的接口, 需要对URL进行编码
+      // BUG2 传输的文件不能为空, 否则打不开
+      // @see: https://www.microsoft.com/en-us/microsoft-365/blog/2013/04/10/office-web-viewer-view-office-documents-in-a-browser/?eu=true
+      path = encodeURI(path);
+
+      return `https://view.officeapps.live.com/op/view.aspx?src=${path}`;
+    }
+
+    // 其它文件
+    return path;
+  }
+
   return (
     <InfoWrapper>
       <InfoMain>
@@ -188,7 +281,7 @@ const BaseChatMessageInfo = React.memo((props: IBaseChatMessageInfoProps) => {
         </InfoMainContent>
       </InfoMain>
 
-      {/* 代码预览组件 */}
+      {/* 代码消息组件 */}
       <BaseChatMessageInfoCode
         isShowCodePreviewModal={state.isShowCodePreviewModal}
         codeInfo={state.codeInfo}
