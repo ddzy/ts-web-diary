@@ -25,12 +25,12 @@ const UserProfileInfoIndividualTitle = React.memo<IUserProfileInfoIndividualTitl
           <Col>
             <TitleNameBox>
               <TitleNameText>
-                不精通Js不着duixiang
+                username
               </TitleNameText>
             </TitleNameBox>
             <TitleDescBox>
               <TitleDescText>
-                github-ddzy-奋进的二年级老猫
+                website
               </TitleDescText>
             </TitleDescBox>
           </Col>
