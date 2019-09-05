@@ -23,9 +23,11 @@ const UserProfileInfoAvatar = React.memo<IUserProfileInfoAvatarProps>((
         <Upload>
           <Avatar
             style={{
-              width: '100%',
-              height: '100%',
+              width: 160,
+              height: 160,
               cursor: 'pointer',
+              lineHeight: '160px',
+              fontSize: 28,
             }}
             icon="user"
             shape="square"
