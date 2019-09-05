@@ -38,7 +38,7 @@ export const InfoMainContent = styled('div')<ICommonProps>`
 export const InfoMainContentInner = styled.div`
   padding-top: 0.5rem;
 `;
-export const InfoMainContentInnerText = styled('p')<ICommonProps>`
+export const InfoMainContentInnerText = styled('div')<ICommonProps>`
   position: relative;
   width: fit-content;
   padding: 0.25rem;
@@ -85,7 +85,7 @@ export const InfoMainContentInnerTextImgContent = styled.img`
 // ? 代码消息容器
 export const InfoMainContentInnerTextCodeBox = styled.div``;
 export const InfoMainContentInnerTextCodeContent = styled('div')<ICommonProps>`
-  width: 160px;
+  width: 170px;
   padding: 8px;
   background-color: ${(props) => props.isSend ? 'initial' : '#F2EFE6'};
   cursor: pointer;
@@ -97,4 +97,27 @@ export const InfoMainContentInnerTextCodeContentTitle = styled.div`
 export const InfoMainContentInnerTextCodeContentMain = styled.div`
   padding-top: 8px;
   text-align: center;
+`;
+
+// ? 文件消息容器
+export const InfoMainContentInnerTextFileBox = styled.div``;
+export const InfoMainContentInnerTextFileContent = styled('div')<ICommonProps>`
+  width: 170px;
+  padding: 8px;
+  background-color: ${(props) => props.isSend ? 'initial' : '#F2EFE6'};
+  cursor: pointer;
+`;
+export const InfoMainContentInnerTextFileContentTitle = styled.div`
+  padding-bottom: 8px;
+  border-bottom: 1px solid #fff;
+`;
+export const InfoMainContentInnerTextFileContentMain = styled.div`
+  padding-top: 8px;
+  text-align: center;
+`;
+export const InfoMainContentInnerTextFileContentMainPreviewLink = styled('a')<ICommonProps>`
+  color: ${(props) => props.isSend ? '#fff' : '#000'};
+`;
+export const InfoMainContentInnerTextFileContentMainDownloadLink = styled('a')<ICommonProps>`
+  color: ${(props) => props.isSend ? '#fff' : '#000'};
 `;

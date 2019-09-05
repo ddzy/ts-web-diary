@@ -187,6 +187,10 @@ export function formatChatMemoryContent(
     code() {
       return '代码消息'
     },
+    // 文件
+    file() {
+      return '文件消息';
+    },
   };
 
   return categoryDesign[type] ? categoryDesign[type]() : '未知的消息类型';
@@ -652,3 +656,95 @@ export const vigenere = {
     return result;
   },
 };
+
+/**
+ * 一系列类型验证器
+ */
+export const validator = {
+  /**
+   * 判断是否微软Word文件
+   * @param text 任意文本
+   */
+  isMicrosoftWordFile(text: string) {
+    const reg = /\.docx$/;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否微软的PPT文件
+   * @param text 任意文本
+   */
+  isMicrosoftPPTFile(text: string) {
+    const reg = /\.pptx$/;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否微软的Excel文档文件
+   * @param text 任意文本
+   */
+  isMicrosoftExcelFile(text: string) {
+    const reg = /\.xlsx$/;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否PDF类型的文件
+   * @param text 任意文本
+   */
+  isPDFFile(text: string) {
+    const reg = /\.pdf$/;
+
+    return reg.test(text);
+  },
+
+  /**
+   * 判断是否txt文件
+   * @param text 任意文本
+   */
+  isTxtFile(text: string) {
+    const reg = /\.txt$/;
+
+    return reg.test(text);
+  },
+};
+
+/**
+ * 获取文件的类型
+ * @param filename 文件名
+ */
+export function getFileType(filename: string): string {
+  const fileTypeMap = {
+    txt: 'text',
+    pdf: 'pdf',
+    xlsx: 'excel',
+    pptx: 'ppt',
+    docx: 'word',
+  };
+  const reg = /\.(\w+)$/;
+
+  let extractedFileType: any = filename.match(reg);
+
+  if (extractedFileType) {
+    extractedFileType = extractedFileType[1];
+  }
+
+  return fileTypeMap[extractedFileType]
+    ? fileTypeMap[extractedFileType]
+    : 'unknown';
+}
+
+/**
+ * 获取文件的后缀名
+ * @param filename 文件名
+ */
+export function getFileNameSuffix(filename: string) {
+  const reg = /\.(\w+)/;
+
+  const extractedFileSuffix = filename.match(reg);
+
+  return extractedFileSuffix ? extractedFileSuffix[0] : '';
+}
