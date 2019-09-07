@@ -63,8 +63,6 @@ const UserProfileInfoAvatar = React.memo<IUserProfileInfoAvatarProps>((
 
   React.useEffect(() => {
     handleCheckIsOwner();
-
-    console.log(props.match.params.id);
   }, [props.match.params.id]);
 
   /**
