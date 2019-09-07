@@ -1,5 +1,9 @@
 import * as React from 'react';
 import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
+import {
   Row,
   Col,
   Skeleton,
@@ -21,7 +25,9 @@ import {
 } from 'pages/details/Details.types';
 
 
-export interface IDetailsActionProfileProps {
+export interface IDetailsActionProfileProps extends RouteComponentProps<{
+  id: string,
+}> {
   // ? Details页全局loading
   globalLoading: boolean;
 
@@ -36,6 +42,15 @@ export interface IDetailsActionProfileProps {
 
 
 const DetailsActionProfile = React.memo((props: IDetailsActionProfileProps) => {
+  /**
+   * [处理] - 跳转至作者的个人中心
+   */
+  function handleLinkToAuthorCenter() {
+    const authorId = props.articleInfo.author._id;
+
+    props.history.push(`/user/${authorId}`);
+  }
+
   return (
     <ProfileWrapper>
       <ProfileMain>
@@ -52,7 +67,10 @@ const DetailsActionProfile = React.memo((props: IDetailsActionProfileProps) => {
         >
           <Row>
             <Col span={24}>
-              <ProfileMainAvatar>
+              <ProfileMainAvatar
+                title="个人中心"
+                onClick={handleLinkToAuthorCenter}
+              >
                 {/* 头像 */}
                 <Avatar
                   icon="user"
@@ -96,4 +114,4 @@ const DetailsActionProfile = React.memo((props: IDetailsActionProfileProps) => {
   );
 });
 
-export default DetailsActionProfile;
+export default withRouter(DetailsActionProfile);
