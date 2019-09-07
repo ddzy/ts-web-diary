@@ -40,7 +40,7 @@ const LoadableDetails = Loadable({
   loading: () => null,
 });
 const LoadablePublish = Loadable({
-  loader: () => import('pages/publish/Publish'),
+  loader: () => import('pages/publish/Publish') as any,
   loading: () => null,
 });
 const LoadableEdit = Loadable({
@@ -55,7 +55,10 @@ const LoadableStatus = Loadable({
   loader: () => import('components/status/Status'),
   loading: () => null,
 });
-
+const LoadableSettings = Loadable({
+  loader: () => import('pages/settings/Settings'),
+  loading: () => null,
+});
 
 
 export interface IAdminProps extends RouteComponentProps {
@@ -129,6 +132,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <Route path="/home" component={LoadableHome} />
             <Route path="/chat" component={LoadableChat} />
             <Route path="/publish" component={LoadablePublish} />
+            <Route path="/settings" component={LoadableSettings} />
             <Route path="/user/:id" component={LoadableUser} />
             <Route exact path="/collection/:id" component={LoadableCollection} />
             <Route exact path="/details/:id" component={LoadableDetails} />

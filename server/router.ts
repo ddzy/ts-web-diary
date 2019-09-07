@@ -50,6 +50,7 @@ import statusInfoController from './controller/status/info/statusInfo';
 import userController from './controller/user/user';
 import userInfoController from './controller/user/info/userInfo';
 import userCreateController from './controller/user/create/userCreate';
+import userUpdateController from './controller/user/update/userUpdate';
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
 import chatController from './controller/chat/chat';
@@ -133,7 +134,8 @@ statusController
   .use('/info', statusInfoController.routes(), statusInfoController.allowedMethods());
 userController
   .use('/info', userInfoController.routes(), userInfoController.allowedMethods())
-  .use('/create', userCreateController.routes(), userCreateController.allowedMethods());
+  .use('/create', userCreateController.routes(), userCreateController.allowedMethods())
+  .use('/update', userUpdateController.routes(), userUpdateController.allowedMethods());
 notificationController
   .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
 
