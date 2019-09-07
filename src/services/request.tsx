@@ -6,7 +6,7 @@ import NProgress from 'nprogress';
 axios.interceptors.request.use((config) => {
   // nprogress START
   NProgress.start();
-  
+
   // Add token
   localStorage.getItem('token')
     &&  Reflect.set(
@@ -47,7 +47,7 @@ export interface IQueryProps {
  */
 export function query(options: IQueryProps): Promise<any> {
   return new Promise((resolve, reject) => {
-  
+
     if(options.jsonp) {
       jsonp(options.url, { param: 'callback' }, (err, data) => {
         data.status === 200
@@ -60,12 +60,15 @@ export function query(options: IQueryProps): Promise<any> {
         url: options.url,
         data: options.method === 'POST' && options.data,
         params: options.method === 'GET' && options.data,
-      }).then((res) => {
-        if(res.status === 200) {
-          resolve(res.data);
-        }
       })
-        .catch((err) => { reject(err) });
+        .then((res) => {
+          if(res.status === 200 || res.status === 304) {
+            resolve(res.data);
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
     }
   });
 }

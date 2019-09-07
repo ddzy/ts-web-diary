@@ -6,9 +6,7 @@ import {
 import {
   FILTER_SENSITIVE,
 } from '../constants/constants';
-import {
-  formatPath,
-} from '../utils/utils';
+
 
 const checkAuthController: Router = new Router();
 
@@ -32,7 +30,7 @@ checkAuthController.post('/', async (ctx, next) => {
         userid: result._id,
         username: result.username,
         usergender: result.usergender,
-        useravatar: formatPath(result.useravatar),
+        useravatar: result.useravatar,
       }
     : ctx.body = {
         code: 1,

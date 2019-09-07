@@ -99,7 +99,7 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
    */
   function handleToUserPage(): void {
     const userId: string = localStorage.getItem('userid') || '';
-    props.history.push(`/user/${userId}/activity`);
+    props.history.push(`/user/${userId}`);
   }
 
   /**
