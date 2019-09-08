@@ -4,6 +4,8 @@ import {
   ProfileWrapper,
   ProfileMain,
 } from './style';
+import SettingsViewProfileTitle from './title/SettingsViewProfileTitle';
+import SettingsViewProfileEdit from './edit/SettingsViewProfileEdit';
 
 
 export interface ISettingsViewProfileProps { };
@@ -14,7 +16,11 @@ const SettingsViewProfile = React.memo((props: ISettingsViewProfileProps) => {
   return (
     <ProfileWrapper>
       <ProfileMain>
-        个人资料编辑
+        {/* 标题区 */}
+        <SettingsViewProfileTitle />
+
+        {/* 编辑区 */}
+        <SettingsViewProfileEdit />
       </ProfileMain>
     </ProfileWrapper>
   );
