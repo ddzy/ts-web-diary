@@ -92,6 +92,42 @@ const UserSchema: mongoose.Schema = new Schema({
 
     },
   },
+
+  // ? 个人中心封面图片
+  profile_cover_img: {
+    type: String,
+    default: '',
+  },
+
+  // ? 居住地
+  address: {
+    type: String,
+    default: '',
+  },
+
+  // ? 个人站点
+  website: {
+    type: String,
+    default: '',
+  },
+
+  // ? 个人简介
+  introduction: {
+    type: String,
+    default: '',
+  },
+
+  // ? 所处行业
+  job: {
+    type: String,
+    default: '',
+  },
+
+  // ? 学历
+  education: {
+    type: String,
+    default: '',
+  },
 });
 
 const User: mongoose.Model<any> = mongoose

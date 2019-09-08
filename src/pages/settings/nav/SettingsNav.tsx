@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   NavLink,
+  withRouter,
 } from 'react-router-dom';
 import {
   Affix,
@@ -67,4 +68,4 @@ const SettingsNav = React.memo((props: ISettingsNavProps) => {
   );
 });
 
-export default SettingsNav;
+export default withRouter(SettingsNav);
