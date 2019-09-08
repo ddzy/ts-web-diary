@@ -44,10 +44,12 @@ userUpdateController.post('/avatar', async (ctx) => {
   };
 });
 
+/**
+ * [更新] - 用户编辑个人信息
+ */
 userUpdateController.post('/profile', async (ctx) => {
   interface IRequestParams {
     userId: string;
-    username: string;
     usergender: string;
     address: string;
     job: string;
@@ -58,7 +60,6 @@ userUpdateController.post('/profile', async (ctx) => {
 
   const {
     userId,
-    username,
     usergender,
     address,
     job,
@@ -73,7 +74,6 @@ userUpdateController.post('/profile', async (ctx) => {
       userId,
       {
         '$set': {
-          username,
           usergender,
           address,
           job,
@@ -103,6 +103,51 @@ userUpdateController.post('/profile', async (ctx) => {
           website: updatedUserInfo.website,
           education: updatedUserInfo.education,
         },
+      },
+    };
+  } else {
+    ctx.body = {
+      code: 1,
+      message: 'Faild!',
+      data: {},
+    };
+  }
+});
+
+/**
+ * [更新] - 用户个人中心的封面图片
+ */
+userUpdateController.post('/profile/cover', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    coverImgUrl: string;
+  };
+
+  const {
+    userId,
+    coverImgUrl,
+  } = ctx.request.body as unknown as IRequestParams;
+
+  // ? 更新用户相关信息
+  const updatedUserInfo = await User
+    .findByIdAndUpdate(
+      userId,
+      {
+        '$set': {
+          profile_cover_img: coverImgUrl,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+    .lean();
+
+  if (updatedUserInfo) {
+    ctx.body = {
+      code: 0,
+      message: 'Success!',
+      data: {
       },
     };
   } else {
