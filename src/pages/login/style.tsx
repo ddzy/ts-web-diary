@@ -14,7 +14,7 @@ export const LoginWrapper = styled('div')<ILoginWrapperProps>`
   background-image: url(${props => props.bg_url});
 `;
 
-export const LoginContent = styled.div`
+export const LoginMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

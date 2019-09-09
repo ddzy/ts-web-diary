@@ -62,6 +62,8 @@ import chatCommonInfoController from './controller/chat/common/info/chatCommonIn
 import chatGroupController from './controller/chat/group/chatGroup';
 import chatGroupCreateController from './controller/chat/group/create/chatGroupCreate';
 import chatGroupInfoController from './controller/chat/group/info/chatGroupInfo';
+import authController from './controller/auth/Auth';
+import authGithubController from './controller/auth/github/authGithub';
 
 
 const router: Router = new Router({
@@ -138,6 +140,8 @@ userController
   .use('/update', userUpdateController.routes(), userUpdateController.allowedMethods());
 notificationController
   .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
+authController
+  .use('/github', authGithubController.routes(), authGithubController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!
@@ -155,7 +159,8 @@ router
   .use('/chat', chatController.routes(), chatController.allowedMethods())
   .use('/status', statusController.routes(), statusController.allowedMethods())
   .use('/user', userController.routes(), userController.allowedMethods())
-  .use('/notification', notificationController.routes(), notificationController.allowedMethods());
+  .use('/notification', notificationController.routes(), notificationController.allowedMethods())
+  .use('/auth', authController.routes(), authController.allowedMethods());
 
 
 export default router;

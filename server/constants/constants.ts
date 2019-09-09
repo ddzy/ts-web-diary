@@ -23,3 +23,15 @@ export const QINIU_KEY = {
   Domain: 'oos.twd.yyge.top',
   Bucket: 'duan-twd',
 };
+
+/**
+ * 第三方账号绑定相关
+ */
+export const BIND_THIRD_PARTY_INFO = {
+  github: {
+    client_id: 'fce9ff3b1d6b896c1349',
+    client_secret: 'dc660851f5525e526710f2132f2bfe911d6a3cc4',
+    access_token_uri: 'https://github.com/login/oauth/access_token',
+    user_info_uri: 'https://api.github.com/user',
+  },
+};
