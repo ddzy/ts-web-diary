@@ -135,3 +135,15 @@ export const MONACO_EDITOR_CODE_LANGUAGE_LIST = [
   'less', 'json', 'xml', 'php',
   'markdown', 'go', 'cpp', 'java',
 ];
+
+/**
+ * 第三方账号绑定相关
+ */
+export const BIND_THIRD_PARTY_INFO = {
+  github: {
+    get_code_uri: 'https://github.com/login/oauth/authorize',
+    client_id: 'fce9ff3b1d6b896c1349',
+    client_secret: 'dc660851f5525e526710f2132f2bfe911d6a3cc4',
+    redirect_uri: 'http://localhost:3000/login',
+  },
+};
