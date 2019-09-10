@@ -73,3 +73,30 @@ export function filterTabAndEnterCharacter(
 
   return text.replace(reg, replacement);
 }
+
+/**
+ * 生成默认的随机用户名
+ * @param prefix 前缀数组
+ * @param content 内容数组
+ * @param contentLen 内容的长度
+ */
+export function createDefaultUserName(
+  prefix: string[],
+  content: string[],
+  contentLen = 8,
+) {
+  const randomUserNamePrefix = prefix[
+    getFullRandom(0, prefix.length)
+  ];
+  let randomUserNameContent = '';
+
+  for (let i = 0; i < contentLen; i++) {
+    const v = content[
+      getFullRandom(0, content.length)
+    ];
+
+    randomUserNameContent += v;
+  }
+
+  return randomUserNamePrefix + randomUserNameContent;
+}

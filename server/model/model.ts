@@ -24,6 +24,7 @@ import ChatMemory from './chat/memory/chatMemoryModel';
 import NotificationUserFriendRequest from './notification/user/friend/request/notificationUserFriendRequestModel';
 import NotificationUserFriendAgree from './notification/user/friend/agree/notificationUserFriendAgreeModel';
 import NotificationUserFriendRefuse from './notification/user/friend/refuse/notificationUserFriendRefuseModel';
+import OAuthGithub from './oauth/github/oauthGithubModel';
 
 
 mongoose.set('useFindAndModify', false);
@@ -67,4 +68,5 @@ export {
   NotificationUserFriendRequest,
   NotificationUserFriendAgree,
   NotificationUserFriendRefuse,
+  OAuthGithub,
 };

@@ -35,3 +35,13 @@ export const BIND_THIRD_PARTY_INFO = {
     user_info_uri: 'https://api.github.com/user',
   },
 };
+
+/**
+ * 随机的用户名前缀
+ */
+export const DEFAULT_USER_NAME_PREFIX = ['User_', 'Sunny_', 'U_'];
+
+/**
+ * 随机的用户名内容
+ */
+export const DEFAULT_USER_NAME_CONTENT = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r','s','t', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'M', 'N', 'A', 'B', 'C', 'D','E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
