@@ -15,6 +15,7 @@ import {
 import {
   ActionWrapper,
   ActionMain,
+  ActionMainToGithubLink,
 } from './style';
 import {
   BIND_THIRD_PARTY_INFO,
@@ -32,6 +33,13 @@ export interface ILoginViewActionState {
 
 const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
 
+  const {
+    client_id,
+    get_code_uri,
+    redirect_uri,
+  } = BIND_THIRD_PARTY_INFO.github;
+
+
   const [state] = React.useState<ILoginViewActionState>({
     statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
   });
@@ -47,26 +55,6 @@ const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
     handleSendGithubCode();
   }, [props.location.search]);
 
-
-  /**
-   * [处理] - 第三方登录: github
-   */
-  function handleLoginByGithub() {
-    const {
-      client_id,
-      get_code_uri,
-      redirect_uri,
-    } = BIND_THIRD_PARTY_INFO.github;
-
-    const oLink = document.createElement('a');
-
-    // oLink.href = 'https://github.com/login/oauth/authorize?client_id=fce9ff3b1d6b896c1349&redirect_uri=http://localhost:3000/login';
-
-    oLink.href = `${get_code_uri}?client_id=${client_id}&redirect_uri=${redirect_uri}`;
-
-    oLink.click();
-    oLink.remove();
-  }
 
   /**
    * [处理] - 将github返回的code凭证发送至后台
@@ -122,15 +110,18 @@ const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
             <Row>
               <Col span={12}>第三方登录: </Col>
               <Col span={4}>
-                <Icon
-                  type="github"
-                  style={{
-                    fontSize: 18,
-                    cursor: 'pointer',
-                  }}
-                  title="Github"
-                  onClick={handleLoginByGithub}
-                />
+                <ActionMainToGithubLink
+                  href={`${get_code_uri}?client_id=${client_id}&redirect_uri=${redirect_uri}`}
+                >
+                  <Icon
+                    type="github"
+                    style={{
+                      fontSize: 18,
+                      cursor: 'pointer',
+                    }}
+                    title="Github"
+                  />
+                </ActionMainToGithubLink>
               </Col>
               <Col span={4}>
                 <Icon
