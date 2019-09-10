@@ -63,6 +63,8 @@ const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
     const sParam = props.location.search;
 
     if (sParam) {
+      message.loading('正在通过github登录, 请耐心等待...', 1);
+
       // 提取code
       const githubCode = sParam.replace(/\?code=/, '');
 
