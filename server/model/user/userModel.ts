@@ -128,6 +128,12 @@ const UserSchema: mongoose.Schema = new Schema({
     type: String,
     default: '',
   },
+
+  bind_third_party: {
+    github: {
+      type: Number,
+    },
+  }
 });
 
 const User: mongoose.Model<any> = mongoose
