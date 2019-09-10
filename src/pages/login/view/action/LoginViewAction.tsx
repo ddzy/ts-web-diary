@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as IOClient from 'socket.io-client';
 import {
   Link,
   RouteComponentProps,
@@ -8,6 +9,7 @@ import {
   Row,
   Col,
   Icon,
+  message,
 } from 'antd';
 
 import {
@@ -16,19 +18,35 @@ import {
 } from './style';
 import {
   BIND_THIRD_PARTY_INFO,
+  SOCKET_CONNECTION_INFO,
 } from 'constants/constants';
 import { query } from 'services/request';
 
 
 export interface ILoginViewActionProps extends RouteComponentProps { };
-export interface ILoginViewActionState { }
+export interface ILoginViewActionState {
+  // ? 状态相关的Websocket
+  statusIOClient: SocketIOClient.Socket;
+}
 
 
 const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
 
+  const [state] = React.useState<ILoginViewActionState>({
+    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
+  });
+
+  React.useEffect(() => {
+    return () => {
+      // 关闭socket链接
+      state.statusIOClient.close();
+    }
+  }, []);
+
   React.useEffect(() => {
     handleSendGithubCode();
   }, [props.location.search]);
+
 
   /**
    * [处理] - 第三方登录: github
@@ -58,17 +76,36 @@ const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
 
     if (sParam) {
       // 提取code
-      const code = sParam.replace(/\?code=/, '');
+      const githubCode = sParam.replace(/\?code=/, '');
 
       query({
         method: 'POST',
         url: '/api/auth/github',
         jsonp: false,
         data: {
-          code,
+          code: githubCode,
         },
       }).then((res) => {
-        console.log(res);
+        const resCode = res.code;
+        const resMessage = res.message;
+        const resData = res.data;
+
+        if (resCode === 0) {
+          const { userInfo } = resData;
+
+          message.success(resMessage);
+
+          localStorage.setItem('userid', userInfo._id);
+          localStorage.setItem('token', userInfo.token);
+
+          state.statusIOClient.emit('sendUserOnLine', {
+            userId: userInfo._id,
+          });
+
+          props.history.push('/home');
+        } else if (resCode === -1) {
+          message.info(resMessage);
+        }
       });
     }
   }
