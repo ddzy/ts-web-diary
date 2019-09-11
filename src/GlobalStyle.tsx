@@ -63,20 +63,6 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
     border-spacing: 0;
   }
 
-
-  /*
-    ??? 处理页面抖动
-  */
-  html {
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-  body {
-    width: 100vw;
-    padding-left: calc(100vw - 100%);
-  }
-
-
   /*
     ??? 重置 antd 样式
   */
