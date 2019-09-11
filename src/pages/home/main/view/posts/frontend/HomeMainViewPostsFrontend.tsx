@@ -3,7 +3,7 @@ import * as InfiniteScroll from 'react-infinite-scroller';
 import {
   withRouter,
   RouteComponentProps,
-  Link,
+  NavLink,
 } from 'react-router-dom';
 import {
   Icon,
@@ -382,12 +382,17 @@ const HomeMainViewPostsFrontend = React.memo((props: IHomeMainViewPostsFrontendP
                                 fontSize: '18px',
                               }}
                             >
-                              <Link to={`/details/${item._id}`}>{item.title}</Link>
+                              <NavLink
+                                to={`/details/${item._id}`}
+                                activeStyle={{
+                                  color: '#1DA57A',
+                                }}
+                              >{item.title}</NavLink>
                             </p>
                           }
                         />
                         {item.description}
-                        <Link to={`/details/${item._id}`}>...阅读原文</Link>
+                        <NavLink to={`/details/${item._id}`}>...阅读原文</NavLink>
                       </List.Item>
                     )}
                   >

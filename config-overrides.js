@@ -38,7 +38,6 @@ module.exports = function override(config, env) {
     javascriptEnabled: true,
     modifyVars: {
       "@primary-color": "#1DA57A",
-      '@link-color': '#000',
     },
   })(config, env);
 
