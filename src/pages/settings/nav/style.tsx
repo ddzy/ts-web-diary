@@ -17,4 +17,13 @@ export const NavMainItem = styled.li`
   height: 45px;
   padding: 0 12px;
   line-height: 45px;
+
+  a {
+    &:link, &:visited {
+      color: #000;
+    }
+    &:hover {
+      color: #1DA57A;
+    }
+  }
 `;

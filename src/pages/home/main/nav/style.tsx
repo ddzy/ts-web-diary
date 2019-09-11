@@ -34,8 +34,11 @@ export const NavContentListItem = styled.li`
   padding: 0 .8rem;
 
   a {
-    &:focus {
-      text-decoration: none;
+    &:link, &:visited {
+      color: #000;
+    }
+    &:hover {
+      color: #1DA57A;
     }
   }
 `;

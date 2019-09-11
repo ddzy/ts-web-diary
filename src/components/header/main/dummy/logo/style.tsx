@@ -8,17 +8,13 @@ export const LogoWrapper = styled.div`
 export const LogoMain = styled.div`
   font-size: 2rem;
   cursor: pointer;
-
-  i {
-    transition: color .3s ease;
-  }
-
-  &:hover {
-    a {
-      i {
-        color: #1da57a;
-      }
-    }
-  }
 `;
-export const LogoMainLink = styled.a``;
+
+export const LogoMainLink = styled.a`
+    &:link, &:visited {
+      color: #000;
+    }
+    &:hover {
+      color: #1DA57A;
+    }
+`;
