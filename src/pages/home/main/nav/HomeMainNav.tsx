@@ -37,7 +37,10 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
       >
         <NavLink
           strict
-          activeClassName={'home-nav-link-active'}
+          // activeClassName={'home-nav-link-active'}
+          activeStyle={{
+            color: '#1DA57A',
+          }}
           to={`/home/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}`}
         >
           {v}

@@ -45,6 +45,13 @@ export const MainNavItem = styled.li`
     transition: background-color .3s ease,
                 color .3s ease;
 
+    &:link, &:visited {
+      color: #000;
+    }
+    &:hover {
+      color: #1DA57A;
+    }
+
     &:focus {
       text-decoration: none;
     }

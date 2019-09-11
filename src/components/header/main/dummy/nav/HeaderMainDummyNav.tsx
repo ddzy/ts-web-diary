@@ -28,6 +28,9 @@ const HeaderMainDummyNav = React.memo(() => {
         <NavLink
           to={item.path}
           activeClassName={'header-nav-link-active'}
+          activeStyle={{
+            color: '#1DA57A',
+          }}
         >{item.name}</NavLink>
       </MainNavItem>
     ));
