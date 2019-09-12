@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {
-  Empty,
-} from 'antd';
 
 import {
   AccountWrapper,
   AccountMain,
 } from './style';
+import SettingsViewAccountTitle from './title/SettingsViewAccountTitle';
+import SettingsViewAccountEdit from './edit/SettingsViewAccountEdit';
 
 
 export interface ISettingsViewAccountProps { };
@@ -17,9 +16,11 @@ const SettingsViewAccount = React.memo((props: ISettingsViewAccountProps) => {
   return (
     <AccountWrapper>
       <AccountMain>
-        <Empty
-          description="Keep working..."
-        />
+        {/* 标题区 */}
+        <SettingsViewAccountTitle />
+
+        {/* 编辑区 */}
+        <SettingsViewAccountEdit />
       </AccountMain>
     </AccountWrapper>
   );
