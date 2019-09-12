@@ -7,9 +7,6 @@ import {
   Input,
   Tag,
 } from 'antd';
-import {
-  debounce,
-} from 'lodash';
 
 import {
   SearchWrapper,
@@ -22,6 +19,9 @@ import {
 } from './style';
 import { MERGED_ARTICLE_TAG } from 'constants/constants';
 import { query } from "services/request";
+import {
+  debounce,
+} from 'utils/utils';
 
 
 export interface IHeaderMainDummySearchProps {

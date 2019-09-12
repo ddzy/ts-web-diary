@@ -748,3 +748,37 @@ export function getFileNameSuffix(filename: string) {
 
   return extractedFileSuffix ? extractedFileSuffix[0] : '';
 }
+
+/**
+ * 防抖函数
+ * @param callback 处理器
+ * @param timestamp 时间戳
+ * @example
+ * function emitChange(e) {
+ *  setState({
+ *    ...state,
+ *    value: e.target.value,
+ *  });
+ * }
+ *
+ * const debouncedFunc = debounce(emitChange, 400);
+ *
+ * function handleChange(e) {
+ *  e.persist();
+ *  debouncedFunc(e);
+ * }
+ */
+export function debounce(
+  callback: (...args: any[]) => void,
+  timestamp: number,
+): (...args: any[]) => void {
+  let timer: any = 0;
+
+  return (...args: any[]) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      callback.apply(null, args);
+    }, timestamp);
+  };
+}
