@@ -20,19 +20,3 @@ export const EditMainItem = styled.li`
     border-bottom: 1px solid #f6f6f6;
   }
 `;
-
-export const EditMainItemTitleText = styled.span`
-  display: inline-block;
-  margin-left: 8px;
-`;
-export const EditMainItemContentText = styled.span`
-  color: #999;
-`;
-export const EditMainItemActionText = styled.span`
-  color: #1da57a;
-  cursor: pointer;
-
-  &:hover {
-    opacity: .8;
-  }
-`;

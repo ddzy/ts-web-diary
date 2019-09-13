@@ -47,7 +47,7 @@ const SettingsNavView = React.memo((props: ISettingsNavViewProps) => {
             classNames={'fadeTranslate'}
             timeout={1000}
           >
-            <Switch>
+            <Switch location={props.location}>
               <Route exact path="/settings" render={() => <Redirect to="/settings/profile" />} />
 
               {/* 个人资料路由 */}

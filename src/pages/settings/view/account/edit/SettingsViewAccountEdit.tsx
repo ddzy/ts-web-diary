@@ -1,136 +1,126 @@
 import * as React from 'react';
 import {
-  Row,
-  Col,
-  Icon,
+  notification, message,
 } from 'antd';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   EditWrapper,
   EditMain,
   EditMainList,
   EditMainItem,
-  EditMainItemTitleText,
-  EditMainItemContentText,
-  EditMainItemActionText,
 } from './style';
+import { query } from 'services/request';
+import SettingsViewAccountEditWechat from './wechat/SettingsViewAccountEditWechat';
+import SettingsViewAccountEditWeibo from './weibo/SettingsViewAccountEditWeibo';
+import SettingsViewAccountEditGithub from './github/SettingsViewAccountEditGithub';
+import SettingsViewAccountEditEmail from './email/SettingsViewAccountEditEmail';
+import SettingsViewAccountEditPhone from './phone/SettingsViewAccountEditPhone';
 
 
-export interface ISettingsViewAccountEditProps { };
-export interface ISettingsViewAccountEditState { }
+export interface ISettingsViewAccountEditProps extends RouteComponentProps { };
+export interface ISettingsViewAccountEditState {
+  // ? 用户账号的关联信息相关
+  accountInfo: {
+    github: {
+      is_bind_github: boolean,
+      bind_github_id: number,
+      bind_github_user_info: {
+        login: string,
+      } | null,
+    },
+  };
+}
 
 
 const SettingsViewAccountEdit = React.memo((props: ISettingsViewAccountEditProps) => {
+  const [state, setState] = React.useState<ISettingsViewAccountEditState>({
+    accountInfo: {
+      github: {
+        is_bind_github: false,
+        bind_github_id: 0,
+        bind_github_user_info: null,
+      },
+    },
+  });
+
+  React.useEffect(() => {
+    _getAccountInfoFromServer();
+  }, []);
+
+
+  /**
+   * [获取] - 当前账号的关联信息
+   */
+  function _getAccountInfoFromServer() {
+    const userId = localStorage.getItem('userid');
+
+    if (!userId) {
+      notification.error({
+        message: '错误',
+        description: '用户信息已丢失, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    query({
+      url: '/api/user/info/account/detail',
+      method: 'GET',
+      jsonp: false,
+      data: {
+        userId,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
+
+      if (resCode === 0) {
+        const accountInfo = resData.accountInfo;
+
+        setState({
+          ...state,
+          accountInfo,
+        });
+      } else {
+        message.error(resMessage);
+      }
+    });
+  }
+
   return (
     <EditWrapper>
       <EditMain>
         <EditMainList>
+          {/* 绑定微信 */}
           <EditMainItem>
-            <Row>
-              <Col span={5}>
-                <Icon
-                  theme="filled"
-                  type="wechat"
-                  style={{
-                    fontSize: 18,
-                    color: '#1da57a',
-                  }}
-                />
-                <EditMainItemTitleText>微信</EditMainItemTitleText>
-              </Col>
-              <Col span={15}>
-                <EditMainItemContentText>bb老猫</EditMainItemContentText>
-              </Col>
-              <Col span={4}>
-                <EditMainItemActionText>解除绑定</EditMainItemActionText>
-              </Col>
-            </Row>
+            <SettingsViewAccountEditWechat />
           </EditMainItem>
 
+          {/* 绑定微博 */}
           <EditMainItem>
-            <Row>
-              <Col span={5}>
-                <Icon
-                  type="weibo"
-                  style={{
-                    fontSize: 18,
-                    color: 'red',
-                  }}
-                />
-                <EditMainItemTitleText>微博</EditMainItemTitleText>
-              </Col>
-              <Col span={15}>
-                <EditMainItemContentText />
-              </Col>
-              <Col span={4}>
-                <EditMainItemActionText>绑定</EditMainItemActionText>
-              </Col>
-            </Row>
+            <SettingsViewAccountEditWeibo />
           </EditMainItem>
 
+          {/* 绑定Github */}
           <EditMainItem>
-            <Row>
-              <Col span={5}>
-                <Icon
-                  theme="filled"
-                  type="github"
-                  style={{
-                    fontSize: 18,
-                  }}
-                />
-                <EditMainItemTitleText>GitHub</EditMainItemTitleText>
-              </Col>
-              <Col span={15}>
-                <EditMainItemContentText>ddzy</EditMainItemContentText>
-              </Col>
-              <Col span={4}>
-                <EditMainItemActionText>解除绑定</EditMainItemActionText>
-              </Col>
-            </Row>
+            <SettingsViewAccountEditGithub
+              accountGithubInfo={state.accountInfo.github}
+            />
           </EditMainItem>
 
+          {/* 绑定邮箱 */}
           <EditMainItem>
-            <Row>
-              <Col span={5}>
-                <Icon
-                  theme="filled"
-                  type="mail"
-                  style={{
-                    fontSize: 18,
-                    color: '#1890ff',
-                  }}
-                />
-                <EditMainItemTitleText>邮箱</EditMainItemTitleText>
-              </Col>
-              <Col span={15}>
-                <EditMainItemContentText>1766083035@qq.com</EditMainItemContentText>
-              </Col>
-              <Col span={4}>
-                <EditMainItemActionText>解除绑定</EditMainItemActionText>
-              </Col>
-            </Row>
+            <SettingsViewAccountEditEmail />
           </EditMainItem>
 
+          {/* 绑定手机 */}
           <EditMainItem>
-            <Row>
-              <Col span={5}>
-                <Icon
-                  theme="filled"
-                  type="phone"
-                  style={{
-                    fontSize: 18,
-                    color: '#1890ff',
-                  }}
-                />
-                <EditMainItemTitleText>手机</EditMainItemTitleText>
-              </Col>
-              <Col span={15}>
-                <EditMainItemContentText>13129156309</EditMainItemContentText>
-              </Col>
-              <Col span={4}>
-                <EditMainItemActionText>解除绑定</EditMainItemActionText>
-              </Col>
-            </Row>
+            <SettingsViewAccountEditPhone />
           </EditMainItem>
         </EditMainList>
       </EditMain>
@@ -138,4 +128,4 @@ const SettingsViewAccountEdit = React.memo((props: ISettingsViewAccountEditProps
   );
 });
 
-export default SettingsViewAccountEdit;
+export default withRouter(SettingsViewAccountEdit);
