@@ -189,4 +189,46 @@ authGithubController.post('/', async (ctx) => {
   }
 });
 
+/**
+ * [处理] - 解除github绑定
+ */
+authGithubController.post('/disaccount', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    githubId: string;
+  };
+
+  const {
+    userId,
+    githubId,
+  } = ctx.request.body as IRequestParams;
+
+  try {
+    // ? 移除该github账号信息
+    await OAuthGithub.findByIdAndRemove(githubId);
+
+    // ? 重置用户的github绑定
+    await User.findByIdAndUpdate(userId, {
+      '$set': {
+        'bind_third_party.github': 0,
+      },
+    });
+
+    ctx.body = {
+      code: 0,
+      message: '成功解除绑定!',
+      data: {
+        userId,
+        githubId,
+      },
+    };
+  } catch (error) {
+    ctx.body = {
+      code: -1,
+      message: '后端出错, 请稍后重试!',
+      data: {},
+    };
+  }
+});
+
 export default authGithubController;
