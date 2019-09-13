@@ -20,6 +20,7 @@ import {
 import {
   BIND_THIRD_PARTY_INFO,
   SOCKET_CONNECTION_INFO,
+  CLIENT_WEBSITE_INFO,
 } from 'constants/constants';
 import { query } from 'services/request';
 
@@ -34,10 +35,15 @@ export interface ILoginViewActionState {
 const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
 
   const {
+    schema,
+    domain,
+    port,
+  } = CLIENT_WEBSITE_INFO;
+  const {
     client_id,
     get_code_uri,
-    redirect_uri,
   } = BIND_THIRD_PARTY_INFO.github;
+  const redirect_uri = `${schema}://${domain}:${port}/login`;
 
 
   const [state] = React.useState<ILoginViewActionState>({

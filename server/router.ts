@@ -51,6 +51,7 @@ import userController from './controller/user/user';
 import userInfoController from './controller/user/info/userInfo';
 import userCreateController from './controller/user/create/userCreate';
 import userUpdateController from './controller/user/update/userUpdate';
+import userInfoAccountController from './controller/user/info/account/userInfoAccount';
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
 import chatController from './controller/chat/chat';
@@ -81,6 +82,11 @@ router
   .use('/details', detailsController.routes(), detailsController.allowedMethods())
   .use('/collection', collectionController.routes(), collectionController.allowedMethods())
   .use('/upload', uploadController.routes(), uploadController.allowedMethods());
+
+
+// !! 四级路由 !!
+userInfoController
+  .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods());
 
 
 // !! 三级路由 !!
