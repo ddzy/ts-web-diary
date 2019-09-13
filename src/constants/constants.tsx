@@ -126,6 +126,23 @@ export const SOCKET_CONNECTION_INFO = {
   port: 8888,
 };
 
+/**
+ * 应用的客户端IP地址信息
+ */
+export const CLIENT_WEBSITE_INFO = {
+  schema: 'http',
+  domain: 'localhost',
+  port: 3000,
+};
+
+/**
+ * 应用的服务端IP地址信息
+ */
+export const SERVER_WEBSITE_INFO = {
+  schema: 'http',
+  domain: 'localhost',
+  port: 8888,
+};
 
 /**
  * [react-monaco-editor]
@@ -144,6 +161,5 @@ export const BIND_THIRD_PARTY_INFO = {
     get_code_uri: 'https://github.com/login/oauth/authorize',
     client_id: 'fce9ff3b1d6b896c1349',
     client_secret: 'dc660851f5525e526710f2132f2bfe911d6a3cc4',
-    redirect_uri: 'http://localhost:3000/login',
   },
 };

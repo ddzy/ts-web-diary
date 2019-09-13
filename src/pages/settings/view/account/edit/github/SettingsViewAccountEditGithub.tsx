@@ -24,6 +24,7 @@ import {
 } from '../SettingsViewAccountEdit';
 import {
   BIND_THIRD_PARTY_INFO,
+  CLIENT_WEBSITE_INFO,
 } from 'constants/constants';
 import { query } from 'services/request';
 
@@ -37,26 +38,37 @@ export interface ISettingsViewAccountEditGithubState {
   isBindGithub: boolean;
   // ? 绑定按钮的loading状态
   isBindBtnLoading: boolean;
+
+  // ? 绑定的github唯一id
+  bindGithubId: number;
 }
 
 
 const SettingsViewAccountEditGithub = React.memo((props: ISettingsViewAccountEditGithubProps) => {
   const {
+    schema,
+    domain,
+    port,
+  } = CLIENT_WEBSITE_INFO;
+  const {
     client_id,
     get_code_uri,
-    redirect_uri,
   } = BIND_THIRD_PARTY_INFO.github;
+
+  const redirect_uri = `${schema}://${domain}:${port}/settings/account`;
 
 
   const [state, setState] = React.useState<ISettingsViewAccountEditGithubState>({
     isBindGithub: false,
     isBindBtnLoading: false,
+    bindGithubId: 0,
   });
 
   React.useEffect(() => {
     setState({
       ...state,
       isBindGithub: props.accountGithubInfo.is_bind_github,
+      bindGithubId: props.accountGithubInfo.bind_github_id,
     });
   }, [props.accountGithubInfo]);
 
@@ -117,7 +129,7 @@ const SettingsViewAccountEditGithub = React.memo((props: ISettingsViewAccountEdi
           return props.history.push('/login');
         }
 
-        const githubId = props.accountGithubInfo.bind_github_id;
+        const githubId = state.bindGithubId;
 
         query({
           method: 'POST',
@@ -161,13 +173,66 @@ const SettingsViewAccountEditGithub = React.memo((props: ISettingsViewAccountEdi
    * [处理] - 关联github
    */
   function handleAccountGithub() {
+    const userId = localStorage.getItem('userid');
+
+    if (!userId) {
+      notification.error({
+        message: '错误',
+        description: '用户信息已丢失, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
     const sParam = props.location.search;
 
     if (sParam) {
+      setState({
+        ...state,
+        isBindBtnLoading: true,
+      });
+
       // 提取code
       const githubCode = sParam.replace(/\?code=/, '');
 
-      console.log(githubCode);
+      query({
+        method: 'POST',
+        url: '/api/auth/github/account',
+        jsonp: false,
+        data: {
+          githubCode,
+          userId,
+        },
+      }).then((res) => {
+        const resCode = res.code;
+        const resMessage = res.message;
+        const resData = res.data;
+
+        if (resCode === 0) {
+          setState({
+            ...state,
+            isBindBtnLoading: false,
+            isBindGithub: true,
+            bindGithubId: resData.accountInfo.bind_github_id,
+          });
+
+          message.success(resMessage);
+        } else {
+          if (resCode === -1) {
+            message.error(resMessage);
+          } else {
+            message.info(resMessage);
+          }
+
+          setState({
+            ...state,
+            isBindGithub: false,
+            isBindBtnLoading: false,
+          });
+        }
+
+        props.history.push('/settings/account');
+      });
     }
   }
 

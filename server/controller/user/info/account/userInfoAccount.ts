@@ -40,7 +40,7 @@ userInfoAccountController.get('/detail', async (ctx) => {
   let foundBindingGithubUserInfo = null;
 
   if (foundBindingGithub) {
-    foundBindingGithubId = await foundBindingGithub._id;
+    foundBindingGithubId = await foundBindingGithub.open_id;
     foundBindingGithubUserInfo = await foundBindingGithub.github_user_info;
   }
 

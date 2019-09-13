@@ -27,7 +27,7 @@ export interface ISettingsViewAccountEditState {
   accountInfo: {
     github: {
       is_bind_github: boolean,
-      bind_github_id: string,
+      bind_github_id: number,
       bind_github_user_info: {
         login: string,
       } | null,
@@ -41,7 +41,7 @@ const SettingsViewAccountEdit = React.memo((props: ISettingsViewAccountEditProps
     accountInfo: {
       github: {
         is_bind_github: false,
-        bind_github_id: '',
+        bind_github_id: 0,
         bind_github_user_info: null,
       },
     },

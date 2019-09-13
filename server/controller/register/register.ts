@@ -68,6 +68,9 @@ registerController.post('/', async (ctx, ) => {
       },
       admin: {},
     },
+    bind_third_party: {
+      github: 0,
+    },
   });
 
   ctx.body = {
