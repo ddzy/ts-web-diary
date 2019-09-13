@@ -41,6 +41,8 @@ export interface ISettingsViewAccountEditGithubState {
 
   // ? 绑定的github唯一id
   bindGithubId: number;
+  // ? 绑定的github的用户名
+  bindGithubUserName: string;
 }
 
 
@@ -62,6 +64,7 @@ const SettingsViewAccountEditGithub = React.memo((props: ISettingsViewAccountEdi
     isBindGithub: false,
     isBindBtnLoading: false,
     bindGithubId: 0,
+    bindGithubUserName: '',
   });
 
   React.useEffect(() => {
@@ -69,6 +72,7 @@ const SettingsViewAccountEditGithub = React.memo((props: ISettingsViewAccountEdi
       ...state,
       isBindGithub: props.accountGithubInfo.is_bind_github,
       bindGithubId: props.accountGithubInfo.bind_github_id,
+      bindGithubUserName: props.accountGithubInfo.bind_github_user_info ? props.accountGithubInfo.bind_github_user_info.login : '',
     });
   }, [props.accountGithubInfo]);
 
@@ -214,21 +218,28 @@ const SettingsViewAccountEditGithub = React.memo((props: ISettingsViewAccountEdi
             isBindBtnLoading: false,
             isBindGithub: true,
             bindGithubId: resData.accountInfo.bind_github_id,
+            bindGithubUserName: resData.accountInfo.bind_github_user_name,
           });
 
           message.success(resMessage);
         } else {
           if (resCode === -1) {
             message.error(resMessage);
+
+            setState({
+              ...state,
+              isBindGithub: false,
+              isBindBtnLoading: false,
+            });
           } else {
             message.info(resMessage);
-          }
 
-          setState({
-            ...state,
-            isBindGithub: false,
-            isBindBtnLoading: false,
-          });
+            setState({
+              ...state,
+              isBindGithub: false,
+              isBindBtnLoading: false,
+            });
+          }
         }
 
         props.history.push('/settings/account');
@@ -255,9 +266,7 @@ const SettingsViewAccountEditGithub = React.memo((props: ISettingsViewAccountEdi
             <GithubMainItemContentText>
               {
                 state.isBindGithub
-                  ? props.accountGithubInfo.bind_github_user_info
-                      ?     props.accountGithubInfo.bind_github_user_info.login
-                    : ''
+                  ? state.bindGithubUserName
                   : ''
               }
             </GithubMainItemContentText>

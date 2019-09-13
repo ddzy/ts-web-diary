@@ -301,7 +301,7 @@ authGithubController.post('/account', async (ctx) => {
         // 暂时没有人绑定该账号
         // 创建并绑定至该用户
         // 创建新的OAuthGithub映射
-        await OAuthGithub.create({
+        const createdNewGithubAccountInfo = await OAuthGithub.create({
           open_id: openId,
           user_id: userId,
           github_user_info: githubUserInfo,
@@ -321,7 +321,8 @@ authGithubController.post('/account', async (ctx) => {
           message: '绑定成功, 之后可以使用该 Github 账号登录!',
           data: {
             accountInfo: {
-              bind_github_id: openId,
+              bind_github_id: createdNewGithubAccountInfo.open_id,
+              bind_github_user_name: createdNewGithubAccountInfo.github_user_info.login,
             },
           },
         };
