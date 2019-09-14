@@ -18,38 +18,17 @@ import UserProfileIndividualActionEdit from './edit/UserProfileInfoIndividualAct
 
 export interface IUserProfileInfoIndividualActionProps extends RouteComponentProps<{
   id: string,
-}> { };
-export interface IUserProfileInfoIndividualActionState {
-  // ? 标识是主人还是访客
+}> {
+  // ? 标识主人还是访客
   isOwner: boolean;
+};
+export interface IUserProfileInfoIndividualActionState {
 };
 
 
 const IUserProfileInfoIndividualAction = React.memo<IUserProfileInfoIndividualActionProps>((
   props: IUserProfileInfoIndividualActionProps,
 ): JSX.Element => {
-
-  const [state, setState] = React.useState<IUserProfileInfoIndividualActionState>({
-    isOwner: false,
-  });
-
-  React.useEffect(() => {
-    handleCheckIsOwner();
-  }, [props.match.params.id]);
-
-
-  /**
-   * [处理] - 检查当前用户是访客还是主人
-   */
-  function handleCheckIsOwner() {
-    const ownerId = props.match.params.id;
-    const visitorId = localStorage.getItem('userid');
-
-    setState({
-      ...state,
-      isOwner: ownerId === visitorId,
-    });
-  }
 
   return (
     <ActionWrapper>
@@ -62,7 +41,7 @@ const IUserProfileInfoIndividualAction = React.memo<IUserProfileInfoIndividualAc
           <Col span={6}>
             {/* 编辑个人信息区块 */}
             {
-              state.isOwner && <UserProfileIndividualActionEdit />
+              props.isOwner && <UserProfileIndividualActionEdit />
             }
           </Col>
         </Row>

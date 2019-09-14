@@ -9,7 +9,10 @@ import UserProfileInfoAvatar from './avatar/UserProfileInfoAvatar';
 import UserProfileInfoIndividual from './individual/UserProfileInfoIndividual';
 
 
-export interface IUserProfileInfoProps { };
+export interface IUserProfileInfoProps {
+  // ? 标识主人还是访客
+  isOwner: boolean;
+};
 
 
 const UserProfileInfo = React.memo<IUserProfileInfoProps>((
@@ -24,7 +27,9 @@ const UserProfileInfo = React.memo<IUserProfileInfoProps>((
             <UserProfileInfoAvatar />
           </Col>
           <Col span={18}>
-            <UserProfileInfoIndividual />
+            <UserProfileInfoIndividual
+              isOwner={props.isOwner}
+            />
           </Col>
         </Row>
       </InfoContent>

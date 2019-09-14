@@ -9,7 +9,10 @@ import UserProfileInfoIndividualTitle from './title/UserProfileInfoIndividualTit
 import UserProfileInfoIndividualAction from './action/UserProfileInfoIndividualAction';
 
 
-export interface IUserProfileInfoIndividualProps { };
+export interface IUserProfileInfoIndividualProps {
+  // ? 标识主人还是访客
+  isOwner: boolean;
+};
 
 
 const UserProfileInfoIndividual = React.memo<IUserProfileInfoIndividualProps>((
@@ -21,12 +24,16 @@ const UserProfileInfoIndividual = React.memo<IUserProfileInfoIndividualProps>((
       <IndividualContent>
         <Row>
           <Col>
+            {/* 个人信息标题区 */}
             <UserProfileInfoIndividualTitle />
           </Col>
         </Row>
         <Row>
           <Col>
-            <UserProfileInfoIndividualAction />
+            {/* 个人信息详情区 */}
+            <UserProfileInfoIndividualAction
+              isOwner={props.isOwner}
+            />
           </Col>
         </Row>
       </IndividualContent>

@@ -86,7 +86,7 @@ router
 
 // !! 四级路由 !!
 userInfoController
-  .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods());
+  .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods())
 
 
 // !! 三级路由 !!

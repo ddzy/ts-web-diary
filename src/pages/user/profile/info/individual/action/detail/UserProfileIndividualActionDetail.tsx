@@ -18,7 +18,7 @@ const UserProfileIndividualActionDetail = React.memo((props: IUserProfileIndivid
 
 
   /**
-   * [初始化] - 个人详细信息的折叠框内容
+   * [初始化] - 个人详细信息的折叠框标题
    */
   function _initCollapseHeader(): JSX.Element {
     return (

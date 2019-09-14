@@ -45,7 +45,7 @@ userInfoController.get('/detail', async (ctx) => {
     };
   } else {
     ctx.body = {
-      code: 1,
+      code: -1,
       message: 'Faild!',
       data: {},
     };
