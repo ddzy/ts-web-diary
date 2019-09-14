@@ -14,6 +14,9 @@ import {
 } from './style';
 import UserProfileIndividualActionDetail from './detail/UserProfileIndividualActionDetail';
 import UserProfileIndividualActionEdit from './edit/UserProfileInfoIndividualActionEdit';
+import {
+  IBaseCommonUserProfileInfo,
+} from 'pages/user/User.types';
 
 
 export interface IUserProfileInfoIndividualActionProps extends RouteComponentProps<{
@@ -21,6 +24,8 @@ export interface IUserProfileInfoIndividualActionProps extends RouteComponentPro
 }> {
   // ? 标识主人还是访客
   isOwner: boolean;
+  // ? 用户的个人信息详情
+  userProfileInfo: IBaseCommonUserProfileInfo;
 };
 export interface IUserProfileInfoIndividualActionState {
 };
@@ -36,7 +41,9 @@ const IUserProfileInfoIndividualAction = React.memo<IUserProfileInfoIndividualAc
         <Row>
           <Col span={18}>
             {/* 个人信息详情区块 */}
-            <UserProfileIndividualActionDetail />
+            <UserProfileIndividualActionDetail
+              userProfileInfo={props.userProfileInfo}
+            />
           </Col>
           <Col span={6}>
             {/* 编辑个人信息区块 */}

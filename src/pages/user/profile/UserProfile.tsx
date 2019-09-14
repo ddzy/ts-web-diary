@@ -98,6 +98,7 @@ const UserProfile = React.memo<IUserProfileProps>((
         {/* 个人信息展示区 */}
         <UserProfileInfo
           isOwner={props.isOwner}
+          userProfileInfo={state.userProfileInfo}
         />
       </ProfileMain>
     </ProfileContainer>

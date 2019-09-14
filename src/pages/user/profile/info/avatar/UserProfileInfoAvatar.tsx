@@ -21,11 +21,20 @@ import {
 import UserProfileInfoAvatarContent from './content/UserProfileInfoAvatarContent';
 import { query } from 'services/request';
 import { reduxHandleUpdateUseravatar } from 'components/authroute/AuthRoute.redux';
+import {
+  IBaseCommonUserProfileInfo,
+} from 'pages/user/User.types';
 
 
 export interface IUserProfileInfoAvatarProps extends RouteComponentProps<{
   id: string,
 }> {
+  // ? 标识主人还是访客
+  isOwner: boolean;
+
+  // ? 用户的个人信息详情
+  userProfileInfo: IBaseCommonUserProfileInfo;
+
   reduxHandleUpdateUseravatar: (
     data: {
       userId: string,
@@ -35,8 +44,6 @@ export interface IUserProfileInfoAvatarProps extends RouteComponentProps<{
   ) => void;
 };
 export interface IUserProfileInfoAvatarState {
-  // ? 标识当前用户是访问者还是主人
-  isOwner: boolean;
   // ? 是否显示头像上传的模态框
   isShowUploadAvatarModal: boolean;
   // ? 是否显示头像上传时的loading
@@ -54,7 +61,6 @@ const UserProfileInfoAvatar = React.memo<IUserProfileInfoAvatarProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IUserProfileInfoAvatarState>({
-    isOwner: false,
     isShowUploadAvatarModal: false,
     isShowUploadAvatarLoading: false,
     avatarImg: null,
@@ -62,21 +68,12 @@ const UserProfileInfoAvatar = React.memo<IUserProfileInfoAvatarProps>((
   });
 
   React.useEffect(() => {
-    handleCheckIsOwner();
-  }, [props.match.params.id]);
-
-  /**
-   * [处理] - 检查是主人还是访客
-   */
-  function handleCheckIsOwner() {
-    const visitorId = props.match.params.id;
-    const ownerId = localStorage.getItem('userid');
-
     setState({
       ...state,
-      isOwner: visitorId === ownerId,
+      avatarImgUrl: props.userProfileInfo.useravatar,
     });
-  }
+  }, [props.userProfileInfo]);
+
 
   /**
    * [处理] - 更新待上传的头像图片
@@ -96,7 +93,7 @@ const UserProfileInfoAvatar = React.memo<IUserProfileInfoAvatarProps>((
    * @description 根据`state.isOwner`来判断是否有权限进行此操作
    */
   function handleUploadAvatarModalShow() {
-    const { isOwner } = state;
+    const { isOwner } = props;
 
     if (!isOwner) {
       return;
