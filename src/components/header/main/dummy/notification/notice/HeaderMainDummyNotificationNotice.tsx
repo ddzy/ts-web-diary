@@ -55,8 +55,8 @@ const PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE = 'PRIVATE_UPDATE_MAKE_FRIEN
 
 export interface IHeaderMainDummyNotificationNoticeProps extends RouteComponentProps { };
 export interface IHeaderMainDummyNotificationNoticeState {
-  // ? 用户通知相关socket
-  notificationUserIOClient: SocketIOClient.Socket;
+  // ? 用户加好友通知相关socket
+  notificationUserFriendIOClient: SocketIOClient.Socket;
 
   // ? 通知项列表
   notificationsList: React.ReactNode[];
@@ -152,7 +152,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       };
     }
   }, {
-    notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`, {
+    notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`, {
       reconnectionAttempts: 2,
     }),
     notificationUnreadTotal: 0,
@@ -164,7 +164,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     _getNotificationList();
 
     // ? 用户请求加好友时的通知socket
-    state.notificationUserIOClient.on('receiveMakeFriendRequest', (
+    state.notificationUserFriendIOClient.on('receiveMakeFriendRequest', (
       data: IBaseNoficationUserFriendRequestParams,
     ) => {
       const currentUserId = localStorage.getItem('userid');
@@ -178,7 +178,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     });
 
     // ? 用户被成功加为好友时的通知socket
-    state.notificationUserIOClient.on('receiveMakeFriendAgree', (
+    state.notificationUserFriendIOClient.on('receiveMakeFriendAgree', (
       data: IBaseNotificationUserFriendAgreeParams & {
         notificationId: string,
       },
@@ -206,7 +206,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     });
 
     // ? 用户被拒绝加好友时的通知socket
-    state.notificationUserIOClient.on('receiveMakeFriendRefuse', (
+    state.notificationUserFriendIOClient.on('receiveMakeFriendRefuse', (
       data: IBaseNotificationUserFriendRefuseParams & {
         notificationId: string,
       },

@@ -54,6 +54,7 @@ import userUpdateController from './controller/user/update/userUpdate';
 import userInfoAccountController from './controller/user/info/account/userInfoAccount';
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
+import notificationUserFriendController from './controller/notification/user/friend/notificationUserFriend';
 import chatController from './controller/chat/chat';
 import chatSingleController from './controller/chat/single/chatSingle';
 import chatSingleInfoController from './controller/chat/single/info/chatSingleInfo';
@@ -108,6 +109,8 @@ chatGroupController
   .use('/create', chatGroupCreateController.routes(), chatGroupCreateController.allowedMethods());
 chatCommonController
   .use('/info', chatCommonInfoController.routes(), chatCommonInfoController.allowedMethods());
+notificationUserController
+  .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods());
 
 
 // !! 二级路由 !!

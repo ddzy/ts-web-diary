@@ -41,14 +41,14 @@ export interface IBaseCommentItemTitleAvatarContentProps extends RouteComponentP
   };
 };
 export interface IBaseCommentItemTitleAvatarContentState {
-  // ? 用户通知的Websocket
-  notificationUserIOClient: SocketIOClient.Socket;
+  // ? 用户加好友通知的Websocket
+  notificationUserFriendIOClient: SocketIOClient.Socket;
 };
 
 
 const BaseCommentItemTitleAvatarContent = React.memo((props: IBaseCommentItemTitleAvatarContentProps) => {
   const [state] = React.useState<IBaseCommentItemTitleAvatarContentState>({
-    notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`),
+    notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`),
   });
 
 
@@ -76,7 +76,7 @@ const BaseCommentItemTitleAvatarContent = React.memo((props: IBaseCommentItemTit
     const makeFriendDescription = data.description;
     const notificationType = NOTIFICATION_TYPE.user.friend.request;
 
-    state.notificationUserIOClient.emit('sendMakeFriendRequest', {
+    state.notificationUserFriendIOClient.emit('sendMakeFriendRequest', {
       from: userId,
       to: authorId,
       description: makeFriendDescription,
