@@ -44,4 +44,18 @@ export const DEFAULT_USER_NAME_PREFIX = ['User_', 'Sunny_', 'U_'];
 /**
  * 随机的用户名内容
  */
-export const DEFAULT_USER_NAME_CONTENT = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r','s','t', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'M', 'N', 'A', 'B', 'C', 'D','E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+export const DEFAULT_USER_NAME_CONTENT = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'M', 'N', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+/**
+ * 通知的类型
+ */
+export const NOTIFICATION_TYPE = {
+  user: {
+    friend: {
+      request: 'user_friend_request',
+      agree: 'user_friend_agree',
+      refuse: 'user_friend_refuse',
+    },
+  },
+  admin: {},
+};

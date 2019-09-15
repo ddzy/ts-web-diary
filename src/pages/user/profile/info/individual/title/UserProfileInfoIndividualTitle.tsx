@@ -9,9 +9,15 @@ import {
   TitleDescBox,
   TitleDescText,
 } from './style';
+import {
+  IBaseCommonUserProfileInfo,
+} from 'pages/user/User.types';
 
 
-export interface IUserProfileInfoIndividualTitleProps { };
+export interface IUserProfileInfoIndividualTitleProps {
+  // ? 用户的个人信息详情
+  userProfileInfo: IBaseCommonUserProfileInfo;
+};
 
 
 const UserProfileInfoIndividualTitle = React.memo<IUserProfileInfoIndividualTitleProps>((
@@ -25,12 +31,12 @@ const UserProfileInfoIndividualTitle = React.memo<IUserProfileInfoIndividualTitl
           <Col>
             <TitleNameBox>
               <TitleNameText>
-                username
+                {props.userProfileInfo.username}
               </TitleNameText>
             </TitleNameBox>
             <TitleDescBox>
               <TitleDescText>
-                website
+                {props.userProfileInfo.introduction}
               </TitleDescText>
             </TitleDescBox>
           </Col>

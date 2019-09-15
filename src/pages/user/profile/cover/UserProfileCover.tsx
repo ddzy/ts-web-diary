@@ -14,19 +14,23 @@ import {
   CoverWrapper,
   CoverMain,
 } from './style';
-import DefaultCoverImg from 'static/images/admin_bg_img.png';
 import UserProfileCoverView from './view/UserProfileCoverView';
 import UserProfileCoverUpload from './upload/UserProfileCoverUpload';
 import { query } from 'services/request';
+import {
+  IBaseCommonUserProfileInfo,
+} from 'pages/user/User.types';
 
 
 export interface IUserProfileCoverProps extends RouteComponentProps<{
   id: string,
-}> { };
-export interface IUserProfileCoverState {
+}> {
   // ? 标识主人还是访客
   isOwner: boolean;
-
+  // ? 用户的个人信息详情
+  userProfileInfo: IBaseCommonUserProfileInfo;
+};
+export interface IUserProfileCoverState {
   // ? 是否显示上传封面图片时的loading状态
   isUploadCoverImgLoading: boolean,
   // ? 封面图片
@@ -39,28 +43,17 @@ const UserProfileCover = React.memo<IUserProfileCoverProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IUserProfileCoverState>({
-    isOwner: false,
     isUploadCoverImgLoading: false,
-    coverImgUrl: DefaultCoverImg,
+    coverImgUrl: '',
   });
 
   React.useEffect(() => {
-    handleCheckIsOwnerOrVisitor();
-  }, [props.match.params.id]);
-
-
-  /**
-   * [处理] - 检查当前用户是访客还是主人
-   */
-  function handleCheckIsOwnerOrVisitor() {
-    const ownerId = props.match.params.id;
-    const visitorId = localStorage.getItem('userid');
-
     setState({
       ...state,
-      isOwner: ownerId === visitorId,
+      coverImgUrl: props.userProfileInfo.profile_cover_img,
     });
-  }
+  }, [props.userProfileInfo]);
+
 
   /**
    * [处理] - 封面图更新
@@ -169,7 +162,7 @@ const UserProfileCover = React.memo<IUserProfileCoverProps>((
 
           {/* 图片上传区 */}
           {
-            state.isOwner && (
+            props.isOwner && (
               <UserProfileCoverUpload
                 onCoverImgUploadChange={handleCoverImgUploadChange}
               />

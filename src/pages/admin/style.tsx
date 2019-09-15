@@ -12,5 +12,6 @@ export const AdminWrapper = styled.div`
 export const AdminContent = styled('div')<IAdminContentProps>`
   position: relative;
   min-height: 100%;
+  padding-left: calc(100vw - 100%);
   background-image: url(${(props) => props.bgImg});
 `;

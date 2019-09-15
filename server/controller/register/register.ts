@@ -58,19 +58,10 @@ registerController.post('/', async (ctx, ) => {
     followers: [],
     friends: [],
     chat_memory: [],
-    notification: {
-      user: {
-        friend: {
-          request: [],
-          agree: [],
-          refuse: [],
-        },
-      },
-      admin: {},
-    },
     bind_third_party: {
       github: 0,
     },
+    notifications: [],
   });
 
   ctx.body = {

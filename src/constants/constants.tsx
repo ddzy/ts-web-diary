@@ -100,6 +100,11 @@ export const COMMENT_PAGE_SIZE: number = 5;
 export const REPLY_PAGE_SIZE: number = 3;
 
 /**
+ * 通知列表的每页条数 - 中
+ */
+export const NOTICE_PAGE_SIZE_MEDIUM: number = 5;
+
+/**
  * 通知相关常量
  */
 // ? 收藏我的文章时的通知
@@ -162,4 +167,18 @@ export const BIND_THIRD_PARTY_INFO = {
     client_id: 'fce9ff3b1d6b896c1349',
     client_secret: 'dc660851f5525e526710f2132f2bfe911d6a3cc4',
   },
+};
+
+/**
+ * 通知的类型
+ */
+export const NOTIFICATION_TYPE = {
+  user: {
+    friend: {
+      request: 'user_friend_request',
+      agree: 'user_friend_agree',
+      refuse: 'user_friend_refuse',
+    },
+  },
+  admin: {},
 };

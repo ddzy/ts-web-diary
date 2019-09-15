@@ -14,14 +14,20 @@ import {
 } from './style';
 import UserProfileIndividualActionDetail from './detail/UserProfileIndividualActionDetail';
 import UserProfileIndividualActionEdit from './edit/UserProfileInfoIndividualActionEdit';
+import {
+  IBaseCommonUserProfileInfo,
+} from 'pages/user/User.types';
 
 
 export interface IUserProfileInfoIndividualActionProps extends RouteComponentProps<{
   id: string,
-}> { };
-export interface IUserProfileInfoIndividualActionState {
-  // ? 标识是主人还是访客
+}> {
+  // ? 标识主人还是访客
   isOwner: boolean;
+  // ? 用户的个人信息详情
+  userProfileInfo: IBaseCommonUserProfileInfo;
+};
+export interface IUserProfileInfoIndividualActionState {
 };
 
 
@@ -29,40 +35,20 @@ const IUserProfileInfoIndividualAction = React.memo<IUserProfileInfoIndividualAc
   props: IUserProfileInfoIndividualActionProps,
 ): JSX.Element => {
 
-  const [state, setState] = React.useState<IUserProfileInfoIndividualActionState>({
-    isOwner: false,
-  });
-
-  React.useEffect(() => {
-    handleCheckIsOwner();
-  }, [props.match.params.id]);
-
-
-  /**
-   * [处理] - 检查当前用户是访客还是主人
-   */
-  function handleCheckIsOwner() {
-    const ownerId = props.match.params.id;
-    const visitorId = localStorage.getItem('userid');
-
-    setState({
-      ...state,
-      isOwner: ownerId === visitorId,
-    });
-  }
-
   return (
     <ActionWrapper>
       <ActionMain>
         <Row>
           <Col span={18}>
             {/* 个人信息详情区块 */}
-            <UserProfileIndividualActionDetail />
+            <UserProfileIndividualActionDetail
+              userProfileInfo={props.userProfileInfo}
+            />
           </Col>
           <Col span={6}>
             {/* 编辑个人信息区块 */}
             {
-              state.isOwner && <UserProfileIndividualActionEdit />
+              props.isOwner && <UserProfileIndividualActionEdit />
             }
           </Col>
         </Row>

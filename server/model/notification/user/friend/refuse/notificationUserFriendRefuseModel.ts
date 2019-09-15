@@ -3,10 +3,16 @@ import * as mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 
+
 /**
  * [用户] - 拒绝加好友通知模型
  */
 const notificationUserFriendRefuseSchema: mongoose.Schema = new Schema({
+  // ? 通知的类型
+  type: {
+    type: String,
+    default: '',
+  },
   // ? 发送方
   from: {
     type: Schema.Types.ObjectId,

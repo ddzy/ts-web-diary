@@ -24,6 +24,7 @@ import {
 } from 'components/header/Header.types';
 import {
   SOCKET_CONNECTION_INFO,
+  NOTIFICATION_TYPE,
 } from 'constants/constants';
 
 
@@ -32,8 +33,8 @@ export interface IHeaderMainDummyNotificationNoticeFriendRequestProps {
   notificationInfo: IBaseNoficationUserFriendRequestParams;
 };
 export interface IHeaderMainDummyNotificationNoticeFriendRequestState {
-  // ? 用户通知的socket
-  notificationUserIOClient: SocketIOClient.Socket;
+  // ? 用户加好友相关通知的socket
+  notificationUserFriendIOClient: SocketIOClient.Socket;
 
   // ? 是否显示拒绝好友的备注的模态框
   isShowRefuseModal: boolean;
@@ -49,7 +50,7 @@ export interface IHeaderMainDummyNotificationNoticeFriendRequestState {
 
 const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: IHeaderMainDummyNotificationNoticeFriendRequestProps) => {
   const [state, setState] = React.useState<IHeaderMainDummyNotificationNoticeFriendRequestState>({
-    notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`),
+    notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`),
     isShowRefuseModal: false,
     refuseDescription: '',
     isShowControl: true,
@@ -182,11 +183,13 @@ const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: 
   function handleAgree() {
     const fromUserId = props.notificationInfo.from._id;
     const toUserId = props.notificationInfo.to._id;
+    const notificationType = NOTIFICATION_TYPE.user.friend.agree;
 
-    state.notificationUserIOClient.emit('sendMakeFriendAgree', {
+    state.notificationUserFriendIOClient.emit('sendMakeFriendAgree', {
       notificationId: props.notificationInfo._id,
       from: toUserId,
       to: fromUserId,
+      notificationType,
     });
 
     setState({
@@ -210,12 +213,14 @@ const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: 
     const fromUserId = props.notificationInfo.from._id;
     const toUserId = props.notificationInfo.to._id;
     const refuseDescription = state.refuseDescription;
+    const notificationType = NOTIFICATION_TYPE.user.friend.refuse;
 
-    state.notificationUserIOClient.emit('sendMakeFriendRefuse', {
+    state.notificationUserFriendIOClient.emit('sendMakeFriendRefuse', {
       notificationId: props.notificationInfo._id,
       from: toUserId,
       to: fromUserId,
       description: refuseDescription,
+      notificationType,
     });
 
     setState({

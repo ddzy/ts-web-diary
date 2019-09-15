@@ -15,14 +15,14 @@ import {
   handleStatus,
 } from './controller/status/create/statusCreate';
 import {
-  handleNotificationUser,
-} from './controller/notification/user/notificationUser';
-import {
   handleSingleChat,
 } from './controller/chat/single/create/chatSingleCreate';
 import {
   handleGroupChat,
 } from './controller/chat/group/create/chatGroupCreate';
+import {
+  handleNotificationUserFriend,
+} from './controller/notification/user/friend/notificationUserFriend';
 
 
 const app: Koa = new Koa();
@@ -72,10 +72,10 @@ statusIO.on('connection', (socket) => {
   handleStatus(socket, statusIO);
 })
 
-// ? 处理用户通知的相关Websocket
-const notificationUserIO = io.of('/notification/user');
-notificationUserIO.on('connection', (socket) => {
-  handleNotificationUser(socket, notificationUserIO);
+// ? 处理用户加好友通知的相关Websocket
+const notificationUserFriendIO = io.of('/notification/user/friend');
+notificationUserFriendIO.on('connection', (socket) => {
+  handleNotificationUserFriend(socket, notificationUserFriendIO);
 });
 
 // ? 处理单聊的相关Websocket

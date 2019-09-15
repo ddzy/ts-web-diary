@@ -13,4 +13,5 @@ export const ViewMain = styled('div')<IViewMainProps>`
   background-image: url(${(props) => props.url});
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: #f9f9f9;
 `;
