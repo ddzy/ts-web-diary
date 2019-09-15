@@ -76,16 +76,36 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     };
   }
 
+  public $adminContentRef = React.createRef<HTMLDivElement>();
+
   public readonly state: IAdminState = {
     pathname: '',
   }
 
   public componentDidMount(): void {
-    window.addEventListener('wheel', this.aidedHandleMouseWheel);
+    const oAdminContentUnknown = this.$adminContentRef.current;
+
+    console.log(oAdminContentUnknown);
+
+    if (oAdminContentUnknown) {
+      const oAdminContentDOM = oAdminContentUnknown as HTMLDivElement;
+
+      oAdminContentDOM.addEventListener('wheel', this.aidedHandleMouseWheel);
+    }
+
+    // window.addEventListener('wheel', this.aidedHandleMouseWheel);
   }
 
   public componentWillUnmount(): void {
-    window.removeEventListener('wheel', this.aidedHandleMouseWheel);
+    const oAdminContentUnknown = this.$adminContentRef.current;
+
+    if (oAdminContentUnknown) {
+      const oAdminContentDOM = oAdminContentUnknown as HTMLDivElement;
+
+      oAdminContentDOM.removeEventListener('wheel', this.aidedHandleMouseWheel);
+    }
+
+    // window.removeEventListener('wheel', this.aidedHandleMouseWheel);
   }
 
   public shouldComponentUpdate(
@@ -117,6 +137,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
       <AdminWrapper>
         <AdminContent
           bgImg={BgImg}
+          ref={this.$adminContentRef}
         >
           {/* 全局头部 */}
           <Header />
