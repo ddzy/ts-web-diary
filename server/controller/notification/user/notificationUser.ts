@@ -1,11 +1,12 @@
 import * as Router from 'koa-router';
 import * as IO from 'socket.io';
+import * as UUID from 'uuid';
 
 import {
   User,
-  NotificationUserFriendRequest,
-  NotificationUserFriendAgree,
-  NotificationUserFriendRefuse,
+  INotificationUserFriendAgreeModelProps,
+  INotificationUserFriendRefuseModelProps,
+  INotificationUserFriendRequestModelProps,
 } from '../../../model/model';
 
 const notificationUserController = new Router();
@@ -24,45 +25,47 @@ export function handleNotificationUser(
       from: string;
       to: string;
       description: string;
+      notificationType: string;
     },
   ) => {
-    // ? 创建新的通知
-    const createdNotificationUserFriendRequest = await NotificationUserFriendRequest.create({
+    // TODO 创建新的通知
+    const createdNotification: INotificationUserFriendRequestModelProps = {
+      _id: UUID.v1(),
+      type: data.notificationType,
       agree_state: 0,
       from: data.from,
       to: data.to,
       description: data.description,
       create_time: Date.now(),
       update_time: Date.now(),
-    });
+    };
 
-    // ? 更新接收方的通知列表
-    await User.findByIdAndUpdate(
+    // TODO 更新接收方的通知列表
+    const updatedReceiverInfo = await User.findByIdAndUpdate(
       data.to,
       {
         '$push': {
-          'notification.user.friend.request': createdNotificationUserFriendRequest,
+          'notifications': createdNotification,
         },
+      },
+      {
+        new: true,
+        select: '_id username useravatar',
       },
     );
 
-    // ? 查询刚刚创建的通知信息
-    const foundNotificationInfo = await NotificationUserFriendRequest
-      .findById(createdNotificationUserFriendRequest._id)
-      .populate([
-        {
-          path: 'from',
-          select: ['_id', 'username', 'useravatar'],
-        },
-        {
-          path: 'to',
-          select: ['_id', 'username', 'useravatar'],
-        },
-      ])
-      .lean();
+    // TODO 查询发送方的用户信息
+    const foundSenderInfo = await User.findById(
+      data.from,
+      '_id username useravatar',
+    );
 
-    // ? 向接收方发起好友请求的通知
-    io.emit('receiveMakeFriendRequest', foundNotificationInfo);
+    // TODO 向接收方发起好友请求的通知
+    io.emit('receiveMakeFriendRequest', {
+      ...createdNotification,
+      from: foundSenderInfo,
+      to: updatedReceiverInfo,
+    });
   });
 
   // ? 同意加好友
@@ -71,127 +74,137 @@ export function handleNotificationUser(
       notificationId: string,
       from: string,
       to: string,
+      notificationType: string;
     },
   ) => {
-    // ? 更新双方的好友列表
-    await User.findByIdAndUpdate(data.from, {
-      '$addToSet': {
-        friends: data.to,
-      },
-    });
-    await User.findByIdAndUpdate(data.to, {
-      '$addToSet': {
-        friends: data.from,
-      },
-    });
-
-    // ? 创建新的通知
-    const createdReceiverNotification = await NotificationUserFriendAgree.create({
+    // TODO 创建新的通知
+    const createdNotification: INotificationUserFriendAgreeModelProps = {
+      _id: UUID.v1(),
+      type: data.notificationType,
       from: data.from,
       to: data.to,
       create_time: Date.now(),
       update_time: Date.now(),
+    };
+
+    // TODO 更新双方的好友列表
+    const updatedSenderInfo = await User.findByIdAndUpdate(data.from, {
+      '$addToSet': {
+        friends: data.to,
+      },
+    }, {
+      new: true,
+    });
+    const updatedReceiverInfo = await User.findByIdAndUpdate(data.to, {
+      '$addToSet': {
+        friends: data.from,
+      },
+      '$push': {
+        notifications: createdNotification,
+      },
+    }, {
+      new: true,
+      select: '_id username useravatar',
     });
 
-    // ? 查找并更新接收方的用户信息
-    await User.findByIdAndUpdate(
-      data.to,
-      {
-        '$push': {
-          'notification.user.friend.agree': createdReceiverNotification,
-        },
-      },
-      {
-        new: true,
-      },
-    );
+    // TODO 更新好友申请的接收方(此时的发送方)的状态为1(同意)
+    let foundNotificationList = await updatedSenderInfo.notifications;
 
-    // ? 更新该好友请求通知的状态为1(同意)
-    await NotificationUserFriendRequest.findByIdAndUpdate(
-      data.notificationId,
-      {
-        '$set': {
+    foundNotificationList = await foundNotificationList.map((v: any) => {
+      if (v._id === data.notificationId) {
+        return {
+          ...v,
           agree_state: 1,
-        },
+        };
+      }
+
+      return v;
+    });
+
+    const foundSenderInfo = await User.findByIdAndUpdate(data.from, {
+      '$set': {
+        notifications: foundNotificationList,
       },
-    );
+    }, {
+      new: true,
+      select: '_id username useravatar',
+    });
 
-    // ? 查询刚刚创建的通知信息
-    const foundNotificationInfo = await NotificationUserFriendAgree
-      .findById(createdReceiverNotification._id)
-      .populate([
-        {
-          path: 'from',
-          select: ['_id', 'username', 'useravatar'],
-        },
-        {
-          path: 'to',
-          select: ['_id', 'username', 'useravatar'],
-        },
-      ])
-      .lean();
-
-    io.emit('receiveMakeFriendAgree', foundNotificationInfo);
+    io.emit('receiveMakeFriendAgree', {
+      ...createdNotification,
+      from: foundSenderInfo,
+      to: updatedReceiverInfo,
+      notificationId: data.notificationId,
+    });
   });
 
   // ? 拒绝加好友
   socket.on('sendMakeFriendRefuse', async (
     data: {
       notificationId: string,
+      notificationType: string,
       from: string,
       to: string,
       description: string,
     },
   ) => {
-    // ? 创建新的拒绝通知
-    const createdNotification = await NotificationUserFriendRefuse.create({
+    // TODO 创建新的拒绝通知
+    const createdNewNotification: INotificationUserFriendRefuseModelProps = {
+      _id: UUID.v1(),
+      type: data.notificationType,
       from: data.from,
       to: data.to,
       description: data.description,
       create_time: Date.now(),
       update_time: Date.now(),
-    });
+    };
 
-    // ? 更新接收方的用户信息
-    await User.findByIdAndUpdate(
+    // TODO 更新接收方的用户信息
+    const updatedReceiverInfo = await User.findByIdAndUpdate(
       data.to,
       {
         '$push': {
-          'notification.user.friend.refuse': createdNotification,
+          'notifications': createdNewNotification,
         },
       },
       {
         new: true,
+        select: '_id username useravatar',
       },
     );
 
-    // ? 更新该好友请求通知的状态为-1(拒绝)
-    await NotificationUserFriendRequest.findByIdAndUpdate(
-      data.notificationId,
+    // TODO 更新好友申请的接收方(此时的发送方)的状态为-1(拒绝)
+    const foundSenderInfo = await User.findById(data.from);
+    let foundNotificationList = await foundSenderInfo.notifications;
+
+    foundNotificationList = await foundNotificationList.map((v: any) => {
+      if (v._id === data.notificationId) {
+        return {
+          ...v,
+          agree_state: -1,
+        };
+      }
+
+      return v;
+    });
+
+    const updatedSenderInfo = await User.findByIdAndUpdate(
+      data.from,
       {
         '$set': {
-          agree_state: -1,
+          notifications: foundNotificationList,
         },
       },
+      {
+        new: true,
+        select: '_id username useravatar',
+      }
     );
 
-    // ? 查询刚刚创建的通知信息
-    const foundNotificationInfo = await NotificationUserFriendRefuse
-      .findById(createdNotification._id)
-      .populate([
-        {
-          path: 'from',
-          select: ['_id', 'username', 'useravatar'],
-        },
-        {
-          path: 'to',
-          select: ['_id', 'username', 'useravatar'],
-        },
-      ])
-      .lean();
-
     io.emit('receiveMakeFriendRefuse', {
-      ...foundNotificationInfo,
+      ...createdNewNotification,
+      from: updatedSenderInfo,
+      to: updatedReceiverInfo,
       notificationId: data.notificationId,
     });
   });
@@ -211,87 +224,34 @@ notificationUserController.get('/info/list', async (ctx) => {
   } = ctx.request.query as IRequestParams;
 
   // ? 查询指定用户信息
-  const foundUserInfo = await User
-    .findById(userId)
-    .populate([
-      {
-        path: 'notification.user.friend.request',
-        populate: [
-          {
-            path: 'from',
-            select: ['_id', 'username', 'useravatar'],
-          },
-          {
-            path: 'to',
-            select: ['_id', 'username', 'useravatar'],
-          },
-        ],
-        options: {
-          sort: {
-            create_time: -1,
-          },
-        },
-      },
-      {
-        path: 'notification.user.friend.agree',
-        populate: [
-          {
-            path: 'from',
-            select: ['_id', 'username', 'useravatar'],
-          },
-          {
-            path: 'to',
-            select: ['_id', 'username', 'useravatar'],
-          },
-        ],
-        options: {
-          sort: {
-            create_time: -1,
-          },
-        },
-      },
-      {
-        path: 'notification.user.friend.refuse',
-        populate: [
-          {
-            path: 'from',
-            select: ['_id', 'username', 'useravatar'],
-          },
-          {
-            path: 'to',
-            select: ['_id', 'username', 'useravatar'],
-          },
-        ],
-        options: {
-          sort: {
-            create_time: -1,
-          },
-        },
-      },
-    ])
-    .lean();
+  const foundUserInfo = await User.findById(userId);
 
-  // ? 获取用户的通知信息
-  const foundUserNotificationInfo = await foundUserInfo.notification;
+  // ? 查询用户的通知列表
+  const foundUserNotificationList = await foundUserInfo.notifications;
 
-  // ? 预处理当前用户的通知
-  const ProcessedUserFriendRequestNotificationList = foundUserNotificationInfo.user.friend.request
-    ? foundUserNotificationInfo.user.friend.request
-    : [];
-  const ProcessedUserFriendAgreeNotificationList = foundUserNotificationInfo.user.friend.agree
-    ? foundUserNotificationInfo.user.friend.agree
-    : [];
-  const ProcessedUserFriendRefuseNotificationList = foundUserNotificationInfo.user.friend.refuse
-    ? foundUserNotificationInfo.user.friend.refuse
-    : [];
+  // ? 解析通知列表条目中的关联表
+  const parsedUserNotificationList = await Promise.all(foundUserNotificationList.map(async (v: any) => {
+    const foundFromUserInfo = await User.findById(
+      v.from,
+      '_id username useravatar',
+    );
+    const foundToUserInfo = await User.findById(
+      v.to,
+      '_id username useravatar',
+    );
+
+    return {
+      ...v,
+      from: foundFromUserInfo,
+      to: foundToUserInfo,
+    };
+  }));
 
   ctx.body = {
     code: 0,
     message: 'Success!',
     data: {
-      user_friend_request_notification_list: ProcessedUserFriendRequestNotificationList,
-      user_friend_agree_notification_list: ProcessedUserFriendAgreeNotificationList,
-      user_friend_refuse_notification_list: ProcessedUserFriendRefuseNotificationList,
+      notification_list: parsedUserNotificationList.reverse(),
     },
   };
 });

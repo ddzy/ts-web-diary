@@ -67,31 +67,11 @@ const UserSchema: mongoose.Schema = new Schema({
     ref: 'ChatMemory',
   }],
 
-  // ? 应用通知(用户 + 管理员)
-  notification: {
-    user: {
-      friend: {
-        agree: [{
-          type: Schema.Types.ObjectId,
-          ref: 'notificationUserFriendAgree',
-          default: [],
-        }],
-        refuse: [{
-          type: Schema.Types.ObjectId,
-          ref: 'notificationUserFriendRefuse',
-          default: [],
-        }],
-        request: [{
-          type: Schema.Types.ObjectId,
-          ref: 'notificationUserFriendRequest',
-          default: [],
-        }],
-      },
-    },
-    admin: {
-
-    },
-  },
+  // ? 通知
+  notifications: [{
+    type: Schema.Types.Mixed,
+    default: [],
+  }],
 
   // ? 个人中心封面图片
   profile_cover_img: {

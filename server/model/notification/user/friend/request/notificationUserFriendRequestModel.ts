@@ -3,10 +3,15 @@ import * as mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 
+
 /**
  * [用户] - 申请加好友通知模型
  */
 const notificationUserFriendRequestSchema: mongoose.Schema = new Schema({
+  type: {
+    type: String,
+    default: '',
+  },
   // ? 同意申请的状态
   // * 0(等待中) 1(同意) -1(拒绝)
   agree_state: {

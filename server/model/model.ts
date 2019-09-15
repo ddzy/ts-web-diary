@@ -27,6 +27,17 @@ import NotificationUserFriendRefuse from './notification/user/friend/refuse/noti
 import OAuthGithub from './oauth/github/oauthGithubModel';
 
 
+import {
+  INotificationUserFriendRequestModelProps,
+} from './notification/user/friend/request/notificationUserFriendRequestModel.types';
+import {
+  INotificationUserFriendAgreeModelProps,
+} from './notification/user/friend/agree/notificationUserFriendAgreeModel.types';
+import {
+  INotificationUserFriendRefuseModelProps,
+} from './notification/user/friend/refuse/notificationUserFriendRefuseModel.types';
+
+
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
   'mongodb://localhost:27017/web-diary-log',
@@ -69,4 +80,9 @@ export {
   NotificationUserFriendAgree,
   NotificationUserFriendRefuse,
   OAuthGithub,
+
+  // ? Interfaces
+  INotificationUserFriendRequestModelProps,
+  INotificationUserFriendAgreeModelProps,
+  INotificationUserFriendRefuseModelProps,
 };

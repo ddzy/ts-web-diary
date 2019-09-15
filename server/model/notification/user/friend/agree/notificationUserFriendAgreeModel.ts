@@ -7,6 +7,11 @@ const { Schema } = mongoose;
  * [用户] - 同意加好友通知模型
  */
 const notificationUserFriendAgreeSchema: mongoose.Schema = new Schema({
+  // ? 通知类型
+  type: {
+    type: String,
+    default: '',
+  },
   // ? 发送方
   from: {
     type: Schema.Types.ObjectId,

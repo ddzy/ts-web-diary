@@ -15,6 +15,7 @@ import {
 } from './style';
 import {
   SOCKET_CONNECTION_INFO,
+  NOTIFICATION_TYPE,
 } from 'constants/constants';
 import BaseCommentItemTitleAvatarContentStatistics from './statistics/BaseCommentItemTitleAvatarContentStatistics';
 import BaseCommentItemTitleAvatarContentAction from './action/BaseCommentItemTitleAvatarContentAction';
@@ -50,6 +51,7 @@ const BaseCommentItemTitleAvatarContent = React.memo((props: IBaseCommentItemTit
     notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`),
   });
 
+
   /**
    * [处理] - 发送加好友请求
    */
@@ -72,11 +74,13 @@ const BaseCommentItemTitleAvatarContent = React.memo((props: IBaseCommentItemTit
     const authorId = props.userProfileInfo.author_id;
     const authorName = props.userProfileInfo.author_name;
     const makeFriendDescription = data.description;
+    const notificationType = NOTIFICATION_TYPE.user.friend.request;
 
     state.notificationUserIOClient.emit('sendMakeFriendRequest', {
       from: userId,
       to: authorId,
       description: makeFriendDescription,
+      notificationType,
     });
 
     notification.info({

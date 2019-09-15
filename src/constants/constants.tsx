@@ -163,3 +163,17 @@ export const BIND_THIRD_PARTY_INFO = {
     client_secret: 'dc660851f5525e526710f2132f2bfe911d6a3cc4',
   },
 };
+
+/**
+ * 通知的类型
+ */
+export const NOTIFICATION_TYPE = {
+  user: {
+    friend: {
+      request: 'user_friend_request',
+      agree: 'user_friend_agree',
+      refuse: 'user_friend_refuse',
+    },
+  },
+  admin: {},
+};

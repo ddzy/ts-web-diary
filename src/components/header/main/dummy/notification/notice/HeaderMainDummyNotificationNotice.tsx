@@ -10,6 +10,7 @@ import {
   Popover,
   Divider,
   notification,
+  message,
 } from 'antd';
 
 import {
@@ -27,6 +28,7 @@ import {
   NOTIFICATION_MAKE_FRIEND_REQUEST,
   NOTIFICATION_MAKE_FRIEND_AGREE,
   NOTIFICATION_MAKE_FRIEND_REFUSE,
+  NOTIFICATION_TYPE,
 } from 'constants/constants';
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
 import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
@@ -48,7 +50,7 @@ const PRIVATE_CONCAT_NOTIFICATION_LIST = 'PRIVATE_CONCAT_NOTIFICATION_LIST';
 // ? 重置未读通知数量
 const PRIVATE_RESET_UNREAD_TOTAL = 'PRIVATE_RESET_UNREAD_TOTAL';
 // ? 用户拒绝好友申请
-const PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE = 'PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE';
+const PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE = 'PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE';
 
 
 export interface IHeaderMainDummyNotificationNoticeProps extends RouteComponentProps { };
@@ -57,7 +59,7 @@ export interface IHeaderMainDummyNotificationNoticeState {
   notificationUserIOClient: SocketIOClient.Socket;
 
   // ? 通知项列表
-  notificationList: React.ReactNode[];
+  notificationsList: React.ReactNode[];
   // ? 通知项的未读数量
   // * 只是个假想值, 并没有作用户的状态处理
   notificationUnreadTotal: number;
@@ -75,14 +77,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case NOTIFICATION_MAKE_FRIEND_REQUEST: {
         return {
           ...prevState,
-          notificationList: [
+          notificationsList: [
             React.createElement(
               HeaderMainDummyNotificationNoticeFriendRequest,
               {
                 notificationInfo: action.payload,
               },
             ),
-            ...prevState.notificationList
+            ...prevState.notificationsList,
           ],
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
@@ -90,14 +92,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case NOTIFICATION_MAKE_FRIEND_AGREE: {
         return {
           ...prevState,
-          notificationList: [
+          notificationsList: [
             React.createElement(
               HeaderMainDummyNotificationNoticeFriendAgree,
               {
                 notificationInfo: action.payload
               },
             ),
-            ...prevState.notificationList
+            ...prevState.notificationsList
           ],
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
@@ -105,14 +107,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case NOTIFICATION_MAKE_FRIEND_REFUSE: {
         return {
           ...prevState,
-          notificationList: [
+          notificationsList: [
             React.createElement(
               HeaderMainDummyNotificationNoticeFriendRefuse,
               {
                 notificationInfo: action.payload
               },
             ),
-            ...prevState.notificationList
+            ...prevState.notificationsList
           ],
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
@@ -126,11 +128,11 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case PRIVATE_CONCAT_NOTIFICATION_LIST: {
         return {
           ...prevState,
-          notificationList: prevState.notificationList.concat(action.payload),
+          notificationsList: prevState.notificationsList.concat(action.payload.notificationList),
         };
       };
-      case PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE: {
-        const newNotificationList = prevState.notificationList.map((v: React.FunctionComponentElement<any>) => {
+      case PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE: {
+        const newNotificationsList = prevState.notificationsList.map((v: React.FunctionComponentElement<any>) => {
           if (v.props.notificationInfo._id === action.payload.notificationId) {
             v.props.notificationInfo.agree_state = action.payload.agree_state;
 
@@ -142,7 +144,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
 
         return {
           ...prevState,
-          notificationList: newNotificationList,
+          notificationsList: newNotificationsList,
         };
       };
       default: {
@@ -153,8 +155,8 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`, {
       reconnectionAttempts: 2,
     }),
-    notificationList: [],
     notificationUnreadTotal: 0,
+    notificationsList: [],
   });
 
   React.useEffect(() => {
@@ -177,14 +179,28 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
 
     // ? 用户被成功加为好友时的通知socket
     state.notificationUserIOClient.on('receiveMakeFriendAgree', (
-      data: IBaseNotificationUserFriendAgreeParams,
+      data: IBaseNotificationUserFriendAgreeParams & {
+        notificationId: string,
+      },
     ) => {
       const currentUserId = localStorage.getItem('userid');
 
+      // 更新接收方的状态
       if (data.to._id === currentUserId) {
         dispatch({
           type: NOTIFICATION_MAKE_FRIEND_AGREE,
           payload: data,
+        });
+      }
+
+      // 由于数据只获取一次, 所以需要更新发送方的request请求的agree_state
+      if (data.from._id === currentUserId) {
+        dispatch({
+          type: PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE,
+          payload: {
+            notificationId: data.notificationId,
+            agree_state: 1,
+          },
         });
       }
     });
@@ -208,7 +224,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       // 由于数据只获取一次, 所以需要更新发送方的request请求的agree_state
       if (data.from._id === currentUserId) {
         dispatch({
-          type: PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE,
+          type: PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE,
           payload: {
             notificationId: data.notificationId,
             agree_state: -1,
@@ -216,18 +232,13 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
         });
       }
     });
-
-    // ! 火狐中会报错, Chrome和IE正常
-    // return () => {
-    //   state.notificationUserIOClient.close();
-    // };
   }, []);
 
   /**
    * [初始化] - 通知框的内容
    */
   function _initNotificationContent() {
-    const notificationItem = state.notificationList.map((value: React.FunctionComponentElement<any>, index) => {
+    const notificationNodeList= state.notificationsList.map((value: React.FunctionComponentElement<any>, index) => {
       return (
         <React.Fragment key={index}>
           <MainContentItem>
@@ -254,7 +265,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     return (
       <MainContent>
         <MainContentList>
-          {notificationItem}
+          {notificationNodeList}
         </MainContentList>
       </MainContent>
     );
@@ -283,55 +294,60 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
         userId,
       },
     }).then((res) => {
-      const {
-        user_friend_request_notification_list,
-        user_friend_agree_notification_list,
-        user_friend_refuse_notification_list,
-      } = res.data;
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
 
-      const processedFriendRequestNotificationList = user_friend_request_notification_list.map((v: IBaseNoficationUserFriendRequestParams) => {
-        return React.createElement(
-          HeaderMainDummyNotificationNoticeFriendRequest,
-          {
-            notificationInfo: v,
+      if (resCode === 0) {
+        const {
+          notification_list,
+        } = resData;
+
+        // 根据不同的通知类型, 初始化对应的通知条目
+        const filteredNotificationList = notification_list.map((v: any) => {
+          switch (v.type) {
+            case NOTIFICATION_TYPE.user.friend.request: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeFriendRequest,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.friend.agree: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeFriendAgree,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.friend.refuse: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeFriendRefuse,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            default: {
+              return React.createElement('');
+            };
+          }
+        });
+
+        // 追加至通知列表
+        dispatch({
+          type: PRIVATE_CONCAT_NOTIFICATION_LIST,
+          payload: {
+            notificationList: filteredNotificationList,
           },
-        );
-      });
-
-      const processedFriendAgreeNotificationList = user_friend_agree_notification_list.map((v: IBaseNotificationUserFriendAgreeParams) => {
-        return React.createElement(
-          HeaderMainDummyNotificationNoticeFriendAgree,
-          {
-            notificationInfo: v,
-          },
-        );
-      });
-
-      const processedFriendRefuseNotificationList = user_friend_refuse_notification_list.map((v: IBaseNotificationUserFriendRefuseParams) => {
-        return React.createElement(
-          HeaderMainDummyNotificationNoticeFriendRefuse,
-          {
-            notificationInfo: v,
-          },
-        );
-      });
-
-      const composedFriendNotificationList = [
-        ...processedFriendRequestNotificationList,
-        ...processedFriendAgreeNotificationList,
-        ...processedFriendRefuseNotificationList,
-      ];
-
-      // 按时间排序
-      composedFriendNotificationList.sort((a, b) => {
-        return b.props.create_time - a.props.create_time;
-      });
-
-      // 追加至通知列表
-      dispatch({
-        type: PRIVATE_CONCAT_NOTIFICATION_LIST,
-        payload: composedFriendNotificationList,
-      });
+        });
+      } else if (resCode === -1) {
+        message.error(resMessage);
+      } else {
+        message.info(resMessage);
+      }
     });
   }
 
