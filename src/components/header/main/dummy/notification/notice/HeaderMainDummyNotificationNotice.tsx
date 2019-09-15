@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as IOClient from 'socket.io-client';
+import * as InfiniteScroll from 'react-infinite-scroller';
 import {
   withRouter,
   RouteComponentProps,
@@ -29,6 +30,8 @@ import {
   NOTIFICATION_MAKE_FRIEND_AGREE,
   NOTIFICATION_MAKE_FRIEND_REFUSE,
   NOTIFICATION_TYPE,
+  SOCKET_CONNECTION_INFO,
+  NOTICE_PAGE_SIZE_MEDIUM,
 } from 'constants/constants';
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
 import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
@@ -40,16 +43,13 @@ import {
   IBaseNotificationUserFriendAgreeParams,
   IBaseNotificationUserFriendRefuseParams,
 } from 'components/header/Header.types';
-import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
 
 
 // ? 追加通知列表
 const PRIVATE_CONCAT_NOTIFICATION_LIST = 'PRIVATE_CONCAT_NOTIFICATION_LIST';
 // ? 重置未读通知数量
 const PRIVATE_RESET_UNREAD_TOTAL = 'PRIVATE_RESET_UNREAD_TOTAL';
-// ? 用户拒绝好友申请
+// ? 用户拒绝or同意好友申请
 const PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE = 'PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE';
 
 
@@ -63,12 +63,17 @@ export interface IHeaderMainDummyNotificationNoticeState {
   // ? 通知项的未读数量
   // * 只是个假想值, 并没有作用户的状态处理
   notificationUnreadTotal: number;
+
+  // ? 分页相关: 是否还有更多的通知
+  hasMoreNotification: boolean;
 };
 
 
 const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificationNoticeProps>((
   props: IHeaderMainDummyNotificationNoticeProps,
 ): JSX.Element => {
+  const $scrollWrapper = React.useRef(null);
+
   const [state, dispatch] = React.useReducer<React.Reducer<IHeaderMainDummyNotificationNoticeState, {
     type: string,
     payload: any,
@@ -129,6 +134,8 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
         return {
           ...prevState,
           notificationsList: prevState.notificationsList.concat(action.payload.notificationList),
+          hasMoreNotification: action.payload.hasMoreNotification,
+          isLoadMoreNotificationLoading: action.payload.isLoadMoreNotificationLoading,
         };
       };
       case PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE: {
@@ -157,11 +164,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     }),
     notificationUnreadTotal: 0,
     notificationsList: [],
+    hasMoreNotification: true,
   });
 
   React.useEffect(() => {
     // ? 获取首屏的通知列表
-    _getNotificationList();
+    _getNotificationList({
+      pageSize: NOTICE_PAGE_SIZE_MEDIUM,
+    });
 
     // ? 用户请求加好友时的通知socket
     state.notificationUserFriendIOClient.on('receiveMakeFriendRequest', (
@@ -238,7 +248,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
    * [初始化] - 通知框的内容
    */
   function _initNotificationContent() {
-    const notificationNodeList= state.notificationsList.map((value: React.FunctionComponentElement<any>, index) => {
+    const notificationNodeList = state.notificationsList.map((value: React.FunctionComponentElement<any>, index) => {
       return (
         <React.Fragment key={index}>
           <MainContentItem>
@@ -263,18 +273,32 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     });
 
     return (
-      <MainContent>
-        <MainContentList>
-          {notificationNodeList}
-        </MainContentList>
+      <MainContent ref={$scrollWrapper}>
+        <InfiniteScroll
+          useWindow={false}
+          pageStart={1}
+          initialLoad={false}
+          getScrollParent={() => $scrollWrapper.current}
+          hasMore={state.hasMoreNotification}
+          loadMore={handleLoadMoreNotification}
+        >
+          <MainContentList>
+            {notificationNodeList}
+          </MainContentList>
+        </InfiniteScroll>
       </MainContent>
     );
   }
 
   /**
    * [获取] - 后台获取首屏的通知列表
+   * @param {pagination} <page - 当前页数><pageSize - 每页大小>
    */
-  function _getNotificationList() {
+  function _getNotificationList(
+    pagination: {
+      pageSize: number,
+    },
+  ) {
     const userId = localStorage.getItem('userid');
 
     if (!userId || typeof userId !== 'string') {
@@ -286,12 +310,21 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       return props.history.push('/login')
     }
 
+    // 获取上一次分页的最后一条通知
+    const notificationList = state.notificationsList;
+    const notificationListLen = notificationList.length;
+    const lastNotificationId = notificationListLen === 0
+      ? ''
+      : (((notificationList[notificationListLen - 1] as any).props) as any).notificationInfo._id
+
     query({
       method: 'GET',
       jsonp: false,
       url: '/api/notification/user/info/list',
       data: {
         userId,
+        ...pagination,
+        lastNotificationId,
       },
     }).then((res) => {
       const resCode = res.code;
@@ -341,6 +374,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           type: PRIVATE_CONCAT_NOTIFICATION_LIST,
           payload: {
             notificationList: filteredNotificationList,
+            hasMoreNotification: filteredNotificationList.length !== 0,
           },
         });
       } else if (resCode === -1) {
@@ -365,6 +399,16 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
         },
       });
     }
+  }
+
+  /**
+   * [处理] - 分页获取通知
+   * @param page 当前页数
+   */
+  function handleLoadMoreNotification(page: number) {
+    _getNotificationList({
+      pageSize: NOTICE_PAGE_SIZE_MEDIUM,
+    });
   }
 
   return (

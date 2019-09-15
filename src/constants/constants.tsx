@@ -100,6 +100,11 @@ export const COMMENT_PAGE_SIZE: number = 5;
 export const REPLY_PAGE_SIZE: number = 3;
 
 /**
+ * 通知列表的每页条数 - 中
+ */
+export const NOTICE_PAGE_SIZE_MEDIUM: number = 5;
+
+/**
  * 通知相关常量
  */
 // ? 收藏我的文章时的通知
