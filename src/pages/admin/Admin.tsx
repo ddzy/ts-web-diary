@@ -85,15 +85,11 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
   public componentDidMount(): void {
     const oAdminContentUnknown = this.$adminContentRef.current;
 
-    console.log(oAdminContentUnknown);
-
     if (oAdminContentUnknown) {
       const oAdminContentDOM = oAdminContentUnknown as HTMLDivElement;
 
       oAdminContentDOM.addEventListener('wheel', this.aidedHandleMouseWheel);
     }
-
-    // window.addEventListener('wheel', this.aidedHandleMouseWheel);
   }
 
   public componentWillUnmount(): void {
@@ -104,8 +100,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
 
       oAdminContentDOM.removeEventListener('wheel', this.aidedHandleMouseWheel);
     }
-
-    // window.removeEventListener('wheel', this.aidedHandleMouseWheel);
   }
 
   public shouldComponentUpdate(
