@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as IOClient from 'socket.io-client';
+import * as InfiniteScroll from 'react-infinite-scroller';
 import {
   withRouter,
   RouteComponentProps,
@@ -10,6 +11,7 @@ import {
   Popover,
   Divider,
   notification,
+  message,
 } from 'antd';
 
 import {
@@ -27,6 +29,9 @@ import {
   NOTIFICATION_MAKE_FRIEND_REQUEST,
   NOTIFICATION_MAKE_FRIEND_AGREE,
   NOTIFICATION_MAKE_FRIEND_REFUSE,
+  NOTIFICATION_TYPE,
+  SOCKET_CONNECTION_INFO,
+  NOTICE_PAGE_SIZE_MEDIUM,
 } from 'constants/constants';
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
 import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
@@ -38,35 +43,37 @@ import {
   IBaseNotificationUserFriendAgreeParams,
   IBaseNotificationUserFriendRefuseParams,
 } from 'components/header/Header.types';
-import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
 
 
 // ? 追加通知列表
 const PRIVATE_CONCAT_NOTIFICATION_LIST = 'PRIVATE_CONCAT_NOTIFICATION_LIST';
 // ? 重置未读通知数量
 const PRIVATE_RESET_UNREAD_TOTAL = 'PRIVATE_RESET_UNREAD_TOTAL';
-// ? 用户拒绝好友申请
-const PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE = 'PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE';
+// ? 用户拒绝or同意好友申请
+const PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE = 'PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE';
 
 
 export interface IHeaderMainDummyNotificationNoticeProps extends RouteComponentProps { };
 export interface IHeaderMainDummyNotificationNoticeState {
-  // ? 用户通知相关socket
-  notificationUserIOClient: SocketIOClient.Socket;
+  // ? 用户加好友通知相关socket
+  notificationUserFriendIOClient: SocketIOClient.Socket;
 
   // ? 通知项列表
-  notificationList: React.ReactNode[];
+  notificationsList: React.ReactNode[];
   // ? 通知项的未读数量
   // * 只是个假想值, 并没有作用户的状态处理
   notificationUnreadTotal: number;
+
+  // ? 分页相关: 是否还有更多的通知
+  hasMoreNotification: boolean;
 };
 
 
 const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificationNoticeProps>((
   props: IHeaderMainDummyNotificationNoticeProps,
 ): JSX.Element => {
+  const $scrollWrapper = React.useRef(null);
+
   const [state, dispatch] = React.useReducer<React.Reducer<IHeaderMainDummyNotificationNoticeState, {
     type: string,
     payload: any,
@@ -75,14 +82,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case NOTIFICATION_MAKE_FRIEND_REQUEST: {
         return {
           ...prevState,
-          notificationList: [
+          notificationsList: [
             React.createElement(
               HeaderMainDummyNotificationNoticeFriendRequest,
               {
                 notificationInfo: action.payload,
               },
             ),
-            ...prevState.notificationList
+            ...prevState.notificationsList,
           ],
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
@@ -90,14 +97,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case NOTIFICATION_MAKE_FRIEND_AGREE: {
         return {
           ...prevState,
-          notificationList: [
+          notificationsList: [
             React.createElement(
               HeaderMainDummyNotificationNoticeFriendAgree,
               {
                 notificationInfo: action.payload
               },
             ),
-            ...prevState.notificationList
+            ...prevState.notificationsList
           ],
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
@@ -105,14 +112,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case NOTIFICATION_MAKE_FRIEND_REFUSE: {
         return {
           ...prevState,
-          notificationList: [
+          notificationsList: [
             React.createElement(
               HeaderMainDummyNotificationNoticeFriendRefuse,
               {
                 notificationInfo: action.payload
               },
             ),
-            ...prevState.notificationList
+            ...prevState.notificationsList
           ],
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
@@ -126,11 +133,13 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       case PRIVATE_CONCAT_NOTIFICATION_LIST: {
         return {
           ...prevState,
-          notificationList: prevState.notificationList.concat(action.payload),
+          notificationsList: prevState.notificationsList.concat(action.payload.notificationList),
+          hasMoreNotification: action.payload.hasMoreNotification,
+          isLoadMoreNotificationLoading: action.payload.isLoadMoreNotificationLoading,
         };
       };
-      case PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE: {
-        const newNotificationList = prevState.notificationList.map((v: React.FunctionComponentElement<any>) => {
+      case PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE: {
+        const newNotificationsList = prevState.notificationsList.map((v: React.FunctionComponentElement<any>) => {
           if (v.props.notificationInfo._id === action.payload.notificationId) {
             v.props.notificationInfo.agree_state = action.payload.agree_state;
 
@@ -142,7 +151,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
 
         return {
           ...prevState,
-          notificationList: newNotificationList,
+          notificationsList: newNotificationsList,
         };
       };
       default: {
@@ -150,19 +159,22 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       };
     }
   }, {
-    notificationUserIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user`, {
+    notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`, {
       reconnectionAttempts: 2,
     }),
-    notificationList: [],
     notificationUnreadTotal: 0,
+    notificationsList: [],
+    hasMoreNotification: true,
   });
 
   React.useEffect(() => {
     // ? 获取首屏的通知列表
-    _getNotificationList();
+    _getNotificationList({
+      pageSize: NOTICE_PAGE_SIZE_MEDIUM,
+    });
 
     // ? 用户请求加好友时的通知socket
-    state.notificationUserIOClient.on('receiveMakeFriendRequest', (
+    state.notificationUserFriendIOClient.on('receiveMakeFriendRequest', (
       data: IBaseNoficationUserFriendRequestParams,
     ) => {
       const currentUserId = localStorage.getItem('userid');
@@ -176,21 +188,35 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     });
 
     // ? 用户被成功加为好友时的通知socket
-    state.notificationUserIOClient.on('receiveMakeFriendAgree', (
-      data: IBaseNotificationUserFriendAgreeParams,
+    state.notificationUserFriendIOClient.on('receiveMakeFriendAgree', (
+      data: IBaseNotificationUserFriendAgreeParams & {
+        notificationId: string,
+      },
     ) => {
       const currentUserId = localStorage.getItem('userid');
 
+      // 更新接收方的状态
       if (data.to._id === currentUserId) {
         dispatch({
           type: NOTIFICATION_MAKE_FRIEND_AGREE,
           payload: data,
         });
       }
+
+      // 由于数据只获取一次, 所以需要更新发送方的request请求的agree_state
+      if (data.from._id === currentUserId) {
+        dispatch({
+          type: PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE,
+          payload: {
+            notificationId: data.notificationId,
+            agree_state: 1,
+          },
+        });
+      }
     });
 
     // ? 用户被拒绝加好友时的通知socket
-    state.notificationUserIOClient.on('receiveMakeFriendRefuse', (
+    state.notificationUserFriendIOClient.on('receiveMakeFriendRefuse', (
       data: IBaseNotificationUserFriendRefuseParams & {
         notificationId: string,
       },
@@ -208,7 +234,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       // 由于数据只获取一次, 所以需要更新发送方的request请求的agree_state
       if (data.from._id === currentUserId) {
         dispatch({
-          type: PRIVATE_UPDATE_MAKE_FRIEND_REQUEST_AGREE_STATE,
+          type: PRIVATE_UPDATE_MAKE_FRIEND_REFUSE_AGREE_STATE,
           payload: {
             notificationId: data.notificationId,
             agree_state: -1,
@@ -216,18 +242,13 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
         });
       }
     });
-
-    // ! 火狐中会报错, Chrome和IE正常
-    // return () => {
-    //   state.notificationUserIOClient.close();
-    // };
   }, []);
 
   /**
    * [初始化] - 通知框的内容
    */
   function _initNotificationContent() {
-    const notificationItem = state.notificationList.map((value: React.FunctionComponentElement<any>, index) => {
+    const notificationNodeList = state.notificationsList.map((value: React.FunctionComponentElement<any>, index) => {
       return (
         <React.Fragment key={index}>
           <MainContentItem>
@@ -252,18 +273,32 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     });
 
     return (
-      <MainContent>
-        <MainContentList>
-          {notificationItem}
-        </MainContentList>
+      <MainContent ref={$scrollWrapper}>
+        <InfiniteScroll
+          useWindow={false}
+          pageStart={1}
+          initialLoad={false}
+          getScrollParent={() => $scrollWrapper.current}
+          hasMore={state.hasMoreNotification}
+          loadMore={handleLoadMoreNotification}
+        >
+          <MainContentList>
+            {notificationNodeList}
+          </MainContentList>
+        </InfiniteScroll>
       </MainContent>
     );
   }
 
   /**
    * [获取] - 后台获取首屏的通知列表
+   * @param {pagination} <page - 当前页数><pageSize - 每页大小>
    */
-  function _getNotificationList() {
+  function _getNotificationList(
+    pagination: {
+      pageSize: number,
+    },
+  ) {
     const userId = localStorage.getItem('userid');
 
     if (!userId || typeof userId !== 'string') {
@@ -275,63 +310,78 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       return props.history.push('/login')
     }
 
+    // 获取上一次分页的最后一条通知
+    const notificationList = state.notificationsList;
+    const notificationListLen = notificationList.length;
+    const lastNotificationId = notificationListLen === 0
+      ? ''
+      : (((notificationList[notificationListLen - 1] as any).props) as any).notificationInfo._id
+
     query({
       method: 'GET',
       jsonp: false,
       url: '/api/notification/user/info/list',
       data: {
         userId,
+        ...pagination,
+        lastNotificationId,
       },
     }).then((res) => {
-      const {
-        user_friend_request_notification_list,
-        user_friend_agree_notification_list,
-        user_friend_refuse_notification_list,
-      } = res.data;
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
 
-      const processedFriendRequestNotificationList = user_friend_request_notification_list.map((v: IBaseNoficationUserFriendRequestParams) => {
-        return React.createElement(
-          HeaderMainDummyNotificationNoticeFriendRequest,
-          {
-            notificationInfo: v,
+      if (resCode === 0) {
+        const {
+          notification_list,
+        } = resData;
+
+        // 根据不同的通知类型, 初始化对应的通知条目
+        const filteredNotificationList = notification_list.map((v: any) => {
+          switch (v.type) {
+            case NOTIFICATION_TYPE.user.friend.request: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeFriendRequest,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.friend.agree: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeFriendAgree,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.friend.refuse: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeFriendRefuse,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            default: {
+              return React.createElement('');
+            };
+          }
+        });
+
+        // 追加至通知列表
+        dispatch({
+          type: PRIVATE_CONCAT_NOTIFICATION_LIST,
+          payload: {
+            notificationList: filteredNotificationList,
+            hasMoreNotification: filteredNotificationList.length !== 0,
           },
-        );
-      });
-
-      const processedFriendAgreeNotificationList = user_friend_agree_notification_list.map((v: IBaseNotificationUserFriendAgreeParams) => {
-        return React.createElement(
-          HeaderMainDummyNotificationNoticeFriendAgree,
-          {
-            notificationInfo: v,
-          },
-        );
-      });
-
-      const processedFriendRefuseNotificationList = user_friend_refuse_notification_list.map((v: IBaseNotificationUserFriendRefuseParams) => {
-        return React.createElement(
-          HeaderMainDummyNotificationNoticeFriendRefuse,
-          {
-            notificationInfo: v,
-          },
-        );
-      });
-
-      const composedFriendNotificationList = [
-        ...processedFriendRequestNotificationList,
-        ...processedFriendAgreeNotificationList,
-        ...processedFriendRefuseNotificationList,
-      ];
-
-      // 按时间排序
-      composedFriendNotificationList.sort((a, b) => {
-        return b.props.create_time - a.props.create_time;
-      });
-
-      // 追加至通知列表
-      dispatch({
-        type: PRIVATE_CONCAT_NOTIFICATION_LIST,
-        payload: composedFriendNotificationList,
-      });
+        });
+      } else if (resCode === -1) {
+        message.error(resMessage);
+      } else {
+        message.info(resMessage);
+      }
     });
   }
 
@@ -349,6 +399,16 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
         },
       });
     }
+  }
+
+  /**
+   * [处理] - 分页获取通知
+   * @param page 当前页数
+   */
+  function handleLoadMoreNotification(page: number) {
+    _getNotificationList({
+      pageSize: NOTICE_PAGE_SIZE_MEDIUM,
+    });
   }
 
   return (

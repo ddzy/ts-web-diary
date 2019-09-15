@@ -101,16 +101,7 @@ authGithubController.post('/', async (ctx) => {
         followers: [],
         friends: [],
         chat_memory: [],
-        notification: {
-          user: {
-            friend: {
-              agree: [],
-              refuse: [],
-              request: [],
-            },
-          },
-          admin: {},
-        },
+        notifications: [],
         profile_cover_img: '',
         address: '',
         website: '',
