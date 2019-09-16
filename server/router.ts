@@ -1,49 +1,40 @@
 import * as Router from 'koa-router';
 
-import homeController from './controller/home';
-import articleController from './controller/article';
-import meController from './controller/me';
-import writeController from './controller/write';
-import checkAuthController from './controller/checkAuth';
-import detailsController from './controller/details';
-import collectionController from './controller/collection';
-import uploadController from './controller/upload';
-
 
 // !! 重构router !!
-import articleControllerNew from './controller/article/article';
-import articleCreateControllerNew from './controller/article/create/articleCreate';
-import articleInfoControllerNew from './controller/article/info/articleInfo';
-import articleUpdateControllerNew from './controller/article/update/articleUpdate';
-import articleDeleteControllerNew from './controller/article/delete/articleDelete';
-import actionControllerNew from './controller/action/action';
-import actionStarControllerNew from './controller/action/star/actionStar';
-import actionStarArticleControllerNew from './controller/action/star/article/actionStarArticle';
-import actionStarCommentControllerNew from './controller/action/star/comment/actionStarComment';
-import actionStarReplyControllerNew from './controller/action/star/reply/actionStarReply';
-import actionAvatarControllerNew from './controller/action/avatar/actionAvatar';
-import actionFollowControllerNew from './controller/action/follow/actionFollow';
+import articleController from './controller/article/article';
+import articleCreateController from './controller/article/create/articleCreate';
+import articleInfoController from './controller/article/info/articleInfo';
+import articleUpdateController from './controller/article/update/articleUpdate';
+import articleDeleteController from './controller/article/delete/articleDelete';
+import actionController from './controller/action/action';
+import actionStarController from './controller/action/star/actionStar';
+import actionStarArticleController from './controller/action/star/article/actionStarArticle';
+import actionStarCommentController from './controller/action/star/comment/actionStarComment';
+import actionStarReplyController from './controller/action/star/reply/actionStarReply';
+import actionAvatarController from './controller/action/avatar/actionAvatar';
+import actionFollowController from './controller/action/follow/actionFollow';
 import actionFriendController from './controller/action/friend/actionFriend';
-import searchControllerNew from './controller/search/search';
-import pageControllerNew from './controller/page/page';
-import pageHomeControllerNew from './controller/page/home/pageHome';
-import pageDetailsControllerNew from './controller/page/details/pageDetails';
-import loginControllerNew from './controller/login/login';
-import registerControllerNew from './controller/register/register';
-import commentControllerNew from './controller/comment/comment';
-import commentArticleControllerNew from './controller/comment/article/commentArticle';
-import commentArticleCreateControllerNew from './controller/comment/article/create/commentArticleCreate';
-import commentArticleInfoControllerNew from './controller/comment/article/info/commentArticleInfo';
-import replyControllerNew from './controller/reply/reply';
-import replyArticleControllerNew from './controller/reply/article/replyArticle';
-import replyArticleCreateControllerNew from './controller/reply/article/create/replyArticleCreate';
-import replyArticleInfoControllerNew from './controller/reply/article/info/replyArticleInfo';
-import collectionControllerNew from './controller/collection/collection';
-import collectionCreateControllerNew from './controller/collection/create/collectionCreate';
-import collectionUpdateControllerNew from './controller/collection/update/collectionUpdate';
-import collectionInfoControllerNew from './controller/collection/info/collectionInfo';
-import collectionDeleteControllerNew from './controller/collection/delete/collectionDelete';
-import uploadControllerNew from './controller/upload/upload';
+import searchController from './controller/search/search';
+import pageController from './controller/page/page';
+import pageHomeController from './controller/page/home/pageHome';
+import pageDetailsController from './controller/page/details/pageDetails';
+import loginController from './controller/login/login';
+import registerController from './controller/register/register';
+import commentController from './controller/comment/comment';
+import commentArticleController from './controller/comment/article/commentArticle';
+import commentArticleCreateController from './controller/comment/article/create/commentArticleCreate';
+import commentArticleInfoController from './controller/comment/article/info/commentArticleInfo';
+import replyController from './controller/reply/reply';
+import replyArticleController from './controller/reply/article/replyArticle';
+import replyArticleCreateController from './controller/reply/article/create/replyArticleCreate';
+import replyArticleInfoController from './controller/reply/article/info/replyArticleInfo';
+import collectionController from './controller/collection/collection';
+import collectionCreateController from './controller/collection/create/collectionCreate';
+import collectionUpdateController from './controller/collection/update/collectionUpdate';
+import collectionInfoController from './controller/collection/info/collectionInfo';
+import collectionDeleteController from './controller/collection/delete/collectionDelete';
+import uploadController from './controller/upload/upload';
 import statusController from './controller/status/status';
 import statusCreateController from './controller/status/create/statusCreate';
 import statusInfoController from './controller/status/info/statusInfo';
@@ -55,6 +46,9 @@ import userInfoAccountController from './controller/user/info/account/userInfoAc
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
 import notificationUserFriendController from './controller/notification/user/friend/notificationUserFriend';
+import notificationUserStarController from './controller/notification/user/star/notificationUserStar';
+import notificationUserStarArticleController from './controller/notification/user/star/article/notificationUserStarArticle';
+import notificationUserStarArticleCommentController from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
 import chatController from './controller/chat/chat';
 import chatSingleController from './controller/chat/single/chatSingle';
 import chatSingleInfoController from './controller/chat/single/info/chatSingleInfo';
@@ -66,6 +60,7 @@ import chatGroupCreateController from './controller/chat/group/create/chatGroupC
 import chatGroupInfoController from './controller/chat/group/info/chatGroupInfo';
 import authController from './controller/auth/Auth';
 import authGithubController from './controller/auth/github/authGithub';
+import authAppController from './controller/auth/app/authApp';
 
 
 const router: Router = new Router({
@@ -73,34 +68,29 @@ const router: Router = new Router({
 });
 
 
-// 装载路由
-router
-  .use('/home', homeController.routes(), homeController.allowedMethods())
-  .use('/article', articleController.routes(), articleController.allowedMethods())
-  .use('/me', meController.routes(), meController.allowedMethods())
-  .use('/write', writeController.routes(), writeController.allowedMethods())
-  .use('/checkauth', checkAuthController.routes(), checkAuthController.allowedMethods())
-  .use('/details', detailsController.routes(), detailsController.allowedMethods())
-  .use('/collection', collectionController.routes(), collectionController.allowedMethods())
-  .use('/upload', uploadController.routes(), uploadController.allowedMethods());
+// !! 五级路由 !!
+notificationUserStarArticleController
+  .use('/comment', notificationUserStarArticleCommentController.routes(), notificationUserStarArticleCommentController.allowedMethods());
 
 
 // !! 四级路由 !!
 userInfoController
   .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods())
+notificationUserStarController
+  .use('/article', notificationUserStarArticleController.routes(), notificationUserStarArticleController.allowedMethods());
 
 
 // !! 三级路由 !!
-commentArticleControllerNew
-  .use('/create', commentArticleCreateControllerNew.routes(), commentArticleCreateControllerNew.allowedMethods())
-  .use('/info', commentArticleInfoControllerNew.routes(), commentArticleInfoControllerNew.allowedMethods())
-replyArticleControllerNew
-  .use('/create', replyArticleCreateControllerNew.routes(), replyArticleCreateControllerNew.allowedMethods())
-  .use('/info', replyArticleInfoControllerNew.routes(), replyArticleInfoControllerNew.allowedMethods())
-actionStarControllerNew
-  .use('/article', actionStarArticleControllerNew.routes(), actionStarArticleControllerNew.allowedMethods())
-  .use('/comment', actionStarCommentControllerNew.routes(), actionStarCommentControllerNew.allowedMethods())
-  .use('/reply', actionStarReplyControllerNew.routes(), actionStarReplyControllerNew.allowedMethods());
+commentArticleController
+  .use('/create', commentArticleCreateController.routes(), commentArticleCreateController.allowedMethods())
+  .use('/info', commentArticleInfoController.routes(), commentArticleInfoController.allowedMethods())
+replyArticleController
+  .use('/create', replyArticleCreateController.routes(), replyArticleCreateController.allowedMethods())
+  .use('/info', replyArticleInfoController.routes(), replyArticleInfoController.allowedMethods())
+actionStarController
+  .use('/article', actionStarArticleController.routes(), actionStarArticleController.allowedMethods())
+  .use('/comment', actionStarCommentController.routes(), actionStarCommentController.allowedMethods())
+  .use('/reply', actionStarReplyController.routes(), actionStarReplyController.allowedMethods());
 chatSingleController
   .use('/info', chatSingleInfoController.routes(), chatSingleInfoController.allowedMethods())
   .use('/create', chatSingleCreateController.routes(), chatSingleCreateController.allowedMethods());
@@ -110,32 +100,33 @@ chatGroupController
 chatCommonController
   .use('/info', chatCommonInfoController.routes(), chatCommonInfoController.allowedMethods());
 notificationUserController
-  .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods());
+  .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods())
+  .use('/star', notificationUserStarController.routes(), notificationUserStarController.allowedMethods());
 
 
 // !! 二级路由 !!
-articleControllerNew
-  .use('/create', articleCreateControllerNew.routes(), articleCreateControllerNew.allowedMethods())
-  .use('/info', articleInfoControllerNew.routes(), articleInfoControllerNew.allowedMethods())
-  .use('/update', articleUpdateControllerNew.routes(), articleUpdateControllerNew.allowedMethods())
-  .use('/delete', articleDeleteControllerNew.routes(), articleDeleteControllerNew.allowedMethods());
-actionControllerNew
-  .use('/star', actionStarControllerNew.routes(), actionStarControllerNew.allowedMethods())
-  .use('/avatar', actionAvatarControllerNew.routes(), actionAvatarControllerNew.allowedMethods())
-  .use('/follow', actionFollowControllerNew.routes(), actionFollowControllerNew.allowedMethods())
+articleController
+  .use('/create', articleCreateController.routes(), articleCreateController.allowedMethods())
+  .use('/info', articleInfoController.routes(), articleInfoController.allowedMethods())
+  .use('/update', articleUpdateController.routes(), articleUpdateController.allowedMethods())
+  .use('/delete', articleDeleteController.routes(), articleDeleteController.allowedMethods());
+actionController
+  .use('/star', actionStarController.routes(), actionStarController.allowedMethods())
+  .use('/avatar', actionAvatarController.routes(), actionAvatarController.allowedMethods())
+  .use('/follow', actionFollowController.routes(), actionFollowController.allowedMethods())
   .use('/friend', actionFriendController.routes(), actionFriendController.allowedMethods())
-pageControllerNew
-  .use('/home', pageHomeControllerNew.routes(), pageHomeControllerNew.allowedMethods())
-  .use('/details', pageDetailsControllerNew.routes(), pageDetailsControllerNew.allowedMethods())
-commentControllerNew
-  .use('/article', commentArticleControllerNew.routes(), commentArticleControllerNew.allowedMethods())
-replyControllerNew
-  .use('/article', replyArticleControllerNew.routes(), replyArticleControllerNew.allowedMethods())
-collectionControllerNew
-  .use('/create', collectionCreateControllerNew.routes(), collectionCreateControllerNew.allowedMethods())
-  .use('/update', collectionUpdateControllerNew.routes(), collectionUpdateControllerNew.allowedMethods())
-  .use('/info', collectionInfoControllerNew.routes(), collectionInfoControllerNew.allowedMethods())
-  .use('/delete', collectionDeleteControllerNew.routes(), collectionDeleteControllerNew.allowedMethods())
+pageController
+  .use('/home', pageHomeController.routes(), pageHomeController.allowedMethods())
+  .use('/details', pageDetailsController.routes(), pageDetailsController.allowedMethods())
+commentController
+  .use('/article', commentArticleController.routes(), commentArticleController.allowedMethods())
+replyController
+  .use('/article', replyArticleController.routes(), replyArticleController.allowedMethods())
+collectionController
+  .use('/create', collectionCreateController.routes(), collectionCreateController.allowedMethods())
+  .use('/update', collectionUpdateController.routes(), collectionUpdateController.allowedMethods())
+  .use('/info', collectionInfoController.routes(), collectionInfoController.allowedMethods())
+  .use('/delete', collectionDeleteController.routes(), collectionDeleteController.allowedMethods())
 chatController
   .use('/single', chatSingleController.routes(), chatSingleController.allowedMethods())
   .use('/common', chatCommonController.routes(), chatCommonController.allowedMethods())
@@ -150,21 +141,22 @@ userController
 notificationController
   .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
 authController
-  .use('/github', authGithubController.routes(), authGithubController.allowedMethods());
+  .use('/github', authGithubController.routes(), authGithubController.allowedMethods())
+  .use('/app', authAppController.routes(), authAppController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!
 router
-  .use('/article', articleControllerNew.routes(), articleControllerNew.allowedMethods())
-  .use('/action', actionControllerNew.routes(), actionControllerNew.allowedMethods())
-  .use('/page', pageControllerNew.routes(), pageControllerNew.allowedMethods())
-  .use('/search', searchControllerNew.routes(), searchControllerNew.allowedMethods())
-  .use('/login', loginControllerNew.routes(), loginControllerNew.allowedMethods())
-  .use('/register', registerControllerNew.routes(), registerControllerNew.allowedMethods())
-  .use('/comment', commentControllerNew.routes(), commentControllerNew.allowedMethods())
-  .use('/reply', replyControllerNew.routes(), replyControllerNew.allowedMethods())
-  .use('/collection', collectionControllerNew.routes(), collectionControllerNew.allowedMethods())
-  .use('/upload', uploadControllerNew.routes(), uploadControllerNew.allowedMethods())
+  .use('/article', articleController.routes(), articleController.allowedMethods())
+  .use('/action', actionController.routes(), actionController.allowedMethods())
+  .use('/page', pageController.routes(), pageController.allowedMethods())
+  .use('/search', searchController.routes(), searchController.allowedMethods())
+  .use('/login', loginController.routes(), loginController.allowedMethods())
+  .use('/register', registerController.routes(), registerController.allowedMethods())
+  .use('/comment', commentController.routes(), commentController.allowedMethods())
+  .use('/reply', replyController.routes(), replyController.allowedMethods())
+  .use('/collection', collectionController.routes(), collectionController.allowedMethods())
+  .use('/upload', uploadController.routes(), uploadController.allowedMethods())
   .use('/chat', chatController.routes(), chatController.allowedMethods())
   .use('/status', statusController.routes(), statusController.allowedMethods())
   .use('/user', userController.routes(), userController.allowedMethods())

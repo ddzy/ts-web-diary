@@ -142,7 +142,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
           {/* 全局页面路由 */}
           <Switch>
             <Route exact path="/" render={() => (
-              <Redirect to="/home" />
+              <Redirect to="/home/frontend" />
             )} />
             <Route path="/home" component={LoadableHome} />
             <Route path="/chat" component={LoadableChat} />

@@ -2,6 +2,9 @@ import * as React from 'react';
 import {
   withRouter,
   RouteComponentProps,
+  Route,
+  Switch,
+  Redirect,
 } from 'react-router-dom';
 
 import {
@@ -24,7 +27,13 @@ const HomeMainView = React.memo<IHomeMainViewProps>((
       <ViewWrapper>
         <ViewContent>
           {/* 文章展示 */}
-          <HomeMainViewPosts />
+          <Switch location={props.location}>
+            <Route exact={true} path="/home" render={() => (
+              <Redirect to="/home/frontend" />
+            )} />
+            <Route path="/home/:type" component={HomeMainViewPosts} />
+          </Switch>
+
           {/* 额外信息 */}
           <HomeMainViewExtra />
         </ViewContent>

@@ -107,7 +107,7 @@ const LoginViewForm = React.memo((props: ILoginViewFormProps) => {
               userId: userInfo._id,
             });
 
-            props.history.push('/home');
+            props.history.push('/home/frontend');
           } else if (code === -1) {
             message.info(tipMessage);
           }
