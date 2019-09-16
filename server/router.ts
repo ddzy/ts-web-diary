@@ -46,6 +46,9 @@ import userInfoAccountController from './controller/user/info/account/userInfoAc
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
 import notificationUserFriendController from './controller/notification/user/friend/notificationUserFriend';
+import notificationUserStarController from './controller/notification/user/star/notificationUserStar';
+import notificationUserStarArticleController from './controller/notification/user/star/article/notificationUserStarArticle';
+import notificationUserStarArticleCommentController from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
 import chatController from './controller/chat/chat';
 import chatSingleController from './controller/chat/single/chatSingle';
 import chatSingleInfoController from './controller/chat/single/info/chatSingleInfo';
@@ -65,9 +68,16 @@ const router: Router = new Router({
 });
 
 
+// !! 五级路由 !!
+notificationUserStarArticleController
+  .use('/comment', notificationUserStarArticleCommentController.routes(), notificationUserStarArticleCommentController.allowedMethods());
+
+
 // !! 四级路由 !!
 userInfoController
   .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods())
+notificationUserStarController
+  .use('/article', notificationUserStarArticleController.routes(), notificationUserStarArticleController.allowedMethods());
 
 
 // !! 三级路由 !!
@@ -90,7 +100,8 @@ chatGroupController
 chatCommonController
   .use('/info', chatCommonInfoController.routes(), chatCommonInfoController.allowedMethods());
 notificationUserController
-  .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods());
+  .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods())
+  .use('/star', notificationUserStarController.routes(), notificationUserStarController.allowedMethods());
 
 
 // !! 二级路由 !!
