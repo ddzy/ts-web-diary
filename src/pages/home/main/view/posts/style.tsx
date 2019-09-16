@@ -16,5 +16,16 @@ export const PostsWrapper = styled.div`
   padding-bottom: 4rem;
   background-color: #fff;
 `;
+export const PostsMain = styled.div`
+  a {
+    &:link, &:visited {
+      color: #000;
+    }
+    &:hover {
+      color: #1DA57A;
+    }
+  }
+`;
+
 export const PostsContentList = styled.ul``;
 export const PostsContentItem = styled.li``;

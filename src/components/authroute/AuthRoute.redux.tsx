@@ -19,12 +19,42 @@ const initialState = {
 
 export const CHECK_AUTHOR = 'CHECK_AUTHOR' as string;
 export const UPDATE_USER_AVATAR = 'UPDATE_USER_AVATAR' as string;
+export const CHECK_AUTHOR_SUCCESS = 'CHECK_AUTHOR_SUCCESS';
+export const CHECK_AUTHOR_FAILD = 'CHECK_AUTHOR_FAILD';
 
 
 
 export function setAuth(data: any): { type: string, payload: any } {
   return {
     type: CHECK_AUTHOR,
+    payload: data,
+  };
+}
+
+export function setAuthSuccess(
+  data: {
+    isAuth: boolean,
+    userInfo: {
+      _id: string,
+      username: string,
+      useravatar: string,
+      usergender: string,
+    },
+  },
+) {
+  return {
+    type: CHECK_AUTHOR_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setAuthFaild(
+  data: {
+    isAuth: boolean,
+  },
+) {
+  return {
+    type: CHECK_AUTHOR_FAILD,
     payload: data,
   };
 }
@@ -59,6 +89,19 @@ export function AuthRouteReducer(
         useravatar: action.payload.useravatar,
       };
     };
+    case CHECK_AUTHOR_SUCCESS: {
+      return {
+        ...state,
+        ...action.payload,
+        ...action.payload.userInfo,
+      };
+    };
+    case CHECK_AUTHOR_FAILD: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    };
     default: {
       return state;
     }
@@ -73,20 +116,29 @@ export function AuthRouteReducer(
 export function reduxHandleCheckAuth(callback: () => void) {
   return (dispatch: ThunkDispatch<any, any, any>): void => {
     query({
-      url: '/api/checkauth',
+      url: '/api/auth/app',
       method: 'POST',
       jsonp: false,
       data: {
-        userid: localStorage.getItem('userid')
+        userId: localStorage.getItem('userid')
       }
     })
       .then((res) => {
-        res.code === 0
-          && dispatch(setAuth(res));
+        const resCode = res.code;
+        const resData = res.data;
+
+        if (resCode === 0) {
+          dispatch(setAuthSuccess(resData));
+        } else {
+          dispatch(setAuthFaild(resData));
+        }
       })
       .catch((err) => {
         if(err.status === 401) {
-          dispatch(setAuth(err.data));
+          dispatch(setAuthFaild({
+            ...err.data,
+            isAuth: false,
+          }));
           callback();
         }
       })

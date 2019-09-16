@@ -23,6 +23,12 @@ import {
 import {
   handleNotificationUserFriend,
 } from './controller/notification/user/friend/notificationUserFriend';
+import {
+  handleNotificationUserStarArticle,
+} from './controller/notification/user/star/article/notificationUserStarArticle';
+import {
+  handleNotificationUserStarArticleComment,
+} from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
 
 
 const app: Koa = new Koa();
@@ -76,6 +82,18 @@ statusIO.on('connection', (socket) => {
 const notificationUserFriendIO = io.of('/notification/user/friend');
 notificationUserFriendIO.on('connection', (socket) => {
   handleNotificationUserFriend(socket, notificationUserFriendIO);
+});
+
+// ? 处理用户点赞文章的相关Websocket
+const notificationUserStarArticleIO = io.of('/notification/user/star/article');
+notificationUserStarArticleIO.on('connection', (socket) => {
+  handleNotificationUserStarArticle(socket, notificationUserStarArticleIO);
+});
+
+// ? 处理用户点赞文章下的评论相关Websocket
+const notificationUserStarArticleCommentIO = io.of('/notification/user/star/article/comment');
+notificationUserStarArticleCommentIO.on('connection', (socket) => {
+  handleNotificationUserStarArticleComment(socket, notificationUserStarArticleCommentIO);
 });
 
 // ? 处理单聊的相关Websocket
