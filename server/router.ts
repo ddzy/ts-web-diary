@@ -66,6 +66,7 @@ import chatGroupCreateController from './controller/chat/group/create/chatGroupC
 import chatGroupInfoController from './controller/chat/group/info/chatGroupInfo';
 import authController from './controller/auth/Auth';
 import authGithubController from './controller/auth/github/authGithub';
+import authAppController from './controller/auth/app/authApp';
 
 
 const router: Router = new Router({
@@ -150,7 +151,8 @@ userController
 notificationController
   .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
 authController
-  .use('/github', authGithubController.routes(), authGithubController.allowedMethods());
+  .use('/github', authGithubController.routes(), authGithubController.allowedMethods())
+  .use('/app', authAppController.routes(), authAppController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!
