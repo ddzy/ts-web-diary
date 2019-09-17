@@ -75,6 +75,12 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
     _getArticleListFromServer(1, true);
   }, [props.location.pathname]);
 
+  React.useEffect(() => {
+    return () => {
+      state.notificationUserStarArticleIOClient.close();
+    };
+  }, []);
+
 
   /**
    * [初始化] - 文章列表项的图标

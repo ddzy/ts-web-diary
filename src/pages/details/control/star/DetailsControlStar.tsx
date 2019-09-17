@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as IOClient from 'socket.io-client';
 import {
   Tooltip,
   Icon,
@@ -15,6 +16,10 @@ import {
   ICommonBaseArticleInfo,
 } from '../../Details.types';
 import { query } from 'services/request';
+import {
+  SOCKET_CONNECTION_INFO,
+  NOTIFICATION_TYPE,
+} from 'constants/constants';
 
 
 export interface IDetailsControlStarProps extends RouteComponentProps {
@@ -31,6 +36,9 @@ export interface IDetailsControlStarProps extends RouteComponentProps {
   };
 };
 export interface IDetailsControlStarState {
+  // ? 用户点赞文章通知相关socket
+  notificationUserStarArticleIOClient: SocketIOClient.Socket;
+
   // ? 是否点赞
   isStar: boolean;
 };
@@ -41,6 +49,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IDetailsControlStarState>({
+    notificationUserStarArticleIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/article`),
     isStar: false,
   });
 
@@ -68,6 +77,13 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
       isStar,
     });
   }, [props.articleInfo]);
+
+  React.useEffect(() => {
+    return () => {
+      state.notificationUserStarArticleIOClient.close();
+    };
+  }, []);
+
 
   /**
    * [处理] - 文章点赞
@@ -108,6 +124,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
       // 点赞文章之后的处理逻辑
       const { code } = res;
       const { starInfo } = res.data;
+      const notificationType = NOTIFICATION_TYPE.user.star.article.self;
       const authorId = props.articleInfo.author._id;
       const authorName = props.articleInfo.author.username;
       const isCurrentUserArticle = authorId === starInfo.userId;
@@ -129,6 +146,14 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
               的文章!
           </span>
           );
+
+          // 点赞文章之后, 实时通知文章作者
+          state.notificationUserStarArticleIOClient.emit('sendUserStarArticle', {
+            notificationType,
+            userId,
+            authorId,
+            articleId,
+          });
 
           message.info(content);
         } else {
