@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Loadable from 'react-loadable';
+import * as IOClient from 'socket.io-client';
 import {
   Route,
   Switch,
@@ -14,6 +15,9 @@ import {
   AdminContent,
 } from './style';
 import BgImg from '../../static/images/admin_bg_img.png';
+import {
+  SOCKET_CONNECTION_INFO,
+} from 'constants/constants';
 
 const LoadableHome = Loadable({
   loader: () => import('pages/home/Home'),
@@ -64,22 +68,31 @@ const LoadableSettings = Loadable({
 export interface IAdminProps extends RouteComponentProps {
 };
 interface IAdminState {
+  // ? 用户状态相关的Websocket
+  statusIOClient: SocketIOClient.Socket;
+
   pathname: string;
 }
 
 class Admin extends React.Component<IAdminProps, IAdminState> {
   public static getDerivedStateFromProps(
     nextProps: IAdminProps,
+    prevState: IAdminState,
   ): IAdminState {
     return {
+      ...prevState,
       pathname: nextProps.location.pathname,
     };
   }
 
   public $adminContentRef = React.createRef<HTMLDivElement>();
+  public beginTime: number = 0;
+  public differTime: number = 0;
+
 
   public readonly state: IAdminState = {
     pathname: '',
+    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
   }
 
   public componentDidMount(): void {
@@ -88,8 +101,11 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     if (oAdminContentUnknown) {
       const oAdminContentDOM = oAdminContentUnknown as HTMLDivElement;
 
-      oAdminContentDOM.addEventListener('wheel', this.aidedHandleMouseWheel);
+      oAdminContentDOM.addEventListener('wheel', this.handleMouseWheel);
     }
+
+    window.addEventListener('unload', this.handleResetUserStatus);
+    window.addEventListener('beforeunload', this.handleWindowBeforeUnload);
   }
 
   public componentWillUnmount(): void {
@@ -98,8 +114,13 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     if (oAdminContentUnknown) {
       const oAdminContentDOM = oAdminContentUnknown as HTMLDivElement;
 
-      oAdminContentDOM.removeEventListener('wheel', this.aidedHandleMouseWheel);
+      oAdminContentDOM.removeEventListener('wheel', this.handleMouseWheel);
     }
+
+    window.removeEventListener('unload', this.handleResetUserStatus);
+    window.removeEventListener('beforeunload', this.handleWindowBeforeUnload);
+
+    this.state.statusIOClient.close();
   }
 
   public shouldComponentUpdate(
@@ -111,7 +132,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     return nextPathname !== currentPathname;
   }
 
-  public aidedHandleMouseWheel(
+  public handleMouseWheel(
     e: WheelEvent,
   ): void {
     const nDeltaY = e.deltaY as number;
@@ -121,9 +142,48 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     // ** 处理header滚动状态 **
     oHeaderContainer.style.cssText += `
       transform: translateY(${
-        nDeltaY > 0 ? '-100%' : 0
+      nDeltaY > 0 ? '-100%' : 0
       });
     `;
+  }
+
+  /**
+   * [处理] - 区分当前是刷新页面还是关闭页面
+   * @description 页面刷新和页面关闭都会触发unload & beforeunload事件, 所以需要进行简单的区分
+   */
+  public handleWindowBeforeUnload = () => {
+    this.beginTime = new Date().getTime();
+  }
+
+  /**
+   * [处理] - 浏览器页面关闭时重置用户的状态
+   * @description 用户在线状态 -> 离线
+   * @description 用户处于聊天页状态 -> ''
+   * @description 清除用户信息
+   */
+  public handleResetUserStatus = () => {
+    this.differTime = new Date().getTime() - this.beginTime;
+
+    if (this.differTime <= 5) {
+      const userId = localStorage.getItem('userid');
+      const chatId = null;
+
+      // TODO 清空本地数据
+      localStorage.removeItem('userid');
+      localStorage.removeItem('token');
+
+      // TODO 方式一
+      // * 通过navigator.sendBeacon发送, 但是需要同时更新Status全局组件, 在每次visible = true的时候获取一次状态信息
+      // * 火狐不兼容
+      // navigator.sendBeacon(`http://localhost:8888/api/status/update/leave?userId=${userId}&chatId=${chatId}`);
+
+      // TODO 方式二
+      // * 火狐不兼容, Chrome、Edge正常
+      this.state.statusIOClient.emit('sendResetUserStatus', {
+        userId,
+        chatId,
+      });
+    }
   }
 
   public render(): JSX.Element {

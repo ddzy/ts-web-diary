@@ -36,6 +36,9 @@ import {
 import {
   INotificationUserFriendRefuseModelProps,
 } from './notification/user/friend/refuse/notificationUserFriendRefuseModel.types';
+import {
+  INotificationUserStarArticleProps,
+} from './notification/user/star/article/notificationUserStarArticleModel.types';
 
 
 mongoose.set('useFindAndModify', false);
@@ -85,4 +88,5 @@ export {
   INotificationUserFriendRequestModelProps,
   INotificationUserFriendAgreeModelProps,
   INotificationUserFriendRefuseModelProps,
+  INotificationUserStarArticleProps,
 };

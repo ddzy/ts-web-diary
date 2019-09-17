@@ -62,6 +62,7 @@ app
       /^\/api\/register$/,
       /^\/socket\.io/,
       /^\/api\/auth\/github/,
+      /^\/api\/status\/update\/leave/,
     ],
   }))
   .use(koaStatic(
