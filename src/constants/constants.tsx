@@ -104,23 +104,6 @@ export const REPLY_PAGE_SIZE: number = 3;
  */
 export const NOTICE_PAGE_SIZE_MEDIUM: number = 5;
 
-/**
- * 通知相关常量
- */
-// ? 收藏我的文章时的通知
-export const NOTIFICATION_COLLECTION_ARTICLE = 'NOTIFICATION_COLLECTION_ARTICLE';
-// ? 用户关注我时的通知
-export const NOTIFICATION_FOLLOW = 'NOTIFICATION_FOLLOW';
-// ? 用户请求加好友时的通知
-export const NOTIFICATION_MAKE_FRIEND_REQUEST = 'NOTIFICATION_MAKE_FRIEND_REQUEST';
-// ? 用户成功加为好友时的通知
-export const NOTIFICATION_MAKE_FRIEND_AGREE = 'NOTIFICATION_MAKE_FRIEND_AGREE';
-// ? 用户拒绝加为好友时的通知
-export const NOTIFICATION_MAKE_FRIEND_REFUSE = 'NOTIFICATION_MAKE_FRIEND_REFUSE';
-// ? 用户点赞我的文章时的通知
-export const NOTIFICATION_STAR_ARTICLE = 'NOTIFICATION_STAR_ARTICLE';
-// ? 用户点赞我的评论时的通知
-export const NOTIFICATION_STAR_COMMENT = 'NOTIFICATION_STAR_COMMENT';
 
 /**
  * socket端口信息
@@ -178,6 +161,12 @@ export const NOTIFICATION_TYPE = {
       request: 'user_friend_request',
       agree: 'user_friend_agree',
       refuse: 'user_friend_refuse',
+    },
+    star: {
+      article: {
+        self: 'user_star_article',
+        comment: 'user_star_article_comment',
+      },
     },
   },
   admin: {},

@@ -1,7 +1,7 @@
 import * as Router from 'koa-router';
 
 import {
-  User,
+  User, Posts,
 } from '../../../model/model';
 
 
@@ -38,20 +38,21 @@ notificationUserController.get('/info/list', async (ctx) => {
 
       // * 如果是第一次获取通知列表
       if (!lastNotificationId) {
-        filteredNotificationList = await foundUserNotificationList.slice(0, Number(pageSize) + 1);
+        filteredNotificationList = await foundUserNotificationList.slice(0, Number(pageSize));
       } else {
         // * 相反, 如果不是第一次获取
         foundUserNotificationList.forEach((v: any, i: number) => {
           if (v._id === lastNotificationId) {
             filteredNotificationList = foundUserNotificationList.slice(
               i + 1,
-              i + Number(pageSize) + 2,
+              i + Number(pageSize) + 1,
             );
           }
         });
       }
 
       // ? 解析通知列表条目中的关联表
+      // * 不同类型通知的字段各不相同, 后续可能会做处理
       const parsedUserNotificationList = await Promise.all(filteredNotificationList.map(async (v: any) => {
         const foundFromUserInfo = await User.findById(
           v.from,
@@ -61,11 +62,21 @@ notificationUserController.get('/info/list', async (ctx) => {
           v.to,
           '_id username useravatar',
         );
+        const foundArticleInfo = await Posts.findById(
+          v.article,
+          '_id title',
+        );
+        const foundArticleAuthorInfo = await Posts.findById(
+          v.article_author,
+          '_id username useravatar',
+        );
 
         return {
           ...v,
           from: foundFromUserInfo,
           to: foundToUserInfo,
+          article: foundArticleInfo,
+          article_author: foundArticleAuthorInfo,
         };
       }));
 

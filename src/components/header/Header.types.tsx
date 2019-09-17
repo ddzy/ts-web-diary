@@ -51,3 +51,23 @@ export interface IBaseNotificationUserFriendRefuseParams {
   create_time: number;
   update_time: number;
 };
+
+// ? 用户点赞文章的通知模型
+export interface IBaseNotificationUserStarArticleParams {
+  _id: string;
+  type: string;
+  from: {
+    _id: string,
+    username: string,
+  };
+  article: {
+    _id: string,
+    title: string,
+  };
+  article_author: {
+    _id: string,
+    username: string,
+  };
+  create_time: number;
+  update_time: number;
+};
