@@ -179,6 +179,12 @@ export const NOTIFICATION_TYPE = {
       agree: 'user_friend_agree',
       refuse: 'user_friend_refuse',
     },
+    star: {
+      article: {
+        self: 'user_star_article',
+        comment: 'user_star_article_comment',
+      },
+    },
   },
   admin: {},
 };

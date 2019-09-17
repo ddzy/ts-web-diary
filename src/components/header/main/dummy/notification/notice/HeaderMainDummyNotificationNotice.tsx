@@ -36,12 +36,14 @@ import {
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
 import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
 import HeaderMainDummyNotificationNoticeFriendRefuse from './friend/refuse/HeaderMainDummyNotificationNoticeFriendRefuse';
+import HeaderMainDummyNotificationNoticeStarArticle from './star/article/HeaderMainDummyNotificationNoticeStarArticle';
 import { query } from 'services/request';
 import { formatTime } from 'utils/utils';
 import {
   IBaseNoficationUserFriendRequestParams,
   IBaseNotificationUserFriendAgreeParams,
   IBaseNotificationUserFriendRefuseParams,
+  IBaseNotificationUserStarArticleParams,
 } from 'components/header/Header.types';
 
 
@@ -57,6 +59,8 @@ export interface IHeaderMainDummyNotificationNoticeProps extends RouteComponentP
 export interface IHeaderMainDummyNotificationNoticeState {
   // ? 用户加好友通知相关socket
   notificationUserFriendIOClient: SocketIOClient.Socket;
+  // ? 用户点赞文章通知相关socket
+  notificationUserStarArticleIOClient: SocketIOClient.Socket;
 
   // ? 通知项列表
   notificationsList: React.ReactNode[];
@@ -154,6 +158,21 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationsList: newNotificationsList,
         };
       };
+      case NOTIFICATION_TYPE.user.star.article.self: {
+        return {
+          ...prevState,
+          notificationsList: [
+            React.createElement(
+              HeaderMainDummyNotificationNoticeStarArticle,
+              {
+                notificationInfo: action.payload,
+              },
+            ),
+            ...prevState.notificationsList,
+          ],
+          notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
+        };
+      };
       default: {
         return prevState;
       };
@@ -162,6 +181,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`, {
       reconnectionAttempts: 2,
     }),
+    notificationUserStarArticleIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/article`),
     notificationUnreadTotal: 0,
     notificationsList: [],
     hasMoreNotification: true,
@@ -239,6 +259,21 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
             notificationId: data.notificationId,
             agree_state: -1,
           },
+        });
+      }
+    });
+
+    // ? 用户点赞文章时的通知socket
+    state.notificationUserStarArticleIOClient.on('receiveUserStarArticle', (
+      data: IBaseNotificationUserStarArticleParams,
+    ) => {
+      const currentUserId = localStorage.getItem('userid');
+
+      // 如果当前用户是文章的作者, 则显示通知
+      if (currentUserId === data.article_author._id) {
+        dispatch({
+          type: NOTIFICATION_TYPE.user.star.article.self,
+          payload: data,
         });
       }
     });
@@ -358,6 +393,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
             case NOTIFICATION_TYPE.user.friend.refuse: {
               return React.createElement(
                 HeaderMainDummyNotificationNoticeFriendRefuse,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.star.article.self: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeStarArticle,
                 {
                   notificationInfo: v,
                 },

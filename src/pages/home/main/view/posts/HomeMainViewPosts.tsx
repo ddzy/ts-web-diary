@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as InfiniteScroll from 'react-infinite-scroller';
+import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -23,7 +24,11 @@ import { formatTime } from 'utils/utils';
 import {
   ICommonBaseArticleInfo,
 } from 'pages/home/Home.types';
-import { PAGE_SIZE } from 'constants/constants';
+import {
+  PAGE_SIZE,
+  SOCKET_CONNECTION_INFO,
+  NOTIFICATION_TYPE,
+} from 'constants/constants';
 import { query } from 'services/request';
 
 
@@ -32,6 +37,9 @@ export interface IHomeMainViewPostsProps extends RouteComponentProps<{
 }> {
 };
 export interface IHomeMainViewPostsState {
+  // ? 用户点赞文章的通知相关Websocket
+  notificationUserStarArticleIOClient: SocketIOClient.Socket;
+
   // ? 首次加载文章时的loading状态
   isFirstLoading: boolean;
 
@@ -55,6 +63,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IHomeMainViewPostsState>({
+    notificationUserStarArticleIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/article`),
     isFirstLoading: false,
     isLoadMoreLoading: false,
     hasMoreArticle: true,
@@ -260,6 +269,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
       const { starInfo } = res.data;
 
       if (code === 0) {
+        const notificationType = NOTIFICATION_TYPE.user.star.article.self;
         const article = state.articleList.find((v) => v._id === starInfo.articleId);
         const authorId = article ? article.author._id : '';
         const authorName = article ? article.author.username : '';
@@ -281,6 +291,14 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
               的文章!
           </span>
           );
+
+          // 点赞文章之后, 实时通知文章作者
+          state.notificationUserStarArticleIOClient.emit('sendUserStarArticle', {
+            notificationType,
+            userId,
+            authorId,
+            articleId,
+          });
 
           message.info(content);
         } else {
