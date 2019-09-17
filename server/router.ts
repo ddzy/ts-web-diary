@@ -38,6 +38,7 @@ import uploadController from './controller/upload/upload';
 import statusController from './controller/status/status';
 import statusCreateController from './controller/status/create/statusCreate';
 import statusInfoController from './controller/status/info/statusInfo';
+import statusUpdateController from './controller/status/update/statusUpdate';
 import userController from './controller/user/user';
 import userInfoController from './controller/user/info/userInfo';
 import userCreateController from './controller/user/create/userCreate';
@@ -133,7 +134,8 @@ chatController
   .use('/group', chatGroupController.routes(), chatGroupController.allowedMethods());
 statusController
   .use('/create', statusCreateController.routes(), statusCreateController.allowedMethods())
-  .use('/info', statusInfoController.routes(), statusInfoController.allowedMethods());
+  .use('/info', statusInfoController.routes(), statusInfoController.allowedMethods())
+  .use('/update', statusUpdateController.routes(), statusUpdateController.allowedMethods());
 userController
   .use('/info', userInfoController.routes(), userInfoController.allowedMethods())
   .use('/create', userCreateController.routes(), userCreateController.allowedMethods())
