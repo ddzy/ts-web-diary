@@ -26,9 +26,6 @@ import {
   MainContentItemTimeInner,
 } from './style';
 import {
-  NOTIFICATION_MAKE_FRIEND_REQUEST,
-  NOTIFICATION_MAKE_FRIEND_AGREE,
-  NOTIFICATION_MAKE_FRIEND_REFUSE,
   NOTIFICATION_TYPE,
   SOCKET_CONNECTION_INFO,
   NOTICE_PAGE_SIZE_MEDIUM,
@@ -83,7 +80,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     payload: any,
   }>>((prevState, action) => {
     switch (action.type) {
-      case NOTIFICATION_MAKE_FRIEND_REQUEST: {
+      case NOTIFICATION_TYPE.user.friend.request: {
         return {
           ...prevState,
           notificationsList: [
@@ -98,7 +95,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
       };
-      case NOTIFICATION_MAKE_FRIEND_AGREE: {
+      case NOTIFICATION_TYPE.user.friend.agree: {
         return {
           ...prevState,
           notificationsList: [
@@ -113,7 +110,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
       };
-      case NOTIFICATION_MAKE_FRIEND_REFUSE: {
+      case NOTIFICATION_TYPE.user.friend.refuse: {
         return {
           ...prevState,
           notificationsList: [
@@ -124,6 +121,21 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
               },
             ),
             ...prevState.notificationsList
+          ],
+          notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
+        };
+      };
+      case NOTIFICATION_TYPE.user.star.article.self: {
+        return {
+          ...prevState,
+          notificationsList: [
+            React.createElement(
+              HeaderMainDummyNotificationNoticeStarArticle,
+              {
+                notificationInfo: action.payload,
+              },
+            ),
+            ...prevState.notificationsList,
           ],
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
@@ -158,21 +170,6 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationsList: newNotificationsList,
         };
       };
-      case NOTIFICATION_TYPE.user.star.article.self: {
-        return {
-          ...prevState,
-          notificationsList: [
-            React.createElement(
-              HeaderMainDummyNotificationNoticeStarArticle,
-              {
-                notificationInfo: action.payload,
-              },
-            ),
-            ...prevState.notificationsList,
-          ],
-          notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
-        };
-      };
       default: {
         return prevState;
       };
@@ -201,7 +198,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
 
       if (currentUserId === data.to._id) {
         dispatch({
-          type: NOTIFICATION_MAKE_FRIEND_REQUEST,
+          type: NOTIFICATION_TYPE.user.friend.request,
           payload: data,
         });
       }
@@ -218,7 +215,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       // 更新接收方的状态
       if (data.to._id === currentUserId) {
         dispatch({
-          type: NOTIFICATION_MAKE_FRIEND_AGREE,
+          type: NOTIFICATION_TYPE.user.friend.agree,
           payload: data,
         });
       }
@@ -246,7 +243,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       // 更新接收方的状态
       if (data.to._id === currentUserId) {
         dispatch({
-          type: NOTIFICATION_MAKE_FRIEND_REFUSE,
+          type: NOTIFICATION_TYPE.user.friend.refuse,
           payload: data,
         });
       }
