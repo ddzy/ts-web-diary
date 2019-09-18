@@ -4,6 +4,8 @@ import {
   ViewWrapper,
   ViewMain,
 } from './style';
+import PinMainViewEdit from './edit/PinMainViewEdit';
+import PinMainViewContent from './content/PinMainViewContent';
 
 
 export interface IPinMainViewProps { };
@@ -14,7 +16,11 @@ const PinMainView = React.memo((props: IPinMainViewProps) => {
   return (
     <ViewWrapper>
       <ViewMain>
-        主视图区
+        {/* 沸点发表区 */}
+        <PinMainViewEdit />
+
+        {/* 沸点展示区 */}
+        <PinMainViewContent />
       </ViewMain>
     </ViewWrapper>
   );
