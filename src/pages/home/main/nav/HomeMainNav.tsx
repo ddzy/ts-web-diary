@@ -14,10 +14,7 @@ import {
   NavContentList,
   NavContentListItem,
 } from './style';
-import {
-  ARTICLE_TYPE_PICKER,
-  ARTICLE_TYPE_WITH_ENGLISH_PICKER,
-} from 'constants/constants';
+import generateArticleTypeNavConfig from 'config/articleTypeNav.config';
 
 
 export interface IHomeMainNavProps {};
@@ -30,20 +27,21 @@ const HomeMainNav = React.memo<IHomeMainNavProps>((
    * 处理初始化导航列表项
    */
   function handleInitNavItem(): JSX.Element[] {
-    return ARTICLE_TYPE_PICKER.map((v: string, i: number) => (
+    const articleTypeNav = generateArticleTypeNavConfig();
+
+    return articleTypeNav.map((v, i) => (
       <NavContentListItem
         key={i}
-        data-type={ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}
+        data-type={v.type}
       >
         <NavLink
           strict
-          // activeClassName={'home-nav-link-active'}
           activeStyle={{
             color: '#1DA57A',
           }}
-          to={`/home/${ARTICLE_TYPE_WITH_ENGLISH_PICKER[i]}`}
+          to={v.path}
         >
-          {v}
+          {v.name}
         </NavLink>
       </NavContentListItem>
     ));
