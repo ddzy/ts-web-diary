@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   Row,
   Col,
+  Affix,
 } from 'antd';
 
 import {
@@ -24,7 +25,10 @@ const PinMain = React.memo((props: IPinMainProps) => {
         <Row gutter={20}>
           <Col span={3}>
             {/* 导航区块 */}
-            <PinMainNav />
+            {/* <PinMainNav /> */}
+            <Affix offsetTop={80}>
+              <PinMainNav />
+            </Affix>
           </Col>
           <Col span={15}>
             {/* 视图区块 */}
@@ -32,7 +36,10 @@ const PinMain = React.memo((props: IPinMainProps) => {
           </Col>
           <Col span={6}>
             {/* 附加区块 */}
-            <PinMainExtra />
+            {/* <PinMainExtra /> */}
+            <Affix offsetTop={80}>
+              <PinMainExtra />
+            </Affix>
           </Col>
         </Row>
       </MainContent>
