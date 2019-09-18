@@ -3,7 +3,6 @@ import {
   Button,
   Upload,
 } from 'antd';
-import { UploadChangeParam } from 'antd/lib/upload';
 
 import {
   ImageWrapper,
