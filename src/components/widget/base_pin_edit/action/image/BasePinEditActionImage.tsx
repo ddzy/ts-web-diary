@@ -10,11 +10,11 @@ import {
 } from './style';
 
 
-export interface IPinMainViewEditActionImageProps { };
-export interface IPinMainViewEditActionImageState { }
+export interface IBasePinEditActionImageProps { };
+export interface IBasePinEditActionImageState { }
 
 
-const PinMainViewEditActionImage = React.memo((props: IPinMainViewEditActionImageProps) => {
+const BasePinEditActionImage = React.memo((props: IBasePinEditActionImageProps) => {
   return (
     <ImageWrapper>
       <ImageMain>
@@ -32,4 +32,4 @@ const PinMainViewEditActionImage = React.memo((props: IPinMainViewEditActionImag
   );
 });
 
-export default PinMainViewEditActionImage;
+export default BasePinEditActionImage;

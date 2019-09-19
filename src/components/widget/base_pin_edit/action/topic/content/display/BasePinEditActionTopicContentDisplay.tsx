@@ -20,11 +20,11 @@ import {
 } from './style';
 
 
-export interface IPinMainEditActionTopicContentDisplayProps { };
-export interface IPinMainEditActionTopicContentDisplayState { }
+export interface IBasePinEditActionTopicContentDisplayProps { };
+export interface IBasePinEditActionTopicContentDisplayState { }
 
 
-const PinMainEditActionTopicContentDisplay = React.memo((props: IPinMainEditActionTopicContentDisplayProps) => {
+const BasePinEditActionTopicContentDisplay = React.memo((props: IBasePinEditActionTopicContentDisplayProps) => {
   /**
    * [初始化] - 话题列表项
    */
@@ -79,4 +79,4 @@ const PinMainEditActionTopicContentDisplay = React.memo((props: IPinMainEditActi
   );
 });
 
-export default PinMainEditActionTopicContentDisplay;
+export default BasePinEditActionTopicContentDisplay;

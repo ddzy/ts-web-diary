@@ -9,11 +9,11 @@ import {
 } from './style';
 
 
-export interface IPinMainEditActionTopicContentSearchProps { };
-export interface IPinMainEditActionTopicContentSearchState { }
+export interface IBasePinEditActionTopicContentSearchProps { };
+export interface IBasePinEditActionTopicContentSearchState { }
 
 
-const PinMainEditActionTopicContentSearch = React.memo((props: IPinMainEditActionTopicContentSearchProps) => {
+const BasePinEditActionTopicContentSearch = React.memo((props: IBasePinEditActionTopicContentSearchProps) => {
   return (
     <SearchWrapper>
       <SearchMain>
@@ -25,4 +25,4 @@ const PinMainEditActionTopicContentSearch = React.memo((props: IPinMainEditActio
   );
 });
 
-export default PinMainEditActionTopicContentSearch;
+export default BasePinEditActionTopicContentSearch;

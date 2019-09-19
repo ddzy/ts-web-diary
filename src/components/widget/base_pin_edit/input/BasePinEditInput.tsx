@@ -8,11 +8,11 @@ import {
 } from './style';
 
 
-export interface IPinMainViewEditInputProps { };
-export interface IPinMainViewEditInputState { }
+export interface IBasePinEditInputProps { };
+export interface IBasePinEditInputState { }
 
 
-const PinMainViewEditInput = React.memo((props: IPinMainViewEditInputProps) => {
+const BasePinEditInput = React.memo((props: IBasePinEditInputProps) => {
   return (
     <InputWrapper>
       <InputMain>
@@ -28,4 +28,4 @@ const PinMainViewEditInput = React.memo((props: IPinMainViewEditInputProps) => {
   );
 });
 
-export default PinMainViewEditInput;
+export default BasePinEditInput;

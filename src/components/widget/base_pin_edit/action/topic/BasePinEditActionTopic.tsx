@@ -8,20 +8,20 @@ import {
   TopicWrapper,
   TopicMain,
 } from './style';
-import PinMainViewEditActionTopicContent from './content/PinMainViewEditActionTopicContent';
+import BasePinEditActionTopicContent from './content/BasePinEditActionTopicContent';
 
 
-export interface IPinMainViewEditActionTopicProps { };
-export interface IPinMainViewEditActionTopicState { }
+export interface IBasePinEditActionTopicProps { };
+export interface IBasePinEditActionTopicState { }
 
 
-const PinMainViewEditActionTopic = React.memo((props: IPinMainViewEditActionTopicProps) => {
+const BasePinEditActionTopic = React.memo((props: IBasePinEditActionTopicProps) => {
   /**
    * [初始化] - 模态框的内容
    */
   function _initPopoverContent() {
     return (
-      <PinMainViewEditActionTopicContent />
+      <BasePinEditActionTopicContent />
     );
   }
 
@@ -45,4 +45,4 @@ const PinMainViewEditActionTopic = React.memo((props: IPinMainViewEditActionTopi
   );
 });
 
-export default PinMainViewEditActionTopic;
+export default BasePinEditActionTopic;

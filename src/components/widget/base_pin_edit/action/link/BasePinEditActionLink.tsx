@@ -9,11 +9,11 @@ import {
 } from './style';
 
 
-export interface IPinMainViewEditActionLinkProps { };
-export interface IPinMainViewEditActionLinkState { }
+export interface IBasePinEditActionLinkProps { };
+export interface IBasePinEditActionLinkState { }
 
 
-const PinMainViewEditActionLink = React.memo((props: IPinMainViewEditActionLinkProps) => {
+const BasePinEditActionLink = React.memo((props: IBasePinEditActionLinkProps) => {
   return (
     <LinkWrapper>
       <LinkMain>
@@ -26,4 +26,4 @@ const PinMainViewEditActionLink = React.memo((props: IPinMainViewEditActionLinkP
   );
 });
 
-export default PinMainViewEditActionLink;
+export default BasePinEditActionLink;

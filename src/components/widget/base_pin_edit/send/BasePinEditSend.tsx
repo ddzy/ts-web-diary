@@ -9,11 +9,11 @@ import {
 } from './style';
 
 
-export interface IPinMainViewEditSendProps { };
-export interface IPinMainViewEditSendState { }
+export interface IBasePinEditSendProps { };
+export interface IBasePinEditSendState { }
 
 
-const PinMainViewEditSend = React.memo((props: IPinMainViewEditSendProps) => {
+const BasePinEditSend = React.memo((props: IBasePinEditSendProps) => {
   return (
     <SendWrapper>
       <SendMain>
@@ -26,4 +26,4 @@ const PinMainViewEditSend = React.memo((props: IPinMainViewEditSendProps) => {
   );
 });
 
-export default PinMainViewEditSend;
+export default BasePinEditSend;
