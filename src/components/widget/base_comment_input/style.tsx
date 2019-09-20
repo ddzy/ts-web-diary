@@ -35,7 +35,7 @@ export const GlobalStyleSet = createGlobalStyle`
 
 
 export const CommentInputBox = styled.div`
-  padding: 0 3rem;
+  /* padding: 0 3rem; */
 `;
 
 export const CommentInputMain = styled('div')<ICommentInputMainProps>`
