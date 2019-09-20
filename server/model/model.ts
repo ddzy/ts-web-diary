@@ -25,6 +25,10 @@ import NotificationUserFriendRequest from './notification/user/friend/request/no
 import NotificationUserFriendAgree from './notification/user/friend/agree/notificationUserFriendAgreeModel';
 import NotificationUserFriendRefuse from './notification/user/friend/refuse/notificationUserFriendRefuseModel';
 import OAuthGithub from './oauth/github/oauthGithubModel';
+import Topic from './topic/topicModel';
+import Pin from './pin/pinModel';
+import PinComment from './pin/comment/pinCommentModel';
+import PinReply from './pin/reply/pinReplyModel';
 
 
 import {
@@ -83,6 +87,10 @@ export {
   NotificationUserFriendAgree,
   NotificationUserFriendRefuse,
   OAuthGithub,
+  Topic,
+  Pin,
+  PinComment,
+  PinReply,
 
   // ? Interfaces
   INotificationUserFriendRequestModelProps,
