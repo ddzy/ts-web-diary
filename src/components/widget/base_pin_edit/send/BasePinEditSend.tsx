@@ -9,7 +9,9 @@ import {
 } from './style';
 
 
-export interface IBasePinEditSendProps { };
+export interface IBasePinEditSendProps {
+  onSend: () => void;
+};
 export interface IBasePinEditSendState { }
 
 
@@ -20,6 +22,7 @@ const BasePinEditSend = React.memo((props: IBasePinEditSendProps) => {
         <Button
           type="primary"
           block={true}
+          onClick={props.onSend}
         >发布</Button>
       </SendMain>
     </SendWrapper>
