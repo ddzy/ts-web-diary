@@ -1,7 +1,14 @@
 import * as React from 'react';
+import * as Qiniu from 'qiniu-js';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 import {
   Row,
   Col,
+  notification,
+  message,
 } from 'antd';
 import {
   UploadFile,
@@ -15,9 +22,20 @@ import {
 import BasePinEditInput from './input/BasePinEditInput';
 import BasePinEditAction from './action/BasePinEditAction';
 import BasePinEditSend from './send/BasePinEditSend';
+import { query } from 'services/request';
+import {
+  IBaseCommonTopicInfo,
+} from './BasePinEdit.types';
 
 
-export interface IBasePinEditProps { };
+export interface IBasePinEditProps extends RouteComponentProps {
+  onSend: (
+    data: Pick<IBasePinEditState['pinInfo'], 'plainContent' | 'imageContent' | 'linkContent'> & {
+      topic: string,
+    },
+    callback?: () => void,
+  ) => void;
+};
 export interface IBasePinEditState {
   // ? 沸点信息
   pinInfo: {
@@ -35,7 +53,7 @@ export interface IBasePinEditState {
       coverImgUrl: string,
     },
     // * 所属话题
-    topic: string[],
+    topic: Pick<IBaseCommonTopicInfo, '_id' | 'name'>,
   };
 
   // ? 本地图片列表
@@ -43,7 +61,7 @@ export interface IBasePinEditState {
 }
 
 
-const BasePinEdit = React.memo((props: IBasePinEditProps) => {
+const BasePinEdit = ((props: IBasePinEditProps) => {
   const [state, setState] = React.useState<IBasePinEditState>({
     pinInfo: {
       plainContent: '',
@@ -53,7 +71,10 @@ const BasePinEdit = React.memo((props: IBasePinEditProps) => {
         domain: '',
         coverImgUrl: '',
       },
-      topic: [],
+      topic: {
+        _id: '',
+        name: '',
+      },
     },
     imageList: [],
   });
@@ -87,12 +108,115 @@ const BasePinEdit = React.memo((props: IBasePinEditProps) => {
   function handleImageContentChange(
     data: UploadChangeParam,
   ) {
-    console.log(data);
+    // 用户凭证检测
+    const userId = localStorage.getItem('userid');
 
-    // TODO 上传至七牛云
+    if (!userId) {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    // TODO `onRemove`和`图片更新`都会触发`onChange`
+    // TODO 所以使用 data.file.hasOwnProperty(originFileObj)来区分两者, 做不同处理
+
+    if (data.file['originFileObj']) {
+      // 如果是删除图片
+      const removedFile = data.file;
+
+      const nFileIndex = state.imageList.indexOf(removedFile);
+      const newImageList = state.imageList.slice();
+      const newImageContentList = state.pinInfo.imageContent.slice();
+
+      newImageList.splice(nFileIndex, 1);
+      newImageContentList.splice(nFileIndex, 1);
+
+      setState({
+        ...state,
+        imageList: newImageList,
+        pinInfo: {
+          ...state.pinInfo,
+          imageContent: newImageContentList,
+        },
+      });
+    } else {
+      // 反之, 如果是上传图片
+      // 上传至七牛云
+      query({
+        url: '/api/upload/qiniu/info',
+        method: 'GET',
+        data: {
+          userId,
+        },
+        jsonp: false,
+      }).then((res) => {
+        const oPinImgFile = data.file as any;
+
+        const date: string = new Date().toLocaleDateString();
+        const {
+          uploadToken,
+          domain,
+        } = res.data.qiniuInfo;
+        const key: string = `${date}/user/${userId}/pin/images/${Date.now()}`;
+
+        const $qiniu: Qiniu.Observable = Qiniu.upload(
+          oPinImgFile,
+          key,
+          uploadToken,
+          {},
+          {},
+        );
+
+        $qiniu.subscribe({
+          next: () => (null),
+          error: () => {
+            notification.error({
+              message: '错误',
+              description: '上传至七牛云时出现问题, 请稍后重试!',
+            });
+          },
+          complete: () => {
+            // 处理前的原图
+            const finalOriginImgUrl: string = `https://${domain}/${key}`;
+
+            oPinImgFile.url = finalOriginImgUrl;
+
+            setState({
+              ...state,
+              imageList: data.fileList,
+              pinInfo: {
+                ...state.pinInfo,
+                imageContent: state.pinInfo.imageContent.concat({
+                  originUrl: finalOriginImgUrl,
+                  processedUrl: finalOriginImgUrl,
+                }),
+              },
+            });
+          },
+        });
+      })
+    }
+  }
+
+  /**
+   * [处理] - 所选话题的更新
+   * @param topicId 话题的id
+   */
+  function handleTopicChange(
+    topicInfo: IBaseCommonTopicInfo,
+  ) {
     setState({
       ...state,
-      imageList: data.fileList,
+      pinInfo: {
+        ...state.pinInfo,
+        topic: {
+          _id: topicInfo._id,
+          name: topicInfo.name,
+        },
+      },
     });
   }
 
@@ -100,9 +224,45 @@ const BasePinEdit = React.memo((props: IBasePinEditProps) => {
    * [处理] - 发送沸点
    */
   function handleSend() {
-    // TODO 非空逻辑处理
+    // TODO 提交沸点前的逻辑处理
+    // ? 文本内容不能为空
+    const { pinInfo } = state;
 
-    console.log(state.pinInfo);
+    if (!pinInfo.plainContent) {
+      return message.info('不能发送空的沸点!');
+    }
+
+    // ? 话题不能为空
+    if (!pinInfo.topic._id) {
+      return message.info('至少选择一个话题!');
+    }
+
+    // ? 重新组装沸点信息
+    const recomposedPinInfo = {
+      ...state.pinInfo,
+      topic: state.pinInfo.topic._id,
+    };
+
+    props.onSend(recomposedPinInfo);
+
+    // ? 重置各个模块的值
+    return setState({
+      ...state,
+      pinInfo: {
+        plainContent: '',
+        imageContent: [],
+        linkContent: {
+          title: '',
+          domain: '',
+          coverImgUrl: '',
+        },
+        topic: {
+          _id: '',
+          name: '',
+        },
+      },
+      imageList: [],
+    });
   }
 
   return (
@@ -113,7 +273,6 @@ const BasePinEdit = React.memo((props: IBasePinEditProps) => {
             {/* 沸点文字输入区 */}
             <BasePinEditInput
               pinInfo={state}
-              imageList={state}
               onPlainContentChange={handlePlainContentChange}
             />
           </Col>
@@ -126,6 +285,7 @@ const BasePinEdit = React.memo((props: IBasePinEditProps) => {
             <BasePinEditAction
               imageList={state}
               onImageContentChange={handleImageContentChange}
+              onTopicContentChange={handleTopicChange}
             />
           </Col>
           <Col span={4}>
@@ -140,4 +300,4 @@ const BasePinEdit = React.memo((props: IBasePinEditProps) => {
   );
 });
 
-export default BasePinEdit;
+export default withRouter(BasePinEdit);

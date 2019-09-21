@@ -1,9 +1,16 @@
 import styled from "styled-components";
 
 
+export interface IDisplayMainItemAvatarProps {
+  coverUrl: string;
+};
+
+
 export const DisplayWrapper = styled.div``;
 export const DisplayMain = styled.div`
+  overflow-y: scroll;
   width: 280px;
+  max-height: 300px;
   padding-top: 12px;
 `;
 
@@ -26,9 +33,12 @@ export const DisplayMainItemAvatarBox = styled.div`
   width: 42px;
   height: 42px;
 `;
-export const DisplayMainItemAvatar = styled.img`
-  max-width: 100%;
+export const DisplayMainItemAvatar = styled('img') <IDisplayMainItemAvatarProps>`
+  display: block;
+  width: 100%;
   height: 100%;
+  background-size: cover;
+  background-image: url("${(props) => props.coverUrl}");
 `;
 
 // ? 右侧信息区块

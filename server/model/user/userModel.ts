@@ -73,6 +73,13 @@ const UserSchema: mongoose.Schema = new Schema({
     default: [],
   }],
 
+  // ? 沸点
+  pins: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Pin',
+    default: [],
+  }],
+
   // ? 个人中心封面图片
   profile_cover_img: {
     type: String,
