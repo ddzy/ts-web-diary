@@ -17,6 +17,9 @@ axios.interceptors.request.use((config) => {
 
   return config;
 }, (err) => {
+  // nprogress END
+  NProgress.done();
+
   return Promise.reject(err);
 });
 
@@ -27,6 +30,9 @@ axios.interceptors.response.use((config) => {
 
   return config;
 }, (err) => {
+  // nprogress END
+  NProgress.done();
+
   return Promise.reject(err.response);
 });
 
