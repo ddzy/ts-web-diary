@@ -28,7 +28,14 @@ import {
 } from './BasePinEdit.types';
 
 
-export interface IBasePinEditProps extends RouteComponentProps { };
+export interface IBasePinEditProps extends RouteComponentProps {
+  onSend: (
+    data: Pick<IBasePinEditState['pinInfo'], 'plainContent' | 'imageContent' | 'linkContent'> & {
+      topic: string,
+    },
+    callback?: () => void,
+  ) => void;
+};
 export interface IBasePinEditState {
   // ? 沸点信息
   pinInfo: {
@@ -218,18 +225,6 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
    */
   function handleSend() {
     // TODO 提交沸点前的逻辑处理
-    // 用户凭证检测
-    const userId = localStorage.getItem('userid');
-
-    if (!userId) {
-      notification.error({
-        message: '错误',
-        description: '用户凭证已过期, 请重新登录!',
-      });
-
-      return props.history.push('/login');
-    }
-
     // ? 文本内容不能为空
     const { pinInfo } = state;
 
@@ -238,11 +233,36 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
     }
 
     // ? 话题不能为空
-    if (!pinInfo.topic) {
+    if (!pinInfo.topic._id) {
       return message.info('至少选择一个话题!');
     }
 
-    console.log(state.pinInfo);
+    // ? 重新组装沸点信息
+    const recomposedPinInfo = {
+      ...state.pinInfo,
+      topic: state.pinInfo.topic._id,
+    };
+
+    props.onSend(recomposedPinInfo);
+
+    // ? 重置各个模块的值
+    return setState({
+      ...state,
+      pinInfo: {
+        plainContent: '',
+        imageContent: [],
+        linkContent: {
+          title: '',
+          domain: '',
+          coverImgUrl: '',
+        },
+        topic: {
+          _id: '',
+          name: '',
+        },
+      },
+      imageList: [],
+    });
   }
 
   return (

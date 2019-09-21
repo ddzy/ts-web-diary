@@ -1,55 +1,67 @@
 import * as Router from 'koa-router';
 
 
-// !! 重构router !!
 import articleController from './controller/article/article';
 import articleCreateController from './controller/article/create/articleCreate';
 import articleInfoController from './controller/article/info/articleInfo';
 import articleUpdateController from './controller/article/update/articleUpdate';
 import articleDeleteController from './controller/article/delete/articleDelete';
+
 import actionController from './controller/action/action';
 import actionStarController from './controller/action/star/actionStar';
 import actionStarArticleController from './controller/action/star/article/actionStarArticle';
-import actionStarCommentController from './controller/action/star/comment/actionStarComment';
-import actionStarReplyController from './controller/action/star/reply/actionStarReply';
 import actionAvatarController from './controller/action/avatar/actionAvatar';
 import actionFollowController from './controller/action/follow/actionFollow';
 import actionFriendController from './controller/action/friend/actionFriend';
+
 import searchController from './controller/search/search';
+
 import pageController from './controller/page/page';
 import pageHomeController from './controller/page/home/pageHome';
 import pageDetailsController from './controller/page/details/pageDetails';
+
+
 import loginController from './controller/login/login';
+
 import registerController from './controller/register/register';
+
 import commentController from './controller/comment/comment';
 import commentArticleController from './controller/comment/article/commentArticle';
 import commentArticleCreateController from './controller/comment/article/create/commentArticleCreate';
 import commentArticleInfoController from './controller/comment/article/info/commentArticleInfo';
+
+
 import replyController from './controller/reply/reply';
 import replyArticleController from './controller/reply/article/replyArticle';
 import replyArticleCreateController from './controller/reply/article/create/replyArticleCreate';
 import replyArticleInfoController from './controller/reply/article/info/replyArticleInfo';
+
 import collectionController from './controller/collection/collection';
 import collectionCreateController from './controller/collection/create/collectionCreate';
 import collectionUpdateController from './controller/collection/update/collectionUpdate';
 import collectionInfoController from './controller/collection/info/collectionInfo';
 import collectionDeleteController from './controller/collection/delete/collectionDelete';
+
 import uploadController from './controller/upload/upload';
+
 import statusController from './controller/status/status';
 import statusCreateController from './controller/status/create/statusCreate';
 import statusInfoController from './controller/status/info/statusInfo';
 import statusUpdateController from './controller/status/update/statusUpdate';
+
 import userController from './controller/user/user';
 import userInfoController from './controller/user/info/userInfo';
 import userCreateController from './controller/user/create/userCreate';
 import userUpdateController from './controller/user/update/userUpdate';
 import userInfoAccountController from './controller/user/info/account/userInfoAccount';
+
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
 import notificationUserFriendController from './controller/notification/user/friend/notificationUserFriend';
 import notificationUserStarController from './controller/notification/user/star/notificationUserStar';
 import notificationUserStarArticleController from './controller/notification/user/star/article/notificationUserStarArticle';
 import notificationUserStarArticleCommentController from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
+
 import chatController from './controller/chat/chat';
 import chatSingleController from './controller/chat/single/chatSingle';
 import chatSingleInfoController from './controller/chat/single/info/chatSingleInfo';
@@ -59,13 +71,27 @@ import chatCommonInfoController from './controller/chat/common/info/chatCommonIn
 import chatGroupController from './controller/chat/group/chatGroup';
 import chatGroupCreateController from './controller/chat/group/create/chatGroupCreate';
 import chatGroupInfoController from './controller/chat/group/info/chatGroupInfo';
+
 import authController from './controller/auth/Auth';
 import authGithubController from './controller/auth/github/authGithub';
 import authAppController from './controller/auth/app/authApp';
+
 import topicController from './controller/topic/topic';
 import topicInfoController from './controller/topic/info/topicInfo';
 import topicCreateController from './controller/topic/create/topicCreate';
 import topicUpdateController from './controller/topic/update/topicUpdate';
+
+import pinController from './controller/pin/pin';
+import pinSelfController from './controller/pin/self/pinSelf';
+import pinSelfInfoController from './controller/pin/self/info/pinSelfInfo';
+import pinSelfCreateController from './controller/pin/self/create/pinSelfCreate';
+import pinCommentController from './controller/pin/comment/pinComment';
+import pinCommentInfoController from './controller/pin/comment/info/pinCommentInfo';
+import pinCommentCreateController from './controller/pin/comment/create/pinCommentCreate';
+import pinReplyController from './controller/pin/reply/pinReply';
+import pinReplyInfoController from './controller/pin/reply/info/pinReplyInfo';
+import pinReplyCreateController from './controller/pin/reply/create/pinReplyCreate';
+
 
 
 const router: Router = new Router({
@@ -94,8 +120,6 @@ replyArticleController
   .use('/info', replyArticleInfoController.routes(), replyArticleInfoController.allowedMethods())
 actionStarController
   .use('/article', actionStarArticleController.routes(), actionStarArticleController.allowedMethods())
-  .use('/comment', actionStarCommentController.routes(), actionStarCommentController.allowedMethods())
-  .use('/reply', actionStarReplyController.routes(), actionStarReplyController.allowedMethods());
 chatSingleController
   .use('/info', chatSingleInfoController.routes(), chatSingleInfoController.allowedMethods())
   .use('/create', chatSingleCreateController.routes(), chatSingleCreateController.allowedMethods());
@@ -107,6 +131,15 @@ chatCommonController
 notificationUserController
   .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods())
   .use('/star', notificationUserStarController.routes(), notificationUserStarController.allowedMethods());
+pinSelfController
+  .use('/info', pinSelfInfoController.routes(), pinSelfInfoController.allowedMethods())
+  .use('/create', pinSelfCreateController.routes(), pinSelfCreateController.allowedMethods());
+pinReplyController
+  .use('/info', pinReplyInfoController.routes(), pinReplyInfoController.allowedMethods())
+  .use('/create', pinReplyCreateController.routes(), pinReplyCreateController.allowedMethods());
+pinCommentController
+  .use('/info', pinCommentInfoController.routes(), pinCommentInfoController.allowedMethods())
+  .use('/create', pinCommentCreateController.routes(), pinCommentCreateController.allowedMethods());
 
 
 // !! 二级路由 !!
@@ -153,9 +186,13 @@ topicController
   .use('/info', topicInfoController.routes(), topicInfoController.allowedMethods())
   .use('/create', topicCreateController.routes(), topicCreateController.allowedMethods())
   .use('/update', topicUpdateController.routes(), topicUpdateController.allowedMethods());
+pinController
+  .use('/self', pinSelfController.routes(), pinSelfController.allowedMethods())
+  .use('/comment', pinCommentController.routes(), pinCommentController.allowedMethods())
+  .use('/reply', pinReplyController.routes(), pinReplyController.allowedMethods());
 
 
-// !! 重构路由 一级路由 !!
+// !! 一级路由 !!
 router
   .use('/article', articleController.routes(), articleController.allowedMethods())
   .use('/action', actionController.routes(), actionController.allowedMethods())
@@ -172,7 +209,8 @@ router
   .use('/user', userController.routes(), userController.allowedMethods())
   .use('/notification', notificationController.routes(), notificationController.allowedMethods())
   .use('/auth', authController.routes(), authController.allowedMethods())
-  .use('/topic', topicController.routes(), topicController.allowedMethods());
+  .use('/topic', topicController.routes(), topicController.allowedMethods())
+  .use('/pin', pinController.routes(), pinController.allowedMethods());
 
 
 export default router;
