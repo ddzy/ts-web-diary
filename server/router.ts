@@ -62,6 +62,10 @@ import chatGroupInfoController from './controller/chat/group/info/chatGroupInfo'
 import authController from './controller/auth/Auth';
 import authGithubController from './controller/auth/github/authGithub';
 import authAppController from './controller/auth/app/authApp';
+import topicController from './controller/topic/topic';
+import topicInfoController from './controller/topic/info/topicInfo';
+import topicCreateController from './controller/topic/create/topicCreate';
+import topicUpdateController from './controller/topic/update/topicUpdate';
 
 
 const router: Router = new Router({
@@ -144,7 +148,11 @@ notificationController
   .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
 authController
   .use('/github', authGithubController.routes(), authGithubController.allowedMethods())
-  .use('/app', authAppController.routes(), authAppController.allowedMethods());
+  .use('/app', authAppController.routes(), authAppController.allowedMethods())
+topicController
+  .use('/info', topicInfoController.routes(), topicInfoController.allowedMethods())
+  .use('/create', topicCreateController.routes(), topicCreateController.allowedMethods())
+  .use('/update', topicUpdateController.routes(), topicUpdateController.allowedMethods());
 
 
 // !! 重构路由 一级路由 !!
@@ -163,7 +171,8 @@ router
   .use('/status', statusController.routes(), statusController.allowedMethods())
   .use('/user', userController.routes(), userController.allowedMethods())
   .use('/notification', notificationController.routes(), notificationController.allowedMethods())
-  .use('/auth', authController.routes(), authController.allowedMethods());
+  .use('/auth', authController.routes(), authController.allowedMethods())
+  .use('/topic', topicController.routes(), topicController.allowedMethods());
 
 
 export default router;

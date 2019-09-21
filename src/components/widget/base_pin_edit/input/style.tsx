@@ -35,3 +35,26 @@ export const InputMainEditBox = styled.div``;
 export const InputMainImageBox = styled.div`
   margin-top: 16px;
 `;
+
+export const InputMainTopicBox = styled.div`
+  margin-top: 16px;
+`;
+export const InputMainTopicList = styled.ul``;
+export const InputMainTopicItem = styled.li`
+  display: inline-block;
+  margin-left: 8px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+`;
+export const InputMainTopicTag = styled.span`
+  display: inline-block;
+  padding: 1px 12px;
+  border: 1px solid #1da57a;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 22px;
+  color: #1da57a;
+  user-select: none;
+`;

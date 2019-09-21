@@ -1,5 +1,9 @@
 import * as React from 'react';
 import ContentEditable from 'react-contenteditable';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   GlobalStyle,
@@ -7,15 +11,19 @@ import {
   InputMain,
   InputMainEditBox,
   InputMainImageBox,
+  InputMainTopicBox,
+  InputMainTopicList,
+  InputMainTopicItem,
+  InputMainTopicTag,
 } from './style';
 import {
   IBasePinEditState,
 } from '../BasePinEdit';
 
 
-export interface IBasePinEditInputProps {
+export interface IBasePinEditInputProps extends RouteComponentProps {
+  // ? 沸点值相关信息
   pinInfo: Pick<IBasePinEditState, 'pinInfo'>;
-  imageList: Pick<IBasePinEditState, 'imageList'>;
 
   onPlainContentChange: (e: React.ChangeEvent) => void;
 };
@@ -50,6 +58,26 @@ const BasePinEditInput = React.memo((props: IBasePinEditInputProps) => {
 
 
   /**
+   * [初始化] - 选择的话题列表
+   * @description 目前初步计划, 只能选择一个话题, 后续可能会开放多个话题同时选择
+   */
+  function _initTopicList() {
+    const topicInfo = props.pinInfo.pinInfo.topic;
+
+    return topicInfo.name
+      ? (
+        <InputMainTopicItem
+          onClick={() => handleTopicItemClick(props.pinInfo.pinInfo.topic._id)}
+        >
+          <InputMainTopicTag>
+            {props.pinInfo.pinInfo.topic.name}
+          </InputMainTopicTag>
+        </InputMainTopicItem>
+      )
+      : null;
+  }
+
+  /**
    * [处理] - 输入框获得焦点
    * @description 更新父级的样式
    */
@@ -73,6 +101,16 @@ const BasePinEditInput = React.memo((props: IBasePinEditInputProps) => {
     }
   }
 
+  /**
+   * [处理] - 点击话题, 跳转至话题页
+   * @param topicId 话题的id
+   */
+  function handleTopicItemClick(
+    topicId: string,
+  ) {
+    props.history.push(`/topic/${topicId}`);
+  }
+
   return (
     <InputWrapper>
       <InputMain ref={$editableContainerDOM}>
@@ -87,6 +125,13 @@ const BasePinEditInput = React.memo((props: IBasePinEditInputProps) => {
           />
         </InputMainEditBox>
 
+        {/* 话题预览区 */}
+        <InputMainTopicBox>
+          <InputMainTopicList>
+            {_initTopicList()}
+          </InputMainTopicList>
+        </InputMainTopicBox>
+
         {/* 图片上传预览区 */}
         <InputMainImageBox
           id="pin-main-view-edit-image-container"
@@ -98,4 +143,4 @@ const BasePinEditInput = React.memo((props: IBasePinEditInputProps) => {
   );
 });
 
-export default BasePinEditInput;
+export default withRouter(BasePinEditInput);

@@ -23,6 +23,9 @@ import BasePinEditInput from './input/BasePinEditInput';
 import BasePinEditAction from './action/BasePinEditAction';
 import BasePinEditSend from './send/BasePinEditSend';
 import { query } from 'services/request';
+import {
+  IBaseCommonTopicInfo,
+} from './BasePinEdit.types';
 
 
 export interface IBasePinEditProps extends RouteComponentProps { };
@@ -43,7 +46,7 @@ export interface IBasePinEditState {
       coverImgUrl: string,
     },
     // * 所属话题
-    topic: string[],
+    topic: Pick<IBaseCommonTopicInfo, '_id' | 'name'>,
   };
 
   // ? 本地图片列表
@@ -61,7 +64,10 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
         domain: '',
         coverImgUrl: '',
       },
-      topic: [],
+      topic: {
+        _id: '',
+        name: '',
+      },
     },
     imageList: [],
   });
@@ -147,7 +153,7 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
           uploadToken,
           domain,
         } = res.data.qiniuInfo;
-        const key: string = `${date}/user/${userId}/pin/image/${Date.now()}`;
+        const key: string = `${date}/user/${userId}/pin/images/${Date.now()}`;
 
         const $qiniu: Qiniu.Observable = Qiniu.upload(
           pinImg,
@@ -187,6 +193,25 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
   }
 
   /**
+   * [处理] - 所选话题的更新
+   * @param topicId 话题的id
+   */
+  function handleTopicChange(
+    topicInfo: IBaseCommonTopicInfo,
+  ) {
+    setState({
+      ...state,
+      pinInfo: {
+        ...state.pinInfo,
+        topic: {
+          _id: topicInfo._id,
+          name: topicInfo.name,
+        },
+      },
+    });
+  }
+
+  /**
    * [处理] - 发送沸点
    */
   function handleSend() {
@@ -210,7 +235,12 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
       return message.info('不能发送空的沸点!');
     }
 
-    console.log(state);
+    // ? 话题不能为空
+    if (!pinInfo.topic) {
+      return message.info('至少选择一个话题!');
+    }
+
+    console.log(state.pinInfo);
   }
 
   return (
@@ -221,7 +251,6 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
             {/* 沸点文字输入区 */}
             <BasePinEditInput
               pinInfo={state}
-              imageList={state}
               onPlainContentChange={handlePlainContentChange}
             />
           </Col>
@@ -234,6 +263,7 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
             <BasePinEditAction
               imageList={state}
               onImageContentChange={handleImageContentChange}
+              onTopicContentChange={handleTopicChange}
             />
           </Col>
           <Col span={4}>
