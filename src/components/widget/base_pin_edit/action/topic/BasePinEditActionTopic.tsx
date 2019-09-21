@@ -9,9 +9,16 @@ import {
   TopicMain,
 } from './style';
 import BasePinEditActionTopicContent from './content/BasePinEditActionTopicContent';
+import {
+  IBaseCommonTopicInfo,
+} from '../../BasePinEdit.types';
 
 
-export interface IBasePinEditActionTopicProps { };
+export interface IBasePinEditActionTopicProps {
+  onTopicContentChange: (
+    topicInfo: IBaseCommonTopicInfo,
+  ) => void;
+};
 export interface IBasePinEditActionTopicState { }
 
 
@@ -21,7 +28,9 @@ const BasePinEditActionTopic = React.memo((props: IBasePinEditActionTopicProps) 
    */
   function _initPopoverContent() {
     return (
-      <BasePinEditActionTopicContent />
+      <BasePinEditActionTopicContent
+        onTopicContentChange={props.onTopicContentChange}
+      />
     );
   }
 

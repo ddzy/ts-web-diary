@@ -13,6 +13,7 @@ import BasePinEditActionImage from './image/BasePinEditActionImage';
 import BasePinEditActionLink from './link/BasePinEditActionLink';
 import BasePinEditActionTopic from './topic/BasePinEditActionTopic';
 import { IBasePinEditState } from '../BasePinEdit';
+import { IBaseCommonTopicInfo } from '../BasePinEdit.types';
 
 
 export interface IBasePinEditActionProps {
@@ -21,6 +22,9 @@ export interface IBasePinEditActionProps {
 
   onImageContentChange: (
     info: UploadChangeParam
+  ) => void;
+  onTopicContentChange: (
+    topicInfo: IBaseCommonTopicInfo,
   ) => void;
 };
 export interface IBasePinEditActionState { }
@@ -44,7 +48,9 @@ const BasePinEditAction = React.memo((props: IBasePinEditActionProps) => {
           </Col>
           <Col span={3}>
             {/* 沸点话题选择区 */}
-            <BasePinEditActionTopic />
+            <BasePinEditActionTopic
+              onTopicContentChange={props.onTopicContentChange}
+            />
           </Col>
         </Row>
       </ActionMain>

@@ -62,6 +62,7 @@ registerController.post('/', async (ctx, ) => {
       github: 0,
     },
     notifications: [],
+    pins: [],
   });
 
   ctx.body = {

@@ -5,14 +5,17 @@ import {
   Upload,
   Icon,
   Badge,
+  Modal,
 } from 'antd';
 import { UploadChangeParam } from 'antd/lib/upload';
+import { UploadFile } from 'antd/lib/upload/interface';
 
 import {
   ImageWrapper,
   ImageMain,
 } from './style';
 import { IBasePinEditState } from '../../BasePinEdit';
+import BasePinEditActionImagePreview from './preview/BasePinEditActionImagePreview';
 
 
 export interface IBasePinEditActionImageProps {
@@ -24,22 +27,37 @@ export interface IBasePinEditActionImageProps {
   ) => void;
 };
 export interface IBasePinEditActionImageState {
-  // ? 是否显示沸点图片长传框
+  // ? 是否显示沸点图片上传框
   isShowUploadImageComponent: boolean;
+  // ? 是否显示图片预览模态框
+  isShowPreviewImageModal: boolean;
+
+  // ? 预览的图片相关信息
+  previewImageInfo: {
+    url: string,
+    name: string,
+  };
 }
 
 
 const BasePinEditActionImage = React.memo((props: IBasePinEditActionImageProps) => {
   const [state, setState] = React.useState<IBasePinEditActionImageState>({
     isShowUploadImageComponent: false,
+    isShowPreviewImageModal: false,
+    previewImageInfo: {
+      url: '',
+      name: '',
+    },
   });
 
   const $uploadNode = (
     <Upload
       listType="picture-card"
+      accept="image/jpg, image/jpeg, image/png, image/gif"
       beforeUpload={() => false}
       fileList={props.imageList.imageList}
       onChange={props.onImageContentChange}
+      onPreview={handleImageContentPreview}
     >
       {
         props.imageList.imageList.length >= 9 ? null : (<div>
@@ -70,6 +88,42 @@ const BasePinEditActionImage = React.memo((props: IBasePinEditActionImageProps) 
     });
   }
 
+  /**
+   * [处理] - 隐藏预览图片的模态框
+   */
+  function handlePreviewModalHide() {
+    setState({
+      ...state,
+      isShowPreviewImageModal: false,
+      previewImageInfo: {
+        url: '',
+        name: '',
+      },
+    });
+  }
+
+  /**
+   * [处理] - 上传至本地列表的图片预览
+   * @param imageFile 即将预览的图片
+   */
+  function handleImageContentPreview(
+    imageFile: UploadFile,
+  ) {
+    const oOriginImageFile = imageFile.originFileObj as any;
+    // 获取预览的链接, 此为上传至七牛云之后动态添加的属性
+    const sPreviewImageUrl = oOriginImageFile.url;
+    const sPreviewImageName = oOriginImageFile.name;
+
+    setState({
+      ...state,
+      isShowPreviewImageModal: true,
+      previewImageInfo: {
+        url: sPreviewImageUrl,
+        name: sPreviewImageName,
+      },
+    });
+  }
+
   return (
     <ImageWrapper>
       <ImageMain>
@@ -94,6 +148,17 @@ const BasePinEditActionImage = React.memo((props: IBasePinEditActionImageProps) 
           )
         }
       </ImageMain>
+
+      {/* 本地图片预览模态框 */}
+      <Modal
+        footer={null}
+        visible={state.isShowPreviewImageModal}
+        onCancel={handlePreviewModalHide}
+      >
+        <BasePinEditActionImagePreview
+          previewImageInfo={state.previewImageInfo}
+        />
+      </Modal>
     </ImageWrapper>
   );
 });
