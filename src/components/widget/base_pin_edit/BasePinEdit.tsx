@@ -146,7 +146,7 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
         },
         jsonp: false,
       }).then((res) => {
-        const pinImg = data.file as any;
+        const oPinImgFile = data.file as any;
 
         const date: string = new Date().toLocaleDateString();
         const {
@@ -156,7 +156,7 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
         const key: string = `${date}/user/${userId}/pin/images/${Date.now()}`;
 
         const $qiniu: Qiniu.Observable = Qiniu.upload(
-          pinImg,
+          oPinImgFile,
           key,
           uploadToken,
           {},
@@ -174,6 +174,8 @@ const BasePinEdit = ((props: IBasePinEditProps) => {
           complete: () => {
             // 处理前的原图
             const finalOriginImgUrl: string = `https://${domain}/${key}`;
+
+            oPinImgFile.url = finalOriginImgUrl;
 
             setState({
               ...state,
