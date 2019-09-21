@@ -37,6 +37,7 @@ const BasePinEditActionImage = React.memo((props: IBasePinEditActionImageProps) 
   const $uploadNode = (
     <Upload
       listType="picture-card"
+      accept="image/jpg, image/jpeg, image/png, image/gif"
       beforeUpload={() => false}
       fileList={props.imageList.imageList}
       onChange={props.onImageContentChange}
