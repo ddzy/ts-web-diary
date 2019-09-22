@@ -104,6 +104,10 @@ export const REPLY_PAGE_SIZE: number = 3;
  */
 export const NOTICE_PAGE_SIZE_MEDIUM: number = 5;
 
+/**
+ * 沸点列表的每页条数 - 中
+ */
+export const PIN_LIST_PAGE_SIZE_MEDIUM = 5;
 
 /**
  * socket端口信息

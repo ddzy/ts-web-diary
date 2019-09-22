@@ -16,7 +16,7 @@ import BasePinEdit from 'components/widget/base_pin_edit/BasePinEdit';
 import { query } from 'services/request';
 
 
-export interface IPinMainViewEditProps extends RouteComponentProps { };
+export interface IPinMainViewEditProps extends RouteComponentProps {};
 export interface IPinMainViewEditState { }
 
 
@@ -60,17 +60,17 @@ const PinMainViewEdit = React.memo((props: IPinMainViewEditProps) => {
     }).then((res) => {
       const resCode = res.code;
       const resMessage = res.message;
-      const resData = res.data;
+      // const resData = res.data;
 
       if (resCode === 0) {
-        console.log(resData);
-
-        message.success('沸点发表成功!');
+        message.success('沸点发表成功, 等待审核!');
       } else {
         notification.error(resMessage);
       }
 
       callback && callback();
+    }).catch(() => {
+      message.error('网络错误, 请稍后重试!');
     });
   }
 

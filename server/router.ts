@@ -77,9 +77,10 @@ import authGithubController from './controller/auth/github/authGithub';
 import authAppController from './controller/auth/app/authApp';
 
 import topicController from './controller/topic/topic';
-import topicInfoController from './controller/topic/info/topicInfo';
-import topicCreateController from './controller/topic/create/topicCreate';
-import topicUpdateController from './controller/topic/update/topicUpdate';
+import topicSelfController from './controller/topic/self/topicSelf';
+import topicSelfInfoController from './controller/topic/self/info/topicSelfInfo';
+import topicPinController from './controller/topic/pin/topicPin';
+import topicPinInfoController from './controller/topic/pin/info/topicPinInfo';
 
 import pinController from './controller/pin/pin';
 import pinSelfController from './controller/pin/self/pinSelf';
@@ -140,6 +141,10 @@ pinReplyController
 pinCommentController
   .use('/info', pinCommentInfoController.routes(), pinCommentInfoController.allowedMethods())
   .use('/create', pinCommentCreateController.routes(), pinCommentCreateController.allowedMethods());
+topicSelfController
+  .use('/info', topicSelfInfoController.routes(), topicSelfInfoController.allowedMethods());
+topicPinController
+  .use('/info', topicPinInfoController.routes(), topicPinInfoController.allowedMethods());
 
 
 // !! 二级路由 !!
@@ -181,15 +186,15 @@ notificationController
   .use('/user', notificationUserController.routes(), notificationUserController.allowedMethods());
 authController
   .use('/github', authGithubController.routes(), authGithubController.allowedMethods())
-  .use('/app', authAppController.routes(), authAppController.allowedMethods())
+  .use('/app', authAppController.routes(), authAppController.allowedMethods());
 topicController
-  .use('/info', topicInfoController.routes(), topicInfoController.allowedMethods())
-  .use('/create', topicCreateController.routes(), topicCreateController.allowedMethods())
-  .use('/update', topicUpdateController.routes(), topicUpdateController.allowedMethods());
+  .use('/self', topicSelfController.routes(), topicSelfController.allowedMethods())
+  .use('/pin', topicPinController.routes(), topicPinController.allowedMethods());
 pinController
   .use('/self', pinSelfController.routes(), pinSelfController.allowedMethods())
   .use('/comment', pinCommentController.routes(), pinCommentController.allowedMethods())
   .use('/reply', pinReplyController.routes(), pinReplyController.allowedMethods());
+
 
 
 // !! 一级路由 !!

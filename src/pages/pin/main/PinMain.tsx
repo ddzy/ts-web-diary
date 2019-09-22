@@ -27,14 +27,14 @@ const PinMain = React.memo((props: IPinMainProps) => {
     <MainWrapper>
       <MainContent>
         <Row gutter={20}>
-          <Col span={3}>
+          <Col span={4}>
             {/* 导航区块 */}
             {/* <PinMainNav /> */}
             <Affix offsetTop={80}>
               <PinMainNav />
             </Affix>
           </Col>
-          <Col span={15}>
+          <Col span={14}>
             {/* 视图区块 */}
             <PinMainView />
           </Col>
