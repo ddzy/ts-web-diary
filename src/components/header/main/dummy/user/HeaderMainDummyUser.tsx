@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   Link,
@@ -25,9 +24,7 @@ import {
   UserMainPopoverItemText,
   UserMainPopoverListItem,
 } from './style';
-import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
+import { statusIOClient } from 'services/websocket';
 
 
 export interface IHeaderMainDummyUserProps extends RouteComponentProps {
@@ -47,7 +44,7 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
   props: IHeaderMainDummyUserProps,
 ): JSX.Element => {
   const [state] = React.useState<IHeaderMainDummyUserState>({
-    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
+    statusIOClient,
   });
 
   React.useEffect(() => {

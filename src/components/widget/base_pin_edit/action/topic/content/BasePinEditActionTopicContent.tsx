@@ -71,7 +71,7 @@ const BasePinEditActionTopicContent = React.memo((props: IBasePinEditActionTopic
 
     query({
       method: 'GET',
-      url: '/api/topic/info/list',
+      url: '/api/topic/self/info/list',
       jsonp: false,
       data: {
         userId,

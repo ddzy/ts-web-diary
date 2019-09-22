@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Loadable from 'react-loadable';
-import * as IOClient from 'socket.io-client';
 import {
   Route,
   Switch,
@@ -15,9 +14,7 @@ import {
   AdminContent,
 } from './style';
 import BgImg from '../../static/images/admin_bg_img.png';
-import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
+import { statusIOClient } from 'services/websocket';
 
 const LoadableHome = Loadable({
   loader: () => import('pages/home/Home'),
@@ -96,7 +93,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
 
   public readonly state: IAdminState = {
     pathname: '',
-    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
+    statusIOClient,
   }
 
   public componentDidMount(): void {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   Table,
   Divider,
@@ -21,9 +20,7 @@ import {
   FriendsMainTitleInnerText,
 } from './style';
 import { query } from 'services/request';
-import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
+import { chatSingleIOClient } from 'services/websocket';
 
 
 export interface IChatFriendsProps extends RouteComponentProps {
@@ -46,7 +43,7 @@ export interface IStaticFriendListItem {
 
 const ChatFriends = React.memo((props: IChatFriendsProps) => {
   const [state, setState] = React.useState<IChatFriendsState>({
-    chatIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat/single`),
+    chatIOClient: chatSingleIOClient,
     friendList: [],
   });
 

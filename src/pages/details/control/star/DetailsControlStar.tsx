@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   Tooltip,
   Icon,
@@ -17,9 +16,9 @@ import {
 } from '../../Details.types';
 import { query } from 'services/request';
 import {
-  SOCKET_CONNECTION_INFO,
   NOTIFICATION_TYPE,
 } from 'constants/constants';
+import { notificationUserStarArticleIOClient } from 'services/websocket';
 
 
 export interface IDetailsControlStarProps extends RouteComponentProps {
@@ -49,7 +48,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IDetailsControlStarState>({
-    notificationUserStarArticleIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/article`),
+    notificationUserStarArticleIOClient,
     isStar: false,
   });
 
