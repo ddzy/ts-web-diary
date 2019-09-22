@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   NavLink,
 } from 'react-router-dom';
@@ -23,9 +22,9 @@ import {
   IBaseNoficationUserFriendRequestParams,
 } from 'components/header/Header.types';
 import {
-  SOCKET_CONNECTION_INFO,
   NOTIFICATION_TYPE,
 } from 'constants/constants';
+import { notificationUserFriendIOClient } from 'services/websocket';
 
 
 export interface IHeaderMainDummyNotificationNoticeFriendRequestProps {
@@ -50,7 +49,7 @@ export interface IHeaderMainDummyNotificationNoticeFriendRequestState {
 
 const IHeaderMainDummyNotificationNoticeFriendRequestProps = React.memo((props: IHeaderMainDummyNotificationNoticeFriendRequestProps) => {
   const [state, setState] = React.useState<IHeaderMainDummyNotificationNoticeFriendRequestState>({
-    notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`),
+    notificationUserFriendIOClient,
     isShowRefuseModal: false,
     refuseDescription: '',
     isShowControl: true,

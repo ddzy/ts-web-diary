@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -26,8 +25,9 @@ import {
   IBaseCommonChatMessgaeType,
 } from 'pages/chat/Chat.types';
 import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
+  chatSingleIOClient,
+  statusIOClient,
+} from 'services/websocket';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -39,8 +39,7 @@ export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
 type IChatInterfacesViewSingleState = typeof initialState;
 
 
-const chatIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/chat/single`);
-const statusIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`);
+const chatIOClient = chatSingleIOClient;
 
 const initialState = {
   // ? 单聊信息

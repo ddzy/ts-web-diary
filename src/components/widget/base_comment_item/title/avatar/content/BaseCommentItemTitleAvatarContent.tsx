@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -14,11 +13,11 @@ import {
   ContentMain,
 } from './style';
 import {
-  SOCKET_CONNECTION_INFO,
   NOTIFICATION_TYPE,
 } from 'constants/constants';
 import BaseCommentItemTitleAvatarContentStatistics from './statistics/BaseCommentItemTitleAvatarContentStatistics';
 import BaseCommentItemTitleAvatarContentAction from './action/BaseCommentItemTitleAvatarContentAction';
+import { notificationUserFriendIOClient } from 'services/websocket';
 
 
 export interface IBaseCommentItemTitleAvatarContentProps extends RouteComponentProps {
@@ -48,7 +47,7 @@ export interface IBaseCommentItemTitleAvatarContentState {
 
 const BaseCommentItemTitleAvatarContent = React.memo((props: IBaseCommentItemTitleAvatarContentProps) => {
   const [state] = React.useState<IBaseCommentItemTitleAvatarContentState>({
-    notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`),
+    notificationUserFriendIOClient,
   });
 
 

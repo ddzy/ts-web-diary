@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   Popover,
   Icon,
@@ -15,9 +14,7 @@ import {
 } from './style';
 import StatusOnLine from './online/statusOnLine';
 import { query } from 'services/request';
-import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
+import { statusIOClient } from 'services/websocket';
 
 
 export interface IStatusProps { };
@@ -33,7 +30,7 @@ export interface IStatusState {
 
 const Status = React.memo((props: IStatusProps) => {
   const [state, setState] = React.useState<IStatusState>({
-    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
+    statusIOClient,
     userOnLineInfo: {
       online_total: 0,
     },

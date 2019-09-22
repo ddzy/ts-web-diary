@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -17,10 +16,8 @@ import {
   FormWrapper,
   FormMain,
 } from './style';
-import {
-  SOCKET_CONNECTION_INFO,
-} from 'constants/constants';
 import { query } from 'services/request';
+import { statusIOClient } from 'services/websocket';
 
 
 export interface ILoginViewFormProps extends FormComponentProps, RouteComponentProps { };
@@ -45,7 +42,7 @@ const LoginViewForm = React.memo((props: ILoginViewFormProps) => {
       username: '',
       userpwd: '',
     },
-    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
+    statusIOClient,
     isLoginButtonLoading: false,
   });
 
