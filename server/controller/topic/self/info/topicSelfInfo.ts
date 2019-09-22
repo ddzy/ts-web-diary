@@ -2,20 +2,20 @@ import * as Router from 'koa-router';
 
 import {
   Topic,
-} from '../../../model/model';
+} from '../../../../model/model';
 import {
   FILTER_SENSITIVE,
-} from '../../../constants/constants';
+} from '../../../../constants/constants';
 
 
-const topicInfoController = new Router();
+const topicSelfInfoController = new Router();
 
 
 /**
  * [获取] - 话题列表
  * @todo 分页获取
  */
-topicInfoController.get('/list', async (ctx) => {
+topicSelfInfoController.get('/list', async (ctx) => {
   try {
     // ? 查询话题列表
     const foundTopicList = await Topic.find({}, {...FILTER_SENSITIVE});
@@ -37,4 +37,4 @@ topicInfoController.get('/list', async (ctx) => {
 });
 
 
-export default topicInfoController;
+export default topicSelfInfoController;

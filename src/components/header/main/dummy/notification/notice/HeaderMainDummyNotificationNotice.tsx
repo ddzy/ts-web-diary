@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import * as InfiniteScroll from 'react-infinite-scroller';
 import {
   withRouter,
@@ -27,7 +26,6 @@ import {
 } from './style';
 import {
   NOTIFICATION_TYPE,
-  SOCKET_CONNECTION_INFO,
   NOTICE_PAGE_SIZE_MEDIUM,
 } from 'constants/constants';
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
@@ -42,6 +40,10 @@ import {
   IBaseNotificationUserFriendRefuseParams,
   IBaseNotificationUserStarArticleParams,
 } from 'components/header/Header.types';
+import {
+  notificationUserStarArticleIOClient,
+  notificationUserFriendIOClient,
+} from 'services/websocket';
 
 
 // ? 追加通知列表
@@ -175,10 +177,8 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       };
     }
   }, {
-    notificationUserFriendIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/friend`, {
-      reconnectionAttempts: 2,
-    }),
-    notificationUserStarArticleIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/article`),
+    notificationUserFriendIOClient,
+    notificationUserStarArticleIOClient,
     notificationUnreadTotal: 0,
     notificationsList: [],
     hasMoreNotification: true,

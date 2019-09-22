@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as InfiniteScroll from 'react-infinite-scroller';
-import * as IOClient from 'socket.io-client';
 import {
   withRouter,
   RouteComponentProps,
@@ -26,10 +25,10 @@ import {
 } from 'pages/home/Home.types';
 import {
   PAGE_SIZE,
-  SOCKET_CONNECTION_INFO,
   NOTIFICATION_TYPE,
 } from 'constants/constants';
 import { query } from 'services/request';
+import { notificationUserStarArticleIOClient } from 'services/websocket';
 
 
 export interface IHomeMainViewPostsProps extends RouteComponentProps<{
@@ -63,7 +62,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IHomeMainViewPostsState>({
-    notificationUserStarArticleIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/article`),
+    notificationUserStarArticleIOClient,
     isFirstLoading: false,
     isLoadMoreLoading: false,
     hasMoreArticle: true,

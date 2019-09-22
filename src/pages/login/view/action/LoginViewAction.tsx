@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as IOClient from 'socket.io-client';
 import {
   Link,
   RouteComponentProps,
@@ -19,10 +18,10 @@ import {
 } from './style';
 import {
   BIND_THIRD_PARTY_INFO,
-  SOCKET_CONNECTION_INFO,
   CLIENT_WEBSITE_INFO,
 } from 'constants/constants';
 import { query } from 'services/request';
+import { statusIOClient } from 'services/websocket';
 
 
 export interface ILoginViewActionProps extends RouteComponentProps { };
@@ -47,7 +46,7 @@ const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
 
 
   const [state] = React.useState<ILoginViewActionState>({
-    statusIOClient: IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/status`),
+    statusIOClient,
   });
 
   React.useEffect(() => {
