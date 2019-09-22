@@ -1,4 +1,11 @@
 import * as React from 'react';
+import {
+  Route,
+  Switch,
+  withRouter,
+  RouteComponentProps,
+  Redirect,
+} from 'react-router-dom';
 
 import {
   ViewWrapper,
@@ -8,7 +15,7 @@ import PinMainViewEdit from './edit/PinMainViewEdit';
 import PinMainViewContent from './content/PinMainViewContent';
 
 
-export interface IPinMainViewProps { };
+export interface IPinMainViewProps extends RouteComponentProps { };
 export interface IPinMainViewState { }
 
 
@@ -20,10 +27,16 @@ const PinMainView = React.memo((props: IPinMainViewProps) => {
         <PinMainViewEdit />
 
         {/* 沸点展示区 */}
-        <PinMainViewContent />
+        <Switch location={props.location}>
+          <Route exact={true} path="/pin" render={() => (
+            <Redirect to="/pin/recommend" />
+          )} />
+          <Route exact={true} path="/pin/:type" component={PinMainViewContent} />
+          <Route exact={true} path="/pin/:type/:id" component={PinMainViewContent} />
+        </Switch>
       </ViewMain>
     </ViewWrapper>
   );
 });
 
-export default PinMainView;
+export default withRouter(PinMainView);

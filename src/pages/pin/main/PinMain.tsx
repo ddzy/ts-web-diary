@@ -4,6 +4,10 @@ import {
   Col,
   Affix,
 } from 'antd';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   MainWrapper,
@@ -14,7 +18,7 @@ import PinMainView from './view/PinMainView';
 import PinMainExtra from './extra/PinMainExtra';
 
 
-export interface IPinMainProps { };
+export interface IPinMainProps extends RouteComponentProps { };
 export interface IPinMainState { }
 
 
@@ -47,4 +51,4 @@ const PinMain = React.memo((props: IPinMainProps) => {
   );
 });
 
-export default PinMain;
+export default withRouter(PinMain);

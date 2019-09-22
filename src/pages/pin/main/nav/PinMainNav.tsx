@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
   NavLink,
+  withRouter,
+  RouteComponentProps,
 } from 'react-router-dom';
 import {
   Divider,
@@ -14,7 +16,7 @@ import {
 } from './style';
 
 
-export interface IPinMainNavProps { };
+export interface IPinMainNavProps extends RouteComponentProps { };
 export interface IPinMainNavState { }
 
 
@@ -67,7 +69,6 @@ const PinMainNav = React.memo((props: IPinMainNavProps) => {
               key={i}
             >
               <NavLink
-                strict={true}
                 activeStyle={{
                   color: '#1da57a',
                 }}
@@ -107,4 +108,4 @@ const PinMainNav = React.memo((props: IPinMainNavProps) => {
   );
 });
 
-export default PinMainNav;
+export default withRouter(PinMainNav);
