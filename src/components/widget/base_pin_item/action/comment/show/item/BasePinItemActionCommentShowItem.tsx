@@ -67,6 +67,7 @@ const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommen
           >
             <ItemMainReplyItem>
               <BaseCommentItem
+                isAllowAvatarHover={false}
                 baseInputContainerStyle={{
                   backgroundColor: '#fff',
                 }}
@@ -147,6 +148,7 @@ const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommen
         {/* 单个评论项 评论展示 */}
         <ItemMainCommentBox>
           <BaseCommentItem
+            isAllowAvatarHover={false}
             baseInputStyle={{
               backgroundColor: '#fff',
             }}

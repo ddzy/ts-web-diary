@@ -74,6 +74,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
           >
             <ReplyListItem>
               <BaseCommentItem
+                isAllowAvatarHover={true}
                 baseInputContainerStyle={{
                   backgroundColor: '#fff',
                 }}
@@ -157,6 +158,7 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
       {/* 单个评论项 评论展示 */}
       <CommentContainer>
         <BaseCommentItem
+          isAllowAvatarHover={true}
           baseInputStyle={{
             backgroundColor: '#fff',
           }}

@@ -23,6 +23,8 @@ import BaseCommentItemTitleAvatarContent from './content/BaseCommentItemTitleAva
 
 
 export interface IBaseCommentItemTitleAvatarProps extends RouteComponentProps {
+  // ? 是否允许头像框hover
+  isAllowAvatarHover?: boolean;
   // ? 判断是评论还是回复
   isReply: boolean;
   // ? 单个评论或回复的详细信息
@@ -145,22 +147,35 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
   return (
     <AvatarWrapper>
       <AvatarMain>
-        {/* 头像框悬浮框 */}
-        <Popover
-          mouseEnterDelay={.7}
-          destroyTooltipOnHide={true}
-          title={_initAvatarPopoverTitle()}
-          content={_initAvatarPopoverContent()}
-          onVisibleChange={handleCommentAvatarHover}
-        >
-          <Avatar
-            src={props.commentInfo.from.useravatar}
-            icon="user"
-            size="default"
-            shape="circle"
-            alt="评论者"
-          />
-        </Popover>
+        {
+          props.isAllowAvatarHover
+            ? (
+              <Popover
+                mouseEnterDelay={.7}
+                destroyTooltipOnHide={true}
+                title={_initAvatarPopoverTitle()}
+                content={_initAvatarPopoverContent()}
+                onVisibleChange={handleCommentAvatarHover}
+              >
+                <Avatar
+                  src={props.commentInfo.from.useravatar}
+                  icon="user"
+                  size="default"
+                  shape="circle"
+                  alt="评论者"
+                />
+              </Popover>
+            )
+            : (
+              <Avatar
+                src={props.commentInfo.from.useravatar}
+                icon="user"
+                size="default"
+                shape="circle"
+                alt="评论者"
+              />
+            )
+        }
       </AvatarMain>
     </AvatarWrapper>
   );
