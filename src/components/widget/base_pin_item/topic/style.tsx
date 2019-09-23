@@ -26,4 +26,5 @@ export const TopicMainItemTag = styled.span`
   line-height: 22px;
   color: #1da57a;
   user-select: none;
+  cursor: pointer;
 `;

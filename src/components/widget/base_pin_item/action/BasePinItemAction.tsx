@@ -16,10 +16,16 @@ import {
   ActionMainControlShareBox,
   ActionMainControlShare,
 } from './style';
+import {
+  ICommonBasePinItemInfo,
+} from '../BasePinItem.types';
 import BasePinItemActionComment from './comment/BasePinItemActionComment';
 
 
-export interface IBasePinItemActionProps { };
+export interface IBasePinItemActionProps {
+  // ? 沸点相关信息
+  pinInfo: Pick<ICommonBasePinItemInfo, '_id'>;
+};
 export interface IBasePinItemActionState {
   // ? 是否显示评论区
   isShowCommentBox: boolean;
@@ -28,10 +34,24 @@ export interface IBasePinItemActionState {
 
 const BasePinItemAction = React.memo((props: IBasePinItemActionProps) => {
 
-  const [state] = React.useState<IBasePinItemActionState>({
+  const [state, setState] = React.useState<IBasePinItemActionState>({
     isShowCommentBox: false,
   });
 
+
+  /**
+   * [处理] - 评论按钮点击
+   * @description 切换评论区的显隐状态
+   * @param e 评论按钮的DOM元素
+   */
+  function handleCommentBoxClick(
+    e: React.MouseEvent,
+  ) {
+    setState({
+      ...state,
+      isShowCommentBox: !state.isShowCommentBox,
+    });
+  }
 
   return (
     <ActionWrapper>
@@ -50,7 +70,9 @@ const BasePinItemAction = React.memo((props: IBasePinItemActionProps) => {
                   </ActionMainControlStarBox>
                 </Col>
                 <Col span={8}>
-                  <ActionMainControlCommentBox>
+                  <ActionMainControlCommentBox
+                    onClick={handleCommentBoxClick}
+                  >
                     <ActionMainControlComment>
                       <Icon type="message" />
                     </ActionMainControlComment>
@@ -68,7 +90,9 @@ const BasePinItemAction = React.memo((props: IBasePinItemActionProps) => {
 
             {/* 评论区 */}
             {
-              state.isShowCommentBox && (<BasePinItemActionComment />)
+              state.isShowCommentBox && (<BasePinItemActionComment
+                pinInfo={props.pinInfo}
+              />)
             }
           </Col>
         </Row>

@@ -5,6 +5,9 @@ export interface IBaseCommonUserInfo {
   _id: string;
   username: string;
   useravatar: string;
+  introduction: string;
+  job: string;
+  website: string;
 };
 
 /**

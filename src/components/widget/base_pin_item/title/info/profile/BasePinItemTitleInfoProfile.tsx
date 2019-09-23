@@ -11,9 +11,16 @@ import {
   ProfileMainInfoDescription,
   ProfileMainInfoTime,
 } from './style';
+import {
+  ICommonBasePinItemInfo,
+} from 'components/widget/base_pin_item/BasePinItem.types';
+import { formatTime } from 'utils/utils';
 
 
-export interface IBasePinItemTitleInfoProfileProps { };
+export interface IBasePinItemTitleInfoProfileProps {
+  // ? 沸点相关信息
+  pinInfo: Pick<ICommonBasePinItemInfo, 'create_time' | 'author_id'>;
+};
 export interface IBasePinItemTitleInfoProfileState { }
 
 
@@ -23,14 +30,19 @@ const BasePinItemTitleInfoProfile = React.memo((props: IBasePinItemTitleInfoProf
       <ProfileMain>
         {/* 沸点作者名称区 */}
         <ProfileMainTitle>
-          清蒸不是水煮
+          {props.pinInfo.author_id.username}
         </ProfileMainTitle>
 
         {/* 沸点作者信息区 */}
         <ProfileMainInfo>
           {/* 沸点作者的简介 */}
           <ProfileMainInfoDescription>
-            全干工程师
+            {
+              props.pinInfo.author_id.job
+              || props.pinInfo.author_id.website
+              || props.pinInfo.author_id.introduction
+              || '保密'
+            }
           </ProfileMainInfoDescription>
 
           <Divider
@@ -45,7 +57,7 @@ const BasePinItemTitleInfoProfile = React.memo((props: IBasePinItemTitleInfoProf
 
           {/* 沸点的创建时间 */}
           <ProfileMainInfoTime>
-            2 天前
+            {formatTime(props.pinInfo.create_time)}
           </ProfileMainInfoTime>
         </ProfileMainInfo>
       </ProfileMain>
