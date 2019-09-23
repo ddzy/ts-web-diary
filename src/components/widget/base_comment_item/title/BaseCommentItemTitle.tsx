@@ -16,6 +16,8 @@ import {
 
 
 export interface IBaseCommentItemTitleProps {
+  // ? 是否允许头像框hover
+  isAllowAvatarHover?: boolean;
   // ? 判断是评论还是回复
   isReply: boolean;
   // ? 单个评论或回复的详细信息
@@ -31,6 +33,7 @@ const BaseCommentItemTitle = React.memo((
       <TitleMain>
         {/* 左边头像框 */}
         <BaseCommentItemTitleAvatar
+          isAllowAvatarHover={props.isAllowAvatarHover}
           isReply={props.isReply}
           commentInfo={props.commentInfo}
         />

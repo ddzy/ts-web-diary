@@ -7,9 +7,15 @@ import {
   AvatarWrapper,
   AvatarMain,
 } from './style';
+import {
+  ICommonBasePinItemInfo,
+} from 'components/widget/base_pin_item/BasePinItem.types';
 
 
-export interface IBasePinItemTitleInfoAvatarProps { };
+export interface IBasePinItemTitleInfoAvatarProps {
+  // ? 沸点相关信息
+  pinInfo: Pick<ICommonBasePinItemInfo, 'author_id'>;
+};
 export interface IBasePinItemTitleInfoAvatarState { }
 
 
@@ -19,7 +25,7 @@ const BasePinItemTitleInfoAvatar = React.memo((props: IBasePinItemTitleInfoAvata
       <AvatarMain>
         <Avatar
           icon="user"
-          src={''}
+          src={props.pinInfo.author_id.useravatar}
           size="large"
         />
       </AvatarMain>

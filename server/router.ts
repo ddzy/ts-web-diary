@@ -54,6 +54,7 @@ import userInfoController from './controller/user/info/userInfo';
 import userCreateController from './controller/user/create/userCreate';
 import userUpdateController from './controller/user/update/userUpdate';
 import userInfoAccountController from './controller/user/info/account/userInfoAccount';
+import userInfoArticleController from './controller/user/info/article/userInfoArticle';
 
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
@@ -106,8 +107,6 @@ notificationUserStarArticleController
 
 
 // !! 四级路由 !!
-userInfoController
-  .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods())
 notificationUserStarController
   .use('/article', notificationUserStarArticleController.routes(), notificationUserStarArticleController.allowedMethods());
 
@@ -145,6 +144,10 @@ topicSelfController
   .use('/info', topicSelfInfoController.routes(), topicSelfInfoController.allowedMethods());
 topicPinController
   .use('/info', topicPinInfoController.routes(), topicPinInfoController.allowedMethods());
+userInfoController
+  .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods())
+  .use('/article', userInfoArticleController.routes(), userInfoArticleController.allowedMethods());
+
 
 
 // !! 二级路由 !!

@@ -1,5 +1,9 @@
 import * as React from 'react';
 import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
+import {
   Row,
   Col,
 } from 'antd';
@@ -11,42 +15,27 @@ import {
   TopicMainItem,
   TopicMainItemTag,
 } from './style';
+import {
+  ICommonBasePinItemInfo,
+} from '../BasePinItem.types';
 
 
-export interface IBasePinItemTopicProps { };
+export interface IBasePinItemTopicProps extends RouteComponentProps {
+  // ? 沸点相关信息
+  pinInfo: Pick<ICommonBasePinItemInfo, 'topic_id'>;
+};
 export interface IBasePinItemTopicState { }
 
 
 const BasePinItemTopic = React.memo((props: IBasePinItemTopicProps) => {
   /**
-   * [初始化] - 话题标签列表
+   * [处理] - 话题标签点击
+   * @description 跳转至对应的话题详情页
    */
-  function _initTopicList() {
-    const topicList = [
-      {
-        url: '/topic/1',
-        name: '优秀开源推荐',
-      },
-      {
-        url: '/topic/2',
-        name: '你怎么看?',
-      },
-      {
-        url: '/topic/1',
-        name: 'New 咨询',
-      },
+  function handleTopicTagClick() {
+    const topicId = props.pinInfo.topic_id._id;
 
-    ];
-
-    return topicList.map((v, i) => {
-      return (
-        <TopicMainItem key={i}>
-          <TopicMainItemTag>
-            {v.name}
-          </TopicMainItemTag>
-        </TopicMainItem>
-      );
-    });
+    props.history.push(`/topic/${topicId}`);
   }
 
   return (
@@ -56,7 +45,13 @@ const BasePinItemTopic = React.memo((props: IBasePinItemTopicProps) => {
           <Col span={1} />
           <Col span={21}>
             <TopicMainList>
-              {_initTopicList()}
+              <TopicMainItem>
+                <TopicMainItemTag
+                  onClick={handleTopicTagClick}
+                >
+                  {props.pinInfo.topic_id.name}
+                </TopicMainItemTag>
+              </TopicMainItem>
             </TopicMainList>
           </Col>
         </Row>
@@ -65,4 +60,4 @@ const BasePinItemTopic = React.memo((props: IBasePinItemTopicProps) => {
   );
 });
 
-export default BasePinItemTopic;
+export default withRouter(BasePinItemTopic);
