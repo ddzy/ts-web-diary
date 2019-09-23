@@ -1,4 +1,5 @@
 import * as React from 'react';
+import RcViewer from '@hanyk/rc-viewer';
 import {
   Row,
   Col,
@@ -16,9 +17,15 @@ import {
   ContentMainImageItem,
   ContentMainImage,
 } from './style';
+import {
+  ICommonBasePinItemInfo,
+} from '../BasePinItem.types';
 
 
-export interface IBasePinItemContentProps { };
+export interface IBasePinItemContentProps {
+  // ? 沸点相关信息
+  pinInfo: Pick<ICommonBasePinItemInfo, '_id' | 'content_plain' | 'content_image' | 'content_link'>;
+};
 export interface IBasePinItemContentState { }
 
 
@@ -37,13 +44,7 @@ const BasePinItemContent = React.memo((props: IBasePinItemContentProps) => {
    * [初始化] - 沸点的图片列表
    */
   function _initImageList() {
-    const imgList = [
-      {
-        originUrl: 'https://user-gold-cdn.xitu.io/2019/9/19/16d492fbc834c612?w=4000&h=2402&f=jpeg&s=2875755',
-        processedUrl: 'https://user-gold-cdn.xitu.io/2019/9/19/16d492fbc834c612?w=4000&h=2402&f=jpeg&s=2875755',
-      },
-
-    ];
+    const imgList = props.pinInfo.content_image;
 
     return imgList.map((v, i) => {
       return (
@@ -54,6 +55,19 @@ const BasePinItemContent = React.memo((props: IBasePinItemContentProps) => {
           />
         </ContentMainImageItem>
       );
+    });
+  }
+
+  /**
+   * [初始化] - 文本内容
+   * @description 如果不作初始化, `scrollHeight`会永远等于`clientHeight`, 导致无法进行文本溢出判断
+   */
+  function _initPlainText() {
+    const sText = props.pinInfo.content_plain;
+    const regDivTag = /(<div>)(?!<br>)|(<\/div>)/g;
+
+    return sText.replace(regDivTag, (_, $1, $2) => {
+      return '';
     });
   }
 
@@ -79,34 +93,28 @@ const BasePinItemContent = React.memo((props: IBasePinItemContentProps) => {
               <ContentMainInput
                 type="checkbox"
                 name="toggle"
-                id="toggle"
+                id={props.pinInfo._id}
               />
               {/* 纯文本内容部分 */}
-              <ContentMainText ref={$showMoreDOM}>
-                沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容
-
-                <br />
-                <br />
-
-                沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容
-
-                <br />
-                <br />
-
-                沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容
-
-                <br />
-                <br />
-
-                沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容沸点内容
-              </ContentMainText>
-              <ContentMainLabel htmlFor="toggle" />
+              <ContentMainText ref={$showMoreDOM}
+                dangerouslySetInnerHTML={{
+                  __html: _initPlainText()
+                }}
+              />
+              <ContentMainLabel htmlFor={props.pinInfo._id} />
             </ContentMainTextBox>
 
             {/* 图片内容部分 */}
             <ContentMainImageBox>
               <ContentMainImageList>
-                {_initImageList()}
+                <RcViewer
+                  options={{
+                    url: 'data-src',
+                    button: false,
+                  }}
+                >
+                  {_initImageList()}
+                </RcViewer>
               </ContentMainImageList>
             </ContentMainImageBox>
           </Col>

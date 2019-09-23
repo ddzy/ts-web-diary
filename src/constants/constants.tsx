@@ -94,7 +94,7 @@ export const EMOJI_PICKER: string[] = [
 export const PAGE_SIZE: number = 5;
 
 /**
- * 评论 | 回复每页条数
+ * 文章评论 | 回复每页条数
  */
 export const COMMENT_PAGE_SIZE: number = 5;
 export const REPLY_PAGE_SIZE: number = 3;
@@ -108,6 +108,17 @@ export const NOTICE_PAGE_SIZE_MEDIUM: number = 5;
  * 沸点列表的每页条数 - 中
  */
 export const PIN_LIST_PAGE_SIZE_MEDIUM = 5;
+
+/**
+ * 沸点评论的每页条数 - 小
+ */
+export const PIN_COMMENT_PAGE_SIZE_SMALL = 3;
+
+/**
+ * 沸点回复的每页条数 - 小
+ */
+export const PIN_REPLY_PAGE_SIZE_SMALL = 2;
+
 
 /**
  * socket端口信息

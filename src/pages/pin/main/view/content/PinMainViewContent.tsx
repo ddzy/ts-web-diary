@@ -33,7 +33,11 @@ export interface IPinMainViewContentProps extends RouteComponentProps<{
 };
 export interface IPinMainViewContentState {
   // ? 沸点列表
-  pinList: IBaseCommonPinInfo[];
+  pinList: Array<IBaseCommonPinInfo & {
+    user_is_friend: boolean,
+    user_is_current_author: boolean,
+    user_is_attention: boolean,
+  }>;
   // ? 是否显示首次加载沸点列表的loading
   isShowFirstlyLoading: boolean;
 }
@@ -180,7 +184,14 @@ const PinMainViewContent = React.memo((props: IPinMainViewContentProps) => {
       ? pinList.map((v) => {
           return (
             <ContentMainItem key={v._id}>
-              <BasePinItem />
+              <BasePinItem
+                pinInfo={{
+                  ...v,
+                  user_is_friend: true,
+                  user_is_current_author: false,
+                  user_is_attention: true,
+                }}
+              />
             </ContentMainItem>
           );
         })

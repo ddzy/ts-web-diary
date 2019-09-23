@@ -36,7 +36,11 @@ topicPinInfoController.post('/list', async (ctx) => {
           populate: [
             {
               path: 'author_id',
-              select: ['_id', 'username', 'useravatar'],
+              select: ['_id', 'username', 'useravatar', 'job', 'website', 'introduction'],
+            },
+            {
+              path: 'topic_id',
+              select: ['_id', 'name'],
             },
           ],
           select: {

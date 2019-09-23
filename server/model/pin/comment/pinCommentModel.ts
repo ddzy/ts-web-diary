@@ -13,7 +13,7 @@ const PinCommentSchema = new Schema({
     ref: 'Pin',
   },
   // 评论人
-  from_user_id: {
+  from: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },

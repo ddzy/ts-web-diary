@@ -7,9 +7,15 @@ import {
   FriendWrapper,
   FriendMain,
 } from './style';
+import {
+  ICommonBasePinItemInfo,
+} from 'components/widget/base_pin_item/BasePinItem.types';
 
 
-export interface IBasePinItemTitleActionFriendProps { };
+export interface IBasePinItemTitleActionFriendProps {
+  // ? 沸点相关信息
+  pinInfo: Pick<ICommonBasePinItemInfo, 'user_is_attention' | 'user_is_current_author' | 'user_is_friend'>;
+};
 export interface IBasePinItemTitleActionFriendState { }
 
 
@@ -20,8 +26,19 @@ const BasePinItemTitleActionFriend = React.memo((props: IBasePinItemTitleActionF
         <Button
           type="ghost"
           size="small"
-          icon="plus"
-        >加好友</Button>
+          icon={
+            props.pinInfo.user_is_friend ? 'message' : 'plus'
+          }
+          disabled={
+            props.pinInfo.user_is_current_author
+              ? true
+              : false
+          }
+        >
+          {
+            props.pinInfo.user_is_friend ? '去聊天' : '加好友'
+          }
+        </Button>
       </FriendMain>
     </FriendWrapper>
   );
