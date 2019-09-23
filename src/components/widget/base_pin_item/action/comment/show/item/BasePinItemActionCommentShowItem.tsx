@@ -3,6 +3,9 @@ import {
   TransitionGroup,
   CSSTransition,
 } from 'react-transition-group';
+import {
+  Button,
+} from 'antd';
 
 import {
   ItemWrapper,
@@ -11,6 +14,8 @@ import {
   ItemMainReplyBox,
   ItemMainReplyList,
   ItemMainReplyItem,
+  ItemMainLoadMoreBox,
+  ItemMainLoadMoreText,
 } from './style';
 import { BaseCommentItem } from 'components/widget/base_comment_item/BaseCommentItem';
 import {
@@ -27,11 +32,24 @@ export interface IBasePinItemActionCommentItemProps {
     inputEl: HTMLElement,
     data: any,
   ) => void;
+  onLoadMoreReply: (
+    commentId: string,
+    lastReplyId: string,
+    callback?: () => void,
+  ) => void;
 };
-export interface IBasePinItemActionCommentItemState { };
+export interface IBasePinItemActionCommentItemState {
+  // ? 加载更多回复按钮的内容
+  loadMoreText: string;
+};
 
 
 const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommentItemProps) => {
+  const [state, setState] = React.useState<IBasePinItemActionCommentItemState>({
+    loadMoreText: '加载更多',
+  });
+
+
   /**
    * [初始化] - 回复列表
    */
@@ -66,6 +84,30 @@ const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommen
   }
 
   /**
+   * [初始化] - 回复的加载更多按钮
+   */
+  function _initReplyLoadMoreButton(): JSX.Element {
+    const replys = props.commentInfo.replys;
+
+    const loadMoreButton = replys.length !== 0
+      ? (
+        <ItemMainLoadMoreBox>
+          <ItemMainLoadMoreText>
+            <Button
+              type="link"
+              onClick={handleLoadMoreReply}
+            >
+              {state.loadMoreText}
+            </Button>
+          </ItemMainLoadMoreText>
+        </ItemMainLoadMoreBox>
+      )
+      : <React.Fragment />;
+
+    return loadMoreButton;
+  }
+
+  /**
    * [处理] - 提交回复
    */
   function handleSendReply(
@@ -75,6 +117,27 @@ const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommen
     props.onSendReply(el, {
       ...value,
       commentId: props.commentInfo._id,
+    });
+  }
+
+  /**
+   * [处理] - 回复加载更多
+   */
+  function handleLoadMoreReply() {
+    const replys = props.commentInfo.replys;
+    const lastReplyId = replys[replys.length - 1]._id;
+    const commentId = props.commentInfo._id;
+
+    setState({
+      ...state,
+      loadMoreText: '加载中',
+    });
+
+    props.onLoadMoreReply(commentId, lastReplyId, () => {
+      setState({
+        ...state,
+        loadMoreText: '加载更多',
+      });
     });
   }
 
@@ -101,6 +164,9 @@ const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommen
             <TransitionGroup>
               {_initReplyList()}
             </TransitionGroup>
+
+            {/* 加载更多按钮 */}
+            {_initReplyLoadMoreButton()}
           </ItemMainReplyList>
         </ItemMainReplyBox>
       </ItemMain>

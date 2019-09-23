@@ -39,12 +39,15 @@ export interface IBasePinItemActionCommentProps extends RouteComponentProps, Con
 export interface IBasePinItemActionCommentState {
   // ? 沸点评论列表
   commentList: ICommonBasePinCommentInfo[];
+  // ? 分页相关: 是否还有更多评论
+  hasMoreComment: boolean;
 }
 
 
 const BasePinItemActionComment = React.memo((props: IBasePinItemActionCommentProps) => {
   const [state, setState] = React.useState<IBasePinItemActionCommentState>({
     commentList: [],
+    hasMoreComment: true,
   });
 
   React.useEffect(() => {
@@ -79,10 +82,14 @@ const BasePinItemActionComment = React.memo((props: IBasePinItemActionCommentPro
 
       if (resCode === 0) {
         const commentList = resData.commentList;
+        const newCommentList = !lastCommentId
+          ? commentList
+          : state.commentList.concat(commentList);
 
         setState({
           ...state,
-          commentList,
+          commentList: newCommentList,
+          hasMoreComment: newCommentList.length !== 0,
         });
       } else {
         message.error(resMessage);
@@ -226,6 +233,73 @@ const BasePinItemActionComment = React.memo((props: IBasePinItemActionCommentPro
     });
   }
 
+  /**
+   * [处理] - 评论加载更多
+   * @param lastCommentId 截断点
+   * @param callback 回调函数
+   */
+  function handleLoadMoreComment(
+    lastCommentId: string,
+    callback?: () => void,
+  ) {
+    _getCommentListFromServer(lastCommentId);
+
+    callback && callback();
+  }
+
+  /**
+   * [处理] - 回复加载更多
+   * @param commentId 评论id
+   * @param lastReplyId 回复截断点
+   * @param callback 回调处理器
+   */
+  function handleLoadMoreReply(
+    commentId: string,
+    lastReplyId: string,
+    callback?: () => void,
+  ) {
+    const pinId = props.pinInfo._id;
+    const replyPageSize = PIN_REPLY_PAGE_SIZE_SMALL;
+
+    query({
+      method: 'POST',
+      url: '/api/pin/reply/info/list',
+      jsonp: false,
+      data: {
+        pinId,
+        commentId,
+        lastReplyId,
+        replyPageSize,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
+
+      if (resCode === 0) {
+        const replyList = resData.replyList;
+        const newCommentList = state.commentList.map((comment) => {
+          if (comment._id === commentId) {
+            return {
+              ...comment,
+              replys: comment.replys.concat(replyList),
+            };
+          }
+          return comment;
+        });
+
+        setState({
+          ...state,
+          commentList: newCommentList,
+        });
+      } else {
+        message.error(resMessage);
+      }
+
+      callback && callback();
+    });
+  }
+
   return (
     <CommentWrapper>
       <CommentMain>
@@ -238,8 +312,11 @@ const BasePinItemActionComment = React.memo((props: IBasePinItemActionCommentPro
         {/* 沸点评论展示区 */}
         <BasePinItemActionCommentShow
           currentMainUserAvatar={props.AuthRouteReducer.useravatar}
+          hasMoreComment={state.hasMoreComment}
           commentList={state.commentList}
           onSendReply={handleSendReply}
+          onLoadMoreComment={handleLoadMoreComment}
+          onLoadMoreReply={handleLoadMoreReply}
         />
       </CommentMain>
     </CommentWrapper>
