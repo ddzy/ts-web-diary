@@ -46,7 +46,7 @@ export interface IBaseCommonPinInfo {
 export interface IBaseCommonPinCommentInfo {
   _id: string;
   pin_id: IBaseCommonPinInfo;
-  from_user_id: IBaseCommonUserInfo;
+  from: IBaseCommonUserInfo;
   content_plain: string;
   content_image: Array<{
     originUrl: string,
@@ -63,8 +63,8 @@ export interface IBaseCommonPinCommentInfo {
 export interface IBaseCommonPinReplyInfo {
   _id: string;
   comment_id: IBaseCommonPinCommentInfo;
-  from_user_id: IBaseCommonUserInfo;
-  to_user_id: IBaseCommonUserInfo;
+  from: IBaseCommonUserInfo;
+  to: IBaseCommonUserInfo;
   content_plain: string;
   content_image: Array<{
     originUrl: string,

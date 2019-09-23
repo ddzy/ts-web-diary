@@ -39,7 +39,6 @@ export interface IBaseCommentInputProps {
   ) => void;
 };
 interface IBaseCommentInputState {
-  inputEl: HTMLElement;
   html: string;
   image: string[];
 };
@@ -51,13 +50,14 @@ interface IBaseCommentInputState {
 const BaseCommentInput = React.memo<IBaseCommentInputProps>((
   props: IBaseCommentInputProps,
 ): JSX.Element => {
+  const $inputDOMRef = React.useRef<ContentEditable>(null);
+
   const [
     state,
     setState,
   ] = React.useState<IBaseCommentInputState>({
     html: '',
     image: [],
-    inputEl: document.createElement('div'),
   });
 
   /**
@@ -69,16 +69,6 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
         key={i}
       >{emoji}</EmojiItem>
     ));
-  }
-
-  function handleGetRef(el: any): void {
-    if (el && el.htmlEl && !state.inputEl) {
-      setState({
-        ...state,
-        html: state.html,
-        inputEl: el.htmlEl,
-      });
-    }
   }
 
   /**
@@ -94,7 +84,6 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
     setState({
       ...state,
       html,
-      inputEl: state.inputEl,
     });
   }
 
@@ -108,13 +97,20 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
     setState({
       ...state,
       html: `${state.html}${emoji}`,
-      inputEl: state.inputEl,
     });
   }
 
   function handleSend(): void {
+    const oInputRef = $inputDOMRef.current;
+    let oInputDOM = document.createElement('div');
+
+    if (oInputRef) {
+      const oInput = oInputRef.htmlEl as HTMLDivElement;
+      oInputDOM = oInput;
+    }
+
     props.onSend(
-      state.inputEl,
+      oInputDOM,
       state.html,
       state.image,
     );
@@ -142,9 +138,7 @@ const BaseCommentInput = React.memo<IBaseCommentInputProps>((
               <Col span={22}>
                 <InputTopText>
                   <ContentEditable
-                    ref={(el) => {
-                      handleGetRef(el)
-                    }}
+                    ref={$inputDOMRef}
                     style={props.inputStyle ? props.inputStyle : {}}
                     data-placeholder={props.placeHolder}
                     className="yyg-contenteditable"

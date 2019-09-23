@@ -18,7 +18,7 @@ export interface ICommentListItemProps {
   // ? 评论回复判别
   isReply: boolean;
   // ? 单个评论或回复的详细信息
-  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo;
+  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo | any;
 
   // ? 自定义回复模态框样式
   baseInputContainerStyle?: React.CSSProperties;

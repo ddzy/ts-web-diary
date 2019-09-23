@@ -13,12 +13,12 @@ const PinReplySchema = new Schema({
     ref: 'PinComment',
   },
   // 回复人
-  from_user_id: {
+  from: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
   // 被回复人
-  to_user_id: {
+  to: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
