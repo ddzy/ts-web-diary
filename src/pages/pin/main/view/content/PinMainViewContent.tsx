@@ -185,12 +185,7 @@ const PinMainViewContent = React.memo((props: IPinMainViewContentProps) => {
           return (
             <ContentMainItem key={v._id}>
               <BasePinItem
-                pinInfo={{
-                  ...v,
-                  user_is_friend: true,
-                  user_is_current_author: false,
-                  user_is_attention: true,
-                }}
+                pinInfo={v}
               />
             </ContentMainItem>
           );
