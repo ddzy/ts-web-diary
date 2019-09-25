@@ -13,6 +13,7 @@ import {
   ActionMainControlStar,
   ActionMainControlCommentBox,
   ActionMainControlComment,
+  ActionMainControlCommentCount,
   ActionMainControlShareBox,
   ActionMainControlShare,
 } from './style';
@@ -24,11 +25,13 @@ import BasePinItemActionComment from './comment/BasePinItemActionComment';
 
 export interface IBasePinItemActionProps {
   // ? 沸点相关信息
-  pinInfo: Pick<ICommonBasePinItemInfo, '_id'>;
+  pinInfo: Pick<ICommonBasePinItemInfo, '_id' | 'comment_total'>;
 };
 export interface IBasePinItemActionState {
   // ? 是否显示评论区
   isShowCommentBox: boolean;
+  // ? 当前沸点下评论 + 回复的总数
+  commentAndReplyTotal: number;
 }
 
 
@@ -36,7 +39,15 @@ const BasePinItemAction = React.memo((props: IBasePinItemActionProps) => {
 
   const [state, setState] = React.useState<IBasePinItemActionState>({
     isShowCommentBox: false,
+    commentAndReplyTotal: 0,
   });
+
+  React.useEffect(() => {
+    handleSetCommentTotal({
+      type: 'replace',
+      payload: props.pinInfo.comment_total,
+    });
+  }, [props.pinInfo]);
 
 
   /**
@@ -51,6 +62,43 @@ const BasePinItemAction = React.memo((props: IBasePinItemActionProps) => {
       ...state,
       isShowCommentBox: !state.isShowCommentBox,
     });
+  }
+
+  /**
+   * [处理] - 根据子组件的评论数量变化, 设置当前的总数
+   * @param data 评论数量相关信息
+   */
+  function handleSetCommentTotal(
+    data: {
+      type: 'increase' | 'decrease' | 'replace',
+      payload: number,
+    },
+  ) {
+    switch (data.type) {
+      case 'increase': {
+        setState({
+          ...state,
+          commentAndReplyTotal: state.commentAndReplyTotal + data.payload,
+        });
+        break;
+      }
+      case 'decrease': {
+        setState({
+          ...state,
+          commentAndReplyTotal: state.commentAndReplyTotal - data.payload,
+        });
+        break;
+      };
+      case 'replace': {
+        setState({
+          ...state,
+          commentAndReplyTotal: data.payload,
+        });
+      };
+      default: {
+        break;
+      };
+    }
   }
 
   return (
@@ -75,6 +123,15 @@ const BasePinItemAction = React.memo((props: IBasePinItemActionProps) => {
                   >
                     <ActionMainControlComment>
                       <Icon type="message" />
+                      {
+                        state.commentAndReplyTotal
+                          ? (
+                            <ActionMainControlCommentCount>
+                              {state.commentAndReplyTotal}
+                            </ActionMainControlCommentCount>
+                          )
+                          : null
+                      }
                     </ActionMainControlComment>
                   </ActionMainControlCommentBox>
                 </Col>
@@ -92,6 +149,7 @@ const BasePinItemAction = React.memo((props: IBasePinItemActionProps) => {
             {
               state.isShowCommentBox && (<BasePinItemActionComment
                 pinInfo={props.pinInfo}
+                onSetCommentTotal={handleSetCommentTotal}
               />)
             }
           </Col>

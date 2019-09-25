@@ -21,8 +21,7 @@ export const ActionMainControlBox = styled.div`
     cursor: pointer;
 
     &:hover {
-      background-color: #999;
-      color: #fff;
+      background-color: #f3f4f5;
     }
   }
 `;
@@ -37,6 +36,13 @@ export const ActionMainControlCommentBox = styled.div`
   padding: 12px 0;
 `;
 export const ActionMainControlComment = styled.span`
+`;
+export const ActionMainControlCommentCount = styled.span`
+  && {
+    display: inline-block;
+    margin-left: 8px;
+    border: none;
+  }
 `;
 export const ActionMainControlShareBox = styled.div`
   padding: 12px 0;

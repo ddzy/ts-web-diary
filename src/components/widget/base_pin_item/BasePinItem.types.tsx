@@ -32,6 +32,7 @@ export interface ICommonBasePinItemInfo {
   user_is_attention: boolean,
   user_is_current_author: boolean,
   user_is_friend: boolean,
+  comment_total: number,
 };
 
 /**
@@ -53,6 +54,7 @@ export interface ICommonBasePinCommentInfo {
  */
 export interface ICommonBasePinReplyInfo {
   _id: string;
+  pin_id: string;
   comment_id: ICommonBasePinCommentInfo;
   from: ICommonBaseUserInfo;
   to: ICommonBaseUserInfo;
