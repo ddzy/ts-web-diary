@@ -15,6 +15,7 @@ const pinReplyCreateController = new Router();
  */
 pinReplyCreateController.post('/', async (ctx) => {
   interface IRequestParams {
+    pinId: string;
     fromUserId: string;
     toUserId: string;
     commentId: string;
@@ -23,6 +24,7 @@ pinReplyCreateController.post('/', async (ctx) => {
   };
 
   const {
+    pinId,
     fromUserId,
     toUserId,
     commentId,
@@ -33,6 +35,7 @@ pinReplyCreateController.post('/', async (ctx) => {
   try {
     // ? 创建新的沸点回复
     const createdPinReply = await PinReply.create({
+      pin_id: pinId,
       comment_id: commentId,
       from: fromUserId,
       to: toUserId,

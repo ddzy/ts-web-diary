@@ -7,6 +7,10 @@ const { Schema } = mongoose;
  * 沸点回复表
  */
 const PinReplySchema = new Schema({
+  pin_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Pin',
+  },
   // 所属评论
   comment_id: {
     type: Schema.Types.ObjectId,

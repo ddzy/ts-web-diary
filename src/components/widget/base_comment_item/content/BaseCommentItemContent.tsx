@@ -7,17 +7,11 @@ import {
   ContentContainer,
   ContentommentReplyRange,
 } from './style';
-import {
-  ICommonBaseArticleCommentInfo,
-  ICommonBaseArticleCommentReplyInfo,
-} from 'pages/details/Details.types';
+import { ICommentListItemProps } from '../BaseCommentItem';
 
 
 export interface IBaseCommentItemContentProps {
-  // ? 单个评论or回复的详细信息
-  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo;
-  // ? 评论回复判别
-  isReply: boolean;
+  commentInfo: Pick<ICommentListItemProps, 'isReply' | 'commentInfo'>;
 };
 
 
@@ -26,21 +20,21 @@ const BaseCommentItemContent = React.memo<IBaseCommentItemContentProps>((
 ): JSX.Element => {
   return (
     <ContentContainer>
-      <ContentommentReplyRange isReply={props.isReply}>
+      <ContentommentReplyRange isReply={props.commentInfo.isReply}>
         <ContentCommentReplyFrom>
           回复&nbsp;
         </ContentCommentReplyFrom>
         <ContentCommentReplyTo>
           <a>{
-            (props.commentInfo as any).to
-              ? (props.commentInfo as any).to.username
-              : 'undefined'
+            props.commentInfo.commentInfo.toUserInfo
+              ? props.commentInfo.commentInfo.toUserInfo.username
+              : undefined
           }</a>:&nbsp;&nbsp;
         </ContentCommentReplyTo>
       </ContentommentReplyRange>
       <ContentCommentText
         dangerouslySetInnerHTML={{
-          __html: props.commentInfo.content_plain || '',
+          __html: props.commentInfo.commentInfo.plainContent || '',
         }}
       />
     </ContentContainer>

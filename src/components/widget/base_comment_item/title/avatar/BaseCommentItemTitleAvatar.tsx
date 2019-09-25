@@ -14,21 +14,17 @@ import {
   AvatarMain,
 } from './style';
 import { query } from 'services/request';
-import {
-  ICommonBaseArticleCommentInfo,
-  ICommonBaseArticleCommentReplyInfo,
-} from 'pages/details/Details.types';
+// import {
+//   ICommonBaseArticleCommentInfo,
+//   ICommonBaseArticleCommentReplyInfo,
+// } from 'pages/details/Details.types';
 import BaseCommentItemTitleAvatarTitle from './title/BaseCommentItemTitleAvatarTitle';
 import BaseCommentItemTitleAvatarContent from './content/BaseCommentItemTitleAvatarContent';
+import { ICommentListItemProps } from '../../BaseCommentItem';
 
 
 export interface IBaseCommentItemTitleAvatarProps extends RouteComponentProps {
-  // ? 是否允许头像框hover
-  isAllowAvatarHover?: boolean;
-  // ? 判断是评论还是回复
-  isReply: boolean;
-  // ? 单个评论或回复的详细信息
-  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo;
+  commentInfo: Pick<ICommentListItemProps, 'isAllowAvatarHover' | 'isReply' | 'commentInfo'>;
 };
 export interface IBaseCommentItemTitleAvatarState {
   // ? 获取信息时的loading状态
@@ -115,8 +111,8 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
       return props.history.push('/login');
     }
 
-    const { isReply } = props;
-    const { _id } = props.commentInfo;
+    const { isReply } = props.commentInfo;
+    const { _id } = props.commentInfo.commentInfo;
 
     if (visible) {
       setState({
@@ -148,7 +144,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
     <AvatarWrapper>
       <AvatarMain>
         {
-          props.isAllowAvatarHover
+          props.commentInfo.isAllowAvatarHover
             ? (
               <Popover
                 mouseEnterDelay={.7}
@@ -158,7 +154,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
                 onVisibleChange={handleCommentAvatarHover}
               >
                 <Avatar
-                  src={props.commentInfo.from.useravatar}
+                  src={props.commentInfo.commentInfo.fromUserInfo.useravatar}
                   icon="user"
                   size="default"
                   shape="circle"
@@ -168,7 +164,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
             )
             : (
               <Avatar
-                src={props.commentInfo.from.useravatar}
+                src={props.commentInfo.commentInfo.fromUserInfo.useravatar}
                 icon="user"
                 size="default"
                 shape="circle"

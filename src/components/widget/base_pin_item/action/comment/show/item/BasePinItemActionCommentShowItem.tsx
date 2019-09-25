@@ -26,7 +26,7 @@ import {
 export interface IBasePinItemActionCommentItemProps {
   currentMainUserAvatar: string;
 
-  commentInfo: ICommonBasePinCommentInfo;
+  commentInfo: ICommonBasePinCommentInfo | any;
 
   onSendReply: (
     inputEl: HTMLElement,
@@ -73,7 +73,22 @@ const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommen
                 }}
                 currentMainUserAvatar={props.currentMainUserAvatar}
                 isReply={true}
-                commentInfo={reply}
+                commentInfo={{
+                  _id: reply._id,
+                  fromUserInfo: {
+                    _id: reply.from._id,
+                    username: reply.from.username,
+                    useravatar: reply.from.useravatar,
+                  },
+                  toUserInfo: {
+                    _id: reply.to._id,
+                    username: reply.to.username,
+                    useravatar: reply.to.useravatar,
+                  },
+                  createTime: reply.create_time,
+                  plainContent: reply.content_plain,
+                  imageContent: reply.content_image,
+                }}
                 onSend={handleSendReply}
               />
             </ItemMainReplyItem>
@@ -153,8 +168,17 @@ const BasePinItemActionCommentItem = React.memo((props: IBasePinItemActionCommen
               backgroundColor: '#fff',
             }}
             isReply={false}
-            commentInfo={props.commentInfo}
-            {...props}
+            commentInfo={{
+              _id: props.commentInfo._id,
+              fromUserInfo: {
+                _id: props.commentInfo.from._id,
+                username: props.commentInfo.from.username,
+                useravatar: props.commentInfo.from.useravatar,
+              },
+              plainContent: props.commentInfo.content_plain,
+              imageContent: props.commentInfo.content_image,
+              createTime: props.commentInfo.create_time,
+            }}
             onSend={handleSendReply}
             currentMainUserAvatar={props.currentMainUserAvatar}
           />

@@ -63,10 +63,11 @@ export const ContentMainImageList = styled.ul`
   flex-wrap: wrap;
 `;
 export const ContentMainImageItem = styled.li`
+  overflow: hidden;
   max-width: 140px;
   max-height: 160px;
   margin-top: 4px;
-  margin-right: 4px
+  margin-right: 4px;
 `;
 export const ContentMainImage = styled.img`
   max-width: 100%;
