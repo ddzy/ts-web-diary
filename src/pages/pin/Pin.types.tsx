@@ -62,6 +62,7 @@ export interface IBaseCommonPinCommentInfo {
  */
 export interface IBaseCommonPinReplyInfo {
   _id: string;
+  pin_id: string;
   comment_id: IBaseCommonPinCommentInfo;
   from: IBaseCommonUserInfo;
   to: IBaseCommonUserInfo;

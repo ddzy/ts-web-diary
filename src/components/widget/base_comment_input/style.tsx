@@ -10,7 +10,7 @@ export interface ICommentInputMainProps {
 // ** Global Style **
 export const GlobalStyleSet = createGlobalStyle`
   .yyg-contenteditable {
-    height: 100%;
+    min-height: 35px;
     padding: 0.5rem 0.6667rem 0.3889rem;
     background-color: #f8f9f9;
     border: 1px solid #ccc;

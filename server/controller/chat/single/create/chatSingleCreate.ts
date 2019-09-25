@@ -295,6 +295,7 @@ export function handleSingleChat(
 
     // socket同步更新单个聊天消息
     io.emit('receiveChatSingleMessage', foundChatSingleMessage);
+
     // socket同步更新聊天历史列表
     io.emit('receiveChatMemoryUpdate', {
       chat_id: foundChatSingleMessage.chat_id,

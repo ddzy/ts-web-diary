@@ -37,6 +37,7 @@ export interface IPinMainViewContentState {
     user_is_friend: boolean,
     user_is_current_author: boolean,
     user_is_attention: boolean,
+    comment_total: number,
   }>;
   // ? 是否显示首次加载沸点列表的loading
   isShowFirstlyLoading: boolean;
@@ -185,12 +186,7 @@ const PinMainViewContent = React.memo((props: IPinMainViewContentProps) => {
           return (
             <ContentMainItem key={v._id}>
               <BasePinItem
-                pinInfo={{
-                  ...v,
-                  user_is_friend: true,
-                  user_is_current_author: false,
-                  user_is_attention: true,
-                }}
+                pinInfo={v}
               />
             </ContentMainItem>
           );

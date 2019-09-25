@@ -20,7 +20,8 @@ import {
 } from '../BaseCommentItem';
 
 
-export interface IBaseCommentItemActionProps extends ICommentListItemProps {
+export interface IBaseCommentItemActionProps {
+  commentInfo: Pick<ICommentListItemProps, 'commentInfo'>;
   // ** 处理切换replyBox **
   onToggleReplyBox: (
     e: React.MouseEvent<HTMLElement>,
@@ -36,13 +37,13 @@ const BaseCommentItemAction = React.memo<IBaseCommentItemActionProps>((
       <Row>
         <Col span={12}>
           <ActionTimeIconBox>
-            {formatTime(props.commentInfo.create_time)}
+            {formatTime(props.commentInfo.commentInfo.createTime)}
           </ActionTimeIconBox>
         </Col>
         <Col span={12}>
           <ActionRightBox>
             <ActionLikeIconBox
-              data-id={props.commentInfo._id}
+              data-id={props.commentInfo.commentInfo._id}
             >
               <Icon type="like-o" />
               <span
@@ -55,7 +56,7 @@ const BaseCommentItemAction = React.memo<IBaseCommentItemActionProps>((
             </ActionLikeIconBox>
 
             <ActionReplyIconBox
-              data-id={props.commentInfo._id}
+              data-id={props.commentInfo.commentInfo._id}
               onClick={props.onToggleReplyBox}
             >
               <Icon

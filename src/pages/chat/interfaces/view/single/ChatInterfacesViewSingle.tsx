@@ -19,7 +19,7 @@ import ChatInterfacesViewSingleContent from './content/ChatInterfacesViewSingleC
 import ChatInterfacesViewSingleAction from './action/ChatInterfacesViewSingleAction';
 import { query } from 'services/request';
 import {
-  PAGE_SIZE,
+  CHAT_MESSAGE_PAGE_SIZSE_LARGE,
 } from 'constants/constants';
 import {
   IBaseCommonChatMessgaeType,
@@ -109,6 +109,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
     });
   }, [props.match.params.id]);
 
+
   /**
    * [后台] - 获取单聊信息
    */
@@ -141,7 +142,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
             userId,
             chatId,
             chatType,
-            pageSize: PAGE_SIZE,
+            pageSize: CHAT_MESSAGE_PAGE_SIZSE_LARGE,
             page: 1,
           },
         }).then((res) => {
@@ -167,8 +168,8 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
    * [更新] - 单聊信息
    */
   function _setSingleChatMessageInfo() {
-    // ? 先移除所有的监听器, 避免出现指数增长的情况
-    chatIOClient.removeAllListeners();
+    // 先移除所有的监听器, 避免出现指数增长的情况
+    chatIOClient.removeEventListener('receiveChatSingleMessage');
 
     // * socket处理接收聊天信息
     // ? 不能在componentDidMount时监听, 只会监听一个聊天会话
@@ -277,7 +278,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
         data: {
           userId,
           chatId,
-          pageSize: PAGE_SIZE,
+          pageSize: CHAT_MESSAGE_PAGE_SIZSE_LARGE,
           page,
         },
       }).then((res) => {

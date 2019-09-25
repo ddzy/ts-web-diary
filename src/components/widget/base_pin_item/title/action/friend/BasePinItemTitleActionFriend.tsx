@@ -2,6 +2,10 @@ import * as React from 'react';
 import {
   Button,
 } from 'antd';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   FriendWrapper,
@@ -12,7 +16,7 @@ import {
 } from 'components/widget/base_pin_item/BasePinItem.types';
 
 
-export interface IBasePinItemTitleActionFriendProps {
+export interface IBasePinItemTitleActionFriendProps extends RouteComponentProps {
   // ? 沸点相关信息
   pinInfo: Pick<ICommonBasePinItemInfo, 'user_is_attention' | 'user_is_current_author' | 'user_is_friend'>;
 };
@@ -20,6 +24,21 @@ export interface IBasePinItemTitleActionFriendState { }
 
 
 const BasePinItemTitleActionFriend = React.memo((props: IBasePinItemTitleActionFriendProps) => {
+  /**
+   * [处理] - 开始聊天
+   */
+  function handleChat() {
+    props.history.push('/chat');
+  }
+
+  /**
+   * [处理] - 加好友
+   */
+  function handleMakeFriend() {
+    // TODO
+    // 待做...
+  }
+
   return (
     <FriendWrapper>
       <FriendMain>
@@ -34,6 +53,7 @@ const BasePinItemTitleActionFriend = React.memo((props: IBasePinItemTitleActionF
               ? true
               : false
           }
+          onClick={props.pinInfo.user_is_friend ? handleChat : handleMakeFriend}
         >
           {
             props.pinInfo.user_is_friend ? '去聊天' : '加好友'
@@ -44,4 +64,4 @@ const BasePinItemTitleActionFriend = React.memo((props: IBasePinItemTitleActionF
   );
 });
 
-export default BasePinItemTitleActionFriend;
+export default withRouter(BasePinItemTitleActionFriend);

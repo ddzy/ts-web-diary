@@ -35,6 +35,13 @@ export interface IBasePinItemActionCommentProps extends RouteComponentProps, Con
   };
   // ? 沸点相关信息
   pinInfo: Pick<ICommonBasePinItemInfo, '_id'>;
+
+  onSetCommentTotal: (
+    data: {
+      type: 'increase' | 'decrease' | 'replace',
+      payload: number,
+    },
+  ) => void;
 };
 export interface IBasePinItemActionCommentState {
   // ? 沸点评论列表
@@ -153,6 +160,12 @@ const BasePinItemActionComment = React.memo((props: IBasePinItemActionCommentPro
           ],
         });
 
+        // 更新父级的评论回复总数
+        props.onSetCommentTotal({
+          type: 'increase',
+          payload: 1,
+        })
+
         message.success('评论发送成功!');
       } else {
         message.error(resMessage);
@@ -191,12 +204,15 @@ const BasePinItemActionComment = React.memo((props: IBasePinItemActionCommentPro
       return message.info('回复内容不能为空!');
     }
 
+    const pinId = props.pinInfo._id;
+
     query({
       method: 'POST',
       url: '/api/pin/reply/create',
       jsonp: false,
       data: {
         ...data,
+        pinId,
         fromUserId: userId,
         toUserId: data.to,
       },
@@ -224,6 +240,12 @@ const BasePinItemActionComment = React.memo((props: IBasePinItemActionCommentPro
         setState({
           ...state,
           commentList: newCommentList,
+        });
+
+        // 更新父级的评论回复总数
+        props.onSetCommentTotal({
+          type: 'increase',
+          payload: 1,
         });
 
         message.success('回复发表成功!');
