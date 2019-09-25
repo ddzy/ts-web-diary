@@ -4,24 +4,11 @@ import {
   ReplyContainer,
 } from './style';
 import BaseCommentInput from '../../base_comment_input/BaseCommentInput';
-import {
-  ICommonBaseArticleCommentInfo,
-  ICommonBaseArticleCommentReplyInfo,
-} from 'pages/details/Details.types';
+import { ICommentListItemProps } from '../BaseCommentItem';
 
 
 export interface IBaseCommentItemReplyProps {
-  // ? 当前主用户 回复输入框统一头像
-  currentMainUserAvatar: string;
-
-  // ? 评论回复判别
-  isReply: boolean;
-  // ? 单个评论或回复的详细信息
-  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo;
-
-  // ? 自定义回复模态框样式
-  baseInputContainerStyle?: React.CSSProperties;
-  baseInputStyle?: React.CSSProperties;
+  commentInfo: Pick<ICommentListItemProps, 'currentMainUserAvatar' | 'isReply' | 'commentInfo' | 'baseInputContainerStyle' | 'baseInputStyle'>;
 
   onSend: (
     inputEl: HTMLElement,
@@ -37,17 +24,17 @@ const BaseCommentItemReply = React.memo<IBaseCommentItemReplyProps>((
   return (
     <ReplyContainer
       className="item-reply-box"
-      data-id={props.commentInfo._id}
+      data-id={props.commentInfo.commentInfo._id}
     >
       <BaseCommentInput
-        containerStyle={props.baseInputContainerStyle ? props.baseInputContainerStyle : {}}
-        inputStyle={props.baseInputStyle ? props.baseInputStyle : {}}
+        containerStyle={props.commentInfo.baseInputContainerStyle ? props.commentInfo.baseInputContainerStyle : {}}
+        inputStyle={props.commentInfo.baseInputStyle ? props.commentInfo.baseInputStyle : {}}
         placeHolder={`回复 ${
-          props.commentInfo.from
-            ? props.commentInfo.from.username
+          props.commentInfo.commentInfo.fromUserInfo
+            ? props.commentInfo.commentInfo.fromUserInfo.username
             : 'undefined'
           }`}
-        useravatar={props.currentMainUserAvatar}
+        useravatar={props.commentInfo.currentMainUserAvatar}
         avatarSize={'default'}
         onSend={props.onSend}
       />

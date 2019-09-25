@@ -43,7 +43,7 @@ export interface ICommonBasePinCommentInfo {
   from: ICommonBaseUserInfo;
   content_plain: string;
   content_image: string[];
-  replys: ICommonBasePinReplyInfo[];
+  replys: any[];
   create_time: number;
   update_time: number;
 };

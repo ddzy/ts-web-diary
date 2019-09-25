@@ -80,8 +80,22 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
                 }}
                 currentMainUserAvatar={props.currentMainUserAvatar}
                 isReply={true}
-                commentInfo={reply as any}
-                {...props}
+                commentInfo={{
+                  _id: reply._id,
+                  fromUserInfo: {
+                    _id: reply.from._id,
+                    username: reply.from.username,
+                    useravatar: reply.from.useravatar,
+                  },
+                  toUserInfo: {
+                    _id: reply.to._id,
+                    username: reply.to.username,
+                    useravatar: reply.to.useravatar,
+                  },
+                  createTime: reply.create_time,
+                  plainContent: reply.content_plain,
+                  imageContent: reply.content_image,
+                }}
                 onSend={handleSendReply}
               />
             </ReplyListItem>
@@ -163,8 +177,17 @@ const DetailsMainCommentsShowItem = React.memo<IDetailsMainCommentShowItemProps>
             backgroundColor: '#fff',
           }}
           isReply={false}
-          commentInfo={props.singleCommentInfo}
-          {...props}
+          commentInfo={{
+            _id: props.singleCommentInfo._id,
+            fromUserInfo: {
+              _id: props.singleCommentInfo.from._id,
+              username: props.singleCommentInfo.from.username,
+              useravatar: props.singleCommentInfo.from.useravatar,
+            },
+            plainContent: props.singleCommentInfo.content_plain,
+            imageContent: props.singleCommentInfo.content_image,
+            createTime: props.singleCommentInfo.create_time,
+          }}
           onSend={handleSendReply}
           currentMainUserAvatar={props.currentMainUserAvatar}
         />

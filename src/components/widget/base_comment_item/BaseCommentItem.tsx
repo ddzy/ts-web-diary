@@ -5,8 +5,6 @@ import BaseCommentItemContent from './content/BaseCommentItemContent';
 import BaseCommentItemAction from './action/BaseCommentItemAction';
 import BaseCommentItemReply from './reply/BaseCommentItemReply';
 import {
-  ICommonBaseArticleCommentInfo,
-  ICommonBaseArticleCommentReplyInfo,
   ICommonBaseSendReplyParams,
 } from 'pages/details/Details.types';
 
@@ -21,7 +19,22 @@ export interface ICommentListItemProps {
   // ? 评论回复判别
   isReply: boolean;
   // ? 单个评论或回复的详细信息
-  commentInfo: ICommonBaseArticleCommentReplyInfo | ICommonBaseArticleCommentInfo | any;
+  commentInfo: {
+    _id: string,
+    fromUserInfo: {
+      _id: string,
+      username: string,
+      useravatar: string,
+    };
+    toUserInfo?: {
+      _id: string,
+      username: string,
+      useravatar: string,
+    };
+    createTime: number;
+    plainContent: string;
+    imageContent: string[];
+  };
 
   // ? 自定义回复模态框样式
   baseInputContainerStyle?: React.CSSProperties;
@@ -32,7 +45,7 @@ export interface ICommentListItemProps {
     value: Partial<ICommonBaseSendReplyParams>,
   ) => void;
 };
-interface ICommentListItemState {
+export interface ICommentListItemState {
   replyBoxId: string;
   replyBtn: HTMLElement,
 
@@ -63,6 +76,7 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
     );
   }, [state]);
 
+
   function handleSend(
     e: HTMLElement,
     plainContent: string,
@@ -71,7 +85,7 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
     props.onSend(
       e,
       {
-        to: props.commentInfo.from._id,
+        to: props.commentInfo.fromUserInfo._id,
         plainContent,
         imageContent,
       },
@@ -99,17 +113,17 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
     <React.Fragment>
       {/* 用户信息框 */}
       <BaseCommentItemTitle
-        {...props}
+        commentInfo={props}
       />
 
       {/* 内容框 */}
       <BaseCommentItemContent
-        {...props}
+        commentInfo={props}
       />
 
       {/* 控制栏 */}
       <BaseCommentItemAction
-        {...props}
+        commentInfo={props}
         onToggleReplyBox={handleToggleReplyBox}
       />
 
@@ -117,8 +131,7 @@ export const BaseCommentItem = React.memo<ICommentListItemProps>((
       {
         state.showReplyBox && (
           <BaseCommentItemReply
-            {...props}
-            {...state}
+            commentInfo={props}
             onSend={handleSend}
           />
         )
