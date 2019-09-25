@@ -119,6 +119,10 @@ export const PIN_COMMENT_PAGE_SIZE_SMALL = 3;
  */
 export const PIN_REPLY_PAGE_SIZE_SMALL = 2;
 
+/**
+ * 聊天消息的每页条数 - 大
+ */
+export const CHAT_MESSAGE_PAGE_SIZSE_LARGE = 7;
 
 /**
  * socket端口信息

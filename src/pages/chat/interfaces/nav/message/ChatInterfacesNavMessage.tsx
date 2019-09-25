@@ -29,11 +29,10 @@ import {
 import { chatSingleIOClient } from 'services/websocket';
 
 
-const chatSocket = chatSingleIOClient;
-
-
 export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };
 export interface IChatInterfacesNavMessageState {
+  // ? 单聊相关的Socket
+  chatIOClient: SocketIOClient.Socket;
   // ? 聊天历史列表
   chatMemoryList: IBaseCommonChatMemoryInfo[];
   // ? loading状态
@@ -44,6 +43,7 @@ export interface IChatInterfacesNavMessageState {
 
 const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessageProps) => {
   const [state, setState] = React.useState<IChatInterfacesNavMessageState>({
+    chatIOClient: chatSingleIOClient,
     chatMemoryList: [],
     loading: false,
   });
@@ -62,6 +62,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     // 获取聊天历史列表
     _getChatMemoryList();
   }, []);
+
 
   /**
    * [后台] - 获取聊天历史列表
@@ -101,10 +102,12 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
    */
   function _setChatMemoryList() {
     // ? 先移除所有的监听器, 避免出现指数增长的情况
-    chatSocket.removeAllListeners();
+    state.chatIOClient.removeEventListener('receiveChatMemoryCreate');
+    state.chatIOClient.removeEventListener('receiveChatMemoryUpdate');
+    state.chatIOClient.removeEventListener('receiveResetChatMemoryItemUnreadMessageTotal');
 
     // * socket监听实时创建的新的单聊会话
-    chatSocket.on('receiveChatMemoryCreate', (
+    state.chatIOClient.on('receiveChatMemoryCreate', (
       data: {
         from_user_id: string,
         to_user_id: string,
@@ -129,7 +132,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
 
     // * 接收聊天信息
     // ? 不能在componentDidMount时监听, 那样做只会监听一个聊天会话
-    chatSocket.on('receiveChatMemoryUpdate', (
+    state.chatIOClient.on('receiveChatMemoryUpdate', (
       newChatMemoryItemInfo: {
         chat_id: string;
         last_message_member_name: string;
@@ -162,7 +165,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     });
 
     // * 重置单个单聊的未读消息数量
-    chatSocket.on('receiveResetChatMemoryItemUnreadMessageTotal', (memoryInfo: {
+    state.chatIOClient.on('receiveResetChatMemoryItemUnreadMessageTotal', (memoryInfo: {
       unread_message_total: number;
       chat_id: string;
       user_id: string;
