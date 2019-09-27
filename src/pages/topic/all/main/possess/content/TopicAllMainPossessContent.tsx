@@ -32,7 +32,7 @@ const TopicAllPossessContent = React.memo((props: ITopicAllPossessContentProps) 
     const topicList = props.allTopicList;
 
     return topicList.length === 0
-      ? (<Empty description="你还没有关注任何话题哦~" />)
+      ? (<Empty description="暂时没有话题..." />)
       : (
         topicList.map((v) => {
           return (
