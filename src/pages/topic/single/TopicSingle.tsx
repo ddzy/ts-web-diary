@@ -1,5 +1,9 @@
 import * as React from 'react';
 import {
+  Row,
+  Col,
+} from 'antd';
+import {
   withRouter,
   RouteComponentProps,
 } from 'react-router-dom';
@@ -8,31 +12,28 @@ import {
   SingleWrapper,
   SingleMain,
 } from './style';
+import TopicSingleMain from './main/TopicSingleMain';
+import TopicSingleAside from './aside/TopicSingleAside';
 
 
-export interface ITopicSingleProps extends RouteComponentProps<{
-  id: string,
-}> { };
+export interface ITopicSingleProps extends RouteComponentProps { };
 export interface ITopicSingleState { };
 
 
 const TopicSingle = React.memo((props: ITopicSingleProps) => {
-  React.useEffect(() => {
-    _getTopicInfoFromServer();
-  }, [props.match.params.id]);
-
-
-  /**
-   * [获取] - 后台获取单个话题的详细信息
-   */
-  function _getTopicInfoFromServer() {
-    console.log('get single topic info from server');
-  }
-
   return (
     <SingleWrapper>
       <SingleMain>
-        单个话题详情页
+        <Row gutter={40}>
+          <Col span={16}>
+            {/* 主内容区 */}
+            <TopicSingleMain />
+          </Col>
+          <Col span={8}>
+            {/* 侧边栏区 */}
+            <TopicSingleAside />
+          </Col>
+        </Row>
       </SingleMain>
     </SingleWrapper>
   );
