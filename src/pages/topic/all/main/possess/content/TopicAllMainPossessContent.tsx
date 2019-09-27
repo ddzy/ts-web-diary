@@ -1,5 +1,9 @@
 import * as React from 'react';
 import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
+import {
   Empty,
   Divider,
   Button,
@@ -17,7 +21,7 @@ import {
 import BaseGoodsDisplay from 'components/widget/base_goods_display/BaseGoodsDisplay';
 
 
-export interface ITopicAllPossessContentProps {
+export interface ITopicAllPossessContentProps extends RouteComponentProps {
   // ? 我关注的话题列表
   allTopicList: IBaseCommonTopicInfo[];
 };
@@ -38,6 +42,7 @@ const TopicAllPossessContent = React.memo((props: ITopicAllPossessContentProps) 
           return (
             <ContentMainItem
               key={v._id}
+              onClick={() => handleTopicItemClick(v._id)}
             >
               <BaseGoodsDisplay
                 coverImg={v.cover_img}
@@ -83,6 +88,16 @@ const TopicAllPossessContent = React.memo((props: ITopicAllPossessContentProps) 
       )
   }
 
+  /**
+   * [处理] - 话题列表项点击
+   * @param topicId 话题id
+   */
+  function handleTopicItemClick(
+    topicId: string,
+  ) {
+    props.history.push(`/topic/${topicId}`);
+  }
+
   return (
     <ContentWrapper>
       <ContentMain>
@@ -95,4 +110,4 @@ const TopicAllPossessContent = React.memo((props: ITopicAllPossessContentProps) 
 });
 
 
-export default TopicAllPossessContent;
+export default withRouter(TopicAllPossessContent);
