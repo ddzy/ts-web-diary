@@ -64,6 +64,10 @@ const LoadablePin = Loadable({
   loader: () => import('pages/pin/Pin'),
   loading: () => null,
 });
+const LoadableTopic = Loadable({
+  loader: () => import('pages/topic/Topic'),
+  loading: () => null,
+});
 
 
 export interface IAdminProps extends RouteComponentProps {
@@ -210,6 +214,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
             <Route path="/publish" component={LoadablePublish} />
             <Route path="/settings" component={LoadableSettings} />
             <Route path="/pin" component={LoadablePin} />
+            <Route path="/topic" component={LoadableTopic} />
             <Route path="/user/:id" component={LoadableUser} />
             <Route exact path="/collection/:id" component={LoadableCollection} />
             <Route exact path="/details/:id" component={LoadableDetails} />
