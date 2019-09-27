@@ -42,11 +42,13 @@ const UserSchema: mongoose.Schema = new Schema({
   attention: {
     users: [{
       type: Schema.Types.ObjectId,
-      ref: 'AttentionUsers',
+      ref: 'User',
+      default: [],
     }],
     topics: [{
       type: Schema.Types.ObjectId,
-      ref: 'AttentionTopics',
+      ref: 'Topic',
+      default: [],
     }],
   },
   // ? 关注我的
