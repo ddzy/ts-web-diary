@@ -4,6 +4,8 @@ import {
   AsideWrapper,
   AsideMain,
 } from './style';
+import TopicSingleAsideInfo from './info/TopicSingleAsideInfo';
+import TopicSingleAsideActor from './actor/TopicSingleAsideActor';
 
 
 export interface ITopicSingleAsideProps { };
@@ -14,7 +16,11 @@ const TopicSingleAside = React.memo((props: ITopicSingleAsideProps) => {
   return (
     <AsideWrapper>
       <AsideMain>
-        右侧内容框
+        {/* 话题信息区 */}
+        <TopicSingleAsideInfo />
+
+        {/* 话题参与者区 */}
+        <TopicSingleAsideActor />
       </AsideMain>
     </AsideWrapper>
   );

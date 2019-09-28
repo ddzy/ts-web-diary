@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const ContentWrapper = styled.div``;
 export const ContentMain = styled.div`
-  margin-top: 20px;
+  margin-top: 12px;
 `;
 
 export const ContentMainList = styled.ul``;
