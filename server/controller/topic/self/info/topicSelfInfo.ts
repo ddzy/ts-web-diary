@@ -125,4 +125,74 @@ topicSelfInfoController.get('/list/attention_and_all', async (ctx) => {
 });
 
 
+/**
+ * [获取] - 单个话题的详细信息
+ */
+topicSelfInfoController.get('/', async (ctx) => {
+  interface IRequestParams {
+    userId: string;
+    topicId: string;
+  };
+
+  const {
+    userId,
+    topicId,
+  } = ctx.request.query as IRequestParams;
+
+  try {
+    // ? 查询话题信息
+    const foundTopicInfo = await Topic
+      .findById(topicId, { ...FILTER_SENSITIVE })
+      .populate([
+        {
+          path: 'followers',
+          options: {
+            select: {
+              ...FILTER_SENSITIVE,
+            },
+          },
+        },
+        {
+          path: 'actors',
+          options: {
+            select: {
+              ...FILTER_SENSITIVE,
+            },
+          },
+        },
+      ])
+      .lean();
+
+    // ? 获取话题的关注者列表
+    const foundTopicFollowers = await foundTopicInfo.followers;
+
+    // ? 计算该用户是否关注了该话题
+    const computeIsUserAttentionTopic = await foundTopicFollowers.some((v: any) => {
+      const oUserId = v._id;
+
+      return oUserId.equals(userId);
+    });
+
+    ctx.body = {
+      code: 0,
+      message: 'Success!',
+      data: {
+        topicInfo: {
+          ...foundTopicInfo,
+          is_attention: computeIsUserAttentionTopic,
+        },
+      },
+    };
+  } catch (error) {
+    ctx.body = {
+      code: -1,
+      message: '后端出错, 请稍后再试吧~',
+      data: {
+        errorInfo: error,
+      },
+    };
+  }
+});
+
+
 export default topicSelfInfoController;

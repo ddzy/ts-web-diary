@@ -60,12 +60,15 @@ pinSelfCreateController.post('/', async (ctx) => {
       },
     );
 
-    // ? 更新所属话题的沸点列表
+    // ? 更新所属话题的沸点列表 & 参与者列表
     await Topic.findByIdAndUpdate(
       pinInfo.topic,
       {
         '$push': {
           pins: createdPin,
+        },
+        '$addToSet': {
+          actors: userId,
         },
       },
     );

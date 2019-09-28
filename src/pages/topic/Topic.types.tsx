@@ -25,6 +25,7 @@ export interface IStaticTopicInfo {
   description: string;
   pins: string[];
   followers: string[];
+  actors: IStaticUserInfo[];
   create_time: number;
   update_time: number;
 };

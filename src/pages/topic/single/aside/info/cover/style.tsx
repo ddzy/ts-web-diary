@@ -11,7 +11,9 @@ export const CoverMain = styled.div`
 
 `;
 
-export const CoverMainImageBox = styled.div``;
+export const CoverMainImageBox = styled.div`
+  overflow: hidden;
+`;
 export const CoverMainImage = styled('div')<ICoverMainImageProps>`
   height: 110px;
   background-image: url(${(props) => props.coverImgUrl});

@@ -31,6 +31,12 @@ const TopicSchema = new Schema({
     ref: 'User',
     default: [],
   }],
+  // 在该话题下发表过沸点的用户
+  actors: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    default: [],
+  }],
   // 话题创建时间
   create_time: {
     type: Number,

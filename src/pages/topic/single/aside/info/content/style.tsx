@@ -30,5 +30,6 @@ export const ContentMainAttentionBox = styled.div`
 export const ContentMainDescriptionBox = styled.div`
   margin-top: 16px;
   text-align: center;
+  color: #666;
 `;
 export const ContentMainDescription = styled.p``;

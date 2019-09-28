@@ -12,9 +12,15 @@ import {
   TitleMainTip,
   TitleMainLinkBox,
 } from './style';
+import { IStaticTopicInfo } from 'pages/topic/Topic.types';
 
 
-export interface ITopicSingleAsideActorTitleProps { };
+export interface ITopicSingleAsideActorTitleProps {
+  // ? 单个话题的详细信息
+  topicInfo: IStaticTopicInfo & {
+    is_attention: boolean;
+  };
+};
 export interface ITopicSingleAsideActorTitleState { };
 
 
@@ -27,7 +33,7 @@ const TopicSingleAsideActorTitle = React.memo((props: ITopicSingleAsideActorTitl
             {/* 左侧提示区 */}
             <TitleMainTipBox>
               <TitleMainTip>
-                共有 7852 人参加
+                共有 {props.topicInfo.actors.length} 人参加
               </TitleMainTip>
             </TitleMainTipBox>
           </Col>

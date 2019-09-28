@@ -14,9 +14,15 @@ import {
   ContentMainDescriptionBox,
   ContentMainDescription,
 } from './style';
+import { IStaticTopicInfo } from 'pages/topic/Topic.types';
 
 
-export interface ITopicSingleAsideInfoContentProps { };
+export interface ITopicSingleAsideInfoContentProps {
+  // ? 单个话题的详细信息
+  topicInfo: IStaticTopicInfo & {
+    is_attention: boolean;
+  };
+};
 export interface ITopicSingleAsideInfoContentState { };
 
 
@@ -29,14 +35,14 @@ const TopicSingleAsideInfoContent = React.memo((props: ITopicSingleAsideInfoCont
           <Avatar
             size={60}
             shape="square"
-            src={''}
+            src={props.topicInfo.cover_img}
           />
         </ContentMainAvatarBox>
 
         {/* 名称区 */}
         <ContentMainNameBox>
           <ContentMainName>
-            {'上班摸鱼'}
+            {props.topicInfo.name}
           </ContentMainName>
         </ContentMainNameBox>
 
@@ -44,13 +50,17 @@ const TopicSingleAsideInfoContent = React.memo((props: ITopicSingleAsideInfoCont
         <ContentMainAttentionBox>
           <Button
             type="primary"
-          >关注</Button>
+          >
+            {
+              props.topicInfo.is_attention ? '取消关注' : '关注'
+            }
+          </Button>
         </ContentMainAttentionBox>
 
         {/* 介绍区 */}
         <ContentMainDescriptionBox>
           <ContentMainDescription>
-            来分享下你上下班看到的好东西吧~
+            {props.topicInfo.description}
           </ContentMainDescription>
         </ContentMainDescriptionBox>
       </ContentMain>
