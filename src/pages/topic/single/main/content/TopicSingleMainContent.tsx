@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Empty,
+  Spin,
 } from 'antd';
 
 import {
@@ -18,6 +19,8 @@ import BasePinItem from 'components/widget/base_pin_item/BasePinItem';
 export interface ITopicSingleMainContentProps {
   // ? 沸点列表
   pinList: IBaseCommonPinInfo[],
+  // ? 是否显示首屏数据加载时的loading状态
+  isShowFirstlyLoading: boolean;
 };
 export interface ITopicSingleMainContentState { };
 
@@ -47,13 +50,15 @@ const TopicSingleMainContent = React.memo((props: ITopicSingleMainContentProps) 
   }
 
   return (
-    <ContentWrapper>
-      <ContentMain>
-        <ContentMainList>
-          {_initPinList()}
-        </ContentMainList>
-      </ContentMain>
-    </ContentWrapper>
+    <Spin spinning={props.isShowFirstlyLoading}>
+      <ContentWrapper>
+        <ContentMain>
+          <ContentMainList>
+            {_initPinList()}
+          </ContentMainList>
+        </ContentMain>
+      </ContentWrapper>
+    </Spin>
   );
 });
 

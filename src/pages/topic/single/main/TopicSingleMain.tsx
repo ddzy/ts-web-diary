@@ -27,12 +27,15 @@ export interface ITopicSingleMainProps extends RouteComponentProps<{
 export interface ITopicSingleMainState {
   // ? 沸点列表
   pinList: IBaseCommonPinInfo[],
+  // ? 是否显示首次加载数据的 loading 状态
+  isShowFirstlyLoading: boolean;
 };
 
 
 const TopicSingleMain = React.memo((props: ITopicSingleMainProps) => {
   const [state, setState] = React.useState<ITopicSingleMainState>({
     pinList: [],
+    isShowFirstlyLoading: false,
   });
 
   React.useEffect(() => {
@@ -47,6 +50,11 @@ const TopicSingleMain = React.memo((props: ITopicSingleMainProps) => {
   function _getPinListFromServer(
     page: number,
   ) {
+    setState({
+      ...state,
+      isShowFirstlyLoading: true,
+    });
+
     /* 用户鉴权 */
     const userId = localStorage.getItem('userid');
 
@@ -83,6 +91,7 @@ const TopicSingleMain = React.memo((props: ITopicSingleMainProps) => {
         setState({
           ...state,
           pinList,
+          isShowFirstlyLoading: false,
         });
       } else {
         message.error(resMessage);
@@ -90,14 +99,77 @@ const TopicSingleMain = React.memo((props: ITopicSingleMainProps) => {
     });
   }
 
+  /**
+   * [处理] - 发送沸点
+   * @param pinInfo 创建的沸点信息
+   * @param callback 回调处理器
+   */
+  function handlePinSend(
+    pinInfo: any,
+    callback?: () => void,
+  ) {
+    /* 用户凭证检测 */
+    const userId = localStorage.getItem('userid');
+
+    if (!userId) {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已丢失, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    query({
+      jsonp: false,
+      method: 'POST',
+      url: '/api/pin/self/create',
+      data: {
+        userId,
+        pinInfo,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
+
+      if (resCode === 0) {
+        /* 判断用户发表的沸点是否属于当前话题 */
+        const currentTopicId = props.match.params.id;
+        const receivedTopicId = resData.pinInfo.topic_id._id;
+
+        if (currentTopicId === receivedTopicId) {
+          setState({
+            ...state,
+            pinList: [
+              resData.pinInfo,
+              ...state.pinList,
+            ],
+          });
+        }
+
+        message.success(resMessage);
+      } else {
+        message.error(resMessage);
+      }
+
+      callback && callback();
+    }).catch(() => {
+      callback && callback();
+    });
+  }
+
   return (
     <MainWrapper>
       <MainMain>
         {/* 头部沸点编辑区 */}
-        <TopicSingleMainEdit />
+        <TopicSingleMainEdit
+          onSend={handlePinSend}
+        />
 
         {/* 底部沸点列表区 */}
         <TopicSingleMainContent
+          isShowFirstlyLoading={state.isShowFirstlyLoading}
           pinList={state.pinList}
         />
       </MainMain>
