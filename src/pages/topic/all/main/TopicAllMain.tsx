@@ -28,6 +28,8 @@ export interface ITopicAllMainState {
     // ? 所有话题列表
     allTopicList: IBaseCommonTopicInfo[],
   };
+  // ? 是否显示获取首屏数据时的loading
+  isShowFirstlyLoading: boolean;
 };
 
 
@@ -37,6 +39,7 @@ const TopicAllMain = React.memo((props: ITopicAllMainProps) => {
       attentionTopicList: [],
       allTopicList: [],
     },
+    isShowFirstlyLoading: false,
   });
 
   React.useEffect(() => {
@@ -49,6 +52,11 @@ const TopicAllMain = React.memo((props: ITopicAllMainProps) => {
    * @description 包括我关注的话题 + 全部话题
    */
   function _getTopicListFromServer() {
+    setState({
+      ...state,
+      isShowFirstlyLoading: true,
+    });
+
     // 用户鉴权
     const userId = localStorage.getItem('userid');
 
@@ -87,9 +95,15 @@ const TopicAllMain = React.memo((props: ITopicAllMainProps) => {
             attentionTopicList,
             allTopicList,
           },
+          isShowFirstlyLoading: false,
         });
       } else {
         message.error(resMessage);
+
+        setState({
+          ...state,
+          isShowFirstlyLoading: false,
+        });
       }
     });
   }
@@ -100,11 +114,13 @@ const TopicAllMain = React.memo((props: ITopicAllMainProps) => {
         {/* 我关注的话题区 */}
         <TopicAllMainAttention
           attentionTopicList={state.topicInfo.attentionTopicList}
+          isShowFirstlyLoading={state.isShowFirstlyLoading}
         />
 
         {/* 全部话题区 */}
         <TopicAllMainPossess
           allTopicList={state.topicInfo.allTopicList}
+          isShowFirstlyLoading={state.isShowFirstlyLoading}
         />
       </MainMain>
     </MainWrapper>

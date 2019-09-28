@@ -33,12 +33,7 @@ export interface IPinMainViewContentProps extends RouteComponentProps<{
 };
 export interface IPinMainViewContentState {
   // ? 沸点列表
-  pinList: Array<IBaseCommonPinInfo & {
-    user_is_friend: boolean,
-    user_is_current_author: boolean,
-    user_is_attention: boolean,
-    comment_total: number,
-  }>;
+  pinList: IBaseCommonPinInfo[];
   // ? 是否显示首次加载沸点列表的loading
   isShowFirstlyLoading: boolean;
 }

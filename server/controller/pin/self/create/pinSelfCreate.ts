@@ -60,12 +60,15 @@ pinSelfCreateController.post('/', async (ctx) => {
       },
     );
 
-    // ? 更新所属话题的沸点列表
+    // ? 更新所属话题的沸点列表 & 参与者列表
     await Topic.findByIdAndUpdate(
       pinInfo.topic,
       {
         '$push': {
           pins: createdPin,
+        },
+        '$addToSet': {
+          actors: userId,
         },
       },
     );
@@ -87,12 +90,16 @@ pinSelfCreateController.post('/', async (ctx) => {
 
     ctx.body = {
       code: 0,
-      message: 'Success!',
+      message: '沸点发送成功!',
       data: {
         pinInfo: {
           ...foundPin,
           content_image: JSON.parse(foundPin.content_image),
           content_link: JSON.parse(foundPin.content_link),
+          user_is_friend: false,
+          user_is_current_author: true,
+          user_is_attention: false,
+          comment_total: 0,
         },
       },
     };

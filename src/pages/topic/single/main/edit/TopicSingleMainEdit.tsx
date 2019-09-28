@@ -7,20 +7,21 @@ import {
 import BasePinEdit from 'components/widget/base_pin_edit/BasePinEdit';
 
 
-export interface ITopicSingleMainEditProps { };
+export interface ITopicSingleMainEditProps {
+  onSend: (
+    pinInfo: any,
+    callback?: () => void,
+  ) => void;
+};
 export interface ITopicSingleMainEditState { };
 
 
 const TopicSingleMainEdit = React.memo((props: ITopicSingleMainEditProps) => {
-  function handleSend(v: any) {
-    console.log(v);
-  }
-
   return (
     <EditWrapper>
       <EditMain>
         <BasePinEdit
-          onSend={handleSend}
+          onSend={props.onSend}
         />
       </EditMain>
     </EditWrapper>
