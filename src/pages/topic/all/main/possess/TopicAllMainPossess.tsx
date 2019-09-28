@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {
+  Spin,
+} from 'antd';
 
 import {
   PossessWrapper,
@@ -14,6 +17,8 @@ import TopicAllMainPossessContent from './content/TopicAllMainPossessContent';
 export interface ITopicAllMainPossessProps {
   // ? 我关注的话题列表
   allTopicList: IBaseCommonTopicInfo[];
+  // ? 是否显示获取首屏数据时的loading
+  isShowFirstlyLoading: boolean;
 };
 export interface ITopicAllMainPossessState { };
 
@@ -26,9 +31,11 @@ const TopicAllMainPossess = React.memo((props: ITopicAllMainPossessProps) => {
         <TopicAllMainPossessTitle />
 
         {/* 内容区 */}
-        <TopicAllMainPossessContent
-          allTopicList={props.allTopicList}
-        />
+        <Spin spinning={props.isShowFirstlyLoading}>
+          <TopicAllMainPossessContent
+            allTopicList={props.allTopicList}
+          />
+        </Spin>
       </PossessMain>
     </PossessWrapper>
   );
