@@ -1,7 +1,7 @@
 /**
  * 用户基本信息接口
  */
-export interface IBaseCommonUserInfo {
+export interface IStaticUserInfo {
   _id: string;
   username: string;
   useravatar: string;
@@ -9,19 +9,26 @@ export interface IBaseCommonUserInfo {
   job: string;
   website: string;
 };
+export interface IBaseCommonUserInfo extends IStaticUserInfo {
+
+};
+
 
 /**
  * 话题基本信息接口
  */
-export interface IBaseCommonTopicInfo {
+export interface IStaticTopicInfo {
   _id: string;
   name: string;
 };
+export interface IBaseCommonTopicInfo extends IStaticTopicInfo {
+};
+
 
 /**
  * 沸点基本信息接口
  */
-export interface IBaseCommonPinInfo {
+export interface IStaticPinInfo {
   _id: string;
   author_id: IBaseCommonUserInfo;
   topic_id: IBaseCommonTopicInfo;
@@ -39,11 +46,18 @@ export interface IBaseCommonPinInfo {
   create_time: number;
   update_time: number;
 };
+export interface IBaseCommonPinInfo extends IStaticPinInfo {
+  user_is_friend: boolean,
+  user_is_current_author: boolean,
+  user_is_attention: boolean,
+  comment_total: number,
+};
+
 
 /**
  * 沸点评论基本接口
  */
-export interface IBaseCommonPinCommentInfo {
+export interface IStaticPinCommentInfo {
   _id: string;
   pin_id: IBaseCommonPinInfo;
   from: IBaseCommonUserInfo;
@@ -56,11 +70,14 @@ export interface IBaseCommonPinCommentInfo {
   create_time: number;
   update_time: number;
 };
+export interface IBaseCommonPinCommentInfo extends IStaticPinCommentInfo {
+};
+
 
 /**
  * 沸点回复基本接口
  */
-export interface IBaseCommonPinReplyInfo {
+export interface IStaticPinReplyInfo {
   _id: string;
   pin_id: string;
   comment_id: IBaseCommonPinCommentInfo;
@@ -73,4 +90,7 @@ export interface IBaseCommonPinReplyInfo {
   }>;
   create_time: number;
   update_time: number;
+};
+export interface IBaseCommonPinReplyInfo extends IStaticPinReplyInfo {
+
 };
