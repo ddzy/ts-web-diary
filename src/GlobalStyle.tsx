@@ -87,6 +87,9 @@ const GloablStyle: GlobalStyleComponent<{}, any> = createGlobalStyle`
   .ant-input-group-wrapper {
     vertical-align: middle !important;
   }
+  .ant-statistic-title, .ant-statistic-content {
+    text-align: center;
+  }
 
 
   /*
