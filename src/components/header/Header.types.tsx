@@ -71,3 +71,19 @@ export interface IBaseNotificationUserStarArticleParams {
   create_time: number;
   update_time: number;
 };
+
+// ? 用户关注我的通知模型
+export interface IBaseNotificationUserAttentionPeopleParams {
+  _id: string;
+  type: string;
+  to: {
+    _id: string,
+    username: string,
+  };
+  from: {
+    _id: string,
+    username: string,
+  };
+  create_time: number;
+  update_time: number;
+};

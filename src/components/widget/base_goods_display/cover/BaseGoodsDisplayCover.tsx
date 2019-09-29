@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Lazyload from 'react-lazyload';
+
 
 import {
   CoverWrapper,
@@ -19,7 +21,9 @@ const BaseGoodsDisplayCover = React.memo((props: IBaseGoodsDisplayCoverProps) =>
   return (
     <CoverWrapper>
       <CoverMain>
-        <CoverMainImg src={props.coverImg} />
+        <Lazyload>
+          <CoverMainImg src={props.coverImg} />
+        </Lazyload>
       </CoverMain>
     </CoverWrapper>
   );

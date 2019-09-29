@@ -10,9 +10,9 @@ import articleDeleteController from './controller/article/delete/articleDelete';
 import actionController from './controller/action/action';
 import actionStarController from './controller/action/star/actionStar';
 import actionStarArticleController from './controller/action/star/article/actionStarArticle';
-import actionAvatarController from './controller/action/avatar/actionAvatar';
-import actionFollowController from './controller/action/follow/actionFollow';
-import actionFriendController from './controller/action/friend/actionFriend';
+import actionAttentionController from './controller/action/attention/actionAttention';
+import actionAttentionPeopleController from './controller/action/attention/people/actionAttentionPeople';
+import actionAttentionTopicController from './controller/action/attention/topic/actionAttentionTopic';
 
 import searchController from './controller/search/search';
 
@@ -60,8 +60,11 @@ import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
 import notificationUserFriendController from './controller/notification/user/friend/notificationUserFriend';
 import notificationUserStarController from './controller/notification/user/star/notificationUserStar';
+import notificationUserAttentionController from './controller/notification/user/attention/notificationUserAttention';
 import notificationUserStarArticleController from './controller/notification/user/star/article/notificationUserStarArticle';
 import notificationUserStarArticleCommentController from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
+import notificationUserAttentionPeopleController from './controller/notification/user/attention/people/notificationUserAttentionPeople';
+import notificationUserAttentionTopicController from './controller/notification/user/attention/topic/notificationUserAttentionTopic';
 
 import chatController from './controller/chat/chat';
 import chatSingleController from './controller/chat/single/chatSingle';
@@ -109,6 +112,9 @@ notificationUserStarArticleController
 // !! 四级路由 !!
 notificationUserStarController
   .use('/article', notificationUserStarArticleController.routes(), notificationUserStarArticleController.allowedMethods());
+notificationUserAttentionController
+  .use('/people', notificationUserAttentionPeopleController.routes(), notificationUserAttentionPeopleController.allowedMethods())
+  .use('/topic', notificationUserAttentionTopicController.routes(), notificationUserAttentionTopicController.allowedMethods());
 
 
 // !! 三级路由 !!
@@ -120,6 +126,9 @@ replyArticleController
   .use('/info', replyArticleInfoController.routes(), replyArticleInfoController.allowedMethods())
 actionStarController
   .use('/article', actionStarArticleController.routes(), actionStarArticleController.allowedMethods())
+actionAttentionController
+  .use('/people', actionAttentionPeopleController.routes(), actionAttentionPeopleController.allowedMethods())
+  .use('/topic', actionAttentionTopicController.routes(), actionAttentionTopicController.allowedMethods())
 chatSingleController
   .use('/info', chatSingleInfoController.routes(), chatSingleInfoController.allowedMethods())
   .use('/create', chatSingleCreateController.routes(), chatSingleCreateController.allowedMethods());
@@ -130,7 +139,8 @@ chatCommonController
   .use('/info', chatCommonInfoController.routes(), chatCommonInfoController.allowedMethods());
 notificationUserController
   .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods())
-  .use('/star', notificationUserStarController.routes(), notificationUserStarController.allowedMethods());
+  .use('/star', notificationUserStarController.routes(), notificationUserStarController.allowedMethods())
+  .use('/attention', notificationUserAttentionController.routes(), notificationUserAttentionController.allowedMethods());
 pinSelfController
   .use('/info', pinSelfInfoController.routes(), pinSelfInfoController.allowedMethods())
   .use('/create', pinSelfCreateController.routes(), pinSelfCreateController.allowedMethods());
@@ -158,9 +168,7 @@ articleController
   .use('/delete', articleDeleteController.routes(), articleDeleteController.allowedMethods());
 actionController
   .use('/star', actionStarController.routes(), actionStarController.allowedMethods())
-  .use('/avatar', actionAvatarController.routes(), actionAvatarController.allowedMethods())
-  .use('/follow', actionFollowController.routes(), actionFollowController.allowedMethods())
-  .use('/friend', actionFriendController.routes(), actionFriendController.allowedMethods())
+  .use('/attention', actionAttentionController.routes(), actionAttentionController.allowedMethods());
 pageController
   .use('/home', pageHomeController.routes(), pageHomeController.allowedMethods())
   .use('/details', pageDetailsController.routes(), pageDetailsController.allowedMethods())

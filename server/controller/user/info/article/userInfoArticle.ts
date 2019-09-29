@@ -87,8 +87,9 @@ userInfoArticleController.post('/comment', async (ctx) => {
     .length;
 
   // ? 计算当前用户是否已经关注了评论人
-  const computeIsAttention = await foundCommentOrReplyAuthorInfo.followers
-    .indexOf(userId) !== -1;
+  const computeIsAttention = await foundCommentOrReplyAuthorInfo.followers.some((v: any) => {
+    return v.equals(userId);
+  });
 
   // ? 计算评论人与当前用户是否互为好友
   // * 单方的好友目前排除在外

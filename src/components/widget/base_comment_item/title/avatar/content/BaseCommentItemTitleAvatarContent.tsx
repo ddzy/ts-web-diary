@@ -5,19 +5,14 @@ import {
 } from 'react-router-dom';
 import {
   Spin,
-  notification,
 } from 'antd';
 
 import {
   ContentWrapper,
   ContentMain,
 } from './style';
-import {
-  NOTIFICATION_TYPE,
-} from 'constants/constants';
 import BaseCommentItemTitleAvatarContentStatistics from './statistics/BaseCommentItemTitleAvatarContentStatistics';
 import BaseCommentItemTitleAvatarContentAction from './action/BaseCommentItemTitleAvatarContentAction';
-import { notificationUserFriendIOClient } from 'services/websocket';
 
 
 export interface IBaseCommentItemTitleAvatarContentProps extends RouteComponentProps {
@@ -38,76 +33,18 @@ export interface IBaseCommentItemTitleAvatarContentProps extends RouteComponentP
     user_is_friend: boolean,
     user_is_current_author: boolean,
   };
+
+  onAttentionSend: () => void;
+  onMakeFriendSend: (data: {
+    description: string,
+  }) => void;
+  onChatSend: () => void;
 };
 export interface IBaseCommentItemTitleAvatarContentState {
-  // ? 用户加好友通知的Websocket
-  notificationUserFriendIOClient: SocketIOClient.Socket;
 };
 
 
 const BaseCommentItemTitleAvatarContent = React.memo((props: IBaseCommentItemTitleAvatarContentProps) => {
-  const [state] = React.useState<IBaseCommentItemTitleAvatarContentState>({
-    notificationUserFriendIOClient,
-  });
-
-
-  /**
-   * [处理] - 发送加好友请求
-   */
-  function handleMakeFriendSend(
-    data: {
-      description: string,
-    },
-  ) {
-    const userId = localStorage.getItem('userid');
-
-    if (!userId || typeof userId !== 'string') {
-      notification.error({
-        message: '错误',
-        description: '用户凭证已过期, 请重新登录!',
-      });
-
-      return props.history.push('/login');
-    }
-
-    const authorId = props.userProfileInfo.author_id;
-    const authorName = props.userProfileInfo.author_name;
-    const makeFriendDescription = data.description;
-    const notificationType = NOTIFICATION_TYPE.user.friend.request;
-
-    state.notificationUserFriendIOClient.emit('sendMakeFriendRequest', {
-      from: userId,
-      to: authorId,
-      description: makeFriendDescription,
-      notificationType,
-    });
-
-    notification.info({
-      message: '提示',
-      description: (
-        <p>
-          <span>已成功向  </span>
-          <strong style={{ color: '#1da57a' }}>{authorName}</strong>
-          <span>  发起好友请求!</span>
-        </p>
-      ),
-    });
-  }
-
-  /**
-   * [处理] - 发送关注评论人请求
-   */
-  function handleAttentionSend() {
-    console.log('发起关注');
-  }
-
-  /**
-   * [处理] - 发送发起聊天会话请求
-   */
-  function handleChatSend() {
-    props.history.push('/chat/interfaces');
-  }
-
   return (
     <Spin spinning={props.isLoading}>
       <ContentWrapper>
@@ -120,9 +57,9 @@ const BaseCommentItemTitleAvatarContent = React.memo((props: IBaseCommentItemTit
           {/* 附加操作区 */}
           <BaseCommentItemTitleAvatarContentAction
             userProfileInfo={props.userProfileInfo}
-            onAttentionSend={handleAttentionSend}
-            onMakeFriendSend={handleMakeFriendSend}
-            onChatSend={handleChatSend}
+            onAttentionSend={props.onAttentionSend}
+            onMakeFriendSend={props.onMakeFriendSend}
+            onChatSend={props.onChatSend}
           />
         </ContentMain>
       </ContentWrapper>
