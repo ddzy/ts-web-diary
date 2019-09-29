@@ -3,6 +3,7 @@ import {
   Popover,
   Avatar,
   notification,
+  message,
 } from 'antd';
 import {
   withRouter,
@@ -17,6 +18,7 @@ import { query } from 'services/request';
 import { ICommentListItemProps } from '../../BaseCommentItem';
 import {
   notificationUserFriendIOClient,
+  notificationUserAttentionPeopleIOClient,
 } from 'services/websocket';
 import { NOTIFICATION_TYPE } from 'constants/constants';
 import BaseCommentItemTitleAvatarTitle from './title/BaseCommentItemTitleAvatarTitle';
@@ -29,6 +31,8 @@ export interface IBaseCommentItemTitleAvatarProps extends RouteComponentProps {
 export interface IBaseCommentItemTitleAvatarState {
   // ? 用户加好友通知的Websocket
   notificationUserFriendIOClient: SocketIOClient.Socket;
+  // ? 关注用户通知的Websocket
+  notificationUserAttentionPeopleIOClient: SocketIOClient.Socket;
 
   // ? 获取信息时的loading状态
   loading: boolean;
@@ -56,6 +60,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
 
   const [state, setState] = React.useState<IBaseCommentItemTitleAvatarState>({
     notificationUserFriendIOClient,
+    notificationUserAttentionPeopleIOClient,
     loading: false,
     userProfileInfo: {
       author_id: '',
@@ -195,7 +200,62 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
    * [处理] - 发送关注评论人请求
    */
   function handleAttentionSend() {
-    console.log('发起关注');
+    // ? 用户鉴权
+    const userId = localStorage.getItem('userid');
+
+    if (!userId || typeof userId !== 'string') {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已过期, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    const authorId = state.userProfileInfo.author_id;
+    const notificationType = NOTIFICATION_TYPE.user.attention.people;
+    const newIsAttention = !state.userProfileInfo.user_is_attention;
+
+    query({
+      method: 'POST',
+      jsonp: false,
+      url: '/api/action/attention/people',
+      data: {
+        isAttention: newIsAttention,
+        fromUserId: userId,
+        toUserId: authorId,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
+
+      if (resCode === 0) {
+        const attentionInfo = resData.attentionInfo;
+
+        setState({
+          ...state,
+          userProfileInfo: {
+            ...state.userProfileInfo,
+            user_is_attention: attentionInfo.isAttention,
+            author_follower_total: attentionInfo.isAttention
+              ? state.userProfileInfo.author_follower_total + 1
+              : state.userProfileInfo.author_follower_total - 1,
+          },
+        });
+
+      /* socket实时通知被关注者 */
+      attentionInfo.isAttention && state.notificationUserAttentionPeopleIOClient.emit('sendUserAttentionPeople', {
+          notificationType,
+          fromUserId: userId,
+          toUserId: authorId,
+        });
+
+        message.success(resMessage);
+      } else {
+        message.error(resMessage);
+      }
+    });
   }
 
   /**

@@ -29,6 +29,12 @@ import {
 import {
   handleNotificationUserStarArticleComment,
 } from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
+import {
+  handleNotificationUserAttentionPeople,
+} from './controller/notification/user/attention/people/notificationUserAttentionPeople';
+import {
+  handleNotificationUserAttentionTopic,
+} from './controller/notification/user/attention/topic/notificationUserAttentionTopic';
 
 
 const app: Koa = new Koa();
@@ -96,6 +102,18 @@ const notificationUserStarArticleCommentIO = io.of('/notification/user/star/arti
 notificationUserStarArticleCommentIO.on('connection', (socket) => {
   handleNotificationUserStarArticleComment(socket, notificationUserStarArticleCommentIO);
 });
+
+// ? 处理关注用户的相关通知的Websocket
+const notificationUserAttentionPeopleIO = io.of('/notification/user/attention/people');
+notificationUserAttentionPeopleIO.on('connection', (socket) => {
+  handleNotificationUserAttentionPeople(socket, notificationUserAttentionPeopleIO);
+})
+
+// ? 处理关注话题的相关通知的Websocket
+const notificationUserAttentionTopicIO = io.of('/notification/user/attention/topic');
+notificationUserAttentionTopicIO.on('connection', (socket) => {
+  handleNotificationUserAttentionTopic(socket, notificationUserAttentionTopicIO);
+})
 
 // ? 处理单聊的相关Websocket
 const singleChatIO = io.of('/chat/single');
