@@ -187,6 +187,10 @@ export const NOTIFICATION_TYPE = {
         comment: 'user_star_article_comment',
       },
     },
+    attention: {
+      people: 'user_attention_people',
+      topic: 'user_attention_topic',
+    },
   },
   admin: {},
 };

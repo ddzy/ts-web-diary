@@ -37,17 +37,13 @@ const BaseCommentItemTitleAvatarContentActionAttention = React.memo((props: IBas
     <AttentionWrapper>
       <AttentionMain>
         <Button
-          icon="user-add"
+          icon={props.userProfileInfo.user_is_attention ? 'user-delete' : 'user-add'}
           type="primary"
-          disabled={
-            props.userProfileInfo.user_is_current_author
-              ? true
-              : props.userProfileInfo.user_is_attention
-                ? true
-                : false
-          }
+          disabled={props.userProfileInfo.user_is_current_author}
           onClick={props.onAttentionSend}
-        >关注他</Button>
+        >
+          {props.userProfileInfo.user_is_attention ? '取消关注' : '关注他'}
+        </Button>
       </AttentionMain>
     </AttentionWrapper>
   );

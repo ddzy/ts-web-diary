@@ -77,12 +77,6 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
     });
   }, [props.articleInfo]);
 
-  React.useEffect(() => {
-    return () => {
-      state.notificationUserStarArticleIOClient.close();
-    };
-  }, []);
-
 
   /**
    * [处理] - 文章点赞
