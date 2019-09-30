@@ -124,8 +124,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
 
     window.removeEventListener('unload', this.handleResetUserStatus);
     window.removeEventListener('beforeunload', this.handleWindowBeforeUnload);
-
-    this.state.statusIOClient.close();
   }
 
   public shouldComponentUpdate(

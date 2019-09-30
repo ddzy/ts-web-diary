@@ -52,10 +52,6 @@ const Status = React.memo((props: IStatusProps) => {
         },
       });
     });
-
-    return () => {
-      state.statusIOClient.close();
-    }
   }, []);
 
   /**

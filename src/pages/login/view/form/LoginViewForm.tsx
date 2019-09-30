@@ -58,10 +58,6 @@ const LoginViewForm = React.memo((props: ILoginViewFormProps) => {
         userInfo,
       });
     }
-
-    return () => {
-      state.statusIOClient.close();
-    };
   }, []);
 
   /**
