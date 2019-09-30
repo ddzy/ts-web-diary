@@ -126,6 +126,7 @@ const PinMainViewContent = React.memo((props: IPinMainViewContentProps) => {
 
       if (resCode === 0) {
         const pinList = resData.pinList;
+
         // 根据是否首次加载, 初始化不同的沸点列表
         const newPinList = initialLoad
           ? pinList
