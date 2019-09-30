@@ -6,4 +6,6 @@ export const DisplayWrapper = styled.div`
 `;
 export const DisplayMain = styled.div`
   height: 100%;
+  cursor: pointer;
+  user-select: none;
 `;

@@ -1,7 +1,6 @@
 import * as React from 'react';
+import Lazyload from 'react-lazyload';
 import {
-  Row,
-  Col,
   Divider,
 } from 'antd';
 
@@ -10,17 +9,11 @@ import {
   DisplayMain,
   DisplayMainList,
   DisplayMainItem,
-  DisplayMainItemAvatarBox,
-  DisplayMainItemAvatar,
-  DisplayMainItemInfoBox,
-  DisplayMainItemInfoTitle,
-  DisplayMainItemInfoExtra,
-  DisplayMainItemInfoExtraFollow,
-  DisplayMainItemInfoExtraTotal,
 } from './style';
 import {
   IBaseCommonTopicInfo,
 } from 'components/widget/base_pin_edit/BasePinEdit.types';
+import BaseGoodsDisplay from 'components/widget/base_goods_display/BaseGoodsDisplay';
 
 
 export interface IBasePinEditActionTopicContentDisplayProps {
@@ -35,48 +28,46 @@ export interface IBasePinEditActionTopicContentDisplayState { }
 
 
 const BasePinEditActionTopicContentDisplay = React.memo((props: IBasePinEditActionTopicContentDisplayProps) => {
-  /**
-   * [初始化] - 话题列表项
-   */
-  function _initTopicItem(): JSX.Element[] {
+  function __initTopicItem() {
     return props.topicList.map((v) => {
       return (
         <DisplayMainItem
           key={v._id}
           onClick={() => props.onTopicContentChange(v)}
         >
-          <Row>
-            <Col span={4}>
-              {/* 头像框 */}
-              <DisplayMainItemAvatarBox>
-                <DisplayMainItemAvatar coverUrl={v.cover_img} />
-              </DisplayMainItemAvatarBox>
-            </Col>
-            <Col span={20}>
-              {/* 额外信息 */}
-              <DisplayMainItemInfoBox>
-                {/* 话题名称 */}
-                <DisplayMainItemInfoTitle>
-                  {v.name}
-                </DisplayMainItemInfoTitle>
-
-                {/* 话题统计 */}
-                <DisplayMainItemInfoExtra>
-                  {/* 关注人数 */}
-                  <DisplayMainItemInfoExtraFollow>
-                    {v.followers.length} 关注
-                  </DisplayMainItemInfoExtraFollow>
-
-                  <Divider type="vertical" />
-
-                  {/* 总沸点数 */}
-                  <DisplayMainItemInfoExtraTotal>
-                    {v.pins.length} 沸点
-                  </DisplayMainItemInfoExtraTotal>
-                </DisplayMainItemInfoExtra>
-              </DisplayMainItemInfoBox>
-            </Col>
-          </Row>
+          <BaseGoodsDisplay
+            cover={
+              <Lazyload scrollContainer='#pin-edit-topic-scroll-container'>
+                <img
+                  style={{
+                    width: 50,
+                    height: 50,
+                  }}
+                  src={v.cover_img}
+                />
+              </Lazyload>
+            }
+            title={<span>{v.name}</span>}
+            content={
+              <div>
+                <span>
+                  {v.followers.length}  关注
+                </span>
+                <Divider
+                  type="vertical"
+                  style={{
+                    width: 3,
+                    height: 3,
+                    borderRadius: '50%',
+                  }}
+                />
+                <span>
+                  {v.pins.length}  沸点
+                </span>
+              </div>
+            }
+            action={<React.Fragment />}
+          />
         </DisplayMainItem>
       );
     });
@@ -84,9 +75,9 @@ const BasePinEditActionTopicContentDisplay = React.memo((props: IBasePinEditActi
 
   return (
     <DisplayWrapper>
-      <DisplayMain>
+      <DisplayMain id="pin-edit-topic-scroll-container">
         <DisplayMainList>
-          {_initTopicItem()}
+          {__initTopicItem()}
         </DisplayMainList>
       </DisplayMain>
     </DisplayWrapper>
