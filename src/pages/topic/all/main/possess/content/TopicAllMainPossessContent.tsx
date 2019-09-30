@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Lazyload from 'react-lazyload';
 import {
   withRouter,
   RouteComponentProps,
@@ -45,7 +46,17 @@ const TopicAllPossessContent = React.memo((props: ITopicAllPossessContentProps) 
               onClick={() => handleTopicItemClick(v._id)}
             >
               <BaseGoodsDisplay
-                coverImg={v.cover_img}
+                cover={
+                  <Lazyload>
+                    <img
+                      style={{
+                        width: 60,
+                        height: 60,
+                      }}
+                      src={v.cover_img}
+                    />
+                  </Lazyload>
+                }
                 title={<span>{v.name}</span>}
                 content={
                   <div>

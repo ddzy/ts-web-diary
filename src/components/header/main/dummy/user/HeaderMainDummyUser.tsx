@@ -47,11 +47,6 @@ const HeaderMainDummyUser = React.memo<IHeaderMainDummyUserProps>((
     statusIOClient,
   });
 
-  React.useEffect(() => {
-    return () => {
-      state.statusIOClient.close();
-    }
-  }, []);
 
   /**
    * [初始化] - 气泡框内容

@@ -62,10 +62,6 @@ const AuthRoute = React.memo<IAuthRouteProps>((
         }
       }
     });
-
-    return () => {
-      state.statusIOClient.close();
-    }
   }, []);
 
   return (

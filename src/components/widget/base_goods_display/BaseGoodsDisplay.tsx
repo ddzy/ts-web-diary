@@ -14,7 +14,7 @@ import BaseGoodsDisplayInfo from './info/BaseGoodsDisplayInfo';
 
 export interface IBaseGoodsDisplayProps {
   // ? 物品的封面主题图片
-  coverImg: string;
+  cover: React.ReactNode;
   // ? 物品的标题文字
   title: React.ReactNode;
   // ? 物品的内容区域列表
@@ -33,7 +33,7 @@ const BaseGoodsDisplay = React.memo((props: IBaseGoodsDisplayProps) => {
           <Col span={6}>
             {/* 左侧头像区块 */}
             <BaseGoodsDisplayCover
-              coverImg={props.coverImg}
+              cover={props.cover}
             />
           </Col>
           <Col span={18}>

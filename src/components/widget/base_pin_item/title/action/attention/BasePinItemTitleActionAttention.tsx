@@ -29,11 +29,7 @@ const BasePinItemTitleActionAttention = React.memo((props: IBasePinItemTitleActi
           icon={
             props.pinInfo.user_is_attention ? 'eye-invisible' : 'eye'
           }
-          disabled={
-            props.pinInfo.user_is_current_author
-              ? true
-              : false
-          }
+          disabled={props.pinInfo.user_is_current_author}
         >
           {
             props.pinInfo.user_is_attention ? '取消关注' : '关注他'

@@ -48,11 +48,7 @@ const BasePinItemTitleActionFriend = React.memo((props: IBasePinItemTitleActionF
           icon={
             props.pinInfo.user_is_friend ? 'message' : 'plus'
           }
-          disabled={
-            props.pinInfo.user_is_current_author
-              ? true
-              : false
-          }
+          disabled={props.pinInfo.user_is_current_author}
           onClick={props.pinInfo.user_is_friend ? handleChat : handleMakeFriend}
         >
           {

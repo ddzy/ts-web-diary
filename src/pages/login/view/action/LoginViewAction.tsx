@@ -44,17 +44,9 @@ const LoginViewAction = React.memo((props: ILoginViewActionProps) => {
   } = BIND_THIRD_PARTY_INFO.github;
   const redirect_uri = `${schema}://${domain}:${port}/login`;
 
-
   const [state] = React.useState<ILoginViewActionState>({
     statusIOClient,
   });
-
-  React.useEffect(() => {
-    return () => {
-      // 关闭socket链接
-      state.statusIOClient.close();
-    }
-  }, []);
 
   React.useEffect(() => {
     handleSendGithubCode();
