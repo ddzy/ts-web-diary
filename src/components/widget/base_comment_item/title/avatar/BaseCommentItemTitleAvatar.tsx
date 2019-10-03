@@ -249,11 +249,12 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
           },
         });
 
-      /* socket实时通知被关注者 */
-      attentionInfo.isAttention && state.notificationUserAttentionPeopleIOClient.emit('sendUserAttentionPeople', {
+      // socket实时通知被关注者
+      state.notificationUserAttentionPeopleIOClient.emit('sendUserAttentionPeople', {
           notificationType,
           fromUserId: userId,
           toUserId: authorId,
+          isAttention: newIsAttention,
         });
 
         message.success(resMessage);

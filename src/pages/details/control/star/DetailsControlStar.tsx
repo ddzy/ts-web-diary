@@ -142,18 +142,19 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
           </span>
           );
 
-          // 点赞文章之后, 实时通知文章作者
-          state.notificationUserStarArticleIOClient.emit('sendUserStarArticle', {
-            notificationType,
-            userId,
-            authorId,
-            articleId,
-          });
-
           message.info(content);
         } else {
           message.info('你取消了赞!');
         }
+
+        // 点赞文章之后, 实时通知文章作者
+        state.notificationUserStarArticleIOClient.emit('sendUserStarArticle', {
+          notificationType,
+          userId,
+          authorId,
+          articleId,
+          isStar: newIsStar,
+        });
       }
     });
   }
