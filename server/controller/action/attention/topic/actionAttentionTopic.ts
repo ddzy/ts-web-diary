@@ -4,7 +4,7 @@ import * as UUID from 'uuid';
 import {
   Topic,
   User,
-  IActivityAttentionTopicProps,
+  ITrackAttentionTopicProps,
 } from '../../../../model/model';
 
 
@@ -18,24 +18,24 @@ actionAttentionTopicController.post('/', async (ctx) => {
   interface IRequestParams {
     userId: string;
     topicId: string;
-    activityType: string;
+    trackType: string;
     isAttention: boolean;
   };
 
   const {
     userId,
     topicId,
-    activityType,
+    trackType,
     isAttention,
   } = ctx.request.body as IRequestParams;
 
   try {
     // ? 如果是关注
     if (isAttention) {
-      // * 创建新的动态
-      const createdActivity: IActivityAttentionTopicProps = {
+      // * 创建新的足迹
+      const createdTrack: ITrackAttentionTopicProps = {
         _id: UUID.v1(),
-        type: activityType,
+        type: trackType,
         topic: topicId,
         create_time: Date.now(),
         update_time: Date.now(),
@@ -45,7 +45,7 @@ actionAttentionTopicController.post('/', async (ctx) => {
       await User.findByIdAndUpdate(userId, {
         '$addToSet': {
           'attention.topics': topicId,
-          activities: createdActivity,
+          tracks: createdTrack,
         },
       });
 
@@ -59,8 +59,8 @@ actionAttentionTopicController.post('/', async (ctx) => {
       await User.findByIdAndUpdate(userId, {
         '$pull': {
           'attention.topics': topicId,
-          activities: {
-            type: activityType,
+          tracks: {
+            type: trackType,
             topic: topicId,
           },
         },

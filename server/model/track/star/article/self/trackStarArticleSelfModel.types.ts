@@ -1,7 +1,7 @@
 /**
- * 点赞文章的动态
+ * 点赞文章的足迹
  */
-export interface IActivityStarArticleProps {
+export interface ITrackStarArticleProps {
   // 唯一标识 id
   _id: string;
 

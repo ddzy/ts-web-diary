@@ -45,14 +45,14 @@ import {
 } from './notification/user/star/article/notificationUserStarArticleModel.types';
 
 import {
-  IActivityStarArticleProps,
-} from './activity/star/article/self/activityStarArticleSelfModel.types';
+  ITrackStarArticleProps,
+} from './track/star/article/self/trackStarArticleSelfModel.types';
 import {
-  IActivityAttentionTopicProps,
-} from './activity/attention/topic/activityAttentionTopicModel.types';
+  ITrackAttentionTopicProps,
+} from './track/attention/topic/trackAttentionTopicModel.types';
 import {
-  IActivityAttentionPeopleProps,
-} from './activity/attention/people/activityAttentionPeopleModel.types';
+  ITrackAttentionPeopleProps,
+} from './track/attention/people/trackAttentionPeopleModel.types';
 
 
 mongoose.set('useFindAndModify', false);
@@ -108,7 +108,7 @@ export {
   INotificationUserFriendRefuseModelProps,
   INotificationUserStarArticleProps,
 
-  IActivityStarArticleProps,
-  IActivityAttentionTopicProps,
-  IActivityAttentionPeopleProps,
+  ITrackStarArticleProps,
+  ITrackAttentionTopicProps,
+  ITrackAttentionPeopleProps,
 };

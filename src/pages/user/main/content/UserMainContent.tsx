@@ -5,6 +5,7 @@ import {
   withRouter,
   RouteComponentProps,
   Route,
+  Redirect,
 } from 'react-router-dom';
 
 import {
@@ -12,6 +13,10 @@ import {
   ContentMain,
 } from './style';
 
+const LoadableUserMainContentTrack = Loadable({
+  loader: () => import('./track/UserMainContentTrack'),
+  loading: () => null,
+});
 const LoadableUserMainContentActivity = Loadable({
   loader: () => import('./activity/UserMainContentActivity'),
   loading: () => null,
@@ -30,68 +35,79 @@ const LoadableUserMainContentAttention = Loadable({
 });
 
 
-export interface IUserMainContentProps extends RouteComponentProps<any> {
-  children?: React.ReactElement<HTMLElement>
+export interface IUserMainContentProps extends RouteComponentProps<{
+  id: string,
+}> {
+};
+export interface IUserMainContentState {
 };
 
 
 const UserMainContent = React.memo<IUserMainContentProps>((
   props: IUserMainContentProps,
 ): JSX.Element => {
-
   /**
-   * 处理tab切换, url改变
+   * [处理] - tab切换, url改变
    * @param path url地址
    */
   function handleTabChange(
     path: string,
   ): void {
-    const userId: string = localStorage.getItem('userid') || '';
-    props.history.replace(`/user/${userId}/${path}`);
+    const newPath = `${props.match.url}/${path}`;
+
+    props.history.push(newPath);
   }
 
   /**
-   * 处理tab默认指向
+   * [处理] - tab默认指向
+   * @description 与路由对应
    */
   function handleTabDefaultActive(): string {
     const { pathname } = props.location;
+    const defaultKey = pathname.substring(pathname.lastIndexOf('/') + 1);
 
-    return pathname.substring(
-      pathname.lastIndexOf('/') + 1,
-    );
+    return defaultKey ? defaultKey : 'track';
   }
 
   return (
     <ContentContainer>
       <ContentMain>
+        <Route exact={true} path="/user/:id" render={(p) => <Redirect to={`${p.match.url}/track`} />} />
+
         <Tabs
           defaultActiveKey={handleTabDefaultActive()}
           size="large"
           onChange={handleTabChange}
         >
           <Tabs.TabPane
+            tab="足迹"
+            key="track"
+          >
+            <Route path="/user/:id/track" component={LoadableUserMainContentTrack} />
+          </Tabs.TabPane>
+          <Tabs.TabPane
             tab="动态"
             key="activity"
           >
-            <Route exact path="/user/:id/activity" component={LoadableUserMainContentActivity} />
+            <Route path="/user/:id/activity" component={LoadableUserMainContentActivity} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="文章"
             key="post"
           >
-            <Route exact path="/user/:id/post" component={LoadableUserMainContentPost} />
+            <Route path="/user/:id/post" component={LoadableUserMainContentPost} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="收藏"
             key="collection"
           >
-            <Route exact path="/user/:id/collection" component={LoadableUserMainContentCollection} />
+            <Route path="/user/:id/collection" component={LoadableUserMainContentCollection} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="关注"
             key="attention"
           >
-            <Route exact path="/user/:id/attention" component={LoadableUserMainContentAttention} />
+            <Route path="/user/:id/attention" component={LoadableUserMainContentAttention} />
           </Tabs.TabPane>
         </Tabs>
       </ContentMain>

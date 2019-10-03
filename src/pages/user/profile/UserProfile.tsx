@@ -52,7 +52,7 @@ const UserProfile = React.memo<IUserProfileProps>((
 
   React.useEffect(() => {
     _getUserProfileInfoFromServer();
-  }, []);
+  }, [props.match.params.id]);
 
 
   /**

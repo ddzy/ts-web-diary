@@ -16,7 +16,9 @@ import { query } from 'services/request';
 import {
   IBaseCommonTopicInfo,
 } from 'pages/topic/Topic.types';
-import { ACTIVITY_TYPE } from 'constants/constants';
+import {
+  TRACK_TYPE,
+} from 'constants/constants';
 import TopicAllMainAttention from './attention/TopicAllMainAttention';
 import TopicAllMainPossess from './possess/TopicAllMainPossess';
 
@@ -133,7 +135,7 @@ const TopicAllMain = React.memo((props: ITopicAllMainProps) => {
       return props.history.push('/login');
     }
 
-    const activityType = ACTIVITY_TYPE.attention.topic;
+    const trackType = TRACK_TYPE.attention.topic;
 
     query({
       jsonp: false,
@@ -141,7 +143,7 @@ const TopicAllMain = React.memo((props: ITopicAllMainProps) => {
       method: 'POST',
       data: {
         userId,
-        activityType,
+        trackType,
         ...data,
       },
     }).then((res) => {

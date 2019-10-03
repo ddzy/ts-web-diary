@@ -103,6 +103,7 @@ authGithubController.post('/', async (ctx) => {
         chat_memory: [],
         notifications: [],
         activities: [],
+        tracks: [],
         pins: [],
         profile_cover_img: '',
         address: '',
