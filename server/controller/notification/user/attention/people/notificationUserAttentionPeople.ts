@@ -25,8 +25,24 @@ export function handleNotificationUserAttentionPeople(
       notificationType: string,
       fromUserId: string,
       toUserId: string,
+      isAttention: boolean,
     },
   ) => {
+    // ? 如果是取消关注, 则清空被关注方的通知
+    if (!data.isAttention) {
+      await User.findByIdAndUpdate(data.toUserId, {
+        '$pull': {
+          notifications: {
+            type: data.notificationType,
+            from: data.fromUserId,
+            to: data.toUserId,
+          },
+        },
+      });
+
+      return;
+    }
+
     // ? 创建新的通知
     const createdNotification: INotificationUserAttentionPeopleProps = {
       _id: UUID.v1(),

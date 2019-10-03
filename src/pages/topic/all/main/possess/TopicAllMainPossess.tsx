@@ -19,6 +19,14 @@ export interface ITopicAllMainPossessProps {
   allTopicList: IBaseCommonTopicInfo[];
   // ? 是否显示获取首屏数据时的loading
   isShowFirstlyLoading: boolean;
+
+  onToggleAttention: (
+    data: {
+      topicId: string,
+      isAttention: boolean,
+    },
+    callback?: () => void,
+  ) => void;
 };
 export interface ITopicAllMainPossessState { };
 
@@ -34,6 +42,7 @@ const TopicAllMainPossess = React.memo((props: ITopicAllMainPossessProps) => {
         <Spin spinning={props.isShowFirstlyLoading}>
           <TopicAllMainPossessContent
             allTopicList={props.allTopicList}
+            onToggleAttention={props.onToggleAttention}
           />
         </Spin>
       </PossessMain>

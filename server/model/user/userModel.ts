@@ -75,6 +75,18 @@ const UserSchema: mongoose.Schema = new Schema({
     default: [],
   }],
 
+  // ? 好友的动态
+  activities: [{
+    type: Schema.Types.Mixed,
+    default: [],
+  }],
+
+  // ? 我的足迹
+  tracks: [{
+    type: Schema.Types.Mixed,
+    default: [],
+  }],
+
   // ? 沸点
   pins: [{
     type: Schema.Types.ObjectId,

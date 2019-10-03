@@ -55,6 +55,8 @@ import userCreateController from './controller/user/create/userCreate';
 import userUpdateController from './controller/user/update/userUpdate';
 import userInfoAccountController from './controller/user/info/account/userInfoAccount';
 import userInfoArticleController from './controller/user/info/article/userInfoArticle';
+import userInfoPartialController from './controller/user/info/partial/userInfoPartial';
+import userInfoPartialTrackController from './controller/user/info/partial/track/userInfoPartialTrack';
 
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
@@ -115,6 +117,8 @@ notificationUserStarController
 notificationUserAttentionController
   .use('/people', notificationUserAttentionPeopleController.routes(), notificationUserAttentionPeopleController.allowedMethods())
   .use('/topic', notificationUserAttentionTopicController.routes(), notificationUserAttentionTopicController.allowedMethods());
+userInfoPartialController
+  .use('/track', userInfoPartialTrackController.routes(), userInfoPartialTrackController.allowedMethods());
 
 
 // !! 三级路由 !!
@@ -156,7 +160,8 @@ topicPinController
   .use('/info', topicPinInfoController.routes(), topicPinInfoController.allowedMethods());
 userInfoController
   .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods())
-  .use('/article', userInfoArticleController.routes(), userInfoArticleController.allowedMethods());
+  .use('/article', userInfoArticleController.routes(), userInfoArticleController.allowedMethods())
+  .use('/partial', userInfoPartialController.routes(), userInfoPartialController.allowedMethods());
 
 
 

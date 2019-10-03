@@ -26,8 +26,25 @@ export function handleNotificationUserStarArticle(
       userId: string,
       articleId: string,
       authorId: string,
+      isStar: boolean,
     },
   ) => {
+    // TODO 如果取消了赞, 清空该点赞通知
+    if (!data.isStar) {
+      await User.findByIdAndUpdate(data.authorId, {
+        '$pull': {
+          notifications: {
+            type: data.notificationType,
+            from: data.userId,
+            article: data.articleId,
+            article_author: data.authorId,
+          },
+        },
+      });
+
+      return;
+    }
+
     // TODO 创建新的通知
     const createdNotification: INotificationUserStarArticleProps = {
       _id: UUID.v1(),
@@ -44,7 +61,7 @@ export function handleNotificationUserStarArticle(
       .findByIdAndUpdate(
         data.authorId,
         {
-          '$push': {
+          '$addToSet': {
             notifications: createdNotification,
           },
         },

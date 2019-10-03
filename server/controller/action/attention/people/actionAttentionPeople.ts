@@ -1,7 +1,9 @@
 import * as Router from 'koa-router';
+import * as UUID from 'uuid';
 
 import {
   User,
+  ITrackAttentionPeopleProps,
 } from '../../../../model/model';
 
 
@@ -15,21 +17,33 @@ actionAttentionPeopleController.post('/', async (ctx) => {
     isAttention: boolean;
     fromUserId: string;
     toUserId: string;
+    trackType: string;
   };
 
   const {
     isAttention,
     fromUserId,
     toUserId,
+    trackType,
   } = ctx.request.body as IRequestParams;
 
   try {
     // ? 如果是关注
     if (isAttention) {
+      // * 创建新的足迹
+      const createdTrack: ITrackAttentionPeopleProps = {
+        _id: UUID.v1(),
+        type: trackType,
+        user: toUserId,
+        create_time: Date.now(),
+        update_time: Date.now(),
+      };
+
       // * 更新关注方的信息
       await User.findByIdAndUpdate(fromUserId, {
         '$addToSet': {
           'attention.users': toUserId,
+          tracks: createdTrack,
         },
       });
 
@@ -46,6 +60,10 @@ actionAttentionPeopleController.post('/', async (ctx) => {
       await User.findByIdAndUpdate(fromUserId, {
         '$pull': {
           'attention.users': toUserId,
+          tracks: {
+            type: trackType,
+            user: toUserId,
+          },
         },
       });
 

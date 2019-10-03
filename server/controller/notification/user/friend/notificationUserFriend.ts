@@ -29,6 +29,17 @@ export function handleNotificationUserFriend(
       notificationType: string;
     },
   ) => {
+    // TODO 先清空接收方的通知列表, 避免冗余
+    await User.findByIdAndUpdate(data.to, {
+      '$pull': {
+        notifications: {
+          type: data.notificationType,
+          from: data.from,
+          to: data.to,
+        },
+      },
+    });
+
     // TODO 创建新的通知
     const createdNotification: INotificationUserFriendRequestModelProps = {
       _id: UUID.v1(),
@@ -78,6 +89,17 @@ export function handleNotificationUserFriend(
       notificationType: string;
     },
   ) => {
+    // TODO 先清空接收方的通知列表, 避免冗余
+    await User.findByIdAndUpdate(data.to, {
+      '$pull': {
+        notifications: {
+          type: data.notificationType,
+          from: data.from,
+          to: data.to,
+        },
+      },
+    });
+
     // TODO 创建新的通知
     const createdNotification: INotificationUserFriendAgreeModelProps = {
       _id: UUID.v1(),
@@ -149,6 +171,17 @@ export function handleNotificationUserFriend(
       description: string,
     },
   ) => {
+    // TODO 先清空接收方的通知列表, 避免冗余
+    await User.findByIdAndUpdate(data.to, {
+      '$pull': {
+        notifications: {
+          type: data.notificationType,
+          from: data.from,
+          to: data.to,
+        },
+      },
+    });
+
     // TODO 创建新的拒绝通知
     const createdNewNotification: INotificationUserFriendRefuseModelProps = {
       _id: UUID.v1(),

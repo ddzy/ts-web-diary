@@ -1,4 +1,5 @@
 import * as Router from 'koa-router';
+import { ObjectID } from 'bson';
 
 import {
   Topic,
@@ -84,7 +85,9 @@ topicSelfInfoController.get('/list/attention_and_all', async (ctx) => {
     const processedAllTopicList = await foundAllTopicList.map((v: any) => {
       const topicId = v._id;
       const followerList = v.followers;
-      const isAttention = followerList.indexOf(userId) !== -1;
+      const isAttention = followerList.some((follower: ObjectID) => {
+        return follower.equals(userId);
+      });
 
       attentionTopicStateHash[topicId] = isAttention;
 
@@ -145,14 +148,6 @@ topicSelfInfoController.get('/', async (ctx) => {
       .findById(topicId, { ...FILTER_SENSITIVE })
       .populate([
         {
-          path: 'followers',
-          options: {
-            select: {
-              ...FILTER_SENSITIVE,
-            },
-          },
-        },
-        {
           path: 'actors',
           options: {
             select: {
@@ -168,9 +163,7 @@ topicSelfInfoController.get('/', async (ctx) => {
 
     // ? 计算该用户是否关注了该话题
     const computeIsUserAttentionTopic = await foundTopicFollowers.some((v: any) => {
-      const oUserId = v._id;
-
-      return oUserId.equals(userId);
+      return v.equals(userId);
     });
 
     ctx.body = {

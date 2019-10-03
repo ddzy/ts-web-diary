@@ -1,4 +1,8 @@
 import * as React from 'react';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 
 import {
   ActivityContainer,
@@ -6,12 +10,15 @@ import {
 } from './style';
 
 
-export interface IUserMainContentActivityProps { };
+export interface IUserMainContentActivityProps extends RouteComponentProps { };
 
 
 const UserMainContentActivity = React.memo<IUserMainContentActivityProps>((
   props: IUserMainContentActivityProps,
 ): JSX.Element => {
+  React.useEffect(() => {
+    console.log('componentDidMount');
+  }, []);
 
   return (
     <ActivityContainer>
@@ -24,4 +31,4 @@ const UserMainContentActivity = React.memo<IUserMainContentActivityProps>((
 });
 
 
-export default UserMainContentActivity;
+export default withRouter(UserMainContentActivity);

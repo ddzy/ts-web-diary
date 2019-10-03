@@ -17,6 +17,9 @@ import {
   IStaticTopicInfo,
 } from 'pages/topic/Topic.types';
 import { query } from 'services/request';
+import {
+  TRACK_TYPE,
+} from 'constants/constants';
 import TopicSingleAsideInfo from './info/TopicSingleAsideInfo';
 import TopicSingleAsideActor from './actor/TopicSingleAsideActor';
 
@@ -66,7 +69,7 @@ const TopicSingleAside = React.memo((props: ITopicSingleAsideProps) => {
       isShowFirstlyLoading: true,
     });
 
-    /* 用户鉴权 */
+    // 用户鉴权
     const userId = localStorage.getItem('userid');
 
     if (!userId) {
@@ -107,6 +110,64 @@ const TopicSingleAside = React.memo((props: ITopicSingleAsideProps) => {
     });
   }
 
+  /**
+   * [处理] - 关注 or 取消关注话题
+   * @param data 关注的话题信息
+   * @param callback 回调处理器
+   */
+  function handleToggleAttention(
+    data: {
+      topicId: string,
+      isAttention: boolean,
+    },
+    callback?: () => void,
+  ) {
+    // 用户鉴权
+    const userId = localStorage.getItem('userid');
+
+    if (!userId) {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已丢失, 请重新登录!',
+      });
+
+      return props.history.push('/login');
+    }
+
+    const trackType = TRACK_TYPE.attention.topic;
+
+    query({
+      url: '/api/action/attention/topic',
+      method: 'POST',
+      jsonp: false,
+      data: {
+        userId,
+        trackType,
+        ...data,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+
+      if (resCode === 0) {
+        const newFollowers = data.isAttention
+          ? state.topicInfo.followers.concat(userId)
+          : state.topicInfo.followers.filter((follower) => follower !== userId);
+
+        setState({
+          ...state,
+          topicInfo: {
+            ...state.topicInfo,
+            is_attention: data.isAttention,
+            followers: newFollowers,
+          },
+        });
+      } else {
+        message.error(resMessage);
+      }
+    });
+  }
+
   return (
     <Affix offsetTop={80}>
       <AsideWrapper>
@@ -115,6 +176,7 @@ const TopicSingleAside = React.memo((props: ITopicSingleAsideProps) => {
           <TopicSingleAsideInfo
             topicInfo={state.topicInfo}
             isShowFirstlyLoading={state.isShowFirstlyLoading}
+            onToggleAttention={handleToggleAttention}
           />
 
           {/* 话题参与者区 */}
