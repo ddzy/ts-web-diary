@@ -50,6 +50,9 @@ import {
 import {
   IActivityAttentionTopicProps,
 } from './activity/attention/topic/activityAttentionTopicModel.types';
+import {
+  IActivityAttentionPeopleProps,
+} from './activity/attention/people/activityAttentionPeopleModel.types';
 
 
 mongoose.set('useFindAndModify', false);
@@ -107,4 +110,5 @@ export {
 
   IActivityStarArticleProps,
   IActivityAttentionTopicProps,
+  IActivityAttentionPeopleProps,
 };

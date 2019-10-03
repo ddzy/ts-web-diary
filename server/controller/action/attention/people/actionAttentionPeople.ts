@@ -1,7 +1,9 @@
 import * as Router from 'koa-router';
+import * as UUID from 'uuid';
 
 import {
   User,
+  IActivityAttentionPeopleProps,
 } from '../../../../model/model';
 
 
@@ -15,21 +17,33 @@ actionAttentionPeopleController.post('/', async (ctx) => {
     isAttention: boolean;
     fromUserId: string;
     toUserId: string;
+    activityType: string;
   };
 
   const {
     isAttention,
     fromUserId,
     toUserId,
+    activityType,
   } = ctx.request.body as IRequestParams;
 
   try {
     // ? 如果是关注
     if (isAttention) {
+      // * 创建新的动态
+      const createdActivity: IActivityAttentionPeopleProps = {
+        _id: UUID.v1(),
+        type: activityType,
+        user: toUserId,
+        create_time: Date.now(),
+        update_time: Date.now(),
+      };
+
       // * 更新关注方的信息
       await User.findByIdAndUpdate(fromUserId, {
         '$addToSet': {
           'attention.users': toUserId,
+          activities: createdActivity,
         },
       });
 
@@ -46,6 +60,10 @@ actionAttentionPeopleController.post('/', async (ctx) => {
       await User.findByIdAndUpdate(fromUserId, {
         '$pull': {
           'attention.users': toUserId,
+          activities: {
+            type: activityType,
+            user: toUserId,
+          },
         },
       });
 
