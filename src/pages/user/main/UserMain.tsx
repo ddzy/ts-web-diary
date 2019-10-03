@@ -1,4 +1,8 @@
 import * as React from 'react';
+import {
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 import { Row, Col, } from 'antd';
 
 import {
@@ -9,7 +13,7 @@ import UserMainContent from './content/UserMainContent';
 import UserMainExtra from './extra/UserMainExtra';
 
 
-export interface IUserProfileProps { };
+export interface IUserProfileProps extends RouteComponentProps { };
 
 
 const UserMain = React.memo<IUserProfileProps>((
@@ -34,4 +38,4 @@ const UserMain = React.memo<IUserProfileProps>((
 });
 
 
-export default UserMain;
+export default withRouter(UserMain);

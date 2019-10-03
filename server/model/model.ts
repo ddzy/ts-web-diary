@@ -44,6 +44,16 @@ import {
   INotificationUserStarArticleProps,
 } from './notification/user/star/article/notificationUserStarArticleModel.types';
 
+import {
+  ITrackStarArticleProps,
+} from './track/star/article/self/trackStarArticleSelfModel.types';
+import {
+  ITrackAttentionTopicProps,
+} from './track/attention/topic/trackAttentionTopicModel.types';
+import {
+  ITrackAttentionPeopleProps,
+} from './track/attention/people/trackAttentionPeopleModel.types';
+
 
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
@@ -97,4 +107,8 @@ export {
   INotificationUserFriendAgreeModelProps,
   INotificationUserFriendRefuseModelProps,
   INotificationUserStarArticleProps,
+
+  ITrackStarArticleProps,
+  ITrackAttentionTopicProps,
+  ITrackAttentionPeopleProps,
 };

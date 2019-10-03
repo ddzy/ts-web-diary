@@ -20,7 +20,10 @@ import {
   notificationUserFriendIOClient,
   notificationUserAttentionPeopleIOClient,
 } from 'services/websocket';
-import { NOTIFICATION_TYPE } from 'constants/constants';
+import {
+  NOTIFICATION_TYPE,
+  TRACK_TYPE,
+} from 'constants/constants';
 import BaseCommentItemTitleAvatarTitle from './title/BaseCommentItemTitleAvatarTitle';
 import BaseCommentItemTitleAvatarContent from './content/BaseCommentItemTitleAvatarContent';
 
@@ -214,6 +217,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
 
     const authorId = state.userProfileInfo.author_id;
     const notificationType = NOTIFICATION_TYPE.user.attention.people;
+    const trackType = TRACK_TYPE.attention.people;
     const newIsAttention = !state.userProfileInfo.user_is_attention;
 
     query({
@@ -224,6 +228,7 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
         isAttention: newIsAttention,
         fromUserId: userId,
         toUserId: authorId,
+        trackType,
       },
     }).then((res) => {
       const resCode = res.code;
@@ -244,11 +249,12 @@ const BaseCommentItemTitleAvatar = React.memo<IBaseCommentItemTitleAvatarProps>(
           },
         });
 
-      /* socket实时通知被关注者 */
-      attentionInfo.isAttention && state.notificationUserAttentionPeopleIOClient.emit('sendUserAttentionPeople', {
+      // socket实时通知被关注者
+      state.notificationUserAttentionPeopleIOClient.emit('sendUserAttentionPeople', {
           notificationType,
           fromUserId: userId,
           toUserId: authorId,
+          isAttention: newIsAttention,
         });
 
         message.success(resMessage);

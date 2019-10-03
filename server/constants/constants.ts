@@ -210,3 +210,23 @@ export const DEFAULT_TOPIC_LIST = [
     coverImgUrl: 'https://oos.twd.yyge.top/2019/9/20/admin/topic/images/cover/%E6%8A%A5%20offer.png',
   },
 ];
+
+/**
+ * 我的足迹类型
+ */
+export const TRACK_TYPE = {
+  star: {
+    article: {
+      self: `track_star_article`,
+      comment: `track_star_article_comment`,
+    },
+    pin: {
+      self: `track_star_pin`,
+      comment: `track_star_pin_comment`,
+    },
+  },
+  attention: {
+    people: `track_attention_people`,
+    topic: `track_attention_topic`,
+  },
+};

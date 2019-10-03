@@ -20,6 +20,14 @@ export interface ITopicSingleAsideInfoProps {
   };
   // ? 获取首屏数据时的loading状态
   isShowFirstlyLoading: boolean;
+
+  onToggleAttention: (
+    data: {
+      topicId: string,
+      isAttention: boolean,
+    },
+    callback?: () => void,
+  ) => void;
 };
 export interface ITopicSingleAsideInfoState { };
 
@@ -37,6 +45,7 @@ const TopicSingleAsideInfo = React.memo((props: ITopicSingleAsideInfoProps) => {
           {/* 话题信息区 */}
           <TopicSingleAsideInfoContent
             topicInfo={props.topicInfo}
+            onToggleAttention={props.onToggleAttention}
           />
 
           {/* 话题数据统计区 */}

@@ -63,6 +63,8 @@ registerController.post('/', async (ctx, ) => {
     },
     notifications: [],
     pins: [],
+    activities: [],
+    tracks: [],
   });
 
   ctx.body = {

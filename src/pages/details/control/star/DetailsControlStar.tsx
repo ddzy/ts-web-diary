@@ -17,6 +17,7 @@ import {
 import { query } from 'services/request';
 import {
   NOTIFICATION_TYPE,
+  TRACK_TYPE,
 } from 'constants/constants';
 import { notificationUserStarArticleIOClient } from 'services/websocket';
 
@@ -103,6 +104,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
       isStar: newIsStar,
     });
 
+    const trackType = TRACK_TYPE.star.article.self;
 
     query({
       method: 'POST',
@@ -111,6 +113,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
       data: {
         userId,
         articleId,
+        trackType,
         isStar: newIsStar,
       },
     }).then((res) => {
@@ -140,18 +143,19 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
           </span>
           );
 
-          // 点赞文章之后, 实时通知文章作者
-          state.notificationUserStarArticleIOClient.emit('sendUserStarArticle', {
-            notificationType,
-            userId,
-            authorId,
-            articleId,
-          });
-
           message.info(content);
         } else {
           message.info('你取消了赞!');
         }
+
+        // 点赞文章之后, 实时通知文章作者
+        state.notificationUserStarArticleIOClient.emit('sendUserStarArticle', {
+          notificationType,
+          userId,
+          authorId,
+          articleId,
+          isStar: newIsStar,
+        });
       }
     });
   }

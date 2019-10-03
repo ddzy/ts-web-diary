@@ -194,3 +194,30 @@ export const NOTIFICATION_TYPE = {
   },
   admin: {},
 };
+
+/**
+ * 动态类型(我关注的用户动态 + 话题动态)
+ */
+export const ACTIVITY_TYPE = {
+
+};
+
+/**
+ * 我的足迹类型
+ */
+export const TRACK_TYPE = {
+  star: {
+    article: {
+      self: `track_star_article`,
+      comment: `track_star_article_comment`,
+    },
+    pin: {
+      self: `track_star_pin`,
+      comment: `track_star_pin_comment`,
+    },
+  },
+  attention: {
+    people: `track_attention_people`,
+    topic: `track_attention_topic`,
+  },
+};
