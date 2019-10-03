@@ -148,14 +148,6 @@ topicSelfInfoController.get('/', async (ctx) => {
       .findById(topicId, { ...FILTER_SENSITIVE })
       .populate([
         {
-          path: 'followers',
-          options: {
-            select: {
-              ...FILTER_SENSITIVE,
-            },
-          },
-        },
-        {
           path: 'actors',
           options: {
             select: {
@@ -171,9 +163,7 @@ topicSelfInfoController.get('/', async (ctx) => {
 
     // ? 计算该用户是否关注了该话题
     const computeIsUserAttentionTopic = await foundTopicFollowers.some((v: any) => {
-      const oUserId = v._id;
-
-      return oUserId.equals(userId);
+      return v.equals(userId);
     });
 
     ctx.body = {
