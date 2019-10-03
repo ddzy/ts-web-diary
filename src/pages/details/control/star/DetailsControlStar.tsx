@@ -16,7 +16,7 @@ import {
 } from '../../Details.types';
 import { query } from 'services/request';
 import {
-  NOTIFICATION_TYPE,
+  NOTIFICATION_TYPE, ACTIVITY_TYPE,
 } from 'constants/constants';
 import { notificationUserStarArticleIOClient } from 'services/websocket';
 
@@ -103,6 +103,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
       isStar: newIsStar,
     });
 
+    const activityType = ACTIVITY_TYPE.star.article.self;
 
     query({
       method: 'POST',
@@ -111,6 +112,7 @@ const DetailsControlStar = React.memo<IDetailsControlStarProps>((
       data: {
         userId,
         articleId,
+        activityType,
         isStar: newIsStar,
       },
     }).then((res) => {

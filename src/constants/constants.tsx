@@ -194,3 +194,23 @@ export const NOTIFICATION_TYPE = {
   },
   admin: {},
 };
+
+/**
+ * 我的动态类型
+ */
+export const ACTIVITY_TYPE = {
+  star: {
+    article: {
+      self: `activity_star_article`,
+      comment: `activity_star_article_comment`,
+    },
+    pin: {
+      self: `activity_star_pin`,
+      comment: `activity_star_pin_comment`,
+    },
+  },
+  attention: {
+    people: `activity_attention_people`,
+    topic: `activity_attention_topic`,
+  },
+};

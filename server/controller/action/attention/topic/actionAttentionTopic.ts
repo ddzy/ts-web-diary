@@ -1,8 +1,10 @@
 import * as Router from 'koa-router';
+import * as UUID from 'uuid';
 
 import {
   Topic,
   User,
+  IActivityAttentionTopicProps,
 } from '../../../../model/model';
 
 
@@ -16,22 +18,34 @@ actionAttentionTopicController.post('/', async (ctx) => {
   interface IRequestParams {
     userId: string;
     topicId: string;
+    activityType: string;
     isAttention: boolean;
   };
 
   const {
     userId,
     topicId,
+    activityType,
     isAttention,
   } = ctx.request.body as IRequestParams;
 
   try {
     // ? 如果是关注
     if (isAttention) {
-      // * 更新用户关注的话题列表
+      // * 创建新的动态
+      const createdActivity: IActivityAttentionTopicProps = {
+        _id: UUID.v1(),
+        type: activityType,
+        topic: topicId,
+        create_time: Date.now(),
+        update_time: Date.now(),
+      };
+
+      // * 更新用户的相关信息
       await User.findByIdAndUpdate(userId, {
         '$addToSet': {
           'attention.topics': topicId,
+          activities: createdActivity,
         },
       });
 
@@ -45,6 +59,10 @@ actionAttentionTopicController.post('/', async (ctx) => {
       await User.findByIdAndUpdate(userId, {
         '$pull': {
           'attention.topics': topicId,
+          activities: {
+            type: activityType,
+            topic: topicId,
+          },
         },
       });
 

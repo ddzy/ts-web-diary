@@ -17,6 +17,7 @@ import {
   IStaticTopicInfo,
 } from 'pages/topic/Topic.types';
 import { query } from 'services/request';
+import { ACTIVITY_TYPE } from 'constants/constants';
 import TopicSingleAsideInfo from './info/TopicSingleAsideInfo';
 import TopicSingleAsideActor from './actor/TopicSingleAsideActor';
 
@@ -131,12 +132,15 @@ const TopicSingleAside = React.memo((props: ITopicSingleAsideProps) => {
       return props.history.push('/login');
     }
 
+    const activityType = ACTIVITY_TYPE.attention.topic;
+
     query({
       url: '/api/action/attention/topic',
       method: 'POST',
       jsonp: false,
       data: {
         userId,
+        activityType,
         ...data,
       },
     }).then((res) => {

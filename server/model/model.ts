@@ -44,6 +44,13 @@ import {
   INotificationUserStarArticleProps,
 } from './notification/user/star/article/notificationUserStarArticleModel.types';
 
+import {
+  IActivityStarArticleProps,
+} from './activity/star/article/self/activityStarArticleSelfModel.types';
+import {
+  IActivityAttentionTopicProps,
+} from './activity/attention/topic/activityAttentionTopicModel.types';
+
 
 mongoose.set('useFindAndModify', false);
 mongoose.connect(
@@ -97,4 +104,7 @@ export {
   INotificationUserFriendAgreeModelProps,
   INotificationUserFriendRefuseModelProps,
   INotificationUserStarArticleProps,
+
+  IActivityStarArticleProps,
+  IActivityAttentionTopicProps,
 };

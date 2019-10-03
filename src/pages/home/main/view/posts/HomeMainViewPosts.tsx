@@ -26,6 +26,7 @@ import {
 import {
   PAGE_SIZE,
   NOTIFICATION_TYPE,
+  ACTIVITY_TYPE,
 } from 'constants/constants';
 import { query } from 'services/request';
 import { notificationUserStarArticleIOClient } from 'services/websocket';
@@ -253,6 +254,8 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
       articleList: newArticleList,
     });
 
+    const activityType = ACTIVITY_TYPE.star.article.self;
+
     query({
       method: 'POST',
       jsonp: false,
@@ -260,6 +263,7 @@ const HomeMainViewPosts = React.memo<IHomeMainViewPostsProps>((
       data: {
         userId,
         articleId,
+        activityType,
         isStar: newIsStar,
       },
     }).then((res) => {

@@ -75,6 +75,12 @@ const UserSchema: mongoose.Schema = new Schema({
     default: [],
   }],
 
+  // ? 我的动态
+  activities: [{
+    type: Schema.Types.Mixed,
+    default: [],
+  }],
+
   // ? 沸点
   pins: [{
     type: Schema.Types.ObjectId,

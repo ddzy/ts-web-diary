@@ -1,9 +1,14 @@
 import * as Router from 'koa-router';
+import * as UUID from 'uuid';
 
 import redis from '../../../../redis/redis';
 import {
   generateStarArticleKey,
 } from '../../../../redis/keys/redisKeys';
+import {
+  User,
+  IActivityStarArticleProps,
+} from '../../../../model/model';
 
 
 const actionStarArticleController: Router = new Router();
@@ -16,21 +21,50 @@ actionStarArticleController.post('/', async (ctx) => {
   interface IRequestParams {
     userId: string;
     articleId: string;
+    activityType: string;
     isStar: boolean;
   };
 
   const {
     userId,
     articleId,
+    activityType,
     isStar,
   } = ctx.request.body as unknown as IRequestParams;
 
-  // redis处理文章点赞
   const redisKey = generateStarArticleKey(articleId);
 
-  isStar
-    ? await redis.zadd(redisKey, Date.now(), userId)
-    : await redis.zrem(redisKey, userId);
+  if (isStar) {
+    // ? redis更新文章的点赞状态
+    await redis.zadd(redisKey, Date.now(), userId);
+
+    // ? 更新用户的动态信息
+    const createdActivity: IActivityStarArticleProps = {
+      _id: UUID.v1(),
+      type: activityType,
+      article: articleId,
+      create_time: Date.now(),
+      update_time: Date.now(),
+    };
+
+    await User.findByIdAndUpdate(userId, {
+      '$addToSet': {
+        activities: createdActivity,
+      },
+    });
+  } else {
+    await redis.zrem(redisKey, userId);
+
+    // ? 删除点赞该文章的动态
+    await User.findByIdAndUpdate(userId, {
+      '$pull': {
+        activities: {
+          type: activityType,
+          article: articleId,
+        },
+      },
+    });
+  }
 
   ctx.body = {
     code: 0,
