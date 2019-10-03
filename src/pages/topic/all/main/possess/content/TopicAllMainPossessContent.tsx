@@ -25,6 +25,14 @@ import BaseGoodsDisplay from 'components/widget/base_goods_display/BaseGoodsDisp
 export interface ITopicAllPossessContentProps extends RouteComponentProps {
   // ? 我关注的话题列表
   allTopicList: IBaseCommonTopicInfo[];
+
+  onToggleAttention: (
+    data: {
+      topicId: string,
+      isAttention: boolean,
+    },
+    callback?: () => void,
+  ) => void;
 };
 export interface ITopicAllPossessContentState { };
 
@@ -78,18 +86,13 @@ const TopicAllPossessContent = React.memo((props: ITopicAllPossessContentProps) 
                 }
                 action={
                   <div>
-                    {
-                      v.is_attention
-                        ? (
-                          <span>已关注</span>
-                        )
-                        : (
-                          <Button
-                            type="link"
-                            icon="plus"
-                          >关注</Button>
-                        )
-                    }
+                    <Button
+                      type="link"
+                      icon={v.is_attention ? 'minus' : 'plus'}
+                      onClick={(e) => handleToggleAttention(e, v._id, !v.is_attention)}
+                    >
+                      {v.is_attention ? '取消关注' : '关注'}
+                    </Button>
                   </div>
                 }
               />
@@ -107,6 +110,22 @@ const TopicAllPossessContent = React.memo((props: ITopicAllPossessContentProps) 
     topicId: string,
   ) {
     props.history.push(`/topic/${topicId}`);
+  }
+
+  /**
+   * [处理] - 关注 or 取消关注话题
+   * @param e 点击的 DOM 元素事件流
+   * @param topicId 话题id
+   * @param isAttention 关注 or 取消
+   */
+  function handleToggleAttention(
+    e: React.MouseEvent,
+    topicId: string,
+    isAttention: boolean,
+  ) {
+    e.stopPropagation();
+
+    props.onToggleAttention({ topicId, isAttention });
   }
 
   return (

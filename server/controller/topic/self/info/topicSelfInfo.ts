@@ -1,4 +1,5 @@
 import * as Router from 'koa-router';
+import { ObjectID } from 'bson';
 
 import {
   Topic,
@@ -84,7 +85,9 @@ topicSelfInfoController.get('/list/attention_and_all', async (ctx) => {
     const processedAllTopicList = await foundAllTopicList.map((v: any) => {
       const topicId = v._id;
       const followerList = v.followers;
-      const isAttention = followerList.indexOf(userId) !== -1;
+      const isAttention = followerList.some((follower: ObjectID) => {
+        return follower.equals(userId);
+      });
 
       attentionTopicStateHash[topicId] = isAttention;
 
