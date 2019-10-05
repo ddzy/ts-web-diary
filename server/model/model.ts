@@ -43,10 +43,19 @@ import {
 import {
   INotificationUserStarArticleProps,
 } from './notification/user/star/article/notificationUserStarArticleModel.types';
+import {
+  INotificationUserStarPinProps,
+} from './notification/user/star/pin/notificationUserStarPinModel.types';
+import {
+  INotificationUserAttentionPeopleProps,
+} from './notification/user/attention/people/notificationUserAttentionPeople.types';
 
 import {
   ITrackStarArticleProps,
 } from './track/star/article/self/trackStarArticleSelfModel.types';
+import {
+  ITrackStarPinProps,
+} from './track/star/pin/self/trackStarPinSelfModel.types';
 import {
   ITrackAttentionTopicProps,
 } from './track/attention/topic/trackAttentionTopicModel.types';
@@ -102,13 +111,17 @@ export {
   PinComment,
   PinReply,
 
-  // ? Interfaces
+  // ? 通知
   INotificationUserFriendRequestModelProps,
   INotificationUserFriendAgreeModelProps,
   INotificationUserFriendRefuseModelProps,
   INotificationUserStarArticleProps,
+  INotificationUserStarPinProps,
+  INotificationUserAttentionPeopleProps,
 
+  // ? 足迹
   ITrackStarArticleProps,
+  ITrackStarPinProps,
   ITrackAttentionTopicProps,
   ITrackAttentionPeopleProps,
 };

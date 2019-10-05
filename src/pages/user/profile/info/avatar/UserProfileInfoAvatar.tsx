@@ -22,7 +22,7 @@ import UserProfileInfoAvatarContent from './content/UserProfileInfoAvatarContent
 import { query } from 'services/request';
 import { reduxHandleUpdateUseravatar } from 'components/authroute/AuthRoute.redux';
 import {
-  IBaseCommonUserProfileInfo,
+  IBaseCommonUserInfo,
 } from 'pages/user/User.types';
 
 
@@ -33,7 +33,7 @@ export interface IUserProfileInfoAvatarProps extends RouteComponentProps<{
   isOwner: boolean;
 
   // ? 用户的个人信息详情
-  userProfileInfo: IBaseCommonUserProfileInfo;
+  userProfileInfo: IBaseCommonUserInfo;
 
   reduxHandleUpdateUseravatar: (
     data: {

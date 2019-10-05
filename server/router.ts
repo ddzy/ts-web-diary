@@ -10,6 +10,7 @@ import articleDeleteController from './controller/article/delete/articleDelete';
 import actionController from './controller/action/action';
 import actionStarController from './controller/action/star/actionStar';
 import actionStarArticleController from './controller/action/star/article/actionStarArticle';
+import actionStarPinController from './controller/action/star/pin/actionStarPin';
 import actionAttentionController from './controller/action/attention/actionAttention';
 import actionAttentionPeopleController from './controller/action/attention/people/actionAttentionPeople';
 import actionAttentionTopicController from './controller/action/attention/topic/actionAttentionTopic';
@@ -130,6 +131,7 @@ replyArticleController
   .use('/info', replyArticleInfoController.routes(), replyArticleInfoController.allowedMethods())
 actionStarController
   .use('/article', actionStarArticleController.routes(), actionStarArticleController.allowedMethods())
+  .use('/pin', actionStarPinController.routes(), actionStarPinController.allowedMethods())
 actionAttentionController
   .use('/people', actionAttentionPeopleController.routes(), actionAttentionPeopleController.allowedMethods())
   .use('/topic', actionAttentionTopicController.routes(), actionAttentionTopicController.allowedMethods())

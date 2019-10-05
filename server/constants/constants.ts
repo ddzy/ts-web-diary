@@ -52,9 +52,23 @@ export const DEFAULT_USER_NAME_CONTENT = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'
 export const NOTIFICATION_TYPE = {
   user: {
     friend: {
-      request: 'user_friend_request',
-      agree: 'user_friend_agree',
-      refuse: 'user_friend_refuse',
+      request: 'notification_user_friend_request',
+      agree: 'notification_user_friend_agree',
+      refuse: 'notification_user_friend_refuse',
+    },
+    star: {
+      article: {
+        self: 'notification_user_star_article',
+        comment: 'notification_user_star_article_comment',
+      },
+      pin: {
+        self: 'notification_user_star_pin',
+        comment: 'notification_user_star_pin_comment',
+      },
+    },
+    attention: {
+      people: 'notification_user_attention_people',
+      topic: 'notification_user_attention_topic',
     },
   },
   admin: {},

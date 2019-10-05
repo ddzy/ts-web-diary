@@ -34,3 +34,20 @@ export function generateStarArticleKey(
 ) {
   return `${IOREDIS_STAR_ARTICLE}:${articleId}`;
 }
+
+
+// ? 沸点点赞
+// * 存储方式: SortedSet
+// * Key: IOREDIS_STAR_PIN:${pinId}
+// * 值: userId
+export const IOREDIS_STAR_PIN = 'star_pin';
+
+/**
+ * 生成存储沸点点赞的key
+ * @param pinId 沸点id
+ */
+export function generateStarPinKey(
+  pinId: string,
+) {
+  return `${IOREDIS_STAR_PIN}:${pinId}`;
+}

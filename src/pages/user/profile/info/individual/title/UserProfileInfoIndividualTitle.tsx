@@ -10,13 +10,13 @@ import {
   TitleDescText,
 } from './style';
 import {
-  IBaseCommonUserProfileInfo,
+  IBaseCommonUserInfo,
 } from 'pages/user/User.types';
 
 
 export interface IUserProfileInfoIndividualTitleProps {
   // ? 用户的个人信息详情
-  userProfileInfo: IBaseCommonUserProfileInfo;
+  userProfileInfo: IBaseCommonUserInfo;
 };
 
 
