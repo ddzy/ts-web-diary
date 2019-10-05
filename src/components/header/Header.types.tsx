@@ -87,3 +87,22 @@ export interface IBaseNotificationUserAttentionPeopleParams {
   create_time: number;
   update_time: number;
 };
+
+// ? 用户点赞我的沸点的通知模型
+export interface IBaseNotificationUserStarPinParams {
+  _id: string;
+  type: string;
+  from: {
+    _id: string,
+    username: string,
+  };
+  pin: {
+    _id: string,
+  };
+  pin_author: {
+    _id: string,
+    username: string,
+  };
+  create_time: number;
+  update_time: number;
+};

@@ -21,6 +21,11 @@ export const notificationUserFriendIOClient = IOClient(`${SOCKET_CONNECTION_INFO
 export const notificationUserStarArticleIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/article`);
 
 /**
+ * [通知] - 沸点点赞
+ */
+export const notificationUserStarPinIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/star/pin`);
+
+/**
  * [通知] - 关注用户
  */
 export const notificationUserAttentionPeopleIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/attention/people`);

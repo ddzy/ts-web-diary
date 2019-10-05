@@ -8,7 +8,7 @@ import {
 import UserProfileInfoAvatar from './avatar/UserProfileInfoAvatar';
 import UserProfileInfoIndividual from './individual/UserProfileInfoIndividual';
 import {
-  IBaseCommonUserProfileInfo,
+  IBaseCommonUserInfo,
 } from 'pages/user/User.types';
 
 
@@ -16,7 +16,7 @@ export interface IUserProfileInfoProps {
   // ? 标识主人还是访客
   isOwner: boolean;
   // ? 用户的个人信息详情
-  userProfileInfo: IBaseCommonUserProfileInfo;
+  userProfileInfo: IBaseCommonUserInfo;
 };
 
 

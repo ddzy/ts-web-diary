@@ -15,7 +15,7 @@ import {
 import UserProfileIndividualActionDetail from './detail/UserProfileIndividualActionDetail';
 import UserProfileIndividualActionEdit from './edit/UserProfileInfoIndividualActionEdit';
 import {
-  IBaseCommonUserProfileInfo,
+  IBaseCommonUserInfo,
 } from 'pages/user/User.types';
 
 
@@ -25,7 +25,7 @@ export interface IUserProfileInfoIndividualActionProps extends RouteComponentPro
   // ? 标识主人还是访客
   isOwner: boolean;
   // ? 用户的个人信息详情
-  userProfileInfo: IBaseCommonUserProfileInfo;
+  userProfileInfo: IBaseCommonUserInfo;
 };
 export interface IUserProfileInfoIndividualActionState {
 };

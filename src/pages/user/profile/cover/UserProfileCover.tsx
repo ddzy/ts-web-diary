@@ -18,7 +18,7 @@ import UserProfileCoverView from './view/UserProfileCoverView';
 import UserProfileCoverUpload from './upload/UserProfileCoverUpload';
 import { query } from 'services/request';
 import {
-  IBaseCommonUserProfileInfo,
+  IBaseCommonUserInfo,
 } from 'pages/user/User.types';
 
 
@@ -28,7 +28,7 @@ export interface IUserProfileCoverProps extends RouteComponentProps<{
   // ? 标识主人还是访客
   isOwner: boolean;
   // ? 用户的个人信息详情
-  userProfileInfo: IBaseCommonUserProfileInfo;
+  userProfileInfo: IBaseCommonUserInfo;
 };
 export interface IUserProfileCoverState {
   // ? 是否显示上传封面图片时的loading状态

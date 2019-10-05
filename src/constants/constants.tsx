@@ -125,6 +125,12 @@ export const PIN_REPLY_PAGE_SIZE_SMALL = 2;
 export const CHAT_MESSAGE_PAGE_SIZSE_LARGE = 7;
 
 /**
+ * 我的足迹列表的每页条数 - 中
+ */
+export const TRACK_PAGE_SIZE_MEDIUM = 5;
+
+
+/**
  * socket端口信息
  */
 export const SOCKET_CONNECTION_INFO = {
@@ -177,19 +183,23 @@ export const BIND_THIRD_PARTY_INFO = {
 export const NOTIFICATION_TYPE = {
   user: {
     friend: {
-      request: 'user_friend_request',
-      agree: 'user_friend_agree',
-      refuse: 'user_friend_refuse',
+      request: 'notification_user_friend_request',
+      agree: 'notification_user_friend_agree',
+      refuse: 'notification_user_friend_refuse',
     },
     star: {
       article: {
-        self: 'user_star_article',
-        comment: 'user_star_article_comment',
+        self: 'notification_user_star_article',
+        comment: 'notification_user_star_article_comment',
+      },
+      pin: {
+        self: 'notification_user_star_pin',
+        comment: 'notification_user_star_pin_comment',
       },
     },
     attention: {
-      people: 'user_attention_people',
-      topic: 'user_attention_topic',
+      people: 'notification_user_attention_people',
+      topic: 'notification_user_attention_topic',
     },
   },
   admin: {},

@@ -28,11 +28,6 @@ import {
   NOTIFICATION_TYPE,
   NOTICE_PAGE_SIZE_MEDIUM,
 } from 'constants/constants';
-import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
-import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
-import HeaderMainDummyNotificationNoticeFriendRefuse from './friend/refuse/HeaderMainDummyNotificationNoticeFriendRefuse';
-import HeaderMainDummyNotificationNoticeStarArticle from './star/article/HeaderMainDummyNotificationNoticeStarArticle';
-import HeaderMainDummyNotificationNoticeAttentionPeople from './attention/people/HeaderMainDummyNotificationNoticeAttentionPeople';
 import { query } from 'services/request';
 import { formatTime } from 'utils/utils';
 import {
@@ -41,12 +36,20 @@ import {
   IBaseNotificationUserFriendRefuseParams,
   IBaseNotificationUserStarArticleParams,
   IBaseNotificationUserAttentionPeopleParams,
+  IBaseNotificationUserStarPinParams,
 } from 'components/header/Header.types';
 import {
   notificationUserStarArticleIOClient,
   notificationUserFriendIOClient,
   notificationUserAttentionPeopleIOClient,
+  notificationUserStarPinIOClient,
 } from 'services/websocket';
+import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
+import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
+import HeaderMainDummyNotificationNoticeFriendRefuse from './friend/refuse/HeaderMainDummyNotificationNoticeFriendRefuse';
+import HeaderMainDummyNotificationNoticeStarArticle from './star/article/HeaderMainDummyNotificationNoticeStarArticle';
+import HeaderMainDummyNotificationNoticeAttentionPeople from './attention/people/HeaderMainDummyNotificationNoticeAttentionPeople';
+import HeaderMainDummyNotificationNoticeStarPin from './star/pin/HeaderMainDummyNotificationNoticeStarPin';
 
 
 // ? 追加通知列表
@@ -65,6 +68,8 @@ export interface IHeaderMainDummyNotificationNoticeState {
   notificationUserStarArticleIOClient: SocketIOClient.Socket;
   // ? 关注用户通知相关的socket
   notificationUserAttentionPeopleIOClient: SocketIOClient.Socket;
+  // ? 用户点赞沸点的socket
+  notificationUserStarPinIOClient: SocketIOClient.Socket;
 
   // ? 通知项列表
   notificationsList: React.ReactNode[];
@@ -162,6 +167,21 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
       };
+      case NOTIFICATION_TYPE.user.star.pin.self: {
+        return {
+          ...prevState,
+          notificationsList: [
+            React.createElement(
+              HeaderMainDummyNotificationNoticeStarPin,
+              {
+                notificationInfo: action.payload,
+              },
+            ),
+            ...prevState.notificationsList,
+          ],
+          notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
+        };
+      };
       case PRIVATE_RESET_UNREAD_TOTAL: {
         return {
           ...prevState,
@@ -200,6 +220,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     notificationUserFriendIOClient,
     notificationUserStarArticleIOClient,
     notificationUserAttentionPeopleIOClient,
+    notificationUserStarPinIOClient,
     notificationUnreadTotal: 0,
     notificationsList: [],
     hasMoreNotification: true,
@@ -305,6 +326,20 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       if (currentUserId === data.to._id) {
         dispatch({
           type: NOTIFICATION_TYPE.user.attention.people,
+          payload: data,
+        });
+      }
+    });
+
+    // ? 用户点赞我的沸点时的通知socket
+    state.notificationUserStarPinIOClient.on('receiveUserStarPin', (
+      data: IBaseNotificationUserStarPinParams,
+    ) => {
+      const currentUserId = localStorage.getItem('userid');
+
+      if (currentUserId === data.pin_author._id) {
+        dispatch({
+          type: NOTIFICATION_TYPE.user.star.pin.self,
           payload: data,
         });
       }
@@ -441,6 +476,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
             case NOTIFICATION_TYPE.user.attention.people: {
               return React.createElement(
                 HeaderMainDummyNotificationNoticeAttentionPeople,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.star.pin.self: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeStarPin,
                 {
                   notificationInfo: v,
                 },

@@ -1,8 +1,14 @@
 import * as Router from 'koa-router';
 
 import {
-  User, Posts,
+  User,
+  Posts,
+  Pin,
 } from '../../../model/model';
+import {
+  NOTIFICATION_TYPE,
+  FILTER_SENSITIVE,
+} from '../../../constants/constants';
 
 
 const notificationUserController = new Router();
@@ -54,30 +60,122 @@ notificationUserController.get('/info/list', async (ctx) => {
       // ? 解析通知列表条目中的关联表
       // * 不同类型通知的字段各不相同, 后续可能会做处理
       const parsedUserNotificationList = await Promise.all(filteredNotificationList.map(async (v: any) => {
-        const foundFromUserInfo = await User.findById(
-          v.from,
-          '_id username useravatar',
-        );
-        const foundToUserInfo = await User.findById(
-          v.to,
-          '_id username useravatar',
-        );
-        const foundArticleInfo = await Posts.findById(
-          v.article,
-          '_id title',
-        );
-        const foundArticleAuthorInfo = await Posts.findById(
-          v.article_author,
-          '_id username useravatar',
-        );
+        const currentType = v.type;
 
-        return {
-          ...v,
-          from: foundFromUserInfo,
-          to: foundToUserInfo,
-          article: foundArticleInfo,
-          article_author: foundArticleAuthorInfo,
-        };
+        switch (currentType) {
+          case NOTIFICATION_TYPE.user.friend.request: {
+            // ? 查找发送方的信息
+            const foundSenderUserInfo = await User.findById(v.from, {
+              ...FILTER_SENSITIVE,
+            });
+
+            // ? 查找接收方的信息
+            const foundReceiverUserInfo = await User.findById(v.to, {
+              ...FILTER_SENSITIVE,
+            });
+
+            return {
+              ...v,
+              from: foundSenderUserInfo,
+              to: foundReceiverUserInfo,
+            };
+          };
+          case NOTIFICATION_TYPE.user.friend.agree: {
+            // ? 查找发送方的信息
+            const foundSenderUserInfo = await User.findById(v.from, {
+              ...FILTER_SENSITIVE,
+            });
+
+            // ? 查找接收方的信息
+            const foundReceiverUserInfo = await User.findById(v.to, {
+              ...FILTER_SENSITIVE,
+            });
+
+            return {
+              ...v,
+              from: foundSenderUserInfo,
+              to: foundReceiverUserInfo,
+            };
+          };
+          case NOTIFICATION_TYPE.user.friend.refuse: {
+            // ? 查找发送方的信息
+            const foundSenderUserInfo = await User.findById(v.from, {
+              ...FILTER_SENSITIVE,
+            });
+
+            // ? 查找接收方的信息
+            const foundReceiverUserInfo = await User.findById(v.to, {
+              ...FILTER_SENSITIVE,
+            });
+
+            return {
+              ...v,
+              from: foundSenderUserInfo,
+              to: foundReceiverUserInfo,
+            };
+          };
+          case NOTIFICATION_TYPE.user.attention.people: {
+            // ? 查找发送方的信息
+            const foundSenderUserInfo = await User.findById(v.from, {
+              ...FILTER_SENSITIVE,
+            });
+
+            // ? 查找接收方的信息
+            const foundReceiverUserInfo = await User.findById(v.to, {
+              ...FILTER_SENSITIVE,
+            });
+
+            return {
+              ...v,
+              from: foundSenderUserInfo,
+              to: foundReceiverUserInfo,
+            };
+          };
+          case NOTIFICATION_TYPE.user.star.article.self: {
+            // ? 查找发送方的信息
+            const foundSenderInfo = await User.findById(v.from, {
+              ...FILTER_SENSITIVE,
+            });
+
+            // ? 查询文章信息
+            const foundArticleInfo = await Posts.findById(v.article, {
+              ...FILTER_SENSITIVE,
+            });
+
+            // ? 查询文章作者信息
+            const foundArticleAuthorInfo = await User.findById(v.article_author, {
+              ...FILTER_SENSITIVE,
+            });
+
+            return {
+              ...v,
+              from: foundSenderInfo,
+              article: foundArticleInfo,
+              article_author: foundArticleAuthorInfo,
+            };
+          };
+          case NOTIFICATION_TYPE.user.star.pin.self: {
+            // ? 查找发送方的信息
+            const foundSenderInfo = await User.findById(v.from, {
+              ...FILTER_SENSITIVE,
+            });
+            // ? 查找沸点的信息
+            const foundPinInfo = await Pin.findById(v.pin, {
+              ...FILTER_SENSITIVE,
+            });
+            // ? 查询沸点的作者信息
+            const foundPinAuthorInfo = await User.findById(v.pin_author, {
+              ...FILTER_SENSITIVE,
+            });
+
+            return {
+              ...v,
+              from: foundSenderInfo,
+              pin: foundPinInfo,
+              pin_author: foundPinAuthorInfo,
+            };
+          };
+        }
       }));
 
       ctx.body = {

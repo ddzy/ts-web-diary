@@ -1,7 +1,7 @@
 import * as Router from 'koa-router';
 
 import {
-  User, Topic, Posts,
+  User, Topic, Posts, Pin,
 } from '../../../../../model/model';
 import {
   TRACK_TYPE,
@@ -16,27 +16,52 @@ const userInfoPartialTrackController = new Router();
  * [处理] - 获取用户的足迹列表
  * @todo 分页获取
  */
-userInfoPartialTrackController.get('/list', async (ctx) => {
+userInfoPartialTrackController.post('/list', async (ctx) => {
   interface IRequestParams {
     ownerId: string;
+    pageSize: number;
+    lastTrackId: string;
   };
 
   const {
     ownerId,
-  } = ctx.request.query as IRequestParams;
+    pageSize,
+    lastTrackId,
+  } = ctx.request.body as IRequestParams;
 
   try {
     // ? 查询用户信息
     const foundUserInfo = await User.findById(ownerId, '_id username tracks')
 
-    // ? 预处理用户的足迹列表
-    const foundUserTrackList = await foundUserInfo.tracks;
-    const processedUserTrackList = await Promise.all(foundUserTrackList.map(async (v: any) => {
+    // ? 查询用户的足迹列表
+    const foundUserTrackList = await foundUserInfo.tracks.reverse();
+
+    // ? 分页过滤足迹列表
+    // ? 分页查询
+    let filteredUserTrackList: any[] = [];
+
+    // * 如果是第一次获取足迹列表
+    if (!lastTrackId) {
+      filteredUserTrackList = await foundUserTrackList.slice(0, Number(pageSize));
+    } else {
+      // * 相反, 如果不是第一次获取
+      foundUserTrackList.forEach((v: any, i: number) => {
+        if (v._id === lastTrackId) {
+          filteredUserTrackList = foundUserTrackList.slice(
+            i + 1,
+            i + Number(pageSize) + 1,
+          );
+        }
+      });
+    }
+
+    // ? 格式化用户的足迹列表
+    const processedUserTrackList = await Promise.all(filteredUserTrackList.map(async (v: any) => {
       const currentTrackType = v.type;
 
       switch (currentTrackType) {
         case TRACK_TYPE.attention.people: {
-          const foundCurrentUserInfo = await User.findById(v.user, '_id username');
+          const foundCurrentUserInfo = await User.findById(v.user, { ...FILTER_SENSITIVE });
 
           return {
             ...v,
@@ -61,6 +86,22 @@ userInfoPartialTrackController.get('/list', async (ctx) => {
           return {
             ...v,
             article: foundCurrentArticleInfo,
+          };
+        };
+        case TRACK_TYPE.star.pin.self: {
+          // ? 查询沸点信息
+          const foundCurrentPinInfo = await Pin.findById(v.pin, {
+            ...FILTER_SENSITIVE,
+          });
+          // ? 查询沸点的作者信息
+          const foundCurrentPinAuthorInfo = await User.findById(v.pin_author, {
+            ...FILTER_SENSITIVE,
+          });
+
+          return {
+            ...v,
+            pin: foundCurrentPinInfo,
+            pin_author: foundCurrentPinAuthorInfo,
           };
         };
         default: {
