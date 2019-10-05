@@ -32,6 +32,14 @@ export const ActionMainControlStarBox = styled.div`
 export const ActionMainControlStar = styled.span`
 
 `;
+export const ActionMainControlStarCount = styled.span`
+  && {
+    display: inline-block;
+    margin-left: 8px;
+    border: none;
+  }
+`;
+
 export const ActionMainControlCommentBox = styled.div`
   padding: 12px 0;
 `;

@@ -1,7 +1,7 @@
 import * as Router from 'koa-router';
 
 import {
-  User, Topic, Posts,
+  User, Topic, Posts, Pin,
 } from '../../../../../model/model';
 import {
   TRACK_TYPE,
@@ -86,6 +86,22 @@ userInfoPartialTrackController.post('/list', async (ctx) => {
           return {
             ...v,
             article: foundCurrentArticleInfo,
+          };
+        };
+        case TRACK_TYPE.star.pin.self: {
+          // ? 查询沸点信息
+          const foundCurrentPinInfo = await Pin.findById(v.pin, {
+            ...FILTER_SENSITIVE,
+          });
+          // ? 查询沸点的作者信息
+          const foundCurrentPinAuthorInfo = await User.findById(v.pin_author, {
+            ...FILTER_SENSITIVE,
+          });
+
+          return {
+            ...v,
+            pin: foundCurrentPinInfo,
+            pin_author: foundCurrentPinAuthorInfo,
           };
         };
         default: {

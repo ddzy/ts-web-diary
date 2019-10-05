@@ -1,7 +1,7 @@
 /**
  * 用户的个人基本信息接口
  */
-interface IStaticUserProfileInfo {
+interface IStaticUserInfo {
   _id: string;
   username: string;
   usergender: string;
@@ -14,7 +14,7 @@ interface IStaticUserProfileInfo {
   education: string;
 };
 
-export interface IBaseCommonUserProfileInfo extends IStaticUserProfileInfo {
+export interface IBaseCommonUserInfo extends IStaticUserInfo {
 };
 
 
@@ -28,7 +28,7 @@ export interface IStaticTopicInfo {
   description: string;
   pins: string[];
   followers: string[];
-  actors: IStaticUserProfileInfo[];
+  actors: IStaticUserInfo[];
   create_time: number;
   update_time: number;
 };
@@ -44,12 +44,20 @@ export interface IStaticArticleInfo {
 
 
 /**
+ * [沸点] - 沸点的基本信息接口
+ */
+export interface IStaticPinInfo {
+  _id: string;
+};
+
+
+/**
  * [用户的足迹] 关注用户的足迹基本接口
  */
 interface IStaticTrackAttentionPeopleInfo {
   _id: string;
   type: string;
-  user: IStaticUserProfileInfo;
+  user: IStaticUserInfo;
   create_time: number;
   update_time: number;
 };
@@ -83,5 +91,22 @@ interface IStaticTrackStarArticleInfo {
 };
 
 export interface IBaseCommonTrackStarArticleInfo extends IStaticTrackStarArticleInfo {
+
+};
+
+
+/**
+ * [用户的足迹] 点赞沸点的足迹接口
+ */
+interface IStaticTrackStarPinInfo {
+  _id: string;
+  type: string;
+  pin: IStaticPinInfo;
+  pin_author: IStaticUserInfo;
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonTrackStarPinInfo extends IStaticTrackStarPinInfo {
 
 };

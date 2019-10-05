@@ -27,6 +27,9 @@ import {
   handleNotificationUserStarArticle,
 } from './controller/notification/user/star/article/notificationUserStarArticle';
 import {
+  handleNotificationUserStarPin,
+} from './controller/notification/user/star/pin/notificationUserStarPin';
+import {
   handleNotificationUserStarArticleComment,
 } from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
 import {
@@ -101,6 +104,12 @@ notificationUserStarArticleIO.on('connection', (socket) => {
 const notificationUserStarArticleCommentIO = io.of('/notification/user/star/article/comment');
 notificationUserStarArticleCommentIO.on('connection', (socket) => {
   handleNotificationUserStarArticleComment(socket, notificationUserStarArticleCommentIO);
+});
+
+// ? 处理用户点赞沸点的相关Websocket
+const notificationUserStarPinIO = io.of('/notification/user/star/pin');
+notificationUserStarPinIO.on('connection', (socket) => {
+  handleNotificationUserStarPin(socket, notificationUserStarPinIO);
 });
 
 // ? 处理关注用户的相关通知的Websocket

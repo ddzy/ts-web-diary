@@ -51,6 +51,8 @@ export interface IBaseCommonPinInfo extends IStaticPinInfo {
   user_is_current_author: boolean,
   user_is_attention: boolean,
   comment_total: number,
+  stared_user: string[];
+  user_is_stared: boolean;
 };
 
 

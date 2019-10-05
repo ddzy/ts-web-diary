@@ -14,7 +14,7 @@ import {
 import UserProfileCover from './cover/UserProfileCover';
 import UserProfileInfo from './info/UserProfileInfo';
 import {
-  IBaseCommonUserProfileInfo,
+  IBaseCommonUserInfo,
 } from '../User.types';
 import { query } from 'services/request';
 
@@ -27,7 +27,7 @@ export interface IUserProfileProps extends RouteComponentProps<{
 };
 export interface IUserProfileState {
   // ? 用户的个人信息详情
-  userProfileInfo: IBaseCommonUserProfileInfo;
+  userProfileInfo: IBaseCommonUserInfo;
 };
 
 

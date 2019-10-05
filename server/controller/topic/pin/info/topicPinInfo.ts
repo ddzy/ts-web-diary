@@ -7,6 +7,8 @@ import {
   PinReply,
 } from '../../../../model/model';
 import { FILTER_SENSITIVE } from '../../../../constants/constants';
+import { generateStarPinKey } from '../../../../redis/keys/redisKeys';
+import redis from '../../../../redis/redis';
 
 
 const topicPinInfoController = new Router();
@@ -67,6 +69,10 @@ topicPinInfoController.post('/list', async (ctx) => {
 
     // ? 预处理沸点列表
     const processedPinList = await Promise.all(foundPinList.pins.map(async (v: any) => {
+      // ? 查询当前沸点的获取列表
+      const redisStarPinKey = generateStarPinKey(v._id);
+      const foundStaredUserList = await redis.zrange(redisStarPinKey, 0, -1);
+
       // ? 查询当前沸点的评论回复总数
       const foundCurrentPinCommentTotal = await PinComment.find({
         pin_id: v._id,
@@ -74,6 +80,11 @@ topicPinInfoController.post('/list', async (ctx) => {
       const foundCurrentPinReplyTotal = await PinReply.find({
         pin_id: v._id,
       }).countDocuments();
+
+      // ? 计算当前用户是否点赞过沸点
+      const computeIsStar = foundStaredUserList.some((user: string) => {
+        return user === userId;
+      });
 
       // ? 计算当前用户是否已经关注了评论人
       const computeIsAttention = v.author_id.followers.some((follow: any) => {
@@ -103,7 +114,9 @@ topicPinInfoController.post('/list', async (ctx) => {
         user_is_friend: (computeUserIsAuthorFriend && computeAuthorIsUserFriend) ? true : false,
         user_is_current_author: computeIsAuthorEqualUser,
         user_is_attention: computeIsAttention,
-        comment_total: foundCurrentPinCommentTotal + foundCurrentPinReplyTotal
+        comment_total: foundCurrentPinCommentTotal + foundCurrentPinReplyTotal,
+        stared_user: foundStaredUserList,
+        user_is_stared: computeIsStar,
       };
     }));
 

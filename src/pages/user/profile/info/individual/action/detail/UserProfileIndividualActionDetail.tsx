@@ -16,13 +16,13 @@ import {
   DetailMainContentItemValue,
 } from './style';
 import {
-  IBaseCommonUserProfileInfo,
+  IBaseCommonUserInfo,
 } from 'pages/user/User.types';
 
 
 export interface IUserProfileIndividualActionDetailProps {
   // ? 用户的个人信息详情
-  userProfileInfo: IBaseCommonUserProfileInfo;
+  userProfileInfo: IBaseCommonUserInfo;
 };
 export interface IUserProfileIndividualActionDetailState { }
 

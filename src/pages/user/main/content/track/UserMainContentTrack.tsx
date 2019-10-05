@@ -23,6 +23,7 @@ import {
 import UserMainContentTrackAttentionPeople from './attention/people/UserMainContentTrackAttentionPeople';
 import UserMainContentTrackAttentionTopic from './attention/topic/UserMainContentTrackAttentionTopic';
 import UserMainContentTrackStarArticleSelf from './star/article/self/UserMainContentTrackStarArticleSelf';
+import UserMainContentTrackStarPinSelf from './star/pin/self/UserMainContentTrackStarPinSelf';
 
 
 export interface IUserMainContentTrackProps extends RouteComponentProps<{
@@ -172,6 +173,13 @@ const UserMainContentTrack = React.memo((props: IUserMainContentTrackProps) => {
       case TRACK_TYPE.star.article.self: {
         return (
           <UserMainContentTrackStarArticleSelf
+            trackInfo={v}
+          />
+        );
+      };
+      case TRACK_TYPE.star.pin.self: {
+        return (
+          <UserMainContentTrackStarPinSelf
             trackInfo={v}
           />
         );
