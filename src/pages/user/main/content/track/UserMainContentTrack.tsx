@@ -5,6 +5,8 @@ import {
 } from 'react-router-dom';
 import {
   message,
+  List,
+  Empty,
 } from 'antd';
 
 import {
@@ -12,6 +14,12 @@ import {
   TrackMain,
 } from './style';
 import { query } from 'services/request';
+import {
+  TRACK_TYPE,
+} from 'constants/constants';
+import UserMainContentTrackAttentionPeople from './attention/people/UserMainContentTrackAttentionPeople';
+import UserMainContentTrackAttentionTopic from './attention/topic/UserMainContentTrackAttentionTopic';
+import UserMainContentTrackStarArticleSelf from './star/article/self/UserMainContentTrackStarArticleSelf';
 
 
 export interface IUserMainContentTrackProps extends RouteComponentProps<{
@@ -82,15 +90,69 @@ const UserMainContentTrack = React.memo((props: IUserMainContentTrackProps) => {
    * [初始化] - 足迹列表
    */
   function _initTrackList() {
-    console.log(state);
+    const { ownerTrackList } = state;
 
-    return null;
+    return ownerTrackList.length === 0
+      ? (
+        <Empty description="暂时没有更多足迹~" />
+      )
+      : ownerTrackList.map((v) => {
+        return (
+          <List.Item
+            key={v._id}
+            style={{
+              borderBottom: 'none',
+            }}
+          >
+            {_initTrackContent(v)}
+          </List.Item>
+        )
+      })
+  }
+
+  /**
+   * [初始化] - 根据足迹的不同类型, 初始化对应的内容
+   * @param v 足迹的相关信息值
+   */
+  function _initTrackContent(
+    v: any,
+  ) {
+    const type = v.type;
+
+    switch (type) {
+      case TRACK_TYPE.attention.people: {
+        return (
+          <UserMainContentTrackAttentionPeople
+            trackInfo={v}
+          />
+        );
+      };
+      case TRACK_TYPE.attention.topic: {
+        return (
+          <UserMainContentTrackAttentionTopic
+            trackInfo={v}
+          />
+        );
+      };
+      case TRACK_TYPE.star.article.self: {
+        return (
+          <UserMainContentTrackStarArticleSelf
+            trackInfo={v}
+          />
+        );
+      };
+      default: {
+        return (<React.Fragment />)
+      };
+    }
   }
 
   return (
     <TrackWrapper>
       <TrackMain>
-        {_initTrackList()}
+        <List>
+          {_initTrackList()}
+        </List>
       </TrackMain>
     </TrackWrapper>
   );

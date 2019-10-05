@@ -36,7 +36,7 @@ userInfoPartialTrackController.get('/list', async (ctx) => {
 
       switch (currentTrackType) {
         case TRACK_TYPE.attention.people: {
-          const foundCurrentUserInfo = await User.findById(v.user, '_id username');
+          const foundCurrentUserInfo = await User.findById(v.user, {...FILTER_SENSITIVE});
 
           return {
             ...v,
