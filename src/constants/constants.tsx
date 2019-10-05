@@ -125,6 +125,12 @@ export const PIN_REPLY_PAGE_SIZE_SMALL = 2;
 export const CHAT_MESSAGE_PAGE_SIZSE_LARGE = 7;
 
 /**
+ * 我的足迹列表的每页条数 - 中
+ */
+export const TRACK_PAGE_SIZE_MEDIUM = 5;
+
+
+/**
  * socket端口信息
  */
 export const SOCKET_CONNECTION_INFO = {
