@@ -9,8 +9,11 @@ import {
   RouteComponentProps,
 } from 'react-router-dom';
 
-import Write from '../../components/write/Write';
 import { query } from 'services/request';
+import {
+  TRACK_TYPE,
+} from 'constants/constants';
+import Write from '../../components/write/Write';
 
 
 export interface IPublishProps extends RouteComponentProps {
@@ -69,6 +72,8 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
       return;
     }
 
+    const trackType = TRACK_TYPE.create.article;
+
     query({
       url: '/api/article/create',
       method: 'POST',
@@ -76,6 +81,7 @@ class Publish extends React.PureComponent<IPublishProps, IPublishState> {
       data: {
         ...data,
         userId,
+        trackType,
       },
     }).then((res) => {
       const { code } = res;

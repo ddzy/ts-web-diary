@@ -104,6 +104,28 @@ userInfoPartialTrackController.post('/list', async (ctx) => {
             pin_author: foundCurrentPinAuthorInfo,
           };
         };
+        case TRACK_TYPE.create.article: {
+          // ? 查询文章信息
+          const foundArticleInfo = await Posts.findById(v.article, {
+            ...FILTER_SENSITIVE,
+          });
+
+          return {
+            ...v,
+            article: foundArticleInfo,
+          };
+        };
+        case TRACK_TYPE.create.pin: {
+          // ? 查询对应的沸点信息
+          const foundPinInfo = await Pin.findById(v.pin, {
+            ...FILTER_SENSITIVE,
+          });
+
+          return {
+            ...v,
+            pin: foundPinInfo,
+          };
+        };
         default: {
           return v;
         };

@@ -62,6 +62,12 @@ import {
 import {
   ITrackAttentionPeopleProps,
 } from './track/attention/people/trackAttentionPeopleModel.types';
+import {
+  ITrackCreateArticleProps,
+} from './track/create/article/trackCreateArticleModel.types';
+import {
+  ITrackCreatePinProps,
+} from './track/create/pin/trackCreatePinModel.types';
 
 
 mongoose.set('useFindAndModify', false);
@@ -124,4 +130,6 @@ export {
   ITrackStarPinProps,
   ITrackAttentionTopicProps,
   ITrackAttentionPeopleProps,
+  ITrackCreateArticleProps,
+  ITrackCreatePinProps,
 };
