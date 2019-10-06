@@ -4,6 +4,7 @@ import {
   PostContainer,
   PostMain,
 } from './style';
+import UserMainContentPostDisplay from './display/UserMainContentPostDisplay';
 
 
 export interface IUserMainContentPostProps { };
@@ -16,7 +17,8 @@ const UserMainContentPost = React.memo<IUserMainContentPostProps>((
   return (
     <PostContainer>
       <PostMain>
-        我的文章相关内容
+        {/* 文章列表区块 */}
+        <UserMainContentPostDisplay />
       </PostMain>
     </PostContainer>
   );
