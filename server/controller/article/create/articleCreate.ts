@@ -1,4 +1,5 @@
 import * as Router from 'koa-router';
+import * as UUID from 'uuid';
 
 import {
   getFullRandom,
@@ -7,6 +8,7 @@ import {
 import {
   Posts,
   User,
+  ITrackCreateArticleProps,
 } from '../../../model/model';
 
 const articleCreateController: Router = new Router();
@@ -17,19 +19,21 @@ const articleCreateController: Router = new Router();
  */
 articleCreateController.post('/', async (ctx) => {
   interface IRequestParams {
-    userId: string,
-    title: string,
+    userId: string;
+    trackType: string;
+    title: string;
     content: {
       ops: any[],
-    },
-    cover_img: string,
-    mode: string,
-    type: string,
-    tag: string[],
+    };
+    cover_img: string;
+    mode: string;
+    type: string;
+    tag: string[];
   };
 
   const {
     userId,
+    trackType,
     title,
     content,
     cover_img,
@@ -66,8 +70,8 @@ articleCreateController.post('/', async (ctx) => {
     }
   }
 
-  // ? 存储文章
-  const savedArticle = await Posts.create({
+  // ? 创建新的文章
+  const createdArticle = await Posts.create({
     author: userId,
     comments: [],
     create_time: Date.now(),
@@ -83,10 +87,20 @@ articleCreateController.post('/', async (ctx) => {
     collected_user: [],
   });
 
-  // ? 同步更新User
+  // ? 创建新的个人足迹
+  const createdTrack: ITrackCreateArticleProps = {
+    _id: UUID.v1(),
+    type: trackType,
+    article: String(createdArticle._id),
+    create_time: Date.now(),
+    update_time: Date.now(),
+  };
+
+  // ? 更新当前用户的相关信息
   await User.findByIdAndUpdate(userId, {
     '$push': {
-      articles: savedArticle,
+      articles: createdArticle,
+      tracks: createdTrack,
     },
   });
 

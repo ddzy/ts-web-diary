@@ -58,6 +58,7 @@ import userInfoAccountController from './controller/user/info/account/userInfoAc
 import userInfoArticleController from './controller/user/info/article/userInfoArticle';
 import userInfoPartialController from './controller/user/info/partial/userInfoPartial';
 import userInfoPartialTrackController from './controller/user/info/partial/track/userInfoPartialTrack';
+import userInfoPartialArticleController from './controller/user/info/partial/article/userInfoPartialArticle';
 
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
@@ -119,7 +120,8 @@ notificationUserAttentionController
   .use('/people', notificationUserAttentionPeopleController.routes(), notificationUserAttentionPeopleController.allowedMethods())
   .use('/topic', notificationUserAttentionTopicController.routes(), notificationUserAttentionTopicController.allowedMethods());
 userInfoPartialController
-  .use('/track', userInfoPartialTrackController.routes(), userInfoPartialTrackController.allowedMethods());
+  .use('/track', userInfoPartialTrackController.routes(), userInfoPartialTrackController.allowedMethods())
+  .use('/article', userInfoPartialArticleController.routes(), userInfoPartialArticleController.allowedMethods());
 
 
 // !! 三级路由 !!

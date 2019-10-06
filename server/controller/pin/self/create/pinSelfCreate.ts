@@ -1,9 +1,11 @@
 import * as Router from 'koa-router';
+import * as UUID from 'uuid';
 
 import {
   Pin,
   User,
   Topic,
+  ITrackCreatePinProps,
 } from '../../../../model/model';
 import { FILTER_SENSITIVE } from '../../../../constants/constants';
 
@@ -30,11 +32,13 @@ pinSelfCreateController.post('/', async (ctx) => {
       topic: string,
     };
     userId: string;
+    trackType: string;
   };
 
   const {
     pinInfo,
     userId,
+    trackType,
   } = ctx.request.body as IRequestParams;
 
   try {
@@ -50,12 +54,22 @@ pinSelfCreateController.post('/', async (ctx) => {
       update_time: Date.now(),
     });
 
-    // ? 更新用户的沸点列表
+    // ? 创建新的用户足迹
+    const createdTrack: ITrackCreatePinProps = {
+      _id: UUID.v1(),
+      type: trackType,
+      pin: String(createdPin._id),
+      create_time: Date.now(),
+      update_time: Date.now(),
+    };
+
+    // ? 更新用户的相关信息
     await User.findByIdAndUpdate(
       userId,
       {
         '$push': {
           pins: createdPin,
+          tracks: createdTrack,
         },
       },
     );

@@ -39,7 +39,22 @@ export interface IStaticTopicInfo {
  */
 export interface IStaticArticleInfo {
   _id: string;
+  author: IStaticUserInfo;
+  comments: string[];
+  cover_img: string;
+  mode: string;
+  type: string;
   title: string;
+  description: string;
+  content: string;
+  tag: string;
+  watched_user: string[];
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonArticleInfo extends IStaticArticleInfo {
+
 };
 
 
@@ -48,6 +63,7 @@ export interface IStaticArticleInfo {
  */
 export interface IStaticPinInfo {
   _id: string;
+  content_plain: string;
 };
 
 
@@ -110,3 +126,31 @@ interface IStaticTrackStarPinInfo {
 export interface IBaseCommonTrackStarPinInfo extends IStaticTrackStarPinInfo {
 
 };
+
+
+/**
+ * [用户的足迹] 发表新文章的足迹接口
+ */
+interface IStaticTrackCreateArticleInfo {
+  _id: string;
+  type: string;
+  article: IStaticArticleInfo;
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonTrackCreateArticleInfo extends IStaticTrackCreateArticleInfo { };
+
+
+/**
+ * [用户的足迹] 发表新沸点的足迹接口
+ */
+interface IStaticTrackCreatePinInfo {
+  _id: string;
+  type: string;
+  pin: IStaticPinInfo;
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonTrackCreatePinInfo extends IStaticTrackCreatePinInfo { };

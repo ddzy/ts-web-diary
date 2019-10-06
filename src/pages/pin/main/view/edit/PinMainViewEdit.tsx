@@ -12,8 +12,11 @@ import {
   EditWrapper,
   EditMain,
 } from './style';
-import BasePinEdit from 'components/widget/base_pin_edit/BasePinEdit';
 import { query } from 'services/request';
+import {
+  TRACK_TYPE,
+} from 'constants/constants';
+import BasePinEdit from 'components/widget/base_pin_edit/BasePinEdit';
 
 
 export interface IPinMainViewEditProps extends RouteComponentProps {};
@@ -49,6 +52,8 @@ const PinMainViewEdit = React.memo((props: IPinMainViewEditProps) => {
       return props.history.push('/login');
     }
 
+    const trackType = TRACK_TYPE.create.pin;
+
     query({
       method: 'POST',
       jsonp: false,
@@ -56,6 +61,7 @@ const PinMainViewEdit = React.memo((props: IPinMainViewEditProps) => {
       data: {
         pinInfo,
         userId,
+        trackType,
       },
     }).then((res) => {
       const resCode = res.code;
