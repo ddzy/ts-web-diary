@@ -110,3 +110,17 @@ interface IStaticTrackStarPinInfo {
 export interface IBaseCommonTrackStarPinInfo extends IStaticTrackStarPinInfo {
 
 };
+
+
+/**
+ * [用户的足迹] 发表新文章的足迹接口
+ */
+interface IStaticTrackCreateArticleInfo {
+  _id: string;
+  type: string;
+  article: IStaticArticleInfo;
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonTrackCreateArticleInfo extends IStaticTrackCreateArticleInfo { };

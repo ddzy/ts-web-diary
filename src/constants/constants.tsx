@@ -230,4 +230,7 @@ export const TRACK_TYPE = {
     people: `track_attention_people`,
     topic: `track_attention_topic`,
   },
+  create: {
+    article: 'track_create_article',
+  },
 };
