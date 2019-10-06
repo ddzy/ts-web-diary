@@ -39,7 +39,22 @@ export interface IStaticTopicInfo {
  */
 export interface IStaticArticleInfo {
   _id: string;
+  author: IStaticUserInfo;
+  comments: string[];
+  cover_img: string;
+  mode: string;
+  type: string;
   title: string;
+  description: string;
+  content: string;
+  tag: string;
+  watched_user: string[];
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonArticleInfo extends IStaticArticleInfo {
+
 };
 
 

@@ -23,10 +23,15 @@ import {
   ItemMainContentDescriptionText,
   ItemMainExtraBox,
 } from './style';
+import { IBaseCommonArticleInfo } from 'pages/user/User.types';
+import { formatTime } from 'utils/utils';
 import BaseGoodsDisplay from 'components/widget/base_goods_display/BaseGoodsDisplay';
 
 
-export interface IUserMainContentPostDisplayItemProps { };
+export interface IUserMainContentPostDisplayItemProps {
+  // ? 单个文章的信息
+  articleInfo: IBaseCommonArticleInfo;
+};
 export interface IUserMainContentPostDisplayItemState { };
 
 
@@ -42,7 +47,7 @@ const UserMainContentPostDisplayItem = React.memo((props: IUserMainContentPostDi
                 <Avatar
                   icon="user"
                   size="large"
-                  src={''}
+                  src={props.articleInfo.author.useravatar}
                 />
               </Lazyload>
             }
@@ -50,7 +55,7 @@ const UserMainContentPostDisplayItem = React.memo((props: IUserMainContentPostDi
             content={
               <div>
                 <span>
-                  ddzy
+                  {props.articleInfo.author.username}
                 </span>
                 <Divider
                   type="vertical"
@@ -61,7 +66,7 @@ const UserMainContentPostDisplayItem = React.memo((props: IUserMainContentPostDi
                   }}
                 />
                 <span>
-                  3 小时前
+                  {formatTime(props.articleInfo.create_time)}
                 </span>
               </div>
             }
@@ -74,16 +79,16 @@ const UserMainContentPostDisplayItem = React.memo((props: IUserMainContentPostDi
           <ItemMainContentTitle>
             <ItemMainContentTitleText>
               <NavLink
-                to={`/details/`}
+                to={`/details/${props.articleInfo._id}`}
                 activeStyle={{
                   color: '#1DA57A',
                 }}
-              >微前端入门</NavLink>
+              >{props.articleInfo.title}</NavLink>
             </ItemMainContentTitleText>
           </ItemMainContentTitle>
           <ItemMainContentDescription>
             <ItemMainContentDescriptionText>
-              最近打算改进一下现有网站的架构，微前端这个词多次进入了我的视野。但是网上关于微前端文章总是说得似是而非，于是我找到这篇文章进行翻译。并大概理解微前端的理念。目前还没有确定是否使用微前端架构，因为看起来业界对最佳实践并没有达成一致。
+              {props.articleInfo.description}...
             </ItemMainContentDescriptionText>
           </ItemMainContentDescription>
         </ItemMainContentBox>
@@ -94,7 +99,7 @@ const UserMainContentPostDisplayItem = React.memo((props: IUserMainContentPostDi
             <Col>
               <Tooltip title="阅读量" trigger="hover" placement="top">
                 <Icon type="eye" />
-                &nbsp;&nbsp;999
+                &nbsp;&nbsp;{props.articleInfo.watched_user.length}
               </Tooltip>
             </Col>
           </Row>
