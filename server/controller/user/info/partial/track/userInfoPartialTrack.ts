@@ -115,6 +115,17 @@ userInfoPartialTrackController.post('/list', async (ctx) => {
             article: foundArticleInfo,
           };
         };
+        case TRACK_TYPE.create.pin: {
+          // ? 查询对应的沸点信息
+          const foundPinInfo = await Pin.findById(v.pin, {
+            ...FILTER_SENSITIVE,
+          });
+
+          return {
+            ...v,
+            pin: foundPinInfo,
+          };
+        };
         default: {
           return v;
         };

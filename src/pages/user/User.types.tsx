@@ -48,6 +48,7 @@ export interface IStaticArticleInfo {
  */
 export interface IStaticPinInfo {
   _id: string;
+  content_plain: string;
 };
 
 
@@ -124,3 +125,17 @@ interface IStaticTrackCreateArticleInfo {
 };
 
 export interface IBaseCommonTrackCreateArticleInfo extends IStaticTrackCreateArticleInfo { };
+
+
+/**
+ * [用户的足迹] 发表新沸点的足迹接口
+ */
+interface IStaticTrackCreatePinInfo {
+  _id: string;
+  type: string;
+  pin: IStaticPinInfo;
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonTrackCreatePinInfo extends IStaticTrackCreatePinInfo { };

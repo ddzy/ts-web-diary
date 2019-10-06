@@ -232,5 +232,6 @@ export const TRACK_TYPE = {
   },
   create: {
     article: 'track_create_article',
+    pin: 'track_create_pin',
   },
 };
