@@ -49,7 +49,10 @@ registerController.post('/', async (ctx, ) => {
     usergender,
     userpwd: md5(userpwd),
     useravatar: '',
-    collections: [],
+    collections: {
+      article: [],
+      pin: [],
+    },
     articles: [],
     attention: {
       users: [],
