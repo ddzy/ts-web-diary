@@ -5,6 +5,17 @@ export interface ICommonBaseUserInfo {
   useravatar: string,
 };
 
+
+// ? 文章收藏夹基本信息接口
+interface IStaticCollectionArticleInfo {
+  _id: string;
+  name: string;
+};
+export interface IBaseCommonCollectionArticleInfo extends IStaticCollectionArticleInfo {
+
+};
+
+
 // ? 文章基本信息接口
 export interface ICommonBaseArticleInfo {
   _id: string,

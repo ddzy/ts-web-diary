@@ -90,7 +90,6 @@ authGithubController.post('/', async (ctx) => {
         userpwd: '',
         usergender: 'male',
         useravatar: '',
-        collections: [],
         create_time: Date.now(),
         update_time: Date.now(),
         articles: [],
@@ -105,6 +104,10 @@ authGithubController.post('/', async (ctx) => {
         activities: [],
         tracks: [],
         pins: [],
+        collections: {
+          article: [],
+          pin: [],
+        },
         profile_cover_img: '',
         address: '',
         website: '',

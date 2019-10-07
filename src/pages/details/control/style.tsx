@@ -11,11 +11,11 @@ export const GlobalStyleSet = createGlobalStyle`
   }
   .fixed-control-bar-star:hover,
   .fixed-control-bar-collection:hover {
-    color: #40a9ff;
+    color: #1da57a;
   }
   .fixed-control-bar-star-active,
   .fixed-control-bar-collection-active {
-    color: #1890ff;
+    color: #1da57a;
   }
 `;
 

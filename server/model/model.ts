@@ -7,7 +7,8 @@ import User from './user/userModel';
 import Posts from './posts/postsModel';
 import Comments from './comments/commentsModel';
 import Replys from './replys/replysModel';
-import Collections from './collections/collectionsModel';
+// import Collections from './collections/collectionsModel';
+import CollectionArticle from './collection/article/collectionArticleModel';
 import Followers from './followers/followersModel';
 import Attentions from './attentions/attentionsModel';
 import AttentionUsers from './attentions/attention_users/attentionUsersModel';
@@ -94,7 +95,7 @@ export {
   Posts,
   Comments,
   Replys,
-  Collections,
+  // Collections,
   Attentions,
   Followers,
   AttentionUsers,
@@ -116,6 +117,7 @@ export {
   Pin,
   PinComment,
   PinReply,
+  CollectionArticle,
 
   // ? 通知
   INotificationUserFriendRequestModelProps,
