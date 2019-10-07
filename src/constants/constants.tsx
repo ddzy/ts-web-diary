@@ -234,4 +234,7 @@ export const TRACK_TYPE = {
     article: 'track_create_article',
     pin: 'track_create_pin',
   },
+  collection: {
+    article: 'track_collection_article',
+  },
 };

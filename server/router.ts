@@ -37,11 +37,21 @@ import replyArticleController from './controller/reply/article/replyArticle';
 import replyArticleCreateController from './controller/reply/article/create/replyArticleCreate';
 import replyArticleInfoController from './controller/reply/article/info/replyArticleInfo';
 
+// import collectionController from './controller/collection/collection';
+// import collectionCreateController from './controller/collection/create/collectionCreate';
+// import collectionUpdateController from './controller/collection/update/collectionUpdate';
+// import collectionInfoController from './controller/collection/info/collectionInfo';
+// import collectionDeleteController from './controller/collection/delete/collectionDelete';
 import collectionController from './controller/collection/collection';
-import collectionCreateController from './controller/collection/create/collectionCreate';
-import collectionUpdateController from './controller/collection/update/collectionUpdate';
-import collectionInfoController from './controller/collection/info/collectionInfo';
-import collectionDeleteController from './controller/collection/delete/collectionDelete';
+import collectionArticleController from './controller/collection/article/collectionArticle.ts';
+import collectionArticleInfoController from './controller/collection/article/info/collectionArticleInfo';
+import collectionArticleCreateController from './controller/collection/article/create/collectionArticleCreate';
+import collectionArticleUpdateController from './controller/collection/article/update/collectionArticleUpdate';
+import collectionPinController from './controller/collection/pin/collectionPin';
+import collectionPinInfoController from './controller/collection/pin/info/collectionPinInfo';
+import collectionPinCreateController from './controller/collection/pin/create/collectionPinCreate';
+import collectionPinUpdateController from './controller/collection/pin/update/collectionPinUpdate';
+
 
 import uploadController from './controller/upload/upload';
 
@@ -166,7 +176,14 @@ userInfoController
   .use('/account', userInfoAccountController.routes(), userInfoAccountController.allowedMethods())
   .use('/article', userInfoArticleController.routes(), userInfoArticleController.allowedMethods())
   .use('/partial', userInfoPartialController.routes(), userInfoPartialController.allowedMethods());
-
+collectionArticleController
+  .use('/info', collectionArticleInfoController.routes(), collectionArticleInfoController.allowedMethods())
+  .use('/create', collectionArticleCreateController.routes(), collectionArticleCreateController.allowedMethods())
+  .use('/update', collectionArticleUpdateController.routes(), collectionArticleUpdateController.allowedMethods());
+collectionPinController
+  .use('/info', collectionPinInfoController.routes(), collectionPinInfoController.allowedMethods())
+  .use('/create', collectionPinCreateController.routes(), collectionPinCreateController.allowedMethods())
+  .use('/update', collectionPinUpdateController.routes(), collectionPinUpdateController.allowedMethods());
 
 
 // !! 二级路由 !!
@@ -186,10 +203,12 @@ commentController
 replyController
   .use('/article', replyArticleController.routes(), replyArticleController.allowedMethods())
 collectionController
-  .use('/create', collectionCreateController.routes(), collectionCreateController.allowedMethods())
-  .use('/update', collectionUpdateController.routes(), collectionUpdateController.allowedMethods())
-  .use('/info', collectionInfoController.routes(), collectionInfoController.allowedMethods())
-  .use('/delete', collectionDeleteController.routes(), collectionDeleteController.allowedMethods())
+  // .use('/create', collectionCreateController.routes(), collectionCreateController.allowedMethods())
+  // .use('/update', collectionUpdateController.routes(), collectionUpdateController.allowedMethods())
+  // .use('/info', collectionInfoController.routes(), collectionInfoController.allowedMethods())
+  // .use('/delete', collectionDeleteController.routes(), collectionDeleteController.allowedMethods())
+  .use('/article', collectionArticleController.routes(), collectionArticleController.allowedMethods())
+  .use('/pin', collectionPinController.routes(), collectionPinController.allowedMethods());
 chatController
   .use('/single', chatSingleController.routes(), chatSingleController.allowedMethods())
   .use('/common', chatCommonController.routes(), chatCommonController.allowedMethods())

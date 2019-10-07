@@ -21,10 +21,6 @@ const UserSchema: mongoose.Schema = new Schema({
     require: false,
     default: '',
   },
-  collections: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Collections',
-  }],
   create_time: {
     type: Number,
     default: new Date().getTime(),
@@ -93,6 +89,16 @@ const UserSchema: mongoose.Schema = new Schema({
     ref: 'Pin',
     default: [],
   }],
+
+  // ? 收藏
+  collections: {
+    // * 文章收藏夹
+    article: [{
+      type: Schema.Types.ObjectId,
+      ref: 'CollectionArticle',
+      default: [],
+    }],
+  },
 
   // ? 个人中心封面图片
   profile_cover_img: {
