@@ -1,40 +1,29 @@
 import * as React from 'react';
 import {
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Popconfirm,
   notification,
   Tooltip,
   Popover,
   Icon,
-  Empty,
   message,
-  Divider,
 } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
 import {
   withRouter,
   RouteComponentProps,
 } from 'react-router';
 
 import {
-  CollectionPopContentContainer,
-  CollectionPopFormBox,
-  CollectionsPopShowList,
-  CollectionsPopShowListItem,
+  CollectionWrapper,
+  CollectionMain,
 } from './style';
 import { query } from 'services/request';
 import { IBaseCommonCollectionArticleInfo } from 'pages/details/Details.types';
 import { PAGE_SIZE } from 'constants/constants';
+import DetailsControlCollectionContent from './content/DetailsControlCollectionContent';
 
 
-export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps<{
+export interface IDetailsControlCollectionProps extends RouteComponentProps<{
   id: string,
-}> {
-};
+}> {};
 interface IDetailsControlCollectionState {
   // ? 收藏夹列表
   collectionList: IBaseCommonCollectionArticleInfo[];
@@ -111,80 +100,21 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
    * [处理] - 初始化气泡框内容
    */
   function _initPopoverContent(): JSX.Element {
-    const {
-      getFieldDecorator,
-    } = props.form;
-    const {
-      collectionList,
-    } = state;
-
     return (
-      <CollectionPopContentContainer>
-        <CollectionsPopShowList>
-          {
-            collectionList.length !== 0
-              ? collectionList.map((item: IBaseCommonCollectionArticleInfo) => {
-                return (
-                  <Popconfirm
-                    key={item._id}
-                    title={
-                      item.is_collect ? '要从当前收藏夹移除本文章吗?' : '要添加文章到该收藏夹吗?'
-                    }
-                    onConfirm={() => handleSaveToCollection(item._id, item.is_collect)}
-                  >
-                    <CollectionsPopShowListItem>
-                      {item.name}
-                      {
-                        item.is_collect && (
-                          <React.Fragment>
-                            <Divider type="vertical" />
-                            <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-                          </React.Fragment>
-                        )
-                      }
-                    </CollectionsPopShowListItem>
-                  </Popconfirm>
-                );
-              })
-              : <Empty description="没有更多数据..." />
-          }
-        </CollectionsPopShowList>
-        <CollectionPopFormBox>
-          <Form
-            onSubmit={handleCreateCollection}
-          >
-            <Form.Item>
-              {getFieldDecorator('collection_input', {})(
-                <Row>
-                  <Col span={20}>
-                    <Input
-                      type="text"
-                      size="small"
-                      placeholder="新建一个收藏夹..."
-                    />
-                  </Col>
-                  <Col span={4}>
-                    <Button
-                      htmlType="submit"
-                      type="default"
-                      size="small"
-                    >创建</Button>
-                  </Col>
-                </Row>
-              )}
-            </Form.Item>
-          </Form>
-        </CollectionPopFormBox>
-      </CollectionPopContentContainer>
+      <DetailsControlCollectionContent
+        collectionList={state.collectionList}
+        onSaveToCollection={handleSaveToCollection}
+        onCreateCollection={handleCreateCollection}
+      />
     );
   }
 
   /**
    * [处理] - 创建新的收藏夹
-   * @param e mouseEvent
+   * @param collectionName 收藏夹名称
    */
   function handleCreateCollection(
-    e: React.FormEvent,
+    collectionName: string,
   ): void {
     // 用户鉴权
     const userId = localStorage.getItem('userid');
@@ -198,46 +128,32 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       props.history.push('/login');
     }
 
-    e.preventDefault();
+    query({
+      jsonp: false,
+      url: '/api/collection/article/create',
+      method: 'POST',
+      data: {
+        userId,
+        collectionName,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
 
-    props.form.validateFields((err, values) => {
-      const {
-        collection_input
-      } = values;
+      if (resCode === 0) {
+        const collectionInfo = resData.collectionInfo;
+        const newCollectionList = state.collectionList.concat(collectionInfo);
 
-      if (!collection_input) {
-        message.error('收藏夹名称不能为空!');
-
-        return;
+        setState({
+          ...state,
+          collectionList: newCollectionList,
+        });
+      } else if (resCode === 1) {
+        message.info(resMessage);
+      } else {
+        message.error(resMessage);
       }
-
-      query({
-        jsonp: false,
-        url: '/api/collection/article/create',
-        method: 'POST',
-        data: {
-          userId,
-          collectionName: collection_input,
-        },
-      }).then((res) => {
-        const resCode = res.code;
-        const resMessage = res.message;
-        const resData = res.data;
-
-        if (resCode === 0) {
-          const collectionInfo = resData.collectionInfo;
-          const newCollectionList = state.collectionList.concat(collectionInfo);
-
-          setState({
-            ...state,
-            collectionList: newCollectionList,
-          });
-        } else if (resCode === 1) {
-          message.info(resMessage);
-        } else {
-          message.error(resMessage);
-        }
-      });
     });
   }
 
@@ -303,24 +219,28 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
   }
 
   return (
-    <Tooltip title="收藏" placement="right">
-      <Popover
-        trigger="click"
-        placement="right"
-        title="我的收藏夹"
-        content={_initPopoverContent()}
-        onVisibleChange={handlePopoverChange}
-      >
-        <Icon
-          className="fixed-control-bar-collection"
-          type="heart"
-          theme="filled"
-        />
-      </Popover>
-    </Tooltip>
+    <CollectionWrapper>
+      <CollectionMain>
+        <Tooltip title="收藏" placement="right">
+          <Popover
+            trigger="click"
+            placement="right"
+            title="我的收藏夹"
+            content={_initPopoverContent()}
+            onVisibleChange={handlePopoverChange}
+          >
+            <Icon
+              className="fixed-control-bar-collection"
+              type="heart"
+              theme="filled"
+            />
+          </Popover>
+        </Tooltip>
+      </CollectionMain>
+    </CollectionWrapper>
   );
 
 });
 
 
-export default withRouter((Form.create() as any)(DetailsControlCollection));
+export default withRouter(DetailsControlCollection);
