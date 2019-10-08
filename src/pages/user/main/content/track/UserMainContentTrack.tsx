@@ -26,6 +26,7 @@ import UserMainContentTrackStarArticleSelf from './star/article/self/UserMainCon
 import UserMainContentTrackStarPinSelf from './star/pin/self/UserMainContentTrackStarPinSelf';
 import UserMainContentTrackCreateArticle from './create/article/UserMainContentTrackCreateArticle';
 import UserMainContentTrackCreatePin from './create/pin/UserMainContentTrackCreatePin';
+import UserMainContentTrackCollectionArticle from './collection/article/UserMainContentTrackCollectionArticle';
 
 
 export interface IUserMainContentTrackProps extends RouteComponentProps<{
@@ -196,6 +197,13 @@ const UserMainContentTrack = React.memo((props: IUserMainContentTrackProps) => {
       case TRACK_TYPE.create.pin: {
         return (
           <UserMainContentTrackCreatePin
+            trackInfo={v}
+          />
+        );
+      };
+      case TRACK_TYPE.collection.article: {
+        return (
+          <UserMainContentTrackCollectionArticle
             trackInfo={v}
           />
         );

@@ -1,47 +1,37 @@
 import * as React from 'react';
 import {
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Popconfirm,
   notification,
   Tooltip,
   Popover,
   Icon,
-  Empty,
   message,
 } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
 import {
   withRouter,
   RouteComponentProps,
-  match,
 } from 'react-router';
 
 import {
-  CollectionPopContentContainer,
-  CollectionPopFormBox,
-  CollectionsPopShowList,
-  CollectionsPopShowListItem,
+  CollectionWrapper,
+  CollectionMain,
 } from './style';
-import {
-  serviceHandleSaveToCollection,
-} from '../../Details.service';
 import { query } from 'services/request';
 import { IBaseCommonCollectionArticleInfo } from 'pages/details/Details.types';
-import { PAGE_SIZE } from 'constants/constants';
+import {
+  PAGE_SIZE,
+  TRACK_TYPE,
+} from 'constants/constants';
+import DetailsControlCollectionContent from './content/DetailsControlCollectionContent';
 
 
-export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps {
-  match: match<{
-    id: string,
-  }>;
-};
+export interface IDetailsControlCollectionProps extends RouteComponentProps<{
+  id: string,
+}> { };
 interface IDetailsControlCollectionState {
   // ? 收藏夹列表
   collectionList: IBaseCommonCollectionArticleInfo[];
+  // ? 分页相关: 是否还有更多收藏夹
+  hasMoreCollection: boolean;
 };
 
 
@@ -51,6 +41,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
 
   const [state, setState] = React.useState<IDetailsControlCollectionState>({
     collectionList: [],
+    hasMoreCollection: true,
   });
 
 
@@ -75,6 +66,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       props.history.push('/login');
     }
 
+    const articleId = props.match.params.id;
     const pageSize = PAGE_SIZE;
 
     query({
@@ -83,6 +75,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       jsonp: false,
       data: {
         userId,
+        articleId,
         page,
         pageSize,
       },
@@ -100,6 +93,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
         setState({
           ...state,
           collectionList: newCollectionList,
+          hasMoreCollection: collectionList.length !== 0,
         });
       } else if (resCode === 1) {
         message.info(resMessage);
@@ -113,70 +107,23 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
    * [处理] - 初始化气泡框内容
    */
   function _initPopoverContent(): JSX.Element {
-    const {
-      getFieldDecorator,
-    } = props.form;
-    const {
-      collectionList,
-    } = state;
-
     return (
-      <CollectionPopContentContainer>
-        <CollectionsPopShowList>
-          {
-            collectionList.length !== 0
-              ? collectionList.map((item: IBaseCommonCollectionArticleInfo) => {
-                return (
-                  <Popconfirm
-                    title="要添加到该收藏夹吗?"
-                    key={item._id}
-                    onConfirm={() => handleSaveToCollection(item._id)}
-                  >
-                    <CollectionsPopShowListItem>
-                      {item.name}
-                    </CollectionsPopShowListItem>
-                  </Popconfirm>
-                );
-              })
-              : <Empty description="没有更多数据..." />
-          }
-        </CollectionsPopShowList>
-        <CollectionPopFormBox>
-          <Form
-            onSubmit={handleCreateCollection}
-          >
-            <Form.Item>
-              {getFieldDecorator('collection_input', {})(
-                <Row>
-                  <Col span={20}>
-                    <Input
-                      type="text"
-                      size="small"
-                      placeholder="新建一个收藏夹..."
-                    />
-                  </Col>
-                  <Col span={4}>
-                    <Button
-                      htmlType="submit"
-                      type="default"
-                      size="small"
-                    >创建</Button>
-                  </Col>
-                </Row>
-              )}
-            </Form.Item>
-          </Form>
-        </CollectionPopFormBox>
-      </CollectionPopContentContainer>
+      <DetailsControlCollectionContent
+        collectionList={state.collectionList}
+        hasMoreCollection={state.hasMoreCollection}
+        onSaveToCollection={handleSaveToCollection}
+        onCreateCollection={handleCreateCollection}
+        onLoadMoreCollection={handleLoadMoreCollection}
+      />
     );
   }
 
   /**
    * [处理] - 创建新的收藏夹
-   * @param e mouseEvent
+   * @param collectionName 收藏夹名称
    */
   function handleCreateCollection(
-    e: React.FormEvent,
+    collectionName: string,
   ): void {
     // 用户鉴权
     const userId = localStorage.getItem('userid');
@@ -190,74 +137,97 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       props.history.push('/login');
     }
 
-    e.preventDefault();
+    query({
+      jsonp: false,
+      url: '/api/collection/article/create',
+      method: 'POST',
+      data: {
+        userId,
+        collectionName,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+      const resData = res.data;
 
-    props.form.validateFields((err, values) => {
-      const {
-        collection_input
-      } = values;
+      if (resCode === 0) {
+        const collectionInfo = resData.collectionInfo;
+        const newCollectionList = state.collectionList.concat(collectionInfo);
 
-      if (!collection_input) {
-        message.error('收藏夹名称不能为空!');
-
-        return;
+        setState({
+          ...state,
+          collectionList: newCollectionList,
+        });
+      } else if (resCode === 1) {
+        message.info(resMessage);
+      } else {
+        message.error(resMessage);
       }
-
-      query({
-        jsonp: false,
-        url: '/api/collection/article/create',
-        method: 'POST',
-        data: {
-          userId,
-          collectionName: collection_input,
-        },
-      }).then((res) => {
-        const resCode = res.code;
-        const resMessage = res.message;
-        const resData = res.data;
-
-        if (resCode === 0) {
-          const collectionInfo = resData.collectionInfo;
-          const newCollectionList = state.collectionList.concat(collectionInfo);
-
-          setState({
-            ...state,
-            collectionList: newCollectionList,
-          });
-        } else if (resCode === 1) {
-          message.info(resMessage);
-        } else {
-          message.error(resMessage);
-        }
-      });
     });
   }
 
   /**
    * [处理] - 确认添加文章至收藏夹
    * @param collectionId 收藏夹id
+   * @param isCollect 该收藏夹是否已经收藏过本文章
    */
   function handleSaveToCollection(
     collectionId: string,
+    isCollect: boolean,
   ): void {
-    serviceHandleSaveToCollection(
-      {
-        collectionId,
-        articleId: props.match.params.id,
-      },
-      (data) => {
-        const {
-          name,
-        } = data.info.collectionInfo;
+    // 用户鉴权
+    const userId = localStorage.getItem('userid');
 
-        notification.success({
-          message: '提示',
-          description: `成功添加到收藏夹: ${
-            name
-            }`,
+    if (!userId) {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已丢失, 请重新登录!',
+      });
+
+      props.history.push('/login');
+    }
+
+    const articleId = props.match.params.id;
+    const trackType = TRACK_TYPE.collection.article;
+    const newIsCollect = !isCollect;
+
+    query({
+      method: 'POST',
+      url: '/api/collection/article/update/insert_or_remove',
+      jsonp: false,
+      data: {
+        userId,
+        collectionId,
+        articleId,
+        trackType,
+        isCollect: newIsCollect,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+
+      if (resCode === 0) {
+        const newCollectionList = state.collectionList.map((collection) => {
+          if (collection._id === collectionId) {
+            return {
+              ...collection,
+              is_collect: newIsCollect,
+            };
+          }
+
+          return collection;
         });
+
+        setState({
+          ...state,
+          collectionList: newCollectionList,
+        });
+      } else if (resCode === 1) {
+        message.info(resMessage);
+      } else {
+        message.error(resMessage);
       }
-    );
+    });
   }
 
   /**
@@ -272,25 +242,38 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
     }
   }
 
-  return (
-    <Tooltip title="收藏" placement="right">
-      <Popover
-        trigger="click"
-        placement="right"
-        title="我的收藏夹"
-        content={_initPopoverContent()}
-        onVisibleChange={handlePopoverChange}
-      >
-        <Icon
-          className="fixed-control-bar-collection"
-          type="heart"
-          theme="filled"
-        />
-      </Popover>
-    </Tooltip>
-  );
+  /**
+   * [处理] - 加载更多收藏夹列表
+   * @param page 当前页数
+   */
+  function handleLoadMoreCollection(
+    page: number,
+  ) {
+    _getCollectionListFromServer(page, false);
+  }
 
+  return (
+    <CollectionWrapper>
+      <CollectionMain>
+        <Tooltip title="收藏" placement="right">
+          <Popover
+            trigger="click"
+            placement="right"
+            title="我的收藏夹"
+            content={_initPopoverContent()}
+            onVisibleChange={handlePopoverChange}
+          >
+            <Icon
+              className="fixed-control-bar-collection"
+              type="heart"
+              theme="filled"
+            />
+          </Popover>
+        </Tooltip>
+      </CollectionMain>
+    </CollectionWrapper>
+  );
 });
 
 
-export default withRouter((Form.create() as any)(DetailsControlCollection));
+export default withRouter(DetailsControlCollection);

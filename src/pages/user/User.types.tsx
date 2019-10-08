@@ -19,6 +19,18 @@ export interface IBaseCommonUserInfo extends IStaticUserInfo {
 
 
 /**
+ * [收藏] 收藏文章的基本信息接口
+ */
+interface IStaticCollectionArticleInfo {
+  _id: string;
+  name: string;
+};
+export interface IBaseCommonCollectionArticleInfo extends IStaticCollectionArticleInfo {
+
+};
+
+
+/**
  * [话题] 话题的基本信息接口
  */
 export interface IStaticTopicInfo {
@@ -154,3 +166,21 @@ interface IStaticTrackCreatePinInfo {
 };
 
 export interface IBaseCommonTrackCreatePinInfo extends IStaticTrackCreatePinInfo { };
+
+
+/**
+ * [用户的足迹] 收藏文章的足迹接口
+ */
+interface IStaticTrackCollectionArticleInfo {
+  _id: string;
+  type: string;
+  article: IStaticArticleInfo;
+  article_author: IStaticUserInfo;
+  collection: IStaticCollectionArticleInfo;
+  create_time: number;
+  update_time: number;
+};
+
+export interface IBaseCommonTrackCollectionArticleInfo extends IStaticTrackCollectionArticleInfo {
+
+};
