@@ -12,7 +12,7 @@ interface IStaticCollectionArticleInfo {
   name: string;
 };
 export interface IBaseCommonCollectionArticleInfo extends IStaticCollectionArticleInfo {
-
+  is_collect: boolean;
 };
 
 
