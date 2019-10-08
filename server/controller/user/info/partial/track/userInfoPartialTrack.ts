@@ -1,7 +1,11 @@
 import * as Router from 'koa-router';
 
 import {
-  User, Topic, Posts, Pin,
+  User,
+  Topic,
+  Posts,
+  Pin,
+  CollectionArticle,
 } from '../../../../../model/model';
 import {
   TRACK_TYPE,
@@ -124,6 +128,29 @@ userInfoPartialTrackController.post('/list', async (ctx) => {
           return {
             ...v,
             pin: foundPinInfo,
+          };
+        };
+        case TRACK_TYPE.collection.article: {
+          // ? 查询文章信息
+          const foundArticleInfo = await Posts.findById(v.article, {
+            ...FILTER_SENSITIVE,
+          });
+
+          // ? 查询文章作者信息
+          const foundArticleAuthorInfo = await User.findById(v.article_author, {
+            ...FILTER_SENSITIVE,
+          });
+
+          // ? 查询话题收藏夹信息
+          const foundCollectionInfo = await CollectionArticle.findById(v.collection, {
+            ...FILTER_SENSITIVE,
+          });
+
+          return {
+            ...v,
+            article: foundArticleInfo,
+            article_author: foundArticleAuthorInfo,
+            collection: foundCollectionInfo,
           };
         };
         default: {

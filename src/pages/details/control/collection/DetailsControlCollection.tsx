@@ -17,13 +17,16 @@ import {
 } from './style';
 import { query } from 'services/request';
 import { IBaseCommonCollectionArticleInfo } from 'pages/details/Details.types';
-import { PAGE_SIZE } from 'constants/constants';
+import {
+  PAGE_SIZE,
+  TRACK_TYPE,
+} from 'constants/constants';
 import DetailsControlCollectionContent from './content/DetailsControlCollectionContent';
 
 
 export interface IDetailsControlCollectionProps extends RouteComponentProps<{
   id: string,
-}> {};
+}> { };
 interface IDetailsControlCollectionState {
   // ? 收藏夹列表
   collectionList: IBaseCommonCollectionArticleInfo[];
@@ -172,7 +175,20 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
     collectionId: string,
     isCollect: boolean,
   ): void {
+    // 用户鉴权
+    const userId = localStorage.getItem('userid');
+
+    if (!userId) {
+      notification.error({
+        message: '错误',
+        description: '用户凭证已丢失, 请重新登录!',
+      });
+
+      props.history.push('/login');
+    }
+
     const articleId = props.match.params.id;
+    const trackType = TRACK_TYPE.collection.article;
     const newIsCollect = !isCollect;
 
     query({
@@ -180,8 +196,10 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       url: '/api/collection/article/update/insert_or_remove',
       jsonp: false,
       data: {
+        userId,
         collectionId,
         articleId,
+        trackType,
         isCollect: newIsCollect,
       },
     }).then((res) => {
@@ -255,7 +273,6 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       </CollectionMain>
     </CollectionWrapper>
   );
-
 });
 
 

@@ -1,7 +1,11 @@
 import * as Router from 'koa-router';
+import * as UUID from 'uuid';
 
 import {
+  User,
   CollectionArticle,
+  ITrackCollectionArticleProps,
+  Posts,
 } from '../../../../model/model';
 
 
@@ -16,12 +20,15 @@ collectionArticleUpdateController.post('/insert_or_remove', async (ctx) => {
     userId: string;
     collectionId: string;
     articleId: string;
+    trackType: string;
     isCollect: boolean;
   };
 
   const {
+    userId,
     collectionId,
     articleId,
+    trackType,
     isCollect,
   } = ctx.request.body as IRequestParams;
 
@@ -45,6 +52,21 @@ collectionArticleUpdateController.post('/insert_or_remove', async (ctx) => {
           articles: articleId,
         },
       });
+
+      // ? 查询文章作者信息
+      const foundArticleInfo = await Posts.findById(articleId, 'author');
+
+      // ? 更新用户的足迹信息
+      await User.findByIdAndUpdate(userId, {
+        '$pull': {
+          tracks: {
+            type: trackType,
+            article: articleId,
+            article_author: String(foundArticleInfo.author),
+            collection: collectionId,
+          },
+        },
+      });
     } else {
       // ? 反之, 添加至该收藏夹
       await CollectionArticle.findByIdAndUpdate(
@@ -58,6 +80,28 @@ collectionArticleUpdateController.post('/insert_or_remove', async (ctx) => {
           new: true,
         },
       );
+
+      // ? 查询文章作者信息
+      const foundArticleInfo = await Posts.findById(articleId, 'author');
+
+
+      // ? 创建新的足迹
+      const createdTrack: ITrackCollectionArticleProps = {
+        _id: UUID.v1(),
+        type: trackType,
+        article: articleId,
+        article_author: String(foundArticleInfo.author),
+        collection: collectionId,
+        create_time: Date.now(),
+        update_time: Date.now(),
+      };
+
+      // ? 更新用户的足迹信息
+      await User.findByIdAndUpdate(userId, {
+        '$addToSet': {
+          tracks: createdTrack,
+        },
+      });
     }
 
     return ctx.body = {

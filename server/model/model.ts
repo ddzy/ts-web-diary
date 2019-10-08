@@ -69,6 +69,9 @@ import {
 import {
   ITrackCreatePinProps,
 } from './track/create/pin/trackCreatePinModel.types';
+import {
+  ITrackCollectionArticleProps,
+} from './track/collection/article/trackCollectionArticleModel.types';
 
 
 mongoose.set('useFindAndModify', false);
@@ -95,7 +98,6 @@ export {
   Posts,
   Comments,
   Replys,
-  // Collections,
   Attentions,
   Followers,
   AttentionUsers,
@@ -134,4 +136,5 @@ export {
   ITrackAttentionPeopleProps,
   ITrackCreateArticleProps,
   ITrackCreatePinProps,
+  ITrackCollectionArticleProps,
 };
