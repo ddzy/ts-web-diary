@@ -85,10 +85,14 @@ const Details = React.memo((props: IDetailsProps) => {
   });
 
   React.useEffect(() => {
-    _getArticleInfo();
+    _getArticleInfoFromServer();
   }, [props.match.params.id]);
 
-  function _getArticleInfo() {
+
+  /**
+   * [获取] - 后台获取当前文章的详细信息
+   */
+  function _getArticleInfoFromServer() {
     setState({
       ...state,
       globalLoading: true,

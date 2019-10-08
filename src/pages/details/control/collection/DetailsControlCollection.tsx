@@ -12,12 +12,12 @@ import {
   Icon,
   Empty,
   message,
+  Divider,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import {
   withRouter,
   RouteComponentProps,
-  match,
 } from 'react-router';
 
 import {
@@ -26,18 +26,14 @@ import {
   CollectionsPopShowList,
   CollectionsPopShowListItem,
 } from './style';
-import {
-  serviceHandleSaveToCollection,
-} from '../../Details.service';
 import { query } from 'services/request';
 import { IBaseCommonCollectionArticleInfo } from 'pages/details/Details.types';
 import { PAGE_SIZE } from 'constants/constants';
 
 
-export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps {
-  match: match<{
-    id: string,
-  }>;
+export interface IDetailsControlCollectionProps extends FormComponentProps, RouteComponentProps<{
+  id: string,
+}> {
 };
 interface IDetailsControlCollectionState {
   // ? 收藏夹列表
@@ -75,6 +71,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       props.history.push('/login');
     }
 
+    const articleId = props.match.params.id;
     const pageSize = PAGE_SIZE;
 
     query({
@@ -83,6 +80,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
       jsonp: false,
       data: {
         userId,
+        articleId,
         page,
         pageSize,
       },
@@ -128,12 +126,22 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
               ? collectionList.map((item: IBaseCommonCollectionArticleInfo) => {
                 return (
                   <Popconfirm
-                    title="要添加到该收藏夹吗?"
                     key={item._id}
-                    onConfirm={() => handleSaveToCollection(item._id)}
+                    title={
+                      item.is_collect ? '要从当前收藏夹移除本文章吗?' : '要添加文章到该收藏夹吗?'
+                    }
+                    onConfirm={() => handleSaveToCollection(item._id, item.is_collect)}
                   >
                     <CollectionsPopShowListItem>
                       {item.name}
+                      {
+                        item.is_collect && (
+                          <React.Fragment>
+                            <Divider type="vertical" />
+                            <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                          </React.Fragment>
+                        )
+                      }
                     </CollectionsPopShowListItem>
                   </Popconfirm>
                 );
@@ -236,28 +244,50 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
   /**
    * [处理] - 确认添加文章至收藏夹
    * @param collectionId 收藏夹id
+   * @param isCollect 该收藏夹是否已经收藏过本文章
    */
   function handleSaveToCollection(
     collectionId: string,
+    isCollect: boolean,
   ): void {
-    serviceHandleSaveToCollection(
-      {
-        collectionId,
-        articleId: props.match.params.id,
-      },
-      (data) => {
-        const {
-          name,
-        } = data.info.collectionInfo;
+    const articleId = props.match.params.id;
+    const newIsCollect = !isCollect;
 
-        notification.success({
-          message: '提示',
-          description: `成功添加到收藏夹: ${
-            name
-            }`,
+    query({
+      method: 'POST',
+      url: '/api/collection/article/update/insert_or_remove',
+      jsonp: false,
+      data: {
+        collectionId,
+        articleId,
+        isCollect: newIsCollect,
+      },
+    }).then((res) => {
+      const resCode = res.code;
+      const resMessage = res.message;
+
+      if (resCode === 0) {
+        const newCollectionList = state.collectionList.map((collection) => {
+          if (collection._id === collectionId) {
+            return {
+              ...collection,
+              is_collect: newIsCollect,
+            };
+          }
+
+          return collection;
         });
+
+        setState({
+          ...state,
+          collectionList: newCollectionList,
+        });
+      } else if (resCode === 1) {
+        message.info(resMessage);
+      } else {
+        message.error(resMessage);
       }
-    );
+    });
   }
 
   /**

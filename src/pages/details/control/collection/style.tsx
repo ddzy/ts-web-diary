@@ -11,7 +11,7 @@ export const CollectionsPopShowListItem = styled.li`
   border: 1px solid #ddd;
   border-radius: 8px;
   line-height: 1.875rem;
-  background-color: #f4f4f4;
+  background-color: #f6f6f6;
   cursor: pointer;
   color: #888;
   font-size: 0.875rem;
@@ -19,8 +19,8 @@ export const CollectionsPopShowListItem = styled.li`
   transition: background-color .3s ease,
               color .3s ease;
   &:hover {
-    background-color: #ccc;
-    color: #fff;
+    border-color: #1da57a;
+    color: #1da57a;
   }
 `;
 
