@@ -6,8 +6,12 @@ export const ContentMain = styled.div`
 
 `;
 
-export const ContentMainDisplayBox = styled.div``;
-export const ContentMainDisplayList = styled.ul``;
+export const ContentMainDisplayBox = styled.div`
+  overflow: auto;
+  max-height: 180px;
+`;
+export const ContentMainDisplayList = styled.ul`
+`;
 export const ContentMainDisplayItem = styled.li`
   margin-top: 0.625rem;
   border: 1px solid #ddd;

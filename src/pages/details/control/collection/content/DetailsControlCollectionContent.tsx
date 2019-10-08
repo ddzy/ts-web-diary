@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as InfiniteScroll from 'react-infinite-scroller';
 import {
   Divider,
   Icon,
@@ -27,6 +28,8 @@ import { IBaseCommonCollectionArticleInfo } from 'pages/details/Details.types';
 export interface IDetailsControlCollectionContentProps extends FormComponentProps {
   // ? 收藏夹列表
   collectionList: IBaseCommonCollectionArticleInfo[];
+  // ? 分页相关: 是否还有更多收藏夹
+  hasMoreCollection: boolean;
 
   onSaveToCollection: (
     collectionId: string,
@@ -35,11 +38,17 @@ export interface IDetailsControlCollectionContentProps extends FormComponentProp
   onCreateCollection: (
     collectionName: string,
   ) => void;
+  onLoadMoreCollection: (
+    page: number,
+  ) => void;
 };
 export interface IDetailsControlCollectionContentState { };
 
 
 const DetailsControlCollectionContent = React.memo((props: IDetailsControlCollectionContentProps) => {
+  const $scrollWrapper = React.useRef(null);
+
+
   /**
    * [初始化] - 收藏夹列表
    */
@@ -97,22 +106,28 @@ const DetailsControlCollectionContent = React.memo((props: IDetailsControlCollec
     });
   }
 
-
   return (
     <ContentWrapper>
       <ContentMain>
         {/* 收藏夹列表展示区 */}
-        <ContentMainDisplayBox>
-          <ContentMainDisplayList>
-            {_initCollectionList()}
-          </ContentMainDisplayList>
+        <ContentMainDisplayBox ref={$scrollWrapper} >
+          <InfiniteScroll
+            useWindow={false}
+            pageStart={1}
+            initialLoad={false}
+            getScrollParent={() => $scrollWrapper.current}
+            loadMore={props.onLoadMoreCollection}
+            hasMore={props.hasMoreCollection}
+          >
+            <ContentMainDisplayList>
+              {_initCollectionList()}
+            </ContentMainDisplayList>
+          </InfiniteScroll>
         </ContentMainDisplayBox>
 
         {/* 新键收藏夹区 */}
         <ContentMainCreateBox>
-          <Form
-            onSubmit={handleCreateCollection}
-          >
+          <Form onSubmit={handleCreateCollection}>
             <Form.Item>
               {props.form.getFieldDecorator('collection_input', {})(
                 <Row>

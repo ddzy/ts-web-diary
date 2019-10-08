@@ -27,6 +27,8 @@ export interface IDetailsControlCollectionProps extends RouteComponentProps<{
 interface IDetailsControlCollectionState {
   // ? 收藏夹列表
   collectionList: IBaseCommonCollectionArticleInfo[];
+  // ? 分页相关: 是否还有更多收藏夹
+  hasMoreCollection: boolean;
 };
 
 
@@ -36,6 +38,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
 
   const [state, setState] = React.useState<IDetailsControlCollectionState>({
     collectionList: [],
+    hasMoreCollection: true,
   });
 
 
@@ -87,6 +90,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
         setState({
           ...state,
           collectionList: newCollectionList,
+          hasMoreCollection: collectionList.length !== 0,
         });
       } else if (resCode === 1) {
         message.info(resMessage);
@@ -103,8 +107,10 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
     return (
       <DetailsControlCollectionContent
         collectionList={state.collectionList}
+        hasMoreCollection={state.hasMoreCollection}
         onSaveToCollection={handleSaveToCollection}
         onCreateCollection={handleCreateCollection}
+        onLoadMoreCollection={handleLoadMoreCollection}
       />
     );
   }
@@ -216,6 +222,16 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
     if (visible) {
       _getCollectionListFromServer(1, true);
     }
+  }
+
+  /**
+   * [处理] - 加载更多收藏夹列表
+   * @param page 当前页数
+   */
+  function handleLoadMoreCollection(
+    page: number,
+  ) {
+    _getCollectionListFromServer(page, false);
   }
 
   return (
