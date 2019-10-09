@@ -37,12 +37,14 @@ import {
   IBaseNotificationUserStarArticleParams,
   IBaseNotificationUserAttentionPeopleParams,
   IBaseNotificationUserStarPinParams,
+  IBaseNotificationUserCollectionArticleParams,
 } from 'components/header/Header.types';
 import {
   notificationUserStarArticleIOClient,
   notificationUserFriendIOClient,
   notificationUserAttentionPeopleIOClient,
   notificationUserStarPinIOClient,
+  notificationUserCollectionArticleIOClient,
 } from 'services/websocket';
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
 import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
@@ -50,6 +52,7 @@ import HeaderMainDummyNotificationNoticeFriendRefuse from './friend/refuse/Heade
 import HeaderMainDummyNotificationNoticeStarArticle from './star/article/HeaderMainDummyNotificationNoticeStarArticle';
 import HeaderMainDummyNotificationNoticeAttentionPeople from './attention/people/HeaderMainDummyNotificationNoticeAttentionPeople';
 import HeaderMainDummyNotificationNoticeStarPin from './star/pin/HeaderMainDummyNotificationNoticeStarPin';
+import HeaderMainNotificationNoticeCollectionArticle from './collection/article/HeaderMainNotificationNoticeCollectionArticle';
 
 
 // ? 追加通知列表
@@ -70,6 +73,8 @@ export interface IHeaderMainDummyNotificationNoticeState {
   notificationUserAttentionPeopleIOClient: SocketIOClient.Socket;
   // ? 用户点赞沸点的socket
   notificationUserStarPinIOClient: SocketIOClient.Socket;
+  // ? 用户收藏文章的socket
+  notificationUserCollectionArticleIOClient: SocketIOClient.Socket;
 
   // ? 通知项列表
   notificationsList: React.ReactNode[];
@@ -182,6 +187,21 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
       };
+      case NOTIFICATION_TYPE.user.collection.article: {
+        return {
+          ...prevState,
+          notificationsList: [
+            React.createElement(
+              HeaderMainNotificationNoticeCollectionArticle,
+              {
+                notificationInfo: action.payload,
+              },
+            ),
+            ...prevState.notificationsList,
+          ],
+          notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
+        };
+      };
       case PRIVATE_RESET_UNREAD_TOTAL: {
         return {
           ...prevState,
@@ -221,6 +241,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     notificationUserStarArticleIOClient,
     notificationUserAttentionPeopleIOClient,
     notificationUserStarPinIOClient,
+    notificationUserCollectionArticleIOClient,
     notificationUnreadTotal: 0,
     notificationsList: [],
     hasMoreNotification: true,
@@ -340,6 +361,20 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
       if (currentUserId === data.pin_author._id) {
         dispatch({
           type: NOTIFICATION_TYPE.user.star.pin.self,
+          payload: data,
+        });
+      }
+    });
+
+    // ? 用户收藏我的文章时的通知socket
+    state.notificationUserCollectionArticleIOClient.on('receiveUserCollectionArticle', (
+      data: IBaseNotificationUserCollectionArticleParams,
+    ) => {
+      const currentUserId = localStorage.getItem('userid');
+
+      if (currentUserId === data.article_author._id) {
+        dispatch({
+          type: NOTIFICATION_TYPE.user.collection.article,
           payload: data,
         });
       }
@@ -484,6 +519,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
             case NOTIFICATION_TYPE.user.star.pin.self: {
               return React.createElement(
                 HeaderMainDummyNotificationNoticeStarPin,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.collection.article: {
+              return React.createElement(
+                HeaderMainNotificationNoticeCollectionArticle,
                 {
                   notificationInfo: v,
                 },

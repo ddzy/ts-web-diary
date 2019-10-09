@@ -52,7 +52,7 @@ export interface IBaseNotificationUserFriendRefuseParams {
   update_time: number;
 };
 
-// ? 用户点赞文章的通知模型
+// ? 用户点赞我的文章的通知模型
 export interface IBaseNotificationUserStarArticleParams {
   _id: string;
   type: string;
@@ -100,6 +100,30 @@ export interface IBaseNotificationUserStarPinParams {
     _id: string,
   };
   pin_author: {
+    _id: string,
+    username: string,
+  };
+  create_time: number;
+  update_time: number;
+};
+
+// ? 用户收藏我的文章的通知模型
+export interface IBaseNotificationUserCollectionArticleParams {
+  _id: string;
+  type: string;
+  from: {
+    _id: string,
+    username: string,
+  };
+  collection: {
+    _id: string,
+    name: string,
+  };
+  article: {
+    _id: string,
+    title: string,
+  };
+  article_author: {
     _id: string,
     username: string,
   };

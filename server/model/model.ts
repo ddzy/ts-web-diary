@@ -50,6 +50,9 @@ import {
 import {
   INotificationUserAttentionPeopleProps,
 } from './notification/user/attention/people/notificationUserAttentionPeople.types';
+import {
+  INotificationUserCollectionArticleProps,
+} from './notification/user/collection/article/notificationUserCollectionArticleModel.types';
 
 import {
   ITrackStarArticleProps,
@@ -128,6 +131,7 @@ export {
   INotificationUserStarArticleProps,
   INotificationUserStarPinProps,
   INotificationUserAttentionPeopleProps,
+  INotificationUserCollectionArticleProps,
 
   // ? 足迹
   ITrackStarArticleProps,
