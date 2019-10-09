@@ -44,6 +44,9 @@ collectionArticleUpdateController.post('/insert_or_remove', async (ctx) => {
       };
     }
 
+    // ? 查询文章信息
+    const foundArticleInfo = await Posts.findById(articleId);
+
     // ? 如果收藏夹已经收藏过该文章
     if (!isCollect) {
       // ? 从收藏夹移除该文章
@@ -52,9 +55,6 @@ collectionArticleUpdateController.post('/insert_or_remove', async (ctx) => {
           articles: articleId,
         },
       });
-
-      // ? 查询文章作者信息
-      const foundArticleInfo = await Posts.findById(articleId, 'author');
 
       // ? 更新用户的足迹信息
       await User.findByIdAndUpdate(userId, {
@@ -81,10 +81,6 @@ collectionArticleUpdateController.post('/insert_or_remove', async (ctx) => {
         },
       );
 
-      // ? 查询文章作者信息
-      const foundArticleInfo = await Posts.findById(articleId, 'author');
-
-
       // ? 创建新的足迹
       const createdTrack: ITrackCollectionArticleProps = {
         _id: UUID.v1(),
@@ -107,7 +103,9 @@ collectionArticleUpdateController.post('/insert_or_remove', async (ctx) => {
     return ctx.body = {
       code: 0,
       message: isCollect ? '成功收藏该文章!' : '取消收藏该文章!',
-      data: {},
+      data: {
+        articleInfo: foundArticleInfo,
+      },
     };
   } catch (error) {
     return ctx.body = {

@@ -20,7 +20,11 @@ import { IBaseCommonCollectionArticleInfo } from 'pages/details/Details.types';
 import {
   PAGE_SIZE,
   TRACK_TYPE,
+  NOTIFICATION_TYPE,
 } from 'constants/constants';
+import {
+  notificationUserCollectionArticleIOClient,
+} from 'services/websocket';
 import DetailsControlCollectionContent from './content/DetailsControlCollectionContent';
 
 
@@ -28,6 +32,9 @@ export interface IDetailsControlCollectionProps extends RouteComponentProps<{
   id: string,
 }> { };
 interface IDetailsControlCollectionState {
+  // ? 收藏文章的通知socket
+  notificationUserCollectionArticleIOClient: SocketIOClient.Socket;
+
   // ? 收藏夹列表
   collectionList: IBaseCommonCollectionArticleInfo[];
   // ? 分页相关: 是否还有更多收藏夹
@@ -40,6 +47,7 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
 ): JSX.Element => {
 
   const [state, setState] = React.useState<IDetailsControlCollectionState>({
+    notificationUserCollectionArticleIOClient,
     collectionList: [],
     hasMoreCollection: true,
   });
@@ -205,8 +213,11 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
     }).then((res) => {
       const resCode = res.code;
       const resMessage = res.message;
+      const resData = res.data;
 
       if (resCode === 0) {
+        const notificationType = NOTIFICATION_TYPE.user.collection.article;
+        const resArticleInfo = resData.articleInfo;
         const newCollectionList = state.collectionList.map((collection) => {
           if (collection._id === collectionId) {
             return {
@@ -221,6 +232,16 @@ const DetailsControlCollection = React.memo<IDetailsControlCollectionProps>((
         setState({
           ...state,
           collectionList: newCollectionList,
+        });
+
+        // socket实时通知被收藏文章作者
+        state.notificationUserCollectionArticleIOClient.emit('sendUserCollectionArticle', {
+          notificationType,
+          userId,
+          collectionId,
+          articleId,
+          authorId: resArticleInfo.author,
+          isCollect: newIsCollect,
         });
       } else if (resCode === 1) {
         message.info(resMessage);

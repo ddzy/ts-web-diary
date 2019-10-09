@@ -4,6 +4,7 @@ import {
   User,
   Posts,
   Pin,
+  CollectionArticle,
 } from '../../../model/model';
 import {
   NOTIFICATION_TYPE,
@@ -173,6 +174,32 @@ notificationUserController.get('/info/list', async (ctx) => {
               from: foundSenderInfo,
               pin: foundPinInfo,
               pin_author: foundPinAuthorInfo,
+            };
+          };
+          case NOTIFICATION_TYPE.user.collection.article: {
+            // ? 查询发送方信息
+            const foundSenderInfo = await User.findById(v.from, {
+              ...FILTER_SENSITIVE,
+            });
+            // ? 查询文章信息
+            const foundArticleInfo = await Posts.findById(v.article, {
+              ...FILTER_SENSITIVE,
+            });
+            // ? 查询文章作者信息
+            const foundArticleAuthorInfo = await User.findById(v.article_author, {
+              ...FILTER_SENSITIVE,
+            });
+            // ? 查询收藏夹信息
+            const foundCollectionInfo = await CollectionArticle.findById(v.collection, {
+              ...FILTER_SENSITIVE,
+            });
+
+            return {
+              ...v,
+              from: foundSenderInfo,
+              article: foundArticleInfo,
+              article_author: foundArticleAuthorInfo,
+              collection: foundCollectionInfo,
             };
           };
         }
