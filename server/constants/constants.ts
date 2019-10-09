@@ -70,6 +70,9 @@ export const NOTIFICATION_TYPE = {
       people: 'notification_user_attention_people',
       topic: 'notification_user_attention_topic',
     },
+    collection: {
+      article: 'notification_user_collection_article',
+    },
   },
   admin: {},
 };

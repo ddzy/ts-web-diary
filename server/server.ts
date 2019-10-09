@@ -38,6 +38,9 @@ import {
 import {
   handleNotificationUserAttentionTopic,
 } from './controller/notification/user/attention/topic/notificationUserAttentionTopic';
+import {
+  handleNotificationUserCollectionArticle,
+} from './controller/notification/user/collection/article/notificationUserCollectionArticle';
 
 
 const app: Koa = new Koa();
@@ -122,6 +125,12 @@ notificationUserAttentionPeopleIO.on('connection', (socket) => {
 const notificationUserAttentionTopicIO = io.of('/notification/user/attention/topic');
 notificationUserAttentionTopicIO.on('connection', (socket) => {
   handleNotificationUserAttentionTopic(socket, notificationUserAttentionTopicIO);
+})
+
+// ? 处理收藏文章的相关通知Websocket
+const notificationUserCollectionArticleIO = io.of('/notification/user/collection/article');
+notificationUserCollectionArticleIO.on('connection', (socket) => {
+  handleNotificationUserCollectionArticle(socket, notificationUserCollectionArticleIO);
 })
 
 // ? 处理单聊的相关Websocket
