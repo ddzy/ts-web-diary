@@ -55,7 +55,9 @@ const User = React.memo<IUserProps>((
         />
 
         {/* 个人动态展示栏 */}
-        <UserMain />
+        <UserMain
+          isOwner={state.isOwner}
+        />
       </UserContent>
     </UserContainer>
   );

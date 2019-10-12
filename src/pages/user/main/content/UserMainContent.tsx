@@ -38,6 +38,8 @@ const LoadableUserMainContentAttention = Loadable({
 export interface IUserMainContentProps extends RouteComponentProps<{
   id: string,
 }> {
+  // ? 标识是访问者还是主人
+  isOwner: boolean;
 };
 export interface IUserMainContentState {
 };
@@ -64,9 +66,10 @@ const UserMainContent = React.memo<IUserMainContentProps>((
    */
   function handleTabDefaultActive(): string {
     const { pathname } = props.location;
-    const defaultKey = pathname.substring(pathname.lastIndexOf('/') + 1);
+    const regPath = /(track)|(activity)|(collection)|(post)|(attention)/g;
+    const matchedPath = pathname.match(regPath);
 
-    return defaultKey ? defaultKey : 'track';
+    return matchedPath ? matchedPath[0] : 'track';
   }
 
   return (
@@ -101,7 +104,7 @@ const UserMainContent = React.memo<IUserMainContentProps>((
             tab="收藏"
             key="collection"
           >
-            <Route path="/user/:id/collection" component={LoadableUserMainContentCollection} />
+            <Route path="/user/:id/collection" render={() => <LoadableUserMainContentCollection isOwner={props.isOwner} />} />
           </Tabs.TabPane>
           <Tabs.TabPane
             tab="关注"

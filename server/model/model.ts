@@ -9,6 +9,7 @@ import Comments from './comments/commentsModel';
 import Replys from './replys/replysModel';
 // import Collections from './collections/collectionsModel';
 import CollectionArticle from './collection/article/collectionArticleModel';
+import CollectionPin from './collection/pin/collectionPinModel';
 import Followers from './followers/followersModel';
 import Attentions from './attentions/attentionsModel';
 import AttentionUsers from './attentions/attention_users/attentionUsersModel';
@@ -123,6 +124,7 @@ export {
   PinComment,
   PinReply,
   CollectionArticle,
+  CollectionPin,
 
   // ? 通知
   INotificationUserFriendRequestModelProps,

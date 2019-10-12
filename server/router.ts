@@ -17,10 +17,6 @@ import actionAttentionTopicController from './controller/action/attention/topic/
 
 import searchController from './controller/search/search';
 
-import pageController from './controller/page/page';
-import pageHomeController from './controller/page/home/pageHome';
-import pageDetailsController from './controller/page/details/pageDetails';
-
 
 import loginController from './controller/login/login';
 
@@ -69,6 +65,7 @@ import userInfoArticleController from './controller/user/info/article/userInfoAr
 import userInfoPartialController from './controller/user/info/partial/userInfoPartial';
 import userInfoPartialTrackController from './controller/user/info/partial/track/userInfoPartialTrack';
 import userInfoPartialArticleController from './controller/user/info/partial/article/userInfoPartialArticle';
+import userInfoPartialCollectionController from './controller/user/info/partial/collection/userInfoPartialCollection';
 
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
@@ -135,7 +132,8 @@ notificationUserCollectionController
   .use('/article', notificationUserCollectionArticleController.routes(), notificationUserCollectionArticleController.allowedMethods());
 userInfoPartialController
   .use('/track', userInfoPartialTrackController.routes(), userInfoPartialTrackController.allowedMethods())
-  .use('/article', userInfoPartialArticleController.routes(), userInfoPartialArticleController.allowedMethods());
+  .use('/article', userInfoPartialArticleController.routes(), userInfoPartialArticleController.allowedMethods())
+  .use('/collection', userInfoPartialCollectionController.routes(), userInfoPartialCollectionController.allowedMethods())
 
 
 // !! 三级路由 !!
@@ -200,9 +198,6 @@ articleController
 actionController
   .use('/star', actionStarController.routes(), actionStarController.allowedMethods())
   .use('/attention', actionAttentionController.routes(), actionAttentionController.allowedMethods());
-pageController
-  .use('/home', pageHomeController.routes(), pageHomeController.allowedMethods())
-  .use('/details', pageDetailsController.routes(), pageDetailsController.allowedMethods())
 commentController
   .use('/article', commentArticleController.routes(), commentArticleController.allowedMethods())
 replyController
@@ -245,7 +240,6 @@ pinController
 router
   .use('/article', articleController.routes(), articleController.allowedMethods())
   .use('/action', actionController.routes(), actionController.allowedMethods())
-  .use('/page', pageController.routes(), pageController.allowedMethods())
   .use('/search', searchController.routes(), searchController.allowedMethods())
   .use('/login', loginController.routes(), loginController.allowedMethods())
   .use('/register', registerController.routes(), registerController.allowedMethods())
