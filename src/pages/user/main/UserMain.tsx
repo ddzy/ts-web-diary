@@ -13,7 +13,10 @@ import UserMainContent from './content/UserMainContent';
 import UserMainExtra from './extra/UserMainExtra';
 
 
-export interface IUserProfileProps extends RouteComponentProps { };
+export interface IUserProfileProps extends RouteComponentProps {
+  // ? 是访问者还是主人
+  isOwner: boolean;
+};
 
 
 const UserMain = React.memo<IUserProfileProps>((
@@ -25,7 +28,9 @@ const UserMain = React.memo<IUserProfileProps>((
       <MainContent>
         <Row gutter={6}>
           <Col span={16}>
-            <UserMainContent />
+            <UserMainContent
+              isOwner={props.isOwner}
+            />
           </Col>
           <Col span={8}>
             <UserMainExtra />

@@ -98,6 +98,12 @@ const UserSchema: mongoose.Schema = new Schema({
       ref: 'CollectionArticle',
       default: [],
     }],
+    // * 沸点收藏夹
+    pin: [{
+      type: Schema.Types.ObjectId,
+      ref: 'CollectionPin',
+      default: [],
+    }],
   },
 
   // ? 个人中心封面图片

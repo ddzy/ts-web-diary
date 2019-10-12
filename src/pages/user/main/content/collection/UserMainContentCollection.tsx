@@ -1,12 +1,24 @@
 import * as React from 'react';
+import {
+  Route,
+  Switch,
+  withRouter,
+  RouteComponentProps,
+  Redirect,
+} from 'react-router-dom';
 
 import {
   CollectionContainer,
   CollectionMain,
 } from './style';
+import UserMainContentCollectionNav from './nav/UserMainContentCollectionNav';
+import UserMainContentCollectionView from './view/UserMainContentCollectionView';
 
 
-export interface IUserMainContentCollectionProps { };
+export interface IUserMainContentCollectionProps extends RouteComponentProps {
+  // ? 标识当前是访问者还是主人
+  isOwner: boolean;
+};
 
 
 const UserMainContentCollection = React.memo<IUserMainContentCollectionProps>((
@@ -16,7 +28,15 @@ const UserMainContentCollection = React.memo<IUserMainContentCollectionProps>((
   return (
     <CollectionContainer>
       <CollectionMain>
-        我的收藏相关内容
+        {/* 导航区块 */}
+        <UserMainContentCollectionNav />
+
+        {/* 视图区块 */}
+        <Switch>
+          <Route exact={true} path="/user/:id/collection" render={(v) => <Redirect to={`${v.match.url}/article`} />} />
+
+          <Route path="/user/:id/collection/:type" render={() => <UserMainContentCollectionView isOwner={props.isOwner} />} />
+        </Switch>
       </CollectionMain>
     </CollectionContainer>
   );
@@ -24,4 +44,4 @@ const UserMainContentCollection = React.memo<IUserMainContentCollectionProps>((
 });
 
 
-export default UserMainContentCollection;
+export default withRouter(UserMainContentCollection);
