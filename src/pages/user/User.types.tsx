@@ -19,13 +19,41 @@ export interface IBaseCommonUserInfo extends IStaticUserInfo {
 
 
 /**
- * [收藏] 收藏文章的基本信息接口
+ * [收藏] 文章收藏夹的基本信息接口
  */
 interface IStaticCollectionArticleInfo {
   _id: string;
+  author: IStaticUserInfo;
   name: string;
+  description: string;
+  cover_img: string;
+  articles: string[];
+  followers: string[];
+  watchers: string[];
+  create_time: number;
+  update_time: number;
 };
 export interface IBaseCommonCollectionArticleInfo extends IStaticCollectionArticleInfo {
+
+};
+
+
+/**
+ * [收藏] 沸点收藏夹的基本信息接口
+ */
+interface IStaticCollectionPinInfo {
+  _id: string;
+  author: IStaticUserInfo;
+  name: string;
+  description: string;
+  cover_img: string;
+  articles: string[];
+  followers: string[];
+  watchers: string[];
+  create_time: number;
+  update_time: number;
+};
+export interface IBaseCommonCollectionPinInfo extends IStaticCollectionPinInfo {
 
 };
 
