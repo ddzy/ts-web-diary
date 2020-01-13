@@ -22,7 +22,7 @@ export function handleStatus(socket: IO.Socket, io: IO.Namespace) {
     },
   ) => {
     // redis将登录用户添加至SortedSet
-    await redis.zadd(IOREDIS_USER_ONLINE, Date.now(), userInfo.userId);
+    await redis.zadd(IOREDIS_USER_ONLINE, `${Date.now()}`, userInfo.userId);
     // redis统计在线用户总数
     const foundUserOnLineTotal = await redis.zcard(IOREDIS_USER_ONLINE);
 

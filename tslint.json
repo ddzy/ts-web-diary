@@ -1,14 +1,7 @@
 {
-  "extends": [
-    "tslint:recommended",
-    "tslint-react",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
-    "exclude": [
-      "config/**/*.js",
-      "node_modules/**/*.ts"
-    ]
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
   },
   "rules": {
     "object-literal-sort-keys": false,
@@ -20,9 +13,7 @@
     "space-within-parens": false,
     "no-submodule-imports": false,
     "no-implicit-dependencies": false,
-    "ordered-imports": [
-      false
-    ],
+    "ordered-imports": [false],
     "jsx-boolean-value": false,
     "no-trailing-whitespace": false,
     "semicolon": false,
@@ -35,23 +26,19 @@
     "no-namespace": true,
     "no-internal-module": true,
     "no-unused-expression": [false],
-    "space-before-function-paren": [
-      "ignore"
-    ],
+    "space-before-function-paren": ["ignore"],
     "no-console": [
       "error",
       {
-        "allow": [
-          "log",
-          "error"
-        ]
+        "allow": ["log", "error"]
       }
     ],
     "no-empty-interface": false,
     "no-string-literal": false,
     "no-bitwise": false,
-    "variable-name": [
-      false
-    ]
+    "variable-name": [false]
+  },
+  "jsRules": {
+    "object-literal-sort-keys": false
   }
 }

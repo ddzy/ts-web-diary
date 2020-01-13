@@ -39,7 +39,7 @@ actionStarPinController.post('/', async (ctx) => {
   try {
     if (isStar) {
       // ? redis更新沸点的点赞状态
-      await redis.zadd(redisKey, Date.now(), userId);
+      await redis.zadd(redisKey, `${Date.now()}`, userId);
 
       // ? 创建新的足迹
       const createdTrack: ITrackStarPinProps = {

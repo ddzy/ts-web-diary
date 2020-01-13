@@ -135,7 +135,7 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
                     cancelText="算了"
                     okText="确定"
                     onConfirm={
-                      (e: React.MouseEvent) => this.props.onArticleEdit(
+                      (e: React.MouseEvent<HTMLElement>) => this.props.onArticleEdit(
                         e,
                         this.props.id,
                       )
@@ -152,7 +152,7 @@ class MeArticleList extends React.Component<IMeArticleListProps, IMeArticleListS
                     cancelText="算了"
                     okText="确定"
                     onConfirm={
-                      (e: React.MouseEvent) => this.props.onArticleDelete(
+                      (e: React.MouseEvent<HTMLElement>) => this.props.onArticleDelete(
                         e,
                         this.props.id,
                       )
