@@ -126,7 +126,7 @@ const CollectionShowItem: React.SFC<
                 >
                   <Popconfirm
                     title="要移除此文章吗?"
-                    onConfirm={(e: React.MouseEvent) => props.onDeleteCollectionArticle(
+                    onConfirm={(e: React.MouseEvent<HTMLElement>) => props.onDeleteCollectionArticle(
                       e,
                       item._id,
                     )}

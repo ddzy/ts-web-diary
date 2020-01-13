@@ -36,7 +36,7 @@ actionStarArticleController.post('/', async (ctx) => {
 
   if (isStar) {
     // ? redis更新文章的点赞状态
-    await redis.zadd(redisKey, Date.now(), userId);
+    await redis.zadd(redisKey, `${Date.now()}`, userId);
 
     // ? 更新用户的足迹信息
     const createdTrack: ITrackStarArticleProps = {

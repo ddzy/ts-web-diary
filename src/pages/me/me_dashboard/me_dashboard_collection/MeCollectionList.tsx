@@ -13,7 +13,7 @@ export interface IMyCollectionListProps {
 
   onCollectionItemClick: (
     e: React.MouseEvent,
-    collectionId: string, 
+    collectionId: string,
   ) => void;
 
   onCollectionItemDelete: (
@@ -51,7 +51,7 @@ class MyCollectionList extends React.PureComponent<
             type="eye"
             key="eye"
             theme="twoTone"
-            onClick={(e: React.MouseEvent) => 
+            onClick={(e: React.MouseEvent) =>
               this.props.onCollectionItemClick(
                 e,
                 this.props.id,
@@ -61,7 +61,7 @@ class MyCollectionList extends React.PureComponent<
           <Popconfirm
             key="close-circle"
             title="要删除该收藏夹吗?"
-            onConfirm={(e: React.MouseEvent) => this.props.onCollectionItemDelete(
+            onConfirm={(e: React.MouseEvent<HTMLElement>) => this.props.onCollectionItemDelete(
               e,
               this.props.id,
             )}

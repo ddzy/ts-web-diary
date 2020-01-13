@@ -54,7 +54,7 @@
     "socket.io-client": "^2.2.0",
     "styled-components": "^4.1.2",
     "tocbot": "^4.8.0",
-    "utility": "^1.14.0",
+    "utility": "^1.16.3",
     "uuid": "^3.3.3"
   },
   "scripts": {
