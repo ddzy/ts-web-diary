@@ -11,6 +11,7 @@ import {
   Col,
   Divider,
   Popconfirm,
+  Empty,
 } from 'antd';
 
 import {
@@ -96,7 +97,8 @@ const UserMainContentCollectionView = React.memo((props: IUserMainContentCollect
     if (collectionType === 'article') {
       const collectionList = state.collectionList as IBaseCommonCollectionArticleInfo[];
 
-      return collectionList.map((v) => {
+      return collectionList.length !== 0
+        ? collectionList.map((v) => {
         return (
           <Col key={v._id} span={8}>
             <Card
@@ -159,15 +161,26 @@ const UserMainContentCollectionView = React.memo((props: IUserMainContentCollect
             </Card>
           </Col>
         );
-      });
+          })
+        : (
+          <Empty
+            description="暂时没有收藏夹..."
+          />
+        )
     } else if (collectionType === 'pin') {
       const collectionList = state.collectionList as IBaseCommonCollectionPinInfo[];
 
-      return collectionList.map((v) => {
-        return (
-          <React.Fragment key={v._id} />
-        );
-      });
+      return collectionList.length !== 0
+        ? collectionList.map((v) => {
+            return (
+              <React.Fragment key={v._id} />
+            );
+          })
+        : (
+          <Empty
+            description="暂时没有收藏夹..."
+          />
+        )
     }
 
     return null;
