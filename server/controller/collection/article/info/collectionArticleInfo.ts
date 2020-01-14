@@ -3,6 +3,7 @@ import { ObjectID } from 'bson';
 
 import {
   User,
+  CollectionArticle,
 } from '../../../../model/model';
 import { FILTER_SENSITIVE } from '../../../../constants/constants';
 
@@ -11,7 +12,9 @@ const collectionArticleInfoController = new Router();
 
 
 /**
- * [处理] 分页获取收藏夹列表
+ * @description 分页获取收藏夹列表
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/14
  */
 collectionArticleInfoController.post('/list', async (ctx) => {
   interface IRequestParams {
@@ -73,6 +76,83 @@ collectionArticleInfoController.post('/list', async (ctx) => {
       code: -1,
       message: '后端出错, 请稍后重试!',
       data: error,
+    };
+  }
+});
+
+
+/**
+ * @description 获取单个收藏夹详情
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/13
+ */
+collectionArticleInfoController.get('/single', async (ctx) => {
+  interface IRequestParams {
+    // 收藏夹 id
+    collectionId: string;
+  };
+
+  const { collectionId } = ctx.request.query as IRequestParams;
+
+  try {
+    // TODO: 获取收藏夹详情
+    const foundCollectionInfo = await CollectionArticle
+      .findById(collectionId, {
+      ...FILTER_SENSITIVE,
+      })
+      .populate([
+        {
+          path: 'author',
+          select: {
+            ...FILTER_SENSITIVE
+          },
+        },
+        {
+          path: 'followers',
+          select: {
+            ...FILTER_SENSITIVE
+          },
+        },
+        {
+          path: 'watchers',
+          select: {
+            ...FILTER_SENSITIVE
+          },
+        },
+        {
+          path: 'articles',
+          select: {
+            ...FILTER_SENSITIVE
+          },
+          options: {
+            sort: {
+              create_time: -1,
+            },
+          },
+          populate: [
+            {
+              path: 'author',
+              select: {
+                ...FILTER_SENSITIVE
+              },
+            },
+          ],
+        },
+      ])
+
+    ctx.body = {
+      code: 0,
+      message: 'Success!',
+      data: {
+        collectionInfo: foundCollectionInfo,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    ctx.body = {
+      code: -1,
+      message: '后端发生错误, 请稍后重试!',
+      data: {},
     };
   }
 });
