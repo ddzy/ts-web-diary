@@ -67,6 +67,7 @@ import userInfoPartialController from './controller/user/info/partial/userInfoPa
 import userInfoPartialTrackController from './controller/user/info/partial/track/userInfoPartialTrack';
 import userInfoPartialArticleController from './controller/user/info/partial/article/userInfoPartialArticle';
 import userInfoPartialCollectionController from './controller/user/info/partial/collection/userInfoPartialCollection';
+import userInfoPartialAttentionController from './controller/user/info/partial/attention/userInfoPartialAttention';
 
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
@@ -135,6 +136,7 @@ userInfoPartialController
   .use('/track', userInfoPartialTrackController.routes(), userInfoPartialTrackController.allowedMethods())
   .use('/article', userInfoPartialArticleController.routes(), userInfoPartialArticleController.allowedMethods())
   .use('/collection', userInfoPartialCollectionController.routes(), userInfoPartialCollectionController.allowedMethods())
+  .use('/attention', userInfoPartialAttentionController.routes(), userInfoPartialAttentionController.allowedMethods())
 
 
 // !! 三级路由 !!
