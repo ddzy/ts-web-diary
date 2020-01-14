@@ -110,7 +110,7 @@ const UserMainContent = React.memo<IUserMainContentProps>((
             tab="关注"
             key="attention"
           >
-            <Route path="/user/:id/attention" component={LoadableUserMainContentAttention} />
+            <Route path="/user/:id/attention" component={() => <LoadableUserMainContentAttention isOwner={props.isOwner} />} />
           </Tabs.TabPane>
         </Tabs>
       </ContentMain>

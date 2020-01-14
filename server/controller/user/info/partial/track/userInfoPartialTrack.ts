@@ -142,6 +142,7 @@ userInfoPartialTrackController.post('/list', async (ctx) => {
           });
 
           // ? 查询话题收藏夹信息
+          // * 由于用户可能已经删除了该收藏夹, 所以需要做兼容处理
           const foundCollectionInfo = await CollectionArticle.findById(v.collection, {
             ...FILTER_SENSITIVE,
           });

@@ -43,6 +43,7 @@ import collectionArticleController from './controller/collection/article/collect
 import collectionArticleInfoController from './controller/collection/article/info/collectionArticleInfo';
 import collectionArticleCreateController from './controller/collection/article/create/collectionArticleCreate';
 import collectionArticleUpdateController from './controller/collection/article/update/collectionArticleUpdate';
+import collectionArticleDeleteController from './controller/collection/article/delete/collectionArticleDelete';
 import collectionPinController from './controller/collection/pin/collectionPin';
 import collectionPinInfoController from './controller/collection/pin/info/collectionPinInfo';
 import collectionPinCreateController from './controller/collection/pin/create/collectionPinCreate';
@@ -66,6 +67,7 @@ import userInfoPartialController from './controller/user/info/partial/userInfoPa
 import userInfoPartialTrackController from './controller/user/info/partial/track/userInfoPartialTrack';
 import userInfoPartialArticleController from './controller/user/info/partial/article/userInfoPartialArticle';
 import userInfoPartialCollectionController from './controller/user/info/partial/collection/userInfoPartialCollection';
+import userInfoPartialAttentionController from './controller/user/info/partial/attention/userInfoPartialAttention';
 
 import notificationController from './controller/notification/notification';
 import notificationUserController from './controller/notification/user/notificationUser';
@@ -134,6 +136,7 @@ userInfoPartialController
   .use('/track', userInfoPartialTrackController.routes(), userInfoPartialTrackController.allowedMethods())
   .use('/article', userInfoPartialArticleController.routes(), userInfoPartialArticleController.allowedMethods())
   .use('/collection', userInfoPartialCollectionController.routes(), userInfoPartialCollectionController.allowedMethods())
+  .use('/attention', userInfoPartialAttentionController.routes(), userInfoPartialAttentionController.allowedMethods())
 
 
 // !! 三级路由 !!
@@ -182,7 +185,8 @@ userInfoController
 collectionArticleController
   .use('/info', collectionArticleInfoController.routes(), collectionArticleInfoController.allowedMethods())
   .use('/create', collectionArticleCreateController.routes(), collectionArticleCreateController.allowedMethods())
-  .use('/update', collectionArticleUpdateController.routes(), collectionArticleUpdateController.allowedMethods());
+  .use('/update', collectionArticleUpdateController.routes(), collectionArticleUpdateController.allowedMethods())
+  .use('/delete', collectionArticleDeleteController.routes(), collectionArticleDeleteController.allowedMethods());
 collectionPinController
   .use('/info', collectionPinInfoController.routes(), collectionPinInfoController.allowedMethods())
   .use('/create', collectionPinCreateController.routes(), collectionPinCreateController.allowedMethods())

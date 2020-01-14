@@ -45,11 +45,18 @@ export interface IBasicUserInfo {
 /* ---------------------------------------------- */
 
 /**
- * [收藏] 基本的用户文章收藏夹信息
+ * @description 基本的用户文章收藏夹信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/13
  */
 export interface IBasicCollectionInfo {
   _id: string;
+  author: IBasicUserInfo;
   name: string;
+  description: string;
+  cover_img: string;
+  followers: IBasicUserInfo[];
+  watchers: IBasicUserInfo[];
   articles: IBasicArticleInfo[];
   create_time: number;
   update_time: number;
@@ -58,7 +65,9 @@ export interface IBasicCollectionInfo {
 /* ---------------------------------------------- */
 
 /**
- * [文章] 基本的文章信息
+ * @description 基本的文章信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/14
  */
 export interface IBasicArticleInfo {
   _id: string;
