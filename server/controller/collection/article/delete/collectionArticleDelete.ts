@@ -1,6 +1,7 @@
 import * as Router from 'koa-router';
 import {
   CollectionArticle,
+  User,
 } from '../../../../model/model';
 
 
@@ -36,6 +37,50 @@ collectionArticleDeleteController.post('/post', async (ctx) => {
       message: '删除成功!',
       data: {
       },
+    };
+  } catch (error) {
+    ctx.body = {
+      code: -1,
+      message: '后端出错, 请稍后重试!',
+      data: {},
+    };
+  }
+});
+
+collectionArticleDeleteController.post('/self', async (ctx) => {
+  interface IRequestParams {
+    ownerId: string;
+    collectionId: string;
+  };
+
+  const {
+    ownerId,
+    collectionId,
+  } = ctx.request.body as IRequestParams;
+
+  try {
+    // 移除该收藏夹
+    await CollectionArticle.findByIdAndRemove(collectionId);
+
+    // 更新用户的收藏夹列表 & 通知列表 & 足迹列表
+    // 避免残留的无效的收藏夹导致报错
+    // 足迹要由前端处理
+    await User.findByIdAndUpdate(ownerId, {
+      '$pull': {
+        'collections.article': collectionId,
+        notifications: {
+          collection: collectionId,
+        },
+        tracks: {
+          collection: collectionId
+        },
+      },
+    });
+
+    ctx.body = {
+      code: 0,
+      message: '删除成功!',
+      data: {},
     };
   } catch (error) {
     ctx.body = {
