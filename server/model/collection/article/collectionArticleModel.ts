@@ -27,7 +27,7 @@ const CollectionArticleSchema: mongoose.Schema = new Schema({
   // ? 文章列表
   articles: [{
     type: Schema.Types.ObjectId,
-    ref: 'Posts',
+    ref: 'Post',
     default: [],
   }],
   // ? 关注该收藏夹的人

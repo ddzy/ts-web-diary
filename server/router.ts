@@ -43,6 +43,7 @@ import collectionArticleController from './controller/collection/article/collect
 import collectionArticleInfoController from './controller/collection/article/info/collectionArticleInfo';
 import collectionArticleCreateController from './controller/collection/article/create/collectionArticleCreate';
 import collectionArticleUpdateController from './controller/collection/article/update/collectionArticleUpdate';
+import collectionArticleDeleteController from './controller/collection/article/delete/collectionArticleDelete';
 import collectionPinController from './controller/collection/pin/collectionPin';
 import collectionPinInfoController from './controller/collection/pin/info/collectionPinInfo';
 import collectionPinCreateController from './controller/collection/pin/create/collectionPinCreate';
@@ -182,7 +183,8 @@ userInfoController
 collectionArticleController
   .use('/info', collectionArticleInfoController.routes(), collectionArticleInfoController.allowedMethods())
   .use('/create', collectionArticleCreateController.routes(), collectionArticleCreateController.allowedMethods())
-  .use('/update', collectionArticleUpdateController.routes(), collectionArticleUpdateController.allowedMethods());
+  .use('/update', collectionArticleUpdateController.routes(), collectionArticleUpdateController.allowedMethods())
+  .use('/delete', collectionArticleDeleteController.routes(), collectionArticleDeleteController.allowedMethods());
 collectionPinController
   .use('/info', collectionPinInfoController.routes(), collectionPinInfoController.allowedMethods())
   .use('/create', collectionPinCreateController.routes(), collectionPinCreateController.allowedMethods())

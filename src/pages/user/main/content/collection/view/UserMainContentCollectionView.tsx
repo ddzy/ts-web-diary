@@ -110,7 +110,7 @@ const UserMainContentCollectionView = React.memo((props: IUserMainContentCollect
                 />
               }
               actions={[
-                <Icon type="home" key="home" />,
+                <Icon type="home" key="home" onClick={() => { handleCollectionArticleHomeBtnClick(v._id) }} />,
                 props.isOwner
                   ? (<Icon type="close-circle" key="close" />)
                   : (<Icon type="plus-circle" key="plus" />),
@@ -152,6 +152,21 @@ const UserMainContentCollectionView = React.memo((props: IUserMainContentCollect
     }
 
     return null;
+  }
+
+  /**
+   * @description 处理点击文章收藏夹的去往主页按钮
+   * @summary 跳转至收藏夹详情页
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/13
+   */
+  function handleCollectionArticleHomeBtnClick(collectionId: string) {
+    props.history.push({
+      pathname: `/collection/${collectionId}`,
+      state: {
+        isOwner: props.isOwner,
+      },
+    });
   }
 
   return (
