@@ -1,40 +1,45 @@
 import * as React from 'react';
 import {
-  Empty,
-} from 'antd';
+  Route,
+  Switch,
+  withRouter,
+  RouteComponentProps,
+  Redirect,
+} from 'react-router-dom';
 
 import {
   AttentionContainer,
   AttentionMain,
 } from './style';
+import UserMainContentAttentionNav from './nav/UserMainContentAttentionNav';
+import UserMainContentAttentionView from './view/UserMainContentAttentionView';
 
 
-export interface IUserMainContentAttentionProps { };
+export interface IUserMainContentAttentionProps extends RouteComponentProps {
+  // ? 标识当前是访问者还是主人
+  isOwner: boolean;
+};
 
 
 const UserMainContentAttention = React.memo<IUserMainContentAttentionProps>((
   props: IUserMainContentAttentionProps,
 ): JSX.Element => {
-  /**
-   * @description 初始化我的关注相关内容
-   * @author ddzy<1766083035@qq.com>
-   * @since 2020/1/14
-   */
-  function _initAttentionContent() {
-    return (
-      <Empty description="暂时没有关注..." />
-    );
-  }
-
   return (
     <AttentionContainer>
       <AttentionMain>
-        {_initAttentionContent()}
+        {/* 导航区块 */}
+        <UserMainContentAttentionNav />
+
+        {/* 视图区块 */}
+        <Switch>
+          <Route exact={true} path="/user/:id/attention" render={(v) => <Redirect to={`${v.match.url}/user`} />} />
+
+          <Route path="/user/:id/attention/:type" render={() => <UserMainContentAttentionView isOwner={props.isOwner} />} />
+        </Switch>
       </AttentionMain>
     </AttentionContainer>
   );
-
 });
 
 
-export default UserMainContentAttention;
+export default withRouter(UserMainContentAttention);
