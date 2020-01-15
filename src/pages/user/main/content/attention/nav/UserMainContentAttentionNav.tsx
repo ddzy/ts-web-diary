@@ -10,8 +10,9 @@ import {
   NavMainLinkBox
 } from "./style";
 
-export interface IUserMainContentAttentionNavProps
-  extends RouteComponentProps {}
+export interface IUserMainContentAttentionNavProps extends RouteComponentProps {
+  isOwner: boolean; // 标识是主人还是访客
+}
 export interface IUserMainContentAttentionNavState {}
 
 const UserMainContentAttentionNav = React.memo(
@@ -32,7 +33,11 @@ const UserMainContentAttentionNav = React.memo(
           <Row>
             <Col span={18}>
               <NavMainTipBox>
-                <NavMainTipText>收藏集</NavMainTipText>
+                <NavMainTipText>
+                  {
+                    props.isOwner ? '我关注的' : '他关注的'
+                  }
+                </NavMainTipText>
               </NavMainTipBox>
             </Col>
             <Col span={6}>

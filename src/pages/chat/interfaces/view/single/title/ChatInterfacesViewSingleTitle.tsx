@@ -11,14 +11,12 @@ import {
 } from './style';
 import ChatInterfacesViewSingleTitleName from './name/ChatInterfacesViewSingleTitleName';
 import ChatInterfacesViewSingleTitleInfo from './info/ChatInterfacesViewSingleTitleInfo';
-import {
-  IBaseChatSingleInfo,
-} from 'pages/chat/Chat.types';
+import { IBasicChatSingleInfo } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleTitleProps {
   // ? 单聊信息
-  singleChatInfo: IBaseChatSingleInfo,
+  singleChatInfo: IBasicChatSingleInfo,
 };
 
 const ChatInterfacesViewSingleTitle = React.memo((props: IChatInterfacesViewSingleTitleProps) => {

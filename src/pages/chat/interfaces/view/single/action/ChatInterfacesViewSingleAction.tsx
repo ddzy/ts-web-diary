@@ -12,9 +12,7 @@ import {
 import ChatInterfacesViewSingleActionExtra from './extra/ChatInterfacesViewSingleActionExtra';
 import ChatInterfacesViewSingleActionInput from './input/ChatInterfacesViewSingleActionInput';
 import ChatInterfacesViewSingleActionSend from './send/ChatInterfacesViewSingleActionSend';
-import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleActionProps {
@@ -29,7 +27,7 @@ export interface IChatInterfacesViewSingleActionState {
   messageInfo: {
     // * 消息类型
     // * 目前只计划实现四种, plain(普通文本)、image(图片)、文件(file)、代码片段(code)
-    type: IBaseCommonChatMessgaeType,
+    type: IBasicChatMessgaeType,
     content: string,
   };
 };
@@ -98,7 +96,7 @@ const ChatInterfacesViewSingleAction = React.memo((props: IChatInterfacesViewSin
    */
   function handleChatImageMessageSend(
     messageInfo: {
-      type: IBaseCommonChatMessgaeType,
+      type: IBasicChatMessgaeType,
       content: string,
     },
     callback?: () => void,

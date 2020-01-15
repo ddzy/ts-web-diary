@@ -10,7 +10,9 @@ import {
 const actionAttentionPeopleController = new Router();
 
 /**
- * [处理] - 关注用户
+ * @description 关注用户
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 actionAttentionPeopleController.post('/', async (ctx) => {
   interface IRequestParams {
