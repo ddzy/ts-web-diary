@@ -42,7 +42,7 @@ const UserMainContentPostDisplay = React.memo((props: IUserMainContentPostDispla
 
     return articleList.length === 0
       ? (
-        <Empty description="暂时没有更多足迹~" />
+        <Empty description="暂时没有更多文章~" />
       )
       : articleList.map((v) => {
         return (

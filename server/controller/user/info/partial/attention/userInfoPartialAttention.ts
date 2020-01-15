@@ -51,11 +51,19 @@ userInfoPartialAttentionController.get('/list_by_type', async (ctx) => {
       foundUserAttentionList = await foundUserInfo.attention[`${attentionType}s`];
     }
 
+    // ? 给每项添加 is_attention 字段, 标识是否关注, 便于前端做处理
+    const processedUserAttentionList = foundUserAttentionList.map((v) => {
+      return {
+        ...v._doc,
+        is_attention: true,
+      };
+    });
+
     ctx.body = {
       code: 0,
       message: 'Success!',
       data: {
-        attentionList: foundUserAttentionList,
+        attentionList: processedUserAttentionList,
       },
     };
   } catch (error) {

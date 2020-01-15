@@ -6,7 +6,12 @@ import { IBasicUserInfo } from "pages/basic.types";
 
 export interface IUserMainContentAttentionViewUserProps {
   isOwner: boolean; // 是否主用户
-  attentionList: IBasicUserInfo[]; // 关注的用户列表
+  attentionList: Array<IBasicUserInfo & { is_attention: boolean }>; // 关注的用户列表
+
+  onToggleUserAttention: (
+    userId: string,
+    isAttention: boolean,
+  ) => void;
 }
 export interface IUserMainContentAttentionViewUserState {}
 
@@ -27,14 +32,23 @@ const UserMainContentAttentionViewUser = React.memo(
           renderItem={item => (
             <List.Item
               actions={[
-                <a key="list-cancel-attention-user">{'取消关注'}</a>
+                props.isOwner ? (
+                  <a
+                    key="list-cancel-attention-user"
+                    onClick={() => props.onToggleUserAttention(item._id, item.is_attention)}
+                  >
+                    {
+                      item.is_attention ? '取消关注' : '关注'
+                    }
+                  </a>
+                ) : (
+                  <React.Fragment />
+                )
               ]}
             >
               <Skeleton avatar title={false} loading={false} active>
                 <List.Item.Meta
-                  avatar={
-                    <Avatar size="large" src={item.useravatar} />
-                  }
+                  avatar={<Avatar size="large" src={item.useravatar} />}
                   title={item.username}
                   description={item.introduction || item.website}
                 />
