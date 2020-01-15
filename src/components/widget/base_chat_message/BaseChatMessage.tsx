@@ -27,7 +27,9 @@ const BaseChatMessage = React.memo((props: IBaseChatMessageProps) => {
   return (
     <MessageWrapper isSend={props.isSend}>
       <MessageMain isSend={props.isSend}>
-        <BaseChatMessageAvatar />
+        <BaseChatMessageAvatar
+          chatMessageInfo={props.chatMessageInfo}
+        />
         <BaseChatMessageInfo
           isSend={props.isSend}
           chatMessageInfo={props.chatMessageInfo}
