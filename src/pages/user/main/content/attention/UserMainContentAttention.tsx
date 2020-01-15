@@ -28,7 +28,9 @@ const UserMainContentAttention = React.memo<IUserMainContentAttentionProps>((
     <AttentionContainer>
       <AttentionMain>
         {/* 导航区块 */}
-        <UserMainContentAttentionNav />
+        <UserMainContentAttentionNav
+          isOwner={props.isOwner}
+        />
 
         {/* 视图区块 */}
         <Switch>

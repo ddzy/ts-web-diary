@@ -6,9 +6,7 @@ import {
 } from './style';
 import BaseChatMessageAvatar from './avatar/BaseChatMessageAvatar';
 import BaseChatMessageInfo from './info/BaseChatMessageInfo';
-import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IBaseChatMessageProps {
@@ -21,7 +19,7 @@ export interface IBaseChatMessageProps {
     name: string,
     time: string,
     content: string,
-    content_type: IBaseCommonChatMessgaeType,
+    content_type: IBasicChatMessgaeType,
   };
 };
 
@@ -29,7 +27,9 @@ const BaseChatMessage = React.memo((props: IBaseChatMessageProps) => {
   return (
     <MessageWrapper isSend={props.isSend}>
       <MessageMain isSend={props.isSend}>
-        <BaseChatMessageAvatar />
+        <BaseChatMessageAvatar
+          chatMessageInfo={props.chatMessageInfo}
+        />
         <BaseChatMessageInfo
           isSend={props.isSend}
           chatMessageInfo={props.chatMessageInfo}

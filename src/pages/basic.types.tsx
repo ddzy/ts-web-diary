@@ -5,7 +5,9 @@
 
 
 /**
- * [用户] 基本的用户信息
+ * @description 用户的基本信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicUserInfo {
   _id: string;
@@ -45,7 +47,7 @@ export interface IBasicUserInfo {
 /* ---------------------------------------------- */
 
 /**
- * @description 基本的用户文章收藏夹信息
+ * @description 用户文章收藏夹信息
  * @author ddzy<1766083035@qq.com>
  * @since 2020/1/13
  */
@@ -65,7 +67,7 @@ export interface IBasicCollectionInfo {
 /* ---------------------------------------------- */
 
 /**
- * @description 基本的文章信息
+ * @description 文章信息
  * @author ddzy<1766083035@qq.com>
  * @since 2020/1/14
  */
@@ -86,7 +88,9 @@ export interface IBasicArticleInfo {
   update_time: number;
 };
 /**
- * [文章] 基本的文章评论信息
+ * @description 文章评论信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicArticleCommentInfo {
   _id: string;
@@ -99,7 +103,9 @@ export interface IBasicArticleCommentInfo {
   update_time: number;
 };
 /**
- * [文章] 基本的文章回复信息
+ * @description 文章评论下的回复信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicArticleReplyInfo {
   _id: string;
@@ -116,7 +122,9 @@ export interface IBasicArticleReplyInfo {
 /* ---------------------------------------------- */
 
 /**
- * [话题] 基本的话题信息
+ * @description 话题信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTopicInfo {
   _id: string;
@@ -133,13 +141,36 @@ export interface IBasicTopicInfo {
 /* ---------------------------------------------- */
 
 /**
- * [聊天] 基本的聊天历史信息
+ * @description 聊天消息基本类型接口
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
+ */
+export type IBasicChatMessgaeType = 'plain' | 'image' | 'file' | 'code';
+
+/**
+ * @description 聊天历史信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicChatMemoryInfo {
   _id: string;
+  chat_type: 'single' | 'group';
+  chat_id: string;
+  chat_name: string;
+  chat_avatar: string;
+  last_message_content: string;
+  // * 最新的聊天内容类型
+  last_message_content_type: IBasicChatMessgaeType;
+  // * 最新的发言人名称
+  last_message_member_name: string;
+  // * 未读消息总数
+  unread_message_total: number;
 };
+
 /**
- * [聊天] 单聊的基本信息
+ * @description 单聊的基本信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicChatSingleInfo {
   _id: string;
@@ -152,8 +183,11 @@ export interface IBasicChatSingleInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [聊天] 单聊用户的基本信息
+ * @description 单聊用户的基本信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicChatSingleMemberInfo {
   _id: string;
@@ -164,8 +198,11 @@ export interface IBasicChatSingleMemberInfo {
   last_create_message_time: number;
   create_time: number;
 };
+
 /**
- * [聊天] 单聊消息的基本信息
+ * @description 单聊消息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicChatSingleMessageInfo {
   _id: string;
@@ -181,13 +218,18 @@ export interface IBasicChatSingleMessageInfo {
 /* ---------------------------------------------- */
 
 /**
- * [通知] 基本的通知信息
+ * @description 基本的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicNotificationInfo {
   [key: string]: any;
 };
+
 /**
- * [通知] 用户申请加好友的通知信息
+ * @description 用户申请加好友的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicNotificationUserFriendRequestInfo {
   _id: string;
@@ -199,8 +241,11 @@ export interface IBasicNotificationUserFriendRequestInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [通知] 用户同意加好友的通知信息
+ * @description 用户同意加好友的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicNotificationUserFriendAgreeInfo {
   _id: string;
@@ -210,8 +255,11 @@ export interface IBasicNotificationUserFriendAgreeInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [通知] 用户拒绝加好友的通知信息
+ * @description 用户拒绝加好友的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicNotificationUserFriendRefuseInfo {
   _id: string;
@@ -222,8 +270,11 @@ export interface IBasicNotificationUserFriendRefuseInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [通知] 用户点赞文章的通知信息
+ * @description 用户点赞文章的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicNotificationUserStarArticleInfo {
   _id: string;
@@ -234,8 +285,11 @@ export interface IBasicNotificationUserStarArticleInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [通知] 用户点赞沸点的通知信息
+ * @description 用户点赞沸点的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicNotificationUserStarPinInfo {
   _id: string;
@@ -246,8 +300,11 @@ export interface IBasicNotificationUserStarPinInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [通知] 用户关注其他用户的通知信息
+ * @description 用户关注其他用户的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicNotificationUserAttentionPeopleInfo {
   _id: string;
@@ -261,7 +318,9 @@ export interface IBasicNotificationUserAttentionPeopleInfo {
 /* ---------------------------------------------- */
 
 /**
- * [动态] 基本的好友动态信息
+ * @description 基本的好友动态信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicActivityInfo {
   [key: string]: any;
@@ -270,13 +329,18 @@ export interface IBasicActivityInfo {
 /* ---------------------------------------------- */
 
 /**
- * [足迹] 基本的足迹信息
+ * @description 基本的足迹信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTrackInfo {
   [key: string]: any;
 };
+
 /**
- * [足迹] 用户点赞文章的足迹
+ * @description 用户点赞文章的足迹
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTrackStarArticleInfo {
   _id: string;
@@ -285,8 +349,11 @@ export interface IBasicTrackStarArticleInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [足迹] 用户点赞沸点的足迹
+ * @description 用户点赞沸点的足迹
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTrackStarPinInfo {
   _id: string;
@@ -296,8 +363,11 @@ export interface IBasicTrackStarPinInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [足迹] 用户关注话题的足迹
+ * @description 用户关注话题的足迹
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTrackAttentionTopicInfo {
   _id: string;
@@ -306,8 +376,11 @@ export interface IBasicTrackAttentionTopicInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [足迹] 用户关注其他用户的足迹
+ * @description 用户关注其他用户的足迹
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTrackAttentionPeopleInfo {
   _id: string;
@@ -316,8 +389,11 @@ export interface IBasicTrackAttentionPeopleInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [足迹] 用户发表文章的足迹
+ * @description 用户发表文章的足迹
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTrackCreateArticleInfo {
   _id: string;
@@ -326,8 +402,11 @@ export interface IBasicTrackCreateArticleInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [足迹] 用户发表沸点的足迹
+ * @description 用户发表沸点的足迹
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicTrackCreatePinInfo {
   _id: string;
@@ -340,7 +419,9 @@ export interface IBasicTrackCreatePinInfo {
 /* ---------------------------------------------- */
 
 /**
- * [沸点] 基本的沸点信息
+ * @description 基本的沸点信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicPinInfo {
   _id: string;
@@ -356,8 +437,11 @@ export interface IBasicPinInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [沸点] 基本的沸点评论信息
+ * @description 基本的沸点评论信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicPinCommentInfo {
   _id: string;
@@ -369,8 +453,11 @@ export interface IBasicPinCommentInfo {
   create_time: number;
   update_time: number;
 };
+
 /**
- * [沸点] 基本的沸点回复信息
+ * @description 基本的沸点回复信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/15
  */
 export interface IBasicPinReplyInfo {
   _id: string;

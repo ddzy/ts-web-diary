@@ -7,9 +7,19 @@ import {
   AvatarWrapper,
   AvatarMain,
 } from './style';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IBaseChatMessageAvatarProps {
+  // ? 消息具体内容
+  chatMessageInfo: {
+    id: string,
+    avatar: string,
+    name: string,
+    time: string,
+    content: string,
+    content_type: IBasicChatMessgaeType,
+  };
 };
 
 const BaseChatMessageAvatar = React.memo((props: IBaseChatMessageAvatarProps) => {
@@ -17,7 +27,8 @@ const BaseChatMessageAvatar = React.memo((props: IBaseChatMessageAvatarProps) =>
     <AvatarWrapper>
       <AvatarMain>
         <Avatar
-          icon={'user'}
+          icon="user"
+          src={props.chatMessageInfo.avatar}
         />
       </AvatarMain>
     </AvatarWrapper>

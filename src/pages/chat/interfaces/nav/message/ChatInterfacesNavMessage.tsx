@@ -22,11 +22,8 @@ import { query } from 'services/request';
 import {
   formatChatMemoryContent,
 } from 'utils/utils';
-import {
-  IBaseCommonChatMessgaeType,
-  IBaseCommonChatMemoryInfo,
-} from 'pages/chat/Chat.types';
 import { chatSingleIOClient } from 'services/websocket';
+import { IBasicChatMessgaeType, IBasicChatMemoryInfo } from 'pages/basic.types';
 
 
 export interface IChatInterfacesNavMessageProps extends RouteComponentProps { };
@@ -34,7 +31,7 @@ export interface IChatInterfacesNavMessageState {
   // ? 单聊相关的Socket
   chatIOClient: SocketIOClient.Socket;
   // ? 聊天历史列表
-  chatMemoryList: IBaseCommonChatMemoryInfo[];
+  chatMemoryList: IBasicChatMemoryInfo[];
   // ? loading状态
   // * 只在首次获取数据时有效
   loading: boolean;
@@ -111,7 +108,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
       data: {
         from_user_id: string,
         to_user_id: string,
-        chat_memory: IBaseCommonChatMemoryInfo,
+        chat_memory: IBasicChatMemoryInfo,
       },
     ) => {
       // 由于socket的广播性
@@ -136,7 +133,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
       newChatMemoryItemInfo: {
         chat_id: string;
         last_message_member_name: string;
-        last_message_content_type: IBaseCommonChatMessgaeType;
+        last_message_content_type: IBasicChatMessgaeType;
         last_message_content: string;
 
         to_user_id: string;
@@ -195,7 +192,7 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     return (
       <List
         dataSource={state.chatMemoryList}
-        renderItem={(item: IBaseCommonChatMemoryInfo) => (
+        renderItem={(item: IBasicChatMemoryInfo) => (
           <MessageMainItem onClick={() => {
             handleToSingleOrGroupClick(item.chat_type, item.chat_id);
           }}>

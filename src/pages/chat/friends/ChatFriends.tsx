@@ -6,6 +6,7 @@ import {
   Avatar,
   Popconfirm,
   notification,
+  message,
 } from 'antd';
 import {
   withRouter,
@@ -48,19 +49,21 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
   });
 
   React.useEffect(() => {
-    _getFriendList();
+    _getFriendListFromServer();
   }, []);
 
   /**
-   * 后台 - 获取好友列表
+   * @description 从后台获取好友列表
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/15
    */
-  function _getFriendList() {
+  function _getFriendListFromServer() {
     const userId = localStorage.getItem('userid');
 
     if (!userId) {
       notification.error({
         message: '错误',
-        description: '登录凭证已过期, 请重新登录',
+        description: '用户信息已丢失, 请重新登录',
       });
 
       props.history.push('/login');
@@ -72,17 +75,27 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
         data: {
           userId,
         },
-      }).then(({ data: { friendList } }) => {
-        setState({
-          ...state,
-          friendList
-        });
+      }).then((res) => {
+        const resCode = res.code;
+        const resMessage = res.message;
+        const resData = res.data;
+
+        if (resCode === 0) {
+          const pendingFriendList = resData.friendList;
+
+          setState({
+            ...state,
+            friendList: pendingFriendList,
+          });
+        } else {
+          message.error(resMessage);
+        }
       });
     }
   }
 
   /**
-   * 初始化 - antd表格列
+   * @description 初始化好友列表
    */
   function _initTableColumn() {
     const columns = [
@@ -90,8 +103,8 @@ const ChatFriends = React.memo((props: IChatFriendsProps) => {
         title: '头像',
         dataIndex: 'avatar',
         key: 'avatar',
-        render: (text: any) => (
-          <Avatar icon="user" size="large" />
+        render: (text: any, record: any) => (
+          <Avatar src={record.avatar} icon="user" size="large" />
         ),
       },
       {

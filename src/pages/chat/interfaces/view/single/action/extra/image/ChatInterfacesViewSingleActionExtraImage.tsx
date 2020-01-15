@@ -20,10 +20,8 @@ import {
 } from './style';
 import ChatInterfacesViewSingleActionExtraImageContent from './content/ChatInterfacesViewSingleActionExtraImageContent';
 import { query } from 'services/request';
-import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
 import { getBase64 } from 'utils/utils';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleActionExtraImageProps extends RouteComponentProps<{
@@ -35,7 +33,7 @@ export interface IChatInterfacesViewSingleActionExtraImageProps extends RouteCom
   onResetMessageComponent: (
     isSendState: boolean,
     messageInfo: {
-      type: IBaseCommonChatMessgaeType,
+      type: IBasicChatMessgaeType,
       content: string,
     },
   ) => void;

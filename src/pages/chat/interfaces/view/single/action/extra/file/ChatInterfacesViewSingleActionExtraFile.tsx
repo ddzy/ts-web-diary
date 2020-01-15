@@ -20,13 +20,11 @@ import {
 } from './style';
 import ChatInterfacesViewSingleActionExtraFileContent from './content/ChatInterfacesViewSingleActionExtraFileContent';
 import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
-import {
   validator,
   // getFileNameSuffix,
 } from 'utils/utils';
 import { query } from 'services/request';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleActionExtraFileProps extends RouteComponentProps<{ id: string }> {
@@ -34,7 +32,7 @@ export interface IChatInterfacesViewSingleActionExtraFileProps extends RouteComp
   onResetMessageComponent: (
     isSendState: boolean,
     messageInfo: {
-      type: IBaseCommonChatMessgaeType,
+      type: IBasicChatMessgaeType,
       content: string,
     },
   ) => void;

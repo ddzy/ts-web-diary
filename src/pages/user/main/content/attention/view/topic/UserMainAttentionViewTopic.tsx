@@ -5,11 +5,15 @@ import { TopicWrapper, TopicMain } from "./style";
 import { IBasicTopicInfo } from "pages/basic.types";
 
 export interface IUserMainContentAttentionViewTopicrops {
-  isOwner: boolean; // 是否主用户
-  attentionList: IBasicTopicInfo[]; // 关注的话题列表
+  isOwner: boolean; // 标识是主人还是访客
+  attentionList: Array<IBasicTopicInfo & { is_attention: boolean }>; // 关注的话题列表
+
+  onToggleTopicAttention: (
+    topicId: string,
+    isAttention: boolean
+) => void;
 }
 export interface IUserMainContentAttentionViewTopicState {}
-
 
 const UserMainContentAttentionViewTopic = React.memo(
   (props: IUserMainContentAttentionViewTopicrops) => {
@@ -28,14 +32,23 @@ const UserMainContentAttentionViewTopic = React.memo(
           renderItem={item => (
             <List.Item
               actions={[
-                <a key="list-cancel-attention-topic">{'取消关注'}</a>
+                props.isOwner ? (
+                  <a
+                    key="list-cancel-attention-topic"
+                    onClick={() => props.onToggleTopicAttention(item._id, item.is_attention)}
+                  >
+                    {
+                      item.is_attention ? '取消关注' : '关注'
+                    }
+                  </a>
+                ) : (
+                  <React.Fragment />
+                )
               ]}
             >
               <Skeleton avatar title={false} loading={false} active>
                 <List.Item.Meta
-                  avatar={
-                    <Avatar size="large" src={item.cover_img} />
-                  }
+                  avatar={<Avatar size="large" src={item.cover_img} />}
                   title={item.name}
                   description={item.description}
                 />

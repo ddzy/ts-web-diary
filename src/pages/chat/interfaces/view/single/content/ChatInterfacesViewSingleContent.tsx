@@ -21,9 +21,7 @@ import {
 } from './style';
 import { formatTime } from 'utils/utils';
 import BaseChatMessage from 'components/widget/base_chat_message/BaseChatMessage';
-import {
-  IBaseChatSingleMessageInfo,
-} from 'pages/chat/Chat.types';
+import { IBasicChatSingleMessageInfo, IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleContentProps extends RouteComponentProps {
@@ -33,7 +31,7 @@ export interface IChatInterfacesViewSingleContentProps extends RouteComponentPro
   }>;
 
   // ? 单聊消息列表
-  singleChatMessage: IBaseChatSingleMessageInfo[];
+  singleChatMessage: IBasicChatSingleMessageInfo[];
   // ? 分页相关: 标识是否处于发送状态, 便于进行吸顶处理
   isMessageSend: boolean;
   // ? 分页相关: 是否还有更多消息
@@ -66,7 +64,7 @@ const ChatInterfacesViewSingleContent = React.memo((props: IChatInterfacesViewSi
         const fromUserName = v.from_member_id.user_id.username;
         const fromUserAvatar = v.from_member_id.user_id.useravatar;
         const content = v.content;
-        const contentType = v.content_type;
+        const contentType = v.content_type as IBasicChatMessgaeType;
         const time = formatTime(v.create_time);
 
         const isSend = userId === fromUserId;
