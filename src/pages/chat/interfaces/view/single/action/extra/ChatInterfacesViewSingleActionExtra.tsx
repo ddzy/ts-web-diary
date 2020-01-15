@@ -18,15 +18,13 @@ import {
 import ChatInterfacesViewSingleActionExtraImage from './image/ChatInterfacesViewSingleActionExtraImage';
 import ChatInterfacesViewSingleActionExtraCode from './code/ChatInterfacesViewSingleActionExtraCode';
 import ChatInterfacesViewSingleActionExtraFile from './file/ChatInterfacesViewSingleActionExtraFile';
-import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleActionExtraProps {
   onChatMessageSend: (
     messageInfo: {
-      type: IBaseCommonChatMessgaeType,
+      type: IBasicChatMessgaeType,
       content: string,
     },
     callback?: () => void,
@@ -150,7 +148,7 @@ const ChatInterfacesViewSingleActionExtra = React.memo((props: IChatInterfacesVi
   function handleResetMessageComponent(
     isSendState: boolean,
     messageInfo: {
-      type: IBaseCommonChatMessgaeType,
+      type: IBasicChatMessgaeType,
       content: string,
     },
   ) {

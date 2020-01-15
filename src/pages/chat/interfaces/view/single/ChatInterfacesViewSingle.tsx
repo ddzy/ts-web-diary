@@ -22,12 +22,10 @@ import {
   CHAT_MESSAGE_PAGE_SIZSE_LARGE,
 } from 'constants/constants';
 import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
-import {
   chatSingleIOClient,
   statusIOClient,
 } from 'services/websocket';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleProps extends RouteComponentProps {
@@ -196,7 +194,7 @@ const ChatInterfacesViewSingle = React.memo((props: IChatInterfacesViewSinglePro
    */
   function handleChatMessageSend(
     messageInfo: {
-      type: IBaseCommonChatMessgaeType,
+      type: IBasicChatMessgaeType,
       content: string,
     },
     callback?: () => void,

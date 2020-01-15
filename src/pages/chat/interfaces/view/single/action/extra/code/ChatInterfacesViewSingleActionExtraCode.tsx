@@ -9,9 +9,7 @@ import {
 } from './style';
 import ChatInterfacesViewSingleActionExtraCodeContent from './content/ChatInterfacesViewSingleActionExtraCodeContent';
 import ChatInterfacesViewSingleActionExtraCodeTitle from './title/ChatInterfacesViewSingleActionExtraCodeTitle';
-import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleActionExtraCodeProps {
@@ -19,7 +17,7 @@ export interface IChatInterfacesViewSingleActionExtraCodeProps {
   onResetMessageComponent: (
     isSendState: boolean,
     messageInfo: {
-      type: IBaseCommonChatMessgaeType,
+      type: IBasicChatMessgaeType,
       content: string,
     },
   ) => void;

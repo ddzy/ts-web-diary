@@ -8,14 +8,12 @@ import {
   NameMain,
   NameMainText,
 } from './style';
-import {
-  IBaseChatSingleInfo,
-} from 'pages/chat/Chat.types';
+import { IBasicChatSingleInfo } from 'pages/basic.types';
 
 
 export interface IChatInterfacesViewSingleTitleNameProps {
   // ? 单聊信息
-  singleChatInfo: IBaseChatSingleInfo;
+  singleChatInfo: IBasicChatSingleInfo;
 };
 
 

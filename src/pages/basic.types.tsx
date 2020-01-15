@@ -145,7 +145,7 @@ export interface IBasicTopicInfo {
  * @author ddzy<1766083035@qq.com>
  * @since 2020/1/15
  */
-export type IBaseCommonChatMessgaeType = 'plain' | 'image' | 'file' | 'code';
+export type IBasicChatMessgaeType = 'plain' | 'image' | 'file' | 'code';
 
 /**
  * @description 聊天历史信息
@@ -160,7 +160,7 @@ export interface IBasicChatMemoryInfo {
   chat_avatar: string;
   last_message_content: string;
   // * 最新的聊天内容类型
-  last_message_content_type: IBaseCommonChatMessgaeType;
+  last_message_content_type: IBasicChatMessgaeType;
   // * 最新的发言人名称
   last_message_member_name: string;
   // * 未读消息总数

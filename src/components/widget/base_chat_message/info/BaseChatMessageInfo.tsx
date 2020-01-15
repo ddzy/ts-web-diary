@@ -29,13 +29,11 @@ import {
   InfoMainContentInnerTextFileContentMainDownloadLink,
 } from './style';
 import {
-  IBaseCommonChatMessgaeType,
-} from 'pages/chat/Chat.types';
-import {
   getFileType,
   validator,
 } from 'utils/utils';
 import BaseChatMessageInfoCode from './code/BaseChatMessageInfoCode';
+import { IBasicChatMessgaeType } from 'pages/basic.types';
 
 
 export interface IBaseChatMessageInfoProps {
@@ -48,7 +46,7 @@ export interface IBaseChatMessageInfoProps {
     name: string,
     time: string,
     content: string,
-    content_type: IBaseCommonChatMessgaeType,
+    content_type: IBasicChatMessgaeType,
   };
 };
 export interface IBaseChatMessageInfoState {
