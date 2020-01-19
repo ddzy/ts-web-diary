@@ -230,6 +230,8 @@ export type IBasicChatGroupMemberAuthorityType = 0 | 1 | 2;
 /**
  * @description 群聊消息类型
  * @summary 0: images、1: files、2: plain
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/19
  */
 export type IBasicChatGroupMessageContentType = 0 | 1 | 2;
 

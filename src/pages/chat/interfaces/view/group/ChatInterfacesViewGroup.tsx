@@ -68,7 +68,7 @@ const ChatInterfacesViewGroup = React.memo(
             create_time: Date.now(),
             update_time: Date.now()
           },
-          group_id: '',
+          group_id: "",
           authority: 0,
           join_time: Date.now(),
           create_message: [],
@@ -102,10 +102,10 @@ const ChatInterfacesViewGroup = React.memo(
         hasMoreMessage: true
       });
 
-      // * 获取群聊信息
+      // 获取群聊信息
       _getGroupChatMessageInfoFromServer();
 
-      // * socket处理发送用户处于会话状态
+      // socket处理发送用户处于会话状态
       // ? 正处于哪个会话
       statusIOClient.emit("sendUserOnWhichChat", {
         userId: localStorage.getItem("userid") || "",
@@ -151,20 +151,6 @@ const ChatInterfacesViewGroup = React.memo(
               page: 1
             }
           }).then(res => {
-            // const { singleChatInfo } = res.data;
-
-            // setState({
-            //   ...state,
-            //   singleChatInfo,
-            //   loading: false
-            // });
-
-            // socket处理同步重置聊天历史列表单个条目未读消息总数为0
-            // chatIOClient.emit("sendResetChatMemoryItemUnreadMessageTotal", {
-            //   chatId,
-            //   userId
-            // });
-
             const resCode = res.code;
             const resMessage = res.message;
             const resData = res.data;
@@ -180,6 +166,12 @@ const ChatInterfacesViewGroup = React.memo(
             } else {
               message.error(resMessage);
             }
+
+            // socket处理同步重置聊天历史列表单个条目未读消息总数为0
+            // chatIOClient.emit("sendResetChatMemoryItemUnreadMessageTotal", {
+            //   chatId,
+            //   userId
+            // });
           });
         }
       }
@@ -189,12 +181,10 @@ const ChatInterfacesViewGroup = React.memo(
       <GroupWrapper>
         <GroupMain>
           {/* 群聊顶部标题区块 */}
-          <ChatInterfacesViewGroupTitle
-            groupInfo={state.groupChatInfo}
-          />
+          <ChatInterfacesViewGroupTitle groupInfo={state.groupChatInfo} />
 
           {/* 群聊中部内容区块 */}
-          <ChatInterfacesViewGroupContent />
+          <ChatInterfacesViewGroupContent groupInfo={state.groupChatInfo} />
 
           {/* 群聊尾部操作区块 */}
           <ChatInterfacesViewGroupAction />
