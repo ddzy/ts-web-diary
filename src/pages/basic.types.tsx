@@ -264,7 +264,7 @@ export interface IBasicChatGroupInfo {
 export interface IBasicChatGroupMemberInfo {
   _id: string;
   user_id: IBasicUserInfo;
-  group_id: IBasicChatGroupInfo;
+  group_id: string;
   authority: IBasicChatGroupMemberAuthorityType;
   join_time: number;
   create_message: IBasicChatGroupMessageInfo[];
