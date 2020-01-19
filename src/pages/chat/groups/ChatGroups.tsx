@@ -147,8 +147,8 @@ const ChatGroups = React.memo((props: IChatGroupsProps) => {
       if (resCode === 0) {
         const createdGroupInfo = resData.groupInfo;
         const newCreatedGroupList = [
-          ...state.createdChatGroupList,
           createdGroupInfo,
+          ...state.createdChatGroupList,
         ];
 
         setState({

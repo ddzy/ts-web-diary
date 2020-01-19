@@ -5,6 +5,7 @@ import {
   ChatGroup,
   ChatGroupMember,
   User,
+  ChatMemory,
 } from '../../../../model/model';
 
 
@@ -71,6 +72,30 @@ chatGroupCreateController.post('/', async (ctx) => {
       create_time: Date.now(),
     });
 
+    // * 创建新的聊天历史
+    // ? 每一个群聊对应一个唯一的聊天历史
+    let isExistChatMemory = await ChatMemory.findOne({
+      chat_id: createdChatGroup._id,
+    });
+
+    if (!isExistChatMemory) {
+      isExistChatMemory = await ChatMemory.create({
+        chat_type: 'group',
+        chat_id: createdChatGroup._id,
+        is_from_member: true,
+        from_member_id: createdChatGroupMember._id,
+        to_member_id: createdChatGroupMember._id,
+        chat_name: createdChatGroup.name,
+        chat_avatar: createdChatGroup.avatar,
+        last_message_content: '',
+        last_message_member_name: '',
+        last_message_content_type: 'plain',
+        unread_message_total: 0,
+        create_time: Date.now(),
+        update_time: Date.now(),
+      });
+    }
+
     // * 再次更新群聊信息, 将当前成员置为群主
     await ChatGroup.findByIdAndUpdate(createdChatGroup._id, {
       '$addToSet': {
@@ -82,13 +107,18 @@ chatGroupCreateController.post('/', async (ctx) => {
       '$inc': {
         member_total: 1,
       },
+    }, {
+      new: true,
     });
 
     // * 更新用户的群聊列表
     await User.findByIdAndUpdate(userId, {
       '$addToSet': {
         created_chat_group: createdChatGroup,
+        chat_memory: isExistChatMemory,
       },
+    }, {
+      new: true,
     })
 
     ctx.body = {
