@@ -87,7 +87,7 @@ chatGroupCreateController.post('/', async (ctx) => {
     // * 更新用户的群聊列表
     await User.findByIdAndUpdate(userId, {
       '$addToSet': {
-        chatGroups: createdChatGroup,
+        created_chat_group: createdChatGroup,
       },
     })
 

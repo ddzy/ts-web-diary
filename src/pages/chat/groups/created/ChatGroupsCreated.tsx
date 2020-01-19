@@ -8,10 +8,7 @@ import {
   Drawer,
   message
 } from "antd";
-import {
-  withRouter,
-  RouteComponentProps,
-} from 'react-router-dom';
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import {
   CreatedWrapper,
@@ -21,9 +18,21 @@ import {
 } from "./style";
 import ChatGroupsCreatedAdd from "./add/ChatGroupsCreatedAdd";
 import { getBase64 } from "utils/utils";
-import { query } from "services/request";
+import { IBasicChatGroupInfo } from "pages/basic.types";
+import dateFormat from "utils/dateFormat";
 
-export interface IChatGroupsCreatedProps extends RouteComponentProps {}
+export interface IChatGroupsCreatedProps extends RouteComponentProps {
+  createdChatGroupList: IBasicChatGroupInfo[]; // 我创建的群聊列表
+
+  onCreateNewChatGroup: (
+    data: {
+      groupName: string;
+      groupAvatar: string;
+      groupDescription: string;
+    },
+    callback: () => void
+  ) => void;
+}
 export interface IChatGroupsCreatedState {
   isShowAddDrawer: boolean; // 创建群聊弹窗的状态
 
@@ -36,91 +45,6 @@ export interface IChatGroupsCreatedState {
 }
 
 const ChatGroupsCreated = React.memo((props: IChatGroupsCreatedProps) => {
-  const columns = [
-    {
-      title: "群聊头像",
-      dataIndex: "avatar",
-      key: "avatar",
-      render: (text: any) => <Avatar icon="user" size="large" />
-    },
-    {
-      title: "群聊名称",
-      dataIndex: "name",
-      key: "name"
-    },
-    {
-      title: "群聊人数",
-      dataIndex: "total",
-      key: "total"
-    },
-    {
-      title: "创建时间",
-      dataIndex: "createAt",
-      key: "createAt"
-    },
-    {
-      title: "操作",
-      key: "action",
-      render: (text: any, record: any) => (
-        <React.Fragment>
-          <Popconfirm title={"确认要进入该群聊吗?"}>
-            <Button type="primary">进入群聊</Button>
-          </Popconfirm>
-          <Divider type="vertical" />
-          <Button type="primary">邀请好友</Button>
-          <Divider type="vertical" />
-          <Popconfirm title={"确认要移除该群聊吗?"}>
-            <Button type="danger">解散群聊</Button>
-          </Popconfirm>
-        </React.Fragment>
-      )
-    }
-  ];
-  const dataSource = [
-    {
-      key: "1",
-      avatar: "",
-      name: "web前端技术交流群",
-      total: 2000,
-      createAt: "2019/7/24 14:20"
-    },
-    {
-      key: "2",
-      avatar: "",
-      name: "JS-FRONTEND",
-      total: 1500,
-      createAt: "2019/7/24 14:20"
-    },
-    {
-      key: "3",
-      avatar: "",
-      name: "web前端小白",
-      total: 320,
-      createAt: "2019/7/24 14:20"
-    },
-    {
-      key: "4",
-      avatar: "",
-      name: "前端技术交流群",
-      total: 199,
-      createAt: "2019/7/24 14:20"
-    },
-    {
-      key: "5",
-      avatar: "",
-      name: "vscode/git主群",
-      total: 4988,
-      createAt: "2019/7/24 14:20"
-    },
-    {
-      key: "6",
-      avatar: "",
-      name: "我叫群名称",
-      total: 30,
-      createAt: "2019/7/24 14:20"
-    }
-  ];
-
   const [state, setState] = React.useState<IChatGroupsCreatedState>({
     isShowAddDrawer: false,
     groupInfo: {
@@ -129,6 +53,81 @@ const ChatGroupsCreated = React.memo((props: IChatGroupsCreatedProps) => {
       description: ""
     }
   });
+
+  /**
+   * @description 初始化表格列
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/19
+   */
+  function _initTableColums() {
+    return [
+      {
+        title: "群聊头像",
+        dataIndex: "avatar",
+        key: "avatar",
+        render: (text: any, record: any) => (
+          <Avatar icon="user" size="large" src={record.avatar} />
+        )
+      },
+      {
+        title: "群聊名称",
+        dataIndex: "name",
+        key: "name"
+      },
+      {
+        title: "群聊简介",
+        dataIndex: "description",
+        key: "description"
+      },
+      {
+        title: "群聊人数",
+        dataIndex: "total",
+        key: "total"
+      },
+      {
+        title: "创建时间",
+        dataIndex: "createAt",
+        key: "createAt"
+      },
+      {
+        title: "操作",
+        key: "action",
+        render: (text: any, record: any) => (
+          <React.Fragment>
+            <Popconfirm title={"确认要进入该群聊吗?"}>
+              <Button type="primary">进入群聊</Button>
+            </Popconfirm>
+            <Divider type="vertical" />
+            <Button type="primary">邀请好友</Button>
+            <Divider type="vertical" />
+            <Popconfirm title={"确认要移除该群聊吗?"}>
+              <Button type="danger">解散群聊</Button>
+            </Popconfirm>
+          </React.Fragment>
+        )
+      }
+    ];
+  }
+
+  /**
+   * @description 初始化表格数据
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/19
+   */
+  function _initTableDataSource() {
+    const groupList = props.createdChatGroupList;
+
+    return groupList.map(v => {
+      return {
+        key: v._id,
+        avatar: v.avatar,
+        name: v.name,
+        description: v.description,
+        total: v.member_total,
+        createAt: dateFormat('yyyy-MM-dd HH-mm-ss', v.create_time, {}),
+      };
+    });
+  }
 
   /**
    * @description 显示创建群聊弹窗
@@ -234,40 +233,8 @@ const ChatGroupsCreated = React.memo((props: IChatGroupsCreatedProps) => {
     groupDescription: string;
     groupAvatar: string;
   }) {
-    const userId = localStorage.getItem('userid');
-
-    if (!userId) {
-      message.error('用户不存在, 请重新登录!');
-
-      return props.history.push('/login');
-    }
-
-    const groupInfo = {
-      name: value.groupName,
-      avatar: value.groupAvatar,
-      description: value.groupDescription,
-    };
-
-    query({
-      url: '/api/chat/group/create',
-      method: 'POST',
-      jsonp: false,
-      data: {
-        userId,
-        groupInfo,
-      },
-    }).then((res) => {
-      const resCode = res.code;
-      const resMessage = res.message;
-      // const resData = res.data;
-
-      if (resCode === 0) {
-        handleHideAddDrawer();
-
-        message.success(resMessage);
-      } else {
-        message.error(resMessage);
-      }
+    props.onCreateNewChatGroup(value, () => {
+      handleHideAddDrawer();
     });
   }
 
@@ -288,8 +255,8 @@ const ChatGroupsCreated = React.memo((props: IChatGroupsCreatedProps) => {
           pagination={{
             defaultPageSize: 5
           }}
-          columns={columns}
-          dataSource={dataSource}
+          columns={_initTableColums()}
+          dataSource={_initTableDataSource()}
         />
 
         {/* 创建群聊弹窗 */}
