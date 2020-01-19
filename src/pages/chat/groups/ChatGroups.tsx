@@ -55,7 +55,7 @@ const ChatGroups = React.memo((props: IChatGroupsProps) => {
 
         <Tabs
           type="card"
-          size="large"
+          // size="large"
           onChange={handleTabChange}
           defaultActiveKey={handleTabsDefaultActiveKey()}
         >
