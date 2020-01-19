@@ -1,11 +1,3 @@
-/**
- * @name chatGroupMemberModel
- * @description 群聊成员表
- * @author ddzy
- * @since 2019-7-27
- * @license MIT
- */
-
 import * as mongoose from 'mongoose';
 
 
@@ -22,10 +14,9 @@ const ChatGroupMemberSchema: mongoose.Schema = new mongoose.Schema({
     ref: 'ChatGroup',
     required: true,
   },
-  // ? 当前状态
-  status_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ChatStatus',
+  // ? 权限(群主: 0, 管理员: 1, 成员: 2)
+  authority: {
+    type: String,
     required: true,
   },
   // ? 加入时间
@@ -33,7 +24,12 @@ const ChatGroupMemberSchema: mongoose.Schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  // ? 发送消息总数
+  create_message: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatGroupMessage',
+    required: true,
+  }],
+  // ? 创建消息总数
   create_message_total: {
     type: Number,
     default: 0,
@@ -41,6 +37,11 @@ const ChatGroupMemberSchema: mongoose.Schema = new mongoose.Schema({
   },
   // ? 最后发言时间
   last_create_message_time: {
+    type: Number,
+    required: true,
+  },
+  // ? 创建时间
+  create_time: {
     type: Number,
     required: true,
   },
