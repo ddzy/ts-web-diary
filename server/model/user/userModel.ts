@@ -65,6 +65,20 @@ const UserSchema: mongoose.Schema = new Schema({
     ref: 'ChatMemory',
   }],
 
+  // ? 创建的群聊
+  created_chat_group: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ChatGroup',
+    default: [],
+  }],
+
+  // ? 加入的群聊
+  joined_chat_group: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ChatGroup',
+    default: [],
+  }],
+
   // ? 通知
   notifications: [{
     type: Schema.Types.Mixed,

@@ -215,6 +215,82 @@ export interface IBasicChatSingleMessageInfo {
   update_time: number;
 };
 
+
+/* ----------------------------------------------- */
+
+
+/**
+ * @description 群聊成员权限
+ * @summary 0: 群主、1: 管理员、2: 吃瓜群众
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/19
+ */
+export type IBasicChatGroupMemberAuthorityType = 0 | 1 | 2;
+
+/**
+ * @description 群聊消息类型
+ * @summary 0: images、1: files、2: plain
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/19
+ */
+export type IBasicChatGroupMessageContentType = 0 | 1 | 2;
+
+/**
+ * @description 群聊基本接口
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/19
+ */
+export interface IBasicChatGroupInfo {
+  _id: string;
+  owner: IBasicChatGroupMemberInfo;
+  admins: IBasicChatGroupMemberInfo[];
+  name: string;
+  name_update_time: number;
+  description: string;
+  description_update_time: number;
+  avatar: string;
+  avatar_update_time: number;
+  create_time: number,
+  members: IBasicChatGroupMemberInfo[];
+  messages: IBasicChatGroupMessageInfo[];
+  member_total: number;
+  message_total: number;
+  last_create_message_time: number;
+};
+
+/**
+ * @description 群聊成员基本接口
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/19
+ */
+export interface IBasicChatGroupMemberInfo {
+  _id: string;
+  user_id: IBasicUserInfo;
+  group_id: string;
+  authority: IBasicChatGroupMemberAuthorityType;
+  join_time: number;
+  create_message: IBasicChatGroupMessageInfo[];
+  create_message_total: number;
+  last_create_message_time: number;
+  create_time: number;
+};
+
+/**
+ * @description 群聊消息基本接口
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/19
+ */
+export interface IBasicChatGroupMessageInfo {
+  _id: string;
+  group_id: IBasicChatGroupInfo;
+  from_member_id: IBasicChatGroupMemberInfo;
+  content_type: IBasicChatGroupMessageContentType;
+  content: string;
+  create_time: number;
+  update_time: number;
+};
+
+
 /* ---------------------------------------------- */
 
 /**

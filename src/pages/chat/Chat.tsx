@@ -149,7 +149,7 @@ const Chat = React.memo((props: IChatProps) => {
 
           <Tabs
             tabPosition='left'
-            size={'large'}
+            // size={'large'}
             defaultActiveKey={handleTabsDefaultActiveKey()}
             onChange={handleTabsChange}
           >

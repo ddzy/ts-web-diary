@@ -14,7 +14,10 @@ const ChatInterfacesViewGroupAction = React.memo((props: IChatInterfacesViewGrou
   return (
     <ActionWrapper>
       <ActionMain>
+        {/* 输入框左部表情区 */}
         <ChatInterfacesViewGroupActionExtra />
+
+        {/* 输入框右部输入区 */}
         <ChatInterfacesViewGroupActionInput />
       </ActionMain>
     </ActionWrapper>

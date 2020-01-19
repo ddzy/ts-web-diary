@@ -57,14 +57,16 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
     });
 
     // 获取聊天历史列表
-    _getChatMemoryList();
+    _getChatMemoryListFromServer();
   }, []);
 
 
   /**
-   * [后台] - 获取聊天历史列表
+   * @description 从后台获取聊天历史列表
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/19
    */
-  function _getChatMemoryList() {
+  function _getChatMemoryListFromServer() {
     const userId = localStorage.getItem('userid');
 
     if (!userId || typeof userId !== 'string') {
@@ -95,7 +97,9 @@ const ChatInterfacesNavMessage = React.memo((props: IChatInterfacesNavMessagePro
   }
 
   /**
-   * [更新] - socket更新聊天历史列表相关内容
+   * @description socket更新聊天历史列表相关内容
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/19
    */
   function _setChatMemoryList() {
     // ? 先移除所有的监听器, 避免出现指数增长的情况
