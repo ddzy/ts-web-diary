@@ -74,6 +74,9 @@ import notificationUserController from './controller/notification/user/notificat
 import notificationUserFriendController from './controller/notification/user/friend/notificationUserFriend';
 import notificationUserStarController from './controller/notification/user/star/notificationUserStar';
 import notificationUserAttentionController from './controller/notification/user/attention/notificationUserAttention';
+import notificationUserChatController from './controller/notification/user/chat/notificationUserChat';
+import notificationUserChatGroupController from './controller/notification/user/chat/group/notificationUserChatGroup';
+import notificationUserChatGroupInviteController from './controller/notification/user/chat/group/invite/notificationUserChatGroupInvite';
 import notificationUserCollectionController from './controller/notification/user/collection/notificationUserCollection';
 import notificationUserStarArticleController from './controller/notification/user/star/article/notificationUserStarArticle';
 import notificationUserStarArticleCommentController from './controller/notification/user/star/article/comment/notificationUserStarArticleComment';
@@ -122,6 +125,8 @@ const router: Router = new Router({
 // !! 五级路由 !!
 notificationUserStarArticleController
   .use('/comment', notificationUserStarArticleCommentController.routes(), notificationUserStarArticleCommentController.allowedMethods());
+notificationUserChatGroupController
+  .use('/invite', notificationUserChatGroupInviteController.routes(), notificationUserChatGroupInviteController.allowedMethods());
 
 
 // !! 四级路由 !!
@@ -132,6 +137,8 @@ notificationUserAttentionController
   .use('/topic', notificationUserAttentionTopicController.routes(), notificationUserAttentionTopicController.allowedMethods());
 notificationUserCollectionController
   .use('/article', notificationUserCollectionArticleController.routes(), notificationUserCollectionArticleController.allowedMethods());
+notificationUserChatController
+  .use('/group', notificationUserChatGroupController.routes(), notificationUserChatGroupController.allowedMethods());
 userInfoPartialController
   .use('/track', userInfoPartialTrackController.routes(), userInfoPartialTrackController.allowedMethods())
   .use('/article', userInfoPartialArticleController.routes(), userInfoPartialArticleController.allowedMethods())
@@ -164,6 +171,7 @@ notificationUserController
   .use('/friend', notificationUserFriendController.routes(), notificationUserFriendController.allowedMethods())
   .use('/star', notificationUserStarController.routes(), notificationUserStarController.allowedMethods())
   .use('/attention', notificationUserAttentionController.routes(), notificationUserAttentionController.allowedMethods())
+  .use('/chat', notificationUserChatController.routes(), notificationUserChatController.allowedMethods())
   .use('/collection', notificationUserCollectionController.routes(), notificationUserCollectionController.allowedMethods());
 pinSelfController
   .use('/info', pinSelfInfoController.routes(), pinSelfInfoController.allowedMethods())

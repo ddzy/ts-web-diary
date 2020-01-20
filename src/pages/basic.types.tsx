@@ -229,7 +229,7 @@ export type IBasicChatGroupMemberAuthorityType = 0 | 1 | 2;
 
 /**
  * @description 群聊消息类型
- * @summary 0: images、1: files、2: plain
+ * @summary 0: images、1: files、2: plain、3: code
  * @author ddzy<1766083035@qq.com>
  * @since 2020/1/19
  */
@@ -387,6 +387,21 @@ export interface IBasicNotificationUserAttentionPeopleInfo {
   type: string;
   from: string;
   to: string;
+  create_time: number;
+  update_time: number;
+};
+
+/**
+ * @description 用户被邀请加入群聊的通知信息
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/20
+ */
+export interface IBasicNotificationUserChatGroupInviteInfo {
+  _id: string;
+  type: string;
+  from: IBasicUserInfo;
+  to: IBasicUserInfo;
+  group: IBasicChatGroupInfo;
   create_time: number;
   update_time: number;
 };

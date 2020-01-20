@@ -54,6 +54,9 @@ import {
 import {
   INotificationUserCollectionArticleProps,
 } from './notification/user/collection/article/notificationUserCollectionArticleModel.types';
+import {
+  INotificationUserChatGroupInviteProps,
+} from './notification/user/chat/group/invite/notificationUserChatGroupInvite.types';
 
 import {
   ITrackStarArticleProps,
@@ -134,6 +137,7 @@ export {
   INotificationUserStarPinProps,
   INotificationUserAttentionPeopleProps,
   INotificationUserCollectionArticleProps,
+  INotificationUserChatGroupInviteProps,
 
   // ? 足迹
   ITrackStarArticleProps,

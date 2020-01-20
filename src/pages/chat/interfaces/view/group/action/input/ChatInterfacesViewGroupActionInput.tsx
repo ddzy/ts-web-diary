@@ -1,37 +1,31 @@
-import * as React from 'react';
-import {
-  Input,
-  Button,
-} from 'antd';
+import * as React from "react";
+import { Input } from "antd";
 
-import {
-  InputWrapper,
-  InputMain,
-  InputMainContent,
-  InputMainSend,
-} from './style';
+import { InputWrapper, InputMain, InputMainContent } from "./style";
 
+export interface IChatInterfacesViewGroupActionInputProps {
+  // ? 输入框value
+  plainInputValue: string;
+  // ? 输入框onChange
+  onPlainInputChange: (e: React.ChangeEvent) => void;
+}
 
-export interface IChatInterfacesViewGroupActionInputProps { };
-
-const ChatInterfacesViewGroupActionInput = React.memo((props: IChatInterfacesViewGroupActionInputProps) => {
-  return (
-    <InputWrapper>
-      <InputMain>
-        <InputMainContent>
-          <Input
-            placeholder={'说点什么吧...'}
-          />
-        </InputMainContent>
-        <InputMainSend>
-          <Button
-            type="primary"
-            block
-          >发送</Button>
-        </InputMainSend>
-      </InputMain>
-    </InputWrapper>
-  );
-});
+const ChatInterfacesViewGroupActionInput = React.memo(
+  (props: IChatInterfacesViewGroupActionInputProps) => {
+    return (
+      <InputWrapper>
+        <InputMain>
+          <InputMainContent>
+            <Input
+              placeholder={"畅所欲言..."}
+              value={props.plainInputValue}
+              onChange={props.onPlainInputChange}
+            />
+          </InputMainContent>
+        </InputMain>
+      </InputWrapper>
+    );
+  }
+);
 
 export default ChatInterfacesViewGroupActionInput;
