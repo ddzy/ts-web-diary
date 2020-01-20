@@ -45,6 +45,7 @@ import {
   notificationUserAttentionPeopleIOClient,
   notificationUserStarPinIOClient,
   notificationUserCollectionArticleIOClient,
+  notificationUserChatGroupInviteIOClient,
 } from 'services/websocket';
 import HeaderMainDummyNotificationNoticeFriendRequest from './friend/request/HeaderMainDummyNotificationNoticeFriendRequest';
 import HeaderMainDummyNotificationNoticeFriendAgree from './friend/agree/HeaderMainDummyNotificationNoticeFriendAgree';
@@ -53,6 +54,8 @@ import HeaderMainDummyNotificationNoticeStarArticle from './star/article/HeaderM
 import HeaderMainDummyNotificationNoticeAttentionPeople from './attention/people/HeaderMainDummyNotificationNoticeAttentionPeople';
 import HeaderMainDummyNotificationNoticeStarPin from './star/pin/HeaderMainDummyNotificationNoticeStarPin';
 import HeaderMainNotificationNoticeCollectionArticle from './collection/article/HeaderMainNotificationNoticeCollectionArticle';
+import HeaderMainDummyNotificationNoticeChatGroupInvite from './chat/group/invite/HeaderMainDummyNotificationNoticeChatGroupInvite';
+import { IBasicNotificationUserChatGroupInviteInfo } from 'pages/basic.types';
 
 
 // ? 追加通知列表
@@ -75,6 +78,8 @@ export interface IHeaderMainDummyNotificationNoticeState {
   notificationUserStarPinIOClient: SocketIOClient.Socket;
   // ? 用户收藏文章的socket
   notificationUserCollectionArticleIOClient: SocketIOClient.Socket;
+  // ? 用户被邀请加入群聊的socket
+  notificationUserChatGroupInviteIOClient: SocketIOClient.Socket;
 
   // ? 通知项列表
   notificationsList: React.ReactNode[];
@@ -202,6 +207,21 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
           notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
         };
       };
+      case NOTIFICATION_TYPE.user.chat.group.invite: {
+        return {
+          ...prevState,
+          notificationsList: [
+            React.createElement(
+              HeaderMainDummyNotificationNoticeChatGroupInvite,
+              {
+                notificationInfo: action.payload,
+              },
+            ),
+            ...prevState.notificationsList,
+          ],
+          notificationUnreadTotal: prevState.notificationUnreadTotal + 1,
+        };
+      };
       case PRIVATE_RESET_UNREAD_TOTAL: {
         return {
           ...prevState,
@@ -242,6 +262,7 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
     notificationUserAttentionPeopleIOClient,
     notificationUserStarPinIOClient,
     notificationUserCollectionArticleIOClient,
+    notificationUserChatGroupInviteIOClient,
     notificationUnreadTotal: 0,
     notificationsList: [],
     hasMoreNotification: true,
@@ -379,10 +400,26 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
         });
       }
     });
+
+    // ? 用户邀请我加入群聊的通知socket
+    state.notificationUserChatGroupInviteIOClient.on('receiveUserChatGroupInvite', (
+      data: IBasicNotificationUserChatGroupInviteInfo
+    ) => {
+      const currentUserId = localStorage.getItem('userid');
+
+      if (currentUserId === data.to._id) {
+        dispatch({
+          type: NOTIFICATION_TYPE.user.chat.group.invite,
+          payload: data,
+        });
+      }
+    });
   }, []);
 
   /**
-   * [初始化] - 通知框的内容
+   * @description 通知框的内容
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/20
    */
   function _initNotificationContent() {
     const notificationNodeList = state.notificationsList.map((value: React.FunctionComponentElement<any>, index) => {
@@ -428,8 +465,9 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
   }
 
   /**
-   * [获取] - 后台获取首屏的通知列表
-   * @param {pagination} <page - 当前页数><pageSize - 每页大小>
+   * @description 后台获取首屏的通知列表
+   * @author ddzy<1766083035@qq.com>
+   * @since 2020/1/20
    */
   function _getNotificationList(
     pagination: {
@@ -527,6 +565,14 @@ const HeaderMainDummyNotificationNotice = React.memo<IHeaderMainDummyNotificatio
             case NOTIFICATION_TYPE.user.collection.article: {
               return React.createElement(
                 HeaderMainNotificationNoticeCollectionArticle,
+                {
+                  notificationInfo: v,
+                },
+              );
+            };
+            case NOTIFICATION_TYPE.user.chat.group.invite: {
+              return React.createElement(
+                HeaderMainDummyNotificationNoticeChatGroupInvite,
                 {
                   notificationInfo: v,
                 },

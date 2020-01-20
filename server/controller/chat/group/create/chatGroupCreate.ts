@@ -32,14 +32,54 @@ export function handleGroupChat(
       content: string,
     },
   ) => {
-    // TODO: 邀请用户加入群聊
-    // 将当前客户端放入对应的群聊房间
-    // 每个房间以唯一的群聊 id 标识
-    socket.join(messageInfo.chatId);
-
     io.to(messageInfo.chatId).emit('receiveChatGroupMessage', {
       ...messageInfo,
     });
+  });
+
+  socket.on('sendChatGroupInvite', async (
+    inviteInfo: {
+      from: string,
+      to: string,
+      group: string,
+      type: string,
+    },
+  ) => {
+    // TODO: 邀请用户加入群聊
+    // 将当前客户端放入对应的群聊房间
+    // 每个房间以唯一的群聊 id 标识
+    // socket.join(messageInfo.chatId);
+
+    // 创建新的群聊用户
+    const createdGroupMember = await ChatGroupMember.create({
+      user_id: inviteInfo.to,
+      group_id: inviteInfo.group,
+      authority: 2,
+      join_time: Date.now(),
+      create_message: [],
+      create_message_total: 0,
+      last_create_message_time: Date.now(),
+      create_time: Date.now(),
+    });
+
+    // 将该用户加入群聊
+    await ChatGroup.findByIdAndUpdate(
+      inviteInfo.group,
+      {
+        '$addToSet': {
+          members: createdGroupMember,
+        },
+        '$inc': {
+          member_total: 1,
+        },
+      },
+      {
+        new: true,
+      },
+    );
+
+    // 加入群聊成功, 广播告知所有群聊用户
+    io.to(inviteInfo.group).emit('receiveChatGroupInviteSuccess', {});
   });
 }
 
@@ -125,8 +165,8 @@ chatGroupCreateController.post('/', async (ctx) => {
         member_total: 1,
       },
     }, {
-      new: true,
-    });
+        new: true,
+      });
 
     // * 更新用户的群聊列表
     await User.findByIdAndUpdate(userId, {
@@ -135,8 +175,8 @@ chatGroupCreateController.post('/', async (ctx) => {
         chat_memory: isExistChatMemory,
       },
     }, {
-      new: true,
-    })
+        new: true,
+      })
 
     ctx.body = {
       code: 0,

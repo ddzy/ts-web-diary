@@ -12,7 +12,7 @@ import {
 } from "./style";
 import { IBasicChatGroupInfo } from "pages/basic.types";
 import ChatInterfacesViewGroupTitleInfoContentInvite from './invite/ChatInterfacesViewGroupTitleInfoContentInvite';
-import { notificationUserChatGroupInviteIOClient } from "services/websocket";
+import { notificationUserChatGroupInviteIOClient, chatGroupIOClient } from "services/websocket";
 import { NOTIFICATION_TYPE } from "constants/constants";
 
 export interface IChatInterfacesViewGroupTitleInfoContentProps
@@ -148,7 +148,6 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
         return message.info('该好友已在群聊中!');
       }
 
-      // 向该好友发送入群通知
       const composedData = {
         from: userId,
         to: friendId,
@@ -156,7 +155,15 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
         type: NOTIFICATION_TYPE.user.chat.group.invite,
       };
 
+      // 向该好友发送入群通知
       notificationUserChatGroupInviteIOClient.emit('sendUserChatGroupInvite', composedData);
+
+      // 将好友加入群聊
+      chatGroupIOClient.emit('sendChatGroupInvite', composedData);
+
+      message.success('邀请成功!');
+
+      handleHideInviteModal();
 
       return;
     }

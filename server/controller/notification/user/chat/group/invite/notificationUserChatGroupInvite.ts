@@ -58,7 +58,7 @@ export function handleNotificationUserChatGroupInvite(
         _id: 1,
       })
 
-    // 查找群的信息
+    // 查找并更新群的信息
     const foundGroupInfo = await ChatGroup.findById(data.group);
 
     const composedNotification = {

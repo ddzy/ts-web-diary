@@ -5,6 +5,7 @@ import {
   Posts,
   Pin,
   CollectionArticle,
+  ChatGroup,
 } from '../../../model/model';
 import {
   NOTIFICATION_TYPE,
@@ -16,8 +17,10 @@ const notificationUserController = new Router();
 
 
 /**
- * [处理] - 获取通知列表(用户 + 管理员)
+ * @description 获取通知列表(用户 + 管理员)
  * @todo 分页获取
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/20
  */
 notificationUserController.get('/info/list', async (ctx) => {
   interface IRequestParams {
@@ -200,6 +203,36 @@ notificationUserController.get('/info/list', async (ctx) => {
               article: foundArticleInfo,
               article_author: foundArticleAuthorInfo,
               collection: foundCollectionInfo,
+            };
+          };
+          case NOTIFICATION_TYPE.user.chat.group.invite: {
+            // ? 查询发送方信息
+            const foundFromUserInfo = await User.findById(
+              v.from,
+              {
+                ...FILTER_SENSITIVE,
+              },
+            );
+            // ? 查询接收方信息
+            const foundToUserInfo = await User.findById(
+              v.to,
+              {
+                ...FILTER_SENSITIVE,
+              },
+            );
+            // ? 查询群聊信息
+            const foundGroupInfo = await ChatGroup.findById(
+              v.group,
+              {
+                ...FILTER_SENSITIVE,
+              },
+            );
+
+            return {
+              ...v,
+              from: foundFromUserInfo,
+              to: foundToUserInfo,
+              group: foundGroupInfo,
             };
           };
         }
