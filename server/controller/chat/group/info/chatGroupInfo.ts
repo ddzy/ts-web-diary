@@ -98,15 +98,34 @@ chatGroupInfoController.get('/', async (ctx) => {
     .populate([
       {
         path: 'messages',
-        populate: [
-
-        ],
+        select: {
+          ...FILTER_SENSITIVE,
+        },
         options: {
           sort: {
             create_time: -1,
           },
           limit: Number(pageSize),
           skip: (Number(page) - 1) * Number(pageSize),
+        },
+      },
+      {
+        path: 'members',
+        populate: [
+          {
+            path: 'user_id',
+            select: {
+              ...FILTER_SENSITIVE,
+            },
+          },
+        ],
+        select: {
+          ...FILTER_SENSITIVE,
+        },
+        options: {
+          sort: {
+            join_time: -1,
+          },
         },
       },
     ])

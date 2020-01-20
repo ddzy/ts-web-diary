@@ -41,6 +41,9 @@ import {
 import {
   handleNotificationUserCollectionArticle,
 } from './controller/notification/user/collection/article/notificationUserCollectionArticle';
+import {
+  handleNotificationUserChatGroupInvite,
+} from './controller/notification/user/chat/group/invite/notificationUserChatGroupInvite';
 
 
 const app: Koa = new Koa();
@@ -131,6 +134,15 @@ notificationUserAttentionTopicIO.on('connection', (socket) => {
 const notificationUserCollectionArticleIO = io.of('/notification/user/collection/article');
 notificationUserCollectionArticleIO.on('connection', (socket) => {
   handleNotificationUserCollectionArticle(socket, notificationUserCollectionArticleIO);
+})
+
+// ? 处理邀请好友加入群聊的相关通知Websocket
+const notificationUserChatGroupInviteIO = io.of('/notification/user/chat/group/invite');
+notificationUserChatGroupInviteIO.on('connection', (socket) => {
+  handleNotificationUserChatGroupInvite(
+    socket,
+    notificationUserChatGroupInviteIO
+  );
 })
 
 // ? 处理单聊的相关Websocket

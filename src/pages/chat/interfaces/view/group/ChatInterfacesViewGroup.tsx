@@ -1,15 +1,19 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { message } from "antd";
 
 import { GroupWrapper, GroupMain } from "./style";
 import ChatInterfacesViewGroupTitle from "./title/ChatInterfacesViewGroupTitle";
 import ChatInterfacesViewGroupContent from "./content/ChatInterfacesViewGroupContent";
 import ChatInterfacesViewGroupAction from "./action/ChatInterfacesViewGroupAction";
 import { statusIOClient } from "services/websocket";
-import { message } from "antd";
 import { query } from "services/request";
 import { CHAT_MESSAGE_PAGE_SIZSE_LARGE } from "constants/constants";
-import { IBasicChatGroupInfo } from "pages/basic.types";
+import {
+  IBasicChatGroupInfo,
+  IBasicChatGroupMessageContentType
+} from "pages/basic.types";
+import { chatGroupIOClient } from "services/websocket";
 
 export interface IChatInterfacesViewGroupProps
   extends RouteComponentProps<{
@@ -113,6 +117,10 @@ const ChatInterfacesViewGroup = React.memo(
       });
     }, [props.match.params.id]);
 
+    React.useEffect(() => {
+      _setGroupChatMessageInfo();
+    });
+
     /**
      * @description 从后台获取群聊相关信息
      * @author ddzy<1766083035@qq.com>
@@ -177,6 +185,57 @@ const ChatInterfacesViewGroup = React.memo(
       }
     }
 
+    /**
+     * @description 实时接受聊天消息
+     * @author ddzy<1766083035@qq.com>
+     * @since 2020/1/20
+     */
+    function _setGroupChatMessageInfo() {
+      chatGroupIOClient.removeEventListener("receiveChatGroupMessage");
+
+      chatGroupIOClient.on("receiveChatGroupMessage", (data: any) => {
+        // 只显示当前群聊的消息
+        console.log(data);
+      });
+    }
+
+    /**
+     * @description 发送聊天消息
+     * @author ddzy<1766083035@qq.com>
+     * @since 2020/1/20
+     */
+    function handleChatMessageSend(
+      messageInfo: {
+        type: IBasicChatGroupMessageContentType;
+        content: string;
+      },
+      callback?: () => void
+    ) {
+      const fromUserId = localStorage.getItem("userid");
+
+      if (!fromUserId) {
+        message.error("用户凭证已丢失, 请登录后再发言!");
+
+        return props.history.push("/login");
+      }
+
+      const chatId = props.match.params.id;
+      const chatType = "group";
+      const contentType = messageInfo.type;
+      const content = messageInfo.content;
+
+      // 发送消息
+      chatGroupIOClient.emit("sendChatGroupMessage", {
+        fromUserId,
+        chatId,
+        chatType,
+        contentType,
+        content
+      });
+
+      callback && callback();
+    }
+
     return (
       <GroupWrapper>
         <GroupMain>
@@ -187,7 +246,9 @@ const ChatInterfacesViewGroup = React.memo(
           <ChatInterfacesViewGroupContent groupInfo={state.groupChatInfo} />
 
           {/* 群聊尾部操作区块 */}
-          <ChatInterfacesViewGroupAction />
+          <ChatInterfacesViewGroupAction
+            onChatMessageSend={handleChatMessageSend}
+          />
         </GroupMain>
       </GroupWrapper>
     );

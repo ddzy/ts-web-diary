@@ -3,6 +3,7 @@ import * as Router from 'koa-router';
 import {
   User, ChatSingle,
 } from '../../../../model/model';
+import { FILTER_SENSITIVE } from '../../../../constants/constants';
 
 
 const chatSingleInfoController = new Router();
@@ -21,7 +22,9 @@ chatSingleInfoController.get('/friend/list', async (ctx) => {
     .populate([
       {
         path: 'friends',
-        select: ['username', 'useravatar'],
+        select: {
+          ...FILTER_SENSITIVE,
+        },
       },
     ])
 
