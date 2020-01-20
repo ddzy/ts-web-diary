@@ -23,7 +23,24 @@ export function handleGroupChat(
   socket: IOServer.Socket,
   io: IOServer.Namespace,
 ): void {
-  return;
+  socket.on('sendChatGroupMessage', async (
+    messageInfo: {
+      fromUserId: string,
+      chatId: string,
+      chatType: string,
+      contentType: number,
+      content: string,
+    },
+  ) => {
+    // TODO: 邀请用户加入群聊
+    // 将当前客户端放入对应的群聊房间
+    // 每个房间以唯一的群聊 id 标识
+    socket.join(messageInfo.chatId);
+
+    io.to(messageInfo.chatId).emit('receiveChatGroupMessage', {
+      ...messageInfo,
+    });
+  });
 }
 
 
