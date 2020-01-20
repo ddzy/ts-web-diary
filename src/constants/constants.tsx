@@ -204,6 +204,11 @@ export const NOTIFICATION_TYPE = {
     collection: {
       article: 'notification_user_collection_article',
     },
+    chat: {
+      group: {
+        invite: 'notification_user_chat_group_invite',
+      },
+    },
   },
   admin: {},
 };

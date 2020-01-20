@@ -48,6 +48,13 @@ export const notificationUserAttentionPeopleIOClient = IOClient(`${SOCKET_CONNEC
 export const notificationUserCollectionArticleIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/collection/article`);
 
 /**
+ * @description 通知(邀请加入群聊)
+ * @author ddzy<1766083035@qq.com>
+ * @since 2020/1/20
+ */
+export const notificationUserChatGroupInviteIOClient = IOClient(`${SOCKET_CONNECTION_INFO.schema}://${SOCKET_CONNECTION_INFO.domain}:${SOCKET_CONNECTION_INFO.port}/notification/user/chat/group/invite`);
+
+/**
  * @description 单聊
  * @author ddzy<1766083035@qq.com>
  * @since 2020/1/20
