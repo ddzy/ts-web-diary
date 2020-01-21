@@ -6,7 +6,9 @@ import {
   ChatGroupMember,
   User,
   ChatMemory,
+  ChatGroupMessage,
 } from '../../../../model/model';
+import { FILTER_SENSITIVE } from '../../../../constants/constants';
 
 
 const chatGroupCreateController = new Router();
@@ -32,8 +34,96 @@ export function handleGroupChat(
       content: string,
     },
   ) => {
-    io.to(messageInfo.chatId).emit('receiveChatGroupMessage', {
-      ...messageInfo,
+    // ? room 失效
+    // io.to(messageInfo.chatId).emit('receiveChatGroupMessage', {
+    //   ...messageInfo,
+    // });
+
+    // 查询用户信息
+    const foundUserInfo = await User.findById(
+      messageInfo.fromUserId,
+      {
+        ...FILTER_SENSITIVE,
+      },
+    )
+
+    // 查询群聊成员消息
+    const foundChatGroupMember = await ChatGroupMember.findOne(
+      {
+        user_id: messageInfo.fromUserId,
+        group_id: messageInfo.chatId,
+      }
+    );
+
+    // 创建群聊消息
+    const createdChatGroupMessage = await ChatGroupMessage.create({
+      group_id: messageInfo.chatId,
+      from_member_id: foundChatGroupMember._id || '',
+      content_type: messageInfo.contentType,
+      content: messageInfo.content,
+      create_time: Date.now(),
+      update_time: Date.now(),
+    });
+
+    // 更新该群聊成员相关信息
+    await ChatGroupMember.findByIdAndUpdate(
+      foundChatGroupMember._id,
+      {
+        '$addToSet': {
+          create_message: createdChatGroupMessage,
+        },
+        '$inc': {
+          create_message_total: 1,
+        },
+        '$set': {
+          last_create_message_time: createdChatGroupMessage.create_time,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+
+    // 更新群聊表
+    await ChatGroup.findByIdAndUpdate(
+      messageInfo.chatId,
+      {
+        '$addToSet': {
+          messages: createdChatGroupMessage,
+        },
+        '$inc': {
+          message_total: 1,
+        },
+        '$set': {
+          last_create_message_time: createdChatGroupMessage.create_time,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+
+    // 更新群聊历史表
+    await ChatMemory.findOneAndUpdate(
+      {
+        chat_type: messageInfo.chatType,
+        chat_id: messageInfo.chatId,
+      },
+      {
+        last_message_member_name: foundUserInfo.username,
+        last_message_content_type: createdChatGroupMessage.content_type,
+        last_message_content: createdChatGroupMessage.content,
+        unread_message_total: 0,
+        update_time: Date.now(),
+      },
+      {
+        new: true,
+      },
+    )
+
+    io.emit('receiveChatGroupMessage', {
+      createdChatGroupMessage,
+      chatId: messageInfo.chatId,
     });
   });
 
@@ -48,7 +138,7 @@ export function handleGroupChat(
     // TODO: 邀请用户加入群聊
     // 将当前客户端放入对应的群聊房间
     // 每个房间以唯一的群聊 id 标识
-    // socket.join(messageInfo.chatId);
+    socket.join(inviteInfo.group);
 
     // 创建新的群聊用户
     const createdGroupMember = await ChatGroupMember.create({
