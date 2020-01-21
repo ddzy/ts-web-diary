@@ -11,8 +11,11 @@ import {
   MainGroupMemberWrapper
 } from "./style";
 import { IBasicChatGroupInfo } from "pages/basic.types";
-import ChatInterfacesViewGroupTitleInfoContentInvite from './invite/ChatInterfacesViewGroupTitleInfoContentInvite';
-import { notificationUserChatGroupInviteIOClient, chatGroupIOClient } from "services/websocket";
+import ChatInterfacesViewGroupTitleInfoContentInvite from "./invite/ChatInterfacesViewGroupTitleInfoContentInvite";
+import {
+  notificationUserChatGroupInviteIOClient,
+  chatGroupIOClient
+} from "services/websocket";
 import { NOTIFICATION_TYPE } from "constants/constants";
 
 export interface IChatInterfacesViewGroupTitleInfoContentProps
@@ -28,9 +31,11 @@ export interface IChatInterfacesViewGroupTitleInfoContentState {
 
 const ChatInterfacesViewGroupTitleInfoContent = React.memo(
   (props: IChatInterfacesViewGroupTitleInfoContentProps) => {
-    const [state, setState] = React.useState<IChatInterfacesViewGroupTitleInfoContentState>({
+    const [state, setState] = React.useState<
+      IChatInterfacesViewGroupTitleInfoContentState
+    >({
       isShowInviteModal: false,
-      selectedFriendId: '',
+      selectedFriendId: ""
     });
 
     /**
@@ -43,7 +48,7 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
 
       const newMemberList = memberList.map(v => {
         return (
-          <MainGroupMemberItem key={v._id}>
+          <MainGroupMemberItem key={v._id} title={v.user_id.username}>
             <Avatar
               icon="user"
               size="large"
@@ -55,20 +60,17 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
       });
 
       // 添加邀请好友进群按钮
-      newMemberList.push((
-        <MainGroupMemberItem
-          key={'invite'}
-          onClick={handleInviteBtnClick}
-        >
+      newMemberList.push(
+        <MainGroupMemberItem key={"invite"} onClick={handleInviteBtnClick}>
           <Icon
             type="plus"
             style={{
-              width: '40px',
-              height: '40px',
+              width: "40px",
+              height: "40px"
             }}
           />
         </MainGroupMemberItem>
-      ));
+      );
 
       return newMemberList;
     }
@@ -81,7 +83,7 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
     function handleShowInviteModal() {
       setState({
         ...state,
-        isShowInviteModal: true,
+        isShowInviteModal: true
       });
     }
 
@@ -93,7 +95,7 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
     function handleHideInviteModal() {
       setState({
         ...state,
-        isShowInviteModal: false,
+        isShowInviteModal: false
       });
     }
 
@@ -102,12 +104,10 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
      * @author ddzy<1766083035@qq.com>
      * @since 2020/1/20
      */
-    function handleInviteSelectChange(
-      data: string,
-    ) {
+    function handleInviteSelectChange(data: string) {
       setState({
         ...state,
-        selectedFriendId: data,
+        selectedFriendId: data
       });
     }
 
@@ -127,41 +127,44 @@ const ChatInterfacesViewGroupTitleInfoContent = React.memo(
      * @since 2020/1/20
      */
     function handleInviteFriend() {
-      const userId = localStorage.getItem('userid');
+      const userId = localStorage.getItem("userid");
       const friendId = state.selectedFriendId;
 
       if (!userId) {
-        return message.error('用户凭证已丢失!')
+        return message.error("用户凭证已丢失!");
       }
 
       if (!friendId) {
-        return message.error('至少邀请一个朋友!');
+        return message.error("至少邀请一个朋友!");
       }
 
       // 检查选中的用户是否已经在本群
       const memberList = props.groupInfo.members;
-      const isAlreadyInGroup = memberList.findIndex((v) => {
+      const isAlreadyInGroup = memberList.findIndex(v => {
         return v.user_id._id === friendId;
       });
 
       if (isAlreadyInGroup !== -1) {
-        return message.info('该好友已在群聊中!');
+        return message.info("该好友已在群聊中!");
       }
 
       const composedData = {
         from: userId,
         to: friendId,
         group: props.groupInfo._id,
-        type: NOTIFICATION_TYPE.user.chat.group.invite,
+        type: NOTIFICATION_TYPE.user.chat.group.invite
       };
 
       // 向该好友发送入群通知
-      notificationUserChatGroupInviteIOClient.emit('sendUserChatGroupInvite', composedData);
+      notificationUserChatGroupInviteIOClient.emit(
+        "sendUserChatGroupInvite",
+        composedData
+      );
 
       // 将好友加入群聊
-      chatGroupIOClient.emit('sendChatGroupInvite', composedData);
+      chatGroupIOClient.emit("sendChatGroupInvite", composedData);
 
-      message.success('邀请成功!');
+      message.success("邀请成功!");
 
       handleHideInviteModal();
 
