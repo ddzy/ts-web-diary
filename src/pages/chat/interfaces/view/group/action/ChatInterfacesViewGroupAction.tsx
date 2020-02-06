@@ -5,7 +5,7 @@ import { ActionWrapper, ActionMain } from "./style";
 import ChatInterfacesViewGroupActionExtra from "./extra/ChatInterfacesViewGroupActionExtra";
 import ChatInterfacesViewGroupActionInput from "./input/ChatInterfacesViewGroupActionInput";
 import ChatInterfacesViewGroupActionSend from "./send/ChatInterfacesViewGroupActionSend";
-import { IBasicChatGroupMessageContentType } from "pages/basic.types";
+import { IBasicChatMessgaeType } from "pages/basic.types";
 
 export interface IChatInterfacesViewGroupActionProps {
   // ? 发送聊天消息
@@ -18,7 +18,7 @@ export interface IChatInterfacesViewGroupActionState {
   // ? 聊天消息
   messageInfo: {
     // * 消息类型
-    type: IBasicChatGroupMessageContentType;
+    type: IBasicChatMessgaeType;
     content: string;
   };
 }
@@ -29,7 +29,7 @@ const ChatInterfacesViewGroupAction = React.memo(
       IChatInterfacesViewGroupActionState
     >({
       messageInfo: {
-        type: 2,
+        type: 'plain',
         content: ""
       }
     });
@@ -49,7 +49,7 @@ const ChatInterfacesViewGroupAction = React.memo(
         ...state,
         messageInfo: {
           ...state.messageInfo,
-          type: 2,
+          type: 'plain',
           content: value
         }
       });
