@@ -108,6 +108,22 @@ chatGroupInfoController.get('/', async (ctx) => {
           limit: Number(pageSize),
           skip: (Number(page) - 1) * Number(pageSize),
         },
+        populate: [
+          {
+            path: 'from_member_id',
+            select: {
+              ...FILTER_SENSITIVE,
+            },
+            populate: [
+              {
+                path: 'user_id',
+                select: {
+                  ...FILTER_SENSITIVE,
+                },
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'members',

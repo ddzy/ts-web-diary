@@ -48,12 +48,24 @@ export function handleGroupChat(
     )
 
     // 查询群聊成员消息
-    const foundChatGroupMember = await ChatGroupMember.findOne(
-      {
-        user_id: messageInfo.fromUserId,
-        group_id: messageInfo.chatId,
-      }
-    );
+    const foundChatGroupMember = await ChatGroupMember
+      .findOne(
+        {
+          user_id: messageInfo.fromUserId,
+          group_id: messageInfo.chatId,
+        },
+        {
+          ...FILTER_SENSITIVE,
+        },
+    )
+      .populate([
+        {
+          path: 'user_id',
+          select: {
+            ...FILTER_SENSITIVE,
+          },
+      },
+    ])
 
     // 创建群聊消息
     const createdChatGroupMessage = await ChatGroupMessage.create({
@@ -122,8 +134,8 @@ export function handleGroupChat(
     )
 
     io.emit('receiveChatGroupMessage', {
-      createdChatGroupMessage,
-      chatId: messageInfo.chatId,
+      ...createdChatGroupMessage._doc,
+      from_member_id: foundChatGroupMember,
     });
   });
 

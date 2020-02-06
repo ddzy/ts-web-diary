@@ -11,7 +11,7 @@ import { query } from "services/request";
 import { CHAT_MESSAGE_PAGE_SIZSE_LARGE } from "constants/constants";
 import {
   IBasicChatGroupInfo,
-  IBasicChatGroupMessageContentType
+  IBasicChatMessgaeType
 } from "pages/basic.types";
 import { chatGroupIOClient } from "services/websocket";
 
@@ -195,7 +195,19 @@ const ChatInterfacesViewGroup = React.memo(
 
       chatGroupIOClient.on("receiveChatGroupMessage", (data: any) => {
         // 只显示当前群聊的消息
-        console.log(data);
+        const chatId = props.match.params.id;
+        const newMessage = data.group_id === chatId
+          ? state.groupChatInfo.messages.concat(data)
+          : state.groupChatInfo.messages;
+
+        setState({
+          ...state,
+          groupChatInfo: {
+            ...state.groupChatInfo,
+            messages: newMessage,
+          },
+          isMessageSend: true,
+        });
       });
     }
 
@@ -206,7 +218,7 @@ const ChatInterfacesViewGroup = React.memo(
      */
     function handleChatMessageSend(
       messageInfo: {
-        type: IBasicChatGroupMessageContentType;
+        type: IBasicChatMessgaeType;
         content: string;
       },
       callback?: () => void
