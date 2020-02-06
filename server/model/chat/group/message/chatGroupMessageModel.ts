@@ -17,7 +17,7 @@ const ChatGroupMessageSchema: mongoose.Schema = new mongoose.Schema({
   // ? 消息类型
   // ? 目前只计划三种类型: images(0) | files(1) | plain(2)
   content_type: {
-    type: Number,
+    type: String,
     required: true,
   },
   // ? 消息内容

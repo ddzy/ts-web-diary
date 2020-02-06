@@ -227,13 +227,15 @@ export interface IBasicChatSingleMessageInfo {
  */
 export type IBasicChatGroupMemberAuthorityType = 0 | 1 | 2;
 
-/**
- * @description 群聊消息类型
- * @summary 0: images、1: files、2: plain、3: code
- * @author ddzy<1766083035@qq.com>
- * @since 2020/1/19
- */
-export type IBasicChatGroupMessageContentType = 0 | 1 | 2;
+// /**
+//  * @description 群聊消息类型
+//  * @summary 0: images、1: files、2: plain、3: code
+//  * @summary 0: plain、1: images、2: file、3: code
+//  * @author ddzy<1766083035@qq.com>
+//  * @since 2020/1/19
+//  */
+// export type IBasicChatGroupMessageContentType = 0 | 1 | 2 | 3;
+
 
 /**
  * @description 群聊基本接口
@@ -284,7 +286,7 @@ export interface IBasicChatGroupMessageInfo {
   _id: string;
   group_id: IBasicChatGroupInfo;
   from_member_id: IBasicChatGroupMemberInfo;
-  content_type: IBasicChatGroupMessageContentType;
+  content_type: IBasicChatMessgaeType;
   content: string;
   create_time: number;
   update_time: number;

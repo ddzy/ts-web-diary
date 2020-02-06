@@ -16,7 +16,7 @@ const ChatGroupMemberSchema: mongoose.Schema = new mongoose.Schema({
   },
   // ? 权限(群主: 0, 管理员: 1, 成员: 2)
   authority: {
-    type: String,
+    type: Number,
     required: true,
   },
   // ? 加入时间

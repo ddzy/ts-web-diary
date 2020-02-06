@@ -4,10 +4,10 @@ import {
   ContentWrapper,
   ContentMain,
   ContentMainList,
-  // ContentMainItem,
+  ContentMainItem,
 } from './style';
-// import { formatTime } from 'utils/utils';
-// import BaseChatMessage from 'components/widget/base_chat_message/BaseChatMessage';
+import { formatTime } from 'utils/utils';
+import BaseChatMessage from 'components/widget/base_chat_message/BaseChatMessage';
 import { IBasicChatGroupInfo } from 'pages/basic.types';
 
 
@@ -60,23 +60,27 @@ const ChatInterfacesViewGroupContent = React.memo((props: IChatInterfacesViewGro
    * @since 2020/1/19
    */
   function _initMessageList() {
-    // const messageList = props.groupInfo.messages;
+    const messageList = props.groupInfo.messages;
 
-    // return messageList.map((v) => {
-    //   return (
-    //     <ContentMainItem key={v._id}>
-    //       <BaseChatMessage
-    //         isSend={true}
-    //         chatMessageInfo={{
-    //           // ...v,
-    //           // content_type: 'plain',
-    //           id: v._id,
-    //         }}
-    //       />
-    //     </ContentMainItem>
-    //   );
-    // });
-    return [];
+    console.log(messageList);
+
+    return messageList.map((v) => {
+      return (
+        <ContentMainItem key={v._id}>
+          <BaseChatMessage
+            isSend={true}
+            chatMessageInfo={{
+              id: v._id,
+              avatar: v.from_member_id.user_id.useravatar,
+              name: v.from_member_id.user_id.username,
+              time: formatTime(v.create_time),
+              content: v.content,
+              content_type: v.content_type,
+            }}
+          />
+        </ContentMainItem>
+      );
+    });
   }
 
   return (
