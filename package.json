@@ -50,7 +50,7 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "socket.io-client": "^2.2.0",
     "styled-components": "^4.1.2",
     "tocbot": "^4.8.0",
